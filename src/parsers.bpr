@@ -3,8 +3,8 @@
 <PROJECT>
   <MACROS>
     <VERSION value="BCB.06.00"/>
-    <PROJECT value="parsers.dll"/>
-    <OBJFILES value="dllmain.obj lex.pascal.obj"/>
+    <PROJECT value=".\dcu\parsers.dll"/>
+    <OBJFILES value="dcu\dllmain.obj dcu\lex.pascal.obj"/>
     <RESFILES value="parsers.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -28,7 +28,7 @@
     <RELEASELIBPATH value="$(BCB)\lib\release"/>
     <LINKER value="ilink32"/>
     <USERDEFINES value=""/>
-    <SYSDEFINES value="NO_STRICT;_NO_VCL;_RTLDLL"/>
+    <SYSDEFINES value="NO_STRICT;_NO_VCL;_RTLDLL;USEPACKAGES"/>
     <MAINSOURCE value="parsers.bpf"/>
     <INCLUDEPATH value="E:\Projekte\SWIPL\SWIPEL_ZWAP\src\lang;&quot;E:\Program Files (x86)\Borland\CBuilder6\Include&quot;;&quot;E:\Program Files (x86)\Borland\CBuilder6\Include\Vcl&quot;;&quot;E:\Program Files (x86)\Borland\CBuilder6\Projects&quot;;&quot;E:\Program Files (x86)\Borland\CBuilder6\Projects\Lib&quot;;E:\Projekte\jedi\jcl\jcl\lib\c6;E:\Projekte\jedi\jcl\jcl\packages\c6;E:\Projekte\jedi\jcl\jcl\source;E:\Projekte\jedi\jcl\jcl\source\common;E:\Projekte\jedi\jcl\jcl\source\include;E:\Projekte\jedi\jcl\jcl\source\include\jedi;E:\Projekte\jedi\jcl\jcl\source\vcl;E:\Projekte\jedi\jcl\jcl\source\windows;E:\Projekte\jedi\jcl\jcl\packages;E:\Projekte\jedi\jvcl\jvcl\common;E:\Projekte\jedi\jvcl\jvcl\packages\c6;E:\Projekte\jedi\jvcl\jvcl\resources;E:\Projekte\jedi\jvcl\jvcl\include"/>
     <LIBPATH value="E:\Projekte\SWIPL\SWIPEL_ZWAP\src\lang;&quot;E:\Program Files (x86)\Borland\CBuilder6\Lib\Obj&quot;;&quot;E:\Program Files (x86)\Borland\CBuilder6\Lib&quot;;&quot;E:\Program Files (x86)\Borland\CBuilder6\Projects\Lib&quot;;&quot;E:\Program Files (x86)\Borland\CBuilder6\Projects\Bpl&quot;"/>
@@ -52,14 +52,14 @@
       -IE:\Projekte\jedi\jvcl\jvcl\resources 
       -IE:\Projekte\jedi\jvcl\jvcl\include -src_suffix cpp -boa"/>
     <CFLAG1 value="-WD -O2 -Vx -Ve -VF -C -fp -ff -X- -a8 -6 -b- -k- -vi -tWD -tWM- -c"/>
-    <PFLAGS value="-$Y- -$U -$Q -$L- -$D- -$C- -$A8 -v -JPHNE -M"/>
+    <PFLAGS value="-N2.\dcu -N0.\dcu -$Y- -$U -$Q -$L- -$D- -$C- -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
     <AFLAGS value="/mx /w2 /zn"/>
-    <LFLAGS value="-D&quot;&quot; -aa -Tpd -x -Gn -Gi"/>
+    <LFLAGS value="-l.\dcu -I.\dcu -D&quot;&quot; -aa -Tpd -x -Gn -Gi"/>
     <OTHERFILES value=""/>
   </OPTIONS>
   <LINKER>
-    <ALLOBJ value="c0d32.obj $(OBJFILES)"/>
+    <ALLOBJ value="c0d32.obj $(PACKAGES) $(OBJFILES)"/>
     <ALLRES value="$(RESFILES)"/>
     <ALLLIB value="$(LIBFILES) $(LIBRARIES) import32.lib cw32i.lib"/>
     <OTHERFILES value=""/>
@@ -118,6 +118,19 @@ Item2=$(BCB)\lib\obj;$(BCB)\lib
 Count=2
 Item0=E:\Program Files (x86)\Borland\CBuilder6\Source\vcl
 Item1=$(BCB)\source\vcl
+
+[HistoryLists\hlIntOutputDir]
+Count=1
+Item0=.\dcu
+
+[HistoryLists\hlFinalOutputDir]
+Count=2
+Item0=.\dcu\
+Item1=.\dcu
+
+[HistoryLists\hIBPIOutputDir]
+Count=1
+Item0=.\dcu
 
 [Debugging]
 DebugSourceDirs=E:\Program Files (x86)\Borland\CBuilder6\Source\vcl
