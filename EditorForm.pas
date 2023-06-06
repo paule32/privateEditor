@@ -6,7 +6,8 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ComCtrls, ExtCtrls, JvExControls, JvSpeedButton, ToolWin,
   SynEdit, JvGradientCaption, Menus, SynEditHighlighter, SynHighlighterPas,
-  JvStringHolder, CtrlMenuBarButton, JvMenus;
+  JvStringHolder, CtrlMenuBarButton, JvMenus, StdCtrls, Mask, JvExMask,
+  JvSpin, Buttons, CheckLst;
 
 type
   TForm1 = class(TForm)
@@ -19,10 +20,10 @@ type
     ProgressBar1: TProgressBar;
     Panel3: TPanel;
     Splitter1: TSplitter;
-    Panel4: TPanel;
-    Splitter2: TSplitter;
+    LeftPanel: TPanel;
+    LeftSplitter: TSplitter;
     Panel5: TPanel;
-    PageControl2: TPageControl;
+    MainPageControl: TPageControl;
     TabSheet2: TTabSheet;
     Panel6: TPanel;
     SynEdit1: TSynEdit;
@@ -31,7 +32,7 @@ type
     OpenDialog1: TOpenDialog;
     SaveDialog1: TSaveDialog;
     localesList: TJvMultiStringHolder;
-    PageControl1: TPageControl;
+    LeftPageControl: TPageControl;
     TabSheet1: TTabSheet;
     TreeView1: TTreeView;
     TabSheet3: TTabSheet;
@@ -72,6 +73,59 @@ type
     PopupMenu_Tools_Language: TMenuItem;
     PopupMenu_Tools_Language_English: TMenuItem;
     PopupMenu_Tools_Language_German: TMenuItem;
+    CtrlMenuBarButton1: TCtrlMenuBarButton;
+    PopupMenu_Project: TJvPopupMenu;
+    MenuItem1: TMenuItem;
+    PascalC1: TMenuItem;
+    FromPascaltoJavaScript1: TMenuItem;
+    FromPascaltoAsmJit1: TMenuItem;
+    N8: TMenuItem;
+    FromCtoPascal1: TMenuItem;
+    N9: TMenuItem;
+    Options1: TMenuItem;
+    N10: TMenuItem;
+    AddtoTemplateLibrary1: TMenuItem;
+    AddNewProject1: TMenuItem;
+    N11: TMenuItem;
+    IDE1: TMenuItem;
+    EnvironmentOptions1: TMenuItem;
+    EditorOptions1: TMenuItem;
+    ConfigureTools1: TMenuItem;
+    N12: TMenuItem;
+    TabSheet_Options: TTabSheet;
+    ScrollBox1: TScrollBox;
+    PageControl3: TPageControl;
+    TabSheet5: TTabSheet;
+    GroupBox1: TGroupBox;
+    CheckBox1: TCheckBox;
+    CheckBox2: TCheckBox;
+    JvSpinEdit1: TJvSpinEdit;
+    Label1: TLabel;
+    CheckBox3: TCheckBox;
+    TabSheet6: TTabSheet;
+    Label2: TLabel;
+    ComboBox1: TComboBox;
+    Button1: TButton;
+    Button2: TButton;
+    GroupBox2: TGroupBox;
+    Label3: TLabel;
+    ComboBox2: TComboBox;
+    Label4: TLabel;
+    Edit1: TEdit;
+    Panel4: TPanel;
+    Button3: TButton;
+    Button4: TButton;
+    Button5: TButton;
+    SpeedButton1: TSpeedButton;
+    SpeedButton2: TSpeedButton;
+    SpeedButton3: TSpeedButton;
+    PageControl1: TPageControl;
+    TabSheet7: TTabSheet;
+    CheckListBox1: TCheckListBox;
+    JvSpeedButton1: TJvSpeedButton;
+    JvSpeedButton2: TJvSpeedButton;
+    JvSpeedButton4: TJvSpeedButton;
+    CtrlMenuBarButton2: TCtrlMenuBarButton;
     procedure PopupMenu_File_NewClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -84,6 +138,14 @@ type
     procedure PopupMenu_Tools_Language_GermanClick(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure PopupMenu_Help_AboutClick(Sender: TObject);
+    procedure JvSpeedButton3Click1(Sender: TObject);
+    procedure JvSpeedButton2Click2(Sender: TObject);
+    procedure JvSpeedButton1Click(Sender: TObject);
+    procedure JvSpeedButton2Click(Sender: TObject);
+    procedure JvSpeedButton3Click(Sender: TObject);
+    procedure EditorOptions1Click(Sender: TObject);
+    procedure SynEdit1KeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
   private
     Cv1: TCanvas;
   public
@@ -117,14 +179,20 @@ begin
   Cv1.Font.Name  := 'Consolas';
   Cv1.Font.Size  := 10;
   Cv1.Font.Color := clRed;
+
+  MainPageControl.Pages[1].TabVisible := false;
 end;
 
 procedure TForm1.FormShow(Sender: TObject);
 begin
   JvGradientCaption1.Active := true;
+
   TabSheet2.Caption := 'Unnamed';
   TabSheet3.Caption := 'Project';
-  PageControl1.ActivePage := TabSheet1;
+
+  LeftPageControl.ActivePage := TabSheet1;
+  MainPageControl.ActivePage := TabSheet2;
+
   SynEdit1.SetFocus;
 end;
 
@@ -210,7 +278,7 @@ end;
 
 procedure TForm1.ModifyControl(const AControl: TControl; LS: TStrings);
 var
-  I, J: Integer;
+  I: Integer;
   NS, TS: TStrings;
   S1, S2, S3: String;
   P1: Integer;
@@ -253,10 +321,11 @@ begin
   TS := TStringList.Create;
   TS.Delimiter := '=';
 
-  IterateMyPopup(PopupMenu_File .Items,LS);
-  IterateMyPopup(PopupMenu_Edit .Items,LS);
-  IterateMyPopup(PopupMenu_Tools.Items,LS);
-  IterateMyPopup(PopupMenu_Help .Items,LS);
+  IterateMyPopup(PopupMenu_File   .Items,LS);
+  IterateMyPopup(PopupMenu_Edit   .Items,LS);
+  IterateMyPopup(PopupMenu_Project.Items,LS);
+  IterateMyPopup(PopupMenu_Tools  .Items,LS);
+  IterateMyPopup(PopupMenu_Help   .Items,LS);
 
   for I := 0 to LS.Count - 1 do
   begin
@@ -310,6 +379,193 @@ begin
   OKRightDlg := TOKRightDlg.Create(Form1);
   OKRightDlg.ShowModal;
   OKRightDlg.Free;
+end;
+
+procedure TForm1.JvSpeedButton3Click1(Sender: TObject);
+begin
+  if SynEdit1.Modified then
+  JvSpeedButton2Click(Sender);
+
+  if not(OpenDialog1.Execute) then
+  begin
+    ShowMessage('something goes wrong at open file.');
+    exit
+  end;
+  SynEdit1.Lines.Clear;
+  SynEdit1.Lines.LoadFromFile(OpenDialog1.FileName);
+  SynEdit1.Lines.Delete(SynEdit1.Lines.Count - 1);
+
+  TabSheet2.Caption := OpenDialog1.FileName;
+
+  MainPageControl.ActivePage := TabSheet2;
+  SynEdit1.SetFocus;
+end;
+
+procedure TForm1.JvSpeedButton2Click2(Sender: TObject);
+begin
+  if not(OpenDialog1.Execute) then
+  begin
+    ShowMessage('something went wrong at open file:' + #13 +
+    OpenDialog1.FileName);
+    exit;
+  end;
+
+  if TabSheet2.Caption = 'Unnamed' then
+  TabSheet2.Caption := OpenDialog1.FileName;
+
+  SynEdit1.Lines.SaveToFile(OpenDialog1.FileName);
+  SynEdit1.Modified := false;
+end;
+
+procedure TForm1.JvSpeedButton1Click(Sender: TObject);
+var
+  S: String;
+  SL: TStringList;
+begin
+  if SynEdit1.Modified then
+  begin
+    if TabSheet2.Caption = 'Unnamed' then
+    begin
+      if not(SaveDialog1.Execute) then
+      begin
+        ShowMessage('something went wrong on save file.');
+        exit;
+      end else
+      begin
+        if FileExists(SaveDialog1.FileName) then
+        begin
+          if MessageDlg('The file already exists !' + #13 +
+          'Would you override the old Version ?',
+          mtWarning,mbOKCancel,0) = mrCancel then
+          exit;
+        end;
+        TabSheet2.Caption := SaveDialog1.FileName;
+        S := SynEdit1.Lines.Text;
+        sl := TStringList.Create;
+        sl.Add(S);
+        sl.SaveToFile(SaveDialog1.FileName);
+        sl.Free;
+        //SynEdit1.Lines.SaveToFile(SaveDialog1.FileName);
+        SynEdit1.Modified := false;
+        exit;
+      end;
+    end else
+    begin
+      TabSheet2.Caption := SaveDialog1.FileName;
+      S := SynEdit1.Lines.Text;
+      sl := TStringList.Create;
+      sl.Add(S);
+      sl.SaveToFile(SaveDialog1.FileName);
+      sl.Free;
+      //SynEdit1.Lines.SaveToFile(SaveDialog1.FileName);
+      SynEdit1.Modified := false;
+      exit;
+    end;
+  end else
+  begin
+    if not(OpenDialog1.Execute) then
+    begin
+      ShowMessage('something went wrong on open file.');
+      exit;
+    end;
+    TabSheet2.Caption := OpenDialog1.FileName;
+    SynEdit1.Lines.Clear;
+    SynEdit1.Lines.LoadFromFile(OpenDialog1.FileName);
+    SynEdit1.Lines.Delete(SynEdit1.Lines.Count - 1);
+    SynEdit1.Modified := false;
+    exit;
+  end;
+end;
+
+procedure TForm1.JvSpeedButton2Click(Sender: TObject);
+var
+  s: String;
+  sl: TStrings;
+begin
+  if not(SynEdit1.Modified) then exit;
+  if not(SaveDialog1.Execute) then
+  begin
+    ShowMessage('something went wrong at open file:' + #13 +
+    SaveDialog1.FileName);
+    exit;
+  end else
+  begin
+    if TabSheet2.Caption = 'Unnamed' then
+    TabSheet2.Caption := SaveDialog1.FileName;
+    S := SynEdit1.Lines.Text;
+    sl := TStringList.Create;
+    sl.Add(S);
+    sl.SaveToFile(SaveDialog1.FileName);
+    sl.Free;
+    //SynEdit1.Lines.SaveToFile(SaveDialog1.FileName);
+    SynEdit1.Modified := false;
+  end;
+end;
+
+procedure TForm1.JvSpeedButton3Click(Sender: TObject);
+var
+  callParser:         function(fileSrc: PChar): BOOL; cdecl;
+  callParserGetLines: function: Integer; cdecl;
+
+  Handle : THandle;
+  yylines: Integer;
+begin
+  JvSpeedButton2Click(Sender);
+  ShowMessage('xxxxx');
+
+  Handle := LoadLibrary(PChar(ExtractFilePath(Application.ExeName) + '\parsers.dll'));
+  if Handle <> 0 then
+  begin
+    @callParser         := GetProcAddress(Handle,'_yy_pascal_lex_main');
+    @callParserGetLines := GetProcAddress(Handle,'_yy_pascal_lex_getlines');
+    if @callParser <> nil then
+    begin
+      if not(callParser(PChar(TabSheet2.Caption))) then
+      ShowMessage('error in function call from parser dll');
+
+      if @callParserGetLines <> nil then
+      begin
+        yylines := callParserGetLines;
+        ShowMessage('Lines: ' + IntToStr(yylines));
+      end;
+    end;
+    if Handle <> 0 then
+    begin
+      FreeLibrary(handle);
+      Handle := 0;
+    end;
+  end else
+  ShowMessage('parser.dll error.');
+end;
+
+procedure TForm1.EditorOptions1Click(Sender: TObject);
+begin
+  MainPageControl.Pages[0].TabVisible := false;
+  MainPageControl.Pages[1].TabVisible := true;
+  MainPageControl.Pages[0].TabVisible := true;
+  TabSheet_Options.Visible := true;
+  TabSheet_Options.Enabled := true;
+  TabSheet_Options.SetFocus;
+  PageControl3.Pages[0].TabVisible := true;
+  TabSheet5.Visible := true;
+  TabSheet5.Enabled := true;
+  TabSheet5.SetFocus;
+end;
+
+procedure TForm1.SynEdit1KeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if ssCtrl in Shift then
+  begin
+    if key = Ord('O') then
+    begin
+      JvSpeedButton1Click(Sender);
+    end else
+    if key = Ord('S') then
+    begin
+      JvSpeedButton2Click(Sender);
+    end;
+  end;
 end;
 
 end.

@@ -33,3 +33,6 @@ cc3260.dll
 Editor.map
 Unit1.h
 Editor.map
+*.dcu
+*.zip
+AboutBox.ddp
