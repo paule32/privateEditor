@@ -610,8 +610,8 @@ static void yynoreturn yy_fatal_error ( const char* msg  );
 	(yy_hold_char) = *yy_cp; \
 	*yy_cp = '\0'; \
 	(yy_c_buf_p) = yy_cp;
-#define YY_NUM_RULES 9
-#define YY_END_OF_BUFFER 10
+#define YY_NUM_RULES 21
+#define YY_END_OF_BUFFER 22
 /* This struct is not used in this scanner,
    but its presence is necessary. */
 struct yy_trans_info
@@ -619,31 +619,34 @@ struct yy_trans_info
 	flex_int32_t yy_verify;
 	flex_int32_t yy_nxt;
 	};
-static const flex_int16_t yy_accept[45] =
+static const flex_int16_t yy_accept[73] =
     {   0,
-        0,    0,   10,    8,    7,    7,    5,    1,    4,    4,
-        4,    4,    4,    4,    4,    8,    7,    2,    1,    4,
-        4,    4,    4,    3,    4,    4,    0,    6,    2,    4,
-        4,    4,    4,    4,    4,    4,    4,    4,    4,    4,
-        4,    4,    4,    0
+       13,   13,    8,    8,   11,   11,   22,   20,   13,   14,
+       14,   20,   20,   19,   19,   19,   15,   18,   18,   18,
+       18,   18,   18,   18,   21,    8,   21,   11,   21,   13,
+        3,   10,    5,    7,    1,   16,   15,   18,   18,   18,
+       18,   17,   18,   18,    8,    0,    9,   11,   12,    0,
+        3,    4,    5,    6,    1,    2,   16,   18,   18,   18,
+       18,   18,   18,   18,   18,   18,   18,   18,   18,   18,
+       18,    0
     } ;
 
 static const YY_CHAR yy_ec[256] =
     {   0,
         1,    1,    1,    1,    1,    1,    1,    1,    2,    3,
+        1,    1,    4,    1,    1,    1,    1,    1,    1,    1,
+        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+        1,    2,    1,    1,    1,    1,    1,    5,    1,    6,
+        7,    8,    9,    1,   10,   11,   12,   13,   13,   13,
+       13,   13,   13,   13,   13,   13,   13,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    2,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    4,    5,    1,    6,    7,    8,    9,    9,    9,
-        9,    9,    9,    9,    9,    9,    9,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,   10,   11,   12,   13,
+        1,    1,    1,    1,    1,    1,   14,   15,   16,   17,
 
-       14,   15,   16,   17,   18,   10,   10,   10,   10,   19,
-       20,   21,   10,   22,   10,   23,   24,   10,   10,   10,
-       10,   10,   25,    1,   26,    1,    1,    1,    1,    1,
+       18,   19,   20,   21,   22,   14,   14,   14,   14,   23,
+       24,   25,   14,   26,   14,   27,   28,   14,   14,   14,
+       14,   14,    1,    4,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
@@ -660,59 +663,73 @@ static const YY_CHAR yy_ec[256] =
         1,    1,    1,    1,    1
     } ;
 
-static const YY_CHAR yy_meta[27] =
+static const YY_CHAR yy_meta[29] =
     {   0,
-        1,    1,    2,    1,    1,    1,    1,    1,    3,    3,
-        3,    3,    3,    3,    3,    3,    3,    3,    3,    3,
-        3,    3,    3,    3,    1,    1
+        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+        1,    1,    2,    2,    2,    2,    2,    2,    2,    2,
+        2,    2,    2,    2,    2,    2,    2,    2
     } ;
 
-static const flex_int16_t yy_base[47] =
+static const flex_int16_t yy_base[78] =
     {   0,
-        0,    0,   69,   70,   25,   27,   70,   24,    0,   54,
-       48,   42,   50,   42,   46,   36,   32,   52,   29,    0,
-       44,   46,   39,    0,   37,   42,   29,   70,   45,   35,
-       40,   39,   31,   30,   25,   33,   28,   32,   24,   19,
-       23,   18,   23,   70,   29,   38
+        0,    0,   26,   27,   28,   29,  102,  103,   99,  103,
+      103,   95,   91,   90,  103,   30,   28,    0,   79,   73,
+       67,   75,   67,   71,  103,   88,   32,   87,   38,   87,
+       85,  103,   84,  103,   83,   72,   36,    0,   64,   66,
+       59,    0,   57,   62,   76,   40,  103,   75,  103,   43,
+       74,  103,   73,  103,   72,  103,   61,   51,   56,   55,
+       47,   46,   41,   49,   44,   48,   40,   35,   39,   35,
+       25,  103,   52,   31,   54,   56,   58
     } ;
 
-static const flex_int16_t yy_def[47] =
+static const flex_int16_t yy_def[78] =
     {   0,
-       44,    1,   44,   44,   44,   44,   44,   44,   45,   45,
-       45,   45,   45,   45,   45,   46,   44,   44,   44,   45,
-       45,   45,   45,   45,   45,   45,   46,   44,   44,   45,
-       45,   45,   45,   45,   45,   45,   45,   45,   45,   45,
-       45,   45,   45,    0,   44,   44
+       72,    1,   73,   73,   73,   73,   72,   72,   72,   72,
+       72,   72,   72,   72,   72,   72,   72,   74,   74,   74,
+       74,   74,   74,   74,   72,   72,   72,   72,   72,   72,
+       75,   72,   76,   72,   77,   72,   72,   74,   74,   74,
+       74,   74,   74,   74,   72,   72,   72,   72,   72,   72,
+       75,   72,   76,   72,   77,   72,   72,   74,   74,   74,
+       74,   74,   74,   74,   74,   74,   74,   74,   74,   74,
+       74,    0,   72,   72,   72,   72,   72
     } ;
 
-static const flex_int16_t yy_nxt[97] =
+static const flex_int16_t yy_nxt[132] =
     {   0,
-        4,    5,    6,    7,    7,    7,    4,    7,    8,    9,
-       10,    9,    9,   11,   12,    9,    9,   13,    9,    9,
-       14,    9,   15,    9,   16,    4,   17,   17,   17,   17,
-       18,   20,   19,   17,   17,   18,   24,   19,   27,   43,
-       27,   24,   42,   41,   40,   39,   38,   37,   24,   24,
-       36,   35,   34,   29,   28,   33,   32,   31,   24,   30,
-       29,   28,   26,   25,   24,   23,   22,   21,   44,    3,
-       44,   44,   44,   44,   44,   44,   44,   44,   44,   44,
-       44,   44,   44,   44,   44,   44,   44,   44,   44,   44,
-       44,   44,   44,   44,   44,   44
+        8,    9,   10,   11,   12,   13,    8,   14,   15,   15,
+        8,   16,   17,   18,   19,   18,   18,   20,   21,   18,
+       18,   22,   18,   18,   23,   18,   24,   18,   26,   26,
+       28,   28,   38,   27,   27,   29,   29,   34,   36,   46,
+       37,   35,   42,   47,   49,   50,   36,   46,   37,   49,
+       50,   47,   25,   25,   51,   51,   53,   53,   55,   55,
+       71,   42,   70,   69,   68,   67,   66,   65,   42,   42,
+       64,   63,   62,   57,   56,   54,   52,   48,   45,   61,
+       60,   59,   42,   58,   57,   56,   54,   52,   30,   48,
+       45,   44,   43,   42,   41,   40,   39,   33,   32,   31,
 
+       30,   72,    7,   72,   72,   72,   72,   72,   72,   72,
+       72,   72,   72,   72,   72,   72,   72,   72,   72,   72,
+       72,   72,   72,   72,   72,   72,   72,   72,   72,   72,
+       72
     } ;
 
-static const flex_int16_t yy_chk[97] =
+static const flex_int16_t yy_chk[132] =
     {   0,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    5,    5,    6,    6,
-        8,   45,    8,   17,   17,   19,   43,   19,   46,   42,
-       46,   41,   40,   39,   38,   37,   36,   35,   34,   33,
-       32,   31,   30,   29,   27,   26,   25,   23,   22,   21,
-       18,   16,   15,   14,   13,   12,   11,   10,    3,   44,
-       44,   44,   44,   44,   44,   44,   44,   44,   44,   44,
-       44,   44,   44,   44,   44,   44,   44,   44,   44,   44,
-       44,   44,   44,   44,   44,   44
+        1,    1,    1,    1,    1,    1,    1,    1,    3,    4,
+        5,    6,   74,    3,    4,    5,    6,   16,   17,   27,
+       17,   16,   71,   27,   29,   29,   37,   46,   37,   50,
+       50,   46,   73,   73,   75,   75,   76,   76,   77,   77,
+       70,   69,   68,   67,   66,   65,   64,   63,   62,   61,
+       60,   59,   58,   57,   55,   53,   51,   48,   45,   44,
+       43,   41,   40,   39,   36,   35,   33,   31,   30,   28,
+       26,   24,   23,   22,   21,   20,   19,   14,   13,   12,
 
+        9,    7,   72,   72,   72,   72,   72,   72,   72,   72,
+       72,   72,   72,   72,   72,   72,   72,   72,   72,   72,
+       72,   72,   72,   72,   72,   72,   72,   72,   72,   72,
+       72
     } ;
 
 static yy_state_type yy_last_accepting_state;
@@ -729,14 +746,18 @@ int yy_flex_debug = 0;
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
-#line 1 "PascalDSL.l"
-#line 2 "PascalDSL.l"
+#line 1 "E:\\Projekte\\SWIPL\\SWIPEL_ZWAP\\src\\lang\\PascalDSL.l"
+#line 2 "E:\\Projekte\\SWIPL\\SWIPEL_ZWAP\\src\\lang\\PascalDSL.l"
 # include "common.h"
 
-#line 736 "lex.pascal.c"
-#line 737 "lex.pascal.c"
+char buffer[200];
+#line 754 "lex.pascal.c"
+
+#line 756 "lex.pascal.c"
 
 #define INITIAL 0
+#define Comment1 1
+#define Comment2 2
 
 #ifndef YY_NO_UNISTD_H
 /* Special case for "unistd.h", since it is non-ANSI. We include it way
@@ -951,10 +972,10 @@ YY_DECL
 		}
 
 	{
-#line 9 "PascalDSL.l"
+#line 38 "E:\\Projekte\\SWIPL\\SWIPEL_ZWAP\\src\\lang\\PascalDSL.l"
 
 
-#line 957 "lex.pascal.c"
+#line 978 "lex.pascal.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -981,13 +1002,13 @@ yy_match:
 			while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 				{
 				yy_current_state = (int) yy_def[yy_current_state];
-				if ( yy_current_state >= 45 )
+				if ( yy_current_state >= 73 )
 					yy_c = yy_meta[yy_c];
 				}
 			yy_current_state = yy_nxt[yy_base[yy_current_state] + yy_c];
 			++yy_cp;
 			}
-		while ( yy_base[yy_current_state] != 70 );
+		while ( yy_base[yy_current_state] != 103 );
 
 yy_find_action:
 		yy_act = yy_accept[yy_current_state];
@@ -1013,60 +1034,139 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 11 "PascalDSL.l"
-{
-            printf( "An integer: %s (%d)\n", yytext,
-                    atoi( yytext ) );
-            }
+#line 40 "E:\\Projekte\\SWIPL\\SWIPEL_ZWAP\\src\\lang\\PascalDSL.l"
+{ /* DO NOTHING */ }
 	YY_BREAK
 case 2:
+/* rule 2 can match eol */
 YY_RULE_SETUP
-#line 16 "PascalDSL.l"
-{
-            printf( "A float: %s (%g)\n", yytext,
-                    atof( yytext ) );
-            }
+#line 41 "E:\\Projekte\\SWIPL\\SWIPEL_ZWAP\\src\\lang\\PascalDSL.l"
+{ /* DO NOTHING */ ++yylineno; }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 21 "PascalDSL.l"
-{
-            printf( "A keyword: %s\n", yytext );
-            }
+#line 43 "E:\\Projekte\\SWIPL\\SWIPEL_ZWAP\\src\\lang\\PascalDSL.l"
+{ /* DO NOTHING */ }
 	YY_BREAK
 case 4:
+/* rule 4 can match eol */
 YY_RULE_SETUP
-#line 25 "PascalDSL.l"
-printf( "An identifier: %s\n", yytext );
+#line 44 "E:\\Projekte\\SWIPL\\SWIPEL_ZWAP\\src\\lang\\PascalDSL.l"
+{ /* DO NOTHING */ ++yylineno; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 27 "PascalDSL.l"
-printf( "An operator: %s\n", yytext );
+#line 46 "E:\\Projekte\\SWIPL\\SWIPEL_ZWAP\\src\\lang\\PascalDSL.l"
+{ /* DO NOTHING */ }
 	YY_BREAK
 case 6:
+/* rule 6 can match eol */
 YY_RULE_SETUP
-#line 29 "PascalDSL.l"
-/* eat up one-line comments */
+#line 47 "E:\\Projekte\\SWIPL\\SWIPEL_ZWAP\\src\\lang\\PascalDSL.l"
+{ /* DO NOTHING */ ++yylineno; }
 	YY_BREAK
 case 7:
-/* rule 7 can match eol */
 YY_RULE_SETUP
-#line 31 "PascalDSL.l"
-/* eat up whitespace */
+#line 49 "E:\\Projekte\\SWIPL\\SWIPEL_ZWAP\\src\\lang\\PascalDSL.l"
+{             BEGIN(Comment1); }
 	YY_BREAK
 case 8:
+/* rule 8 can match eol */
 YY_RULE_SETUP
-#line 33 "PascalDSL.l"
-printf( "Unrecognized character: %s\n", yytext );
+#line 50 "E:\\Projekte\\SWIPL\\SWIPEL_ZWAP\\src\\lang\\PascalDSL.l"
+{ ++yylineno;      }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 35 "PascalDSL.l"
+#line 51 "E:\\Projekte\\SWIPL\\SWIPEL_ZWAP\\src\\lang\\PascalDSL.l"
+{ BEGIN(INITIAL);  }
+	YY_BREAK
+case 10:
+YY_RULE_SETUP
+#line 53 "E:\\Projekte\\SWIPL\\SWIPEL_ZWAP\\src\\lang\\PascalDSL.l"
+{             BEGIN(Comment2); }
+	YY_BREAK
+case 11:
+/* rule 11 can match eol */
+YY_RULE_SETUP
+#line 54 "E:\\Projekte\\SWIPL\\SWIPEL_ZWAP\\src\\lang\\PascalDSL.l"
+{ ++yylineno;      }
+	YY_BREAK
+case 12:
+YY_RULE_SETUP
+#line 55 "E:\\Projekte\\SWIPL\\SWIPEL_ZWAP\\src\\lang\\PascalDSL.l"
+{ BEGIN(INITIAL);  }
+	YY_BREAK
+case 13:
+YY_RULE_SETUP
+#line 57 "E:\\Projekte\\SWIPL\\SWIPEL_ZWAP\\src\\lang\\PascalDSL.l"
+{ /* empty */ }
+	YY_BREAK
+case 14:
+/* rule 14 can match eol */
+YY_RULE_SETUP
+#line 58 "E:\\Projekte\\SWIPL\\SWIPEL_ZWAP\\src\\lang\\PascalDSL.l"
+{ ++yylineno; }
+	YY_BREAK
+case 15:
+YY_RULE_SETUP
+#line 60 "E:\\Projekte\\SWIPL\\SWIPEL_ZWAP\\src\\lang\\PascalDSL.l"
+{
+  sprintf(buffer, "An integer: %s (%d)\n", yytext,
+  atoi( yytext ) );
+  MessageBox(0,buffer,"test",0);
+}
+	YY_BREAK
+case 16:
+YY_RULE_SETUP
+#line 66 "E:\\Projekte\\SWIPL\\SWIPEL_ZWAP\\src\\lang\\PascalDSL.l"
+{
+  sprintf(buffer, "A float: %s (%g)\n", yytext,
+  atof( yytext ) );
+  MessageBox(0,buffer,"test",0);
+}
+	YY_BREAK
+case 17:
+YY_RULE_SETUP
+#line 72 "E:\\Projekte\\SWIPL\\SWIPEL_ZWAP\\src\\lang\\PascalDSL.l"
+{
+  sprintf(buffer, "A keyword: %s\n", yytext );
+  MessageBox(0,buffer,"test",0);
+}
+	YY_BREAK
+case 18:
+YY_RULE_SETUP
+#line 77 "E:\\Projekte\\SWIPL\\SWIPEL_ZWAP\\src\\lang\\PascalDSL.l"
+{
+  sprintf( buffer, "An identifier: %s\n", yytext );
+  MessageBox(0,buffer,"test",0);
+}
+	YY_BREAK
+case 19:
+YY_RULE_SETUP
+#line 82 "E:\\Projekte\\SWIPL\\SWIPEL_ZWAP\\src\\lang\\PascalDSL.l"
+{
+  sprintf( buffer, "An operator: %s\n", yytext );
+  MessageBox(0,buffer,"test",0);
+}
+	YY_BREAK
+case 20:
+YY_RULE_SETUP
+#line 87 "E:\\Projekte\\SWIPL\\SWIPEL_ZWAP\\src\\lang\\PascalDSL.l"
+{
+  sprintf( buffer, "Unrecognized character: %s\n", yytext );
+  MessageBox(0,buffer,"test",0);
+}
+	YY_BREAK
+case 21:
+YY_RULE_SETUP
+#line 92 "E:\\Projekte\\SWIPL\\SWIPEL_ZWAP\\src\\lang\\PascalDSL.l"
 ECHO;
 	YY_BREAK
-#line 1068 "lex.pascal.c"
+#line 1166 "lex.pascal.c"
 case YY_STATE_EOF(INITIAL):
+case YY_STATE_EOF(Comment1):
+case YY_STATE_EOF(Comment2):
 	yyterminate();
 
 	case YY_END_OF_BUFFER:
@@ -1362,7 +1462,7 @@ static int yy_get_next_buffer (void)
 		while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 			{
 			yy_current_state = (int) yy_def[yy_current_state];
-			if ( yy_current_state >= 45 )
+			if ( yy_current_state >= 73 )
 				yy_c = yy_meta[yy_c];
 			}
 		yy_current_state = yy_nxt[yy_base[yy_current_state] + yy_c];
@@ -1390,11 +1490,11 @@ static int yy_get_next_buffer (void)
 	while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 		{
 		yy_current_state = (int) yy_def[yy_current_state];
-		if ( yy_current_state >= 45 )
+		if ( yy_current_state >= 73 )
 			yy_c = yy_meta[yy_c];
 		}
 	yy_current_state = yy_nxt[yy_base[yy_current_state] + yy_c];
-	yy_is_jam = (yy_current_state == 44);
+	yy_is_jam = (yy_current_state == 72);
 
 		return yy_is_jam ? 0 : yy_current_state;
 }
@@ -2070,17 +2170,35 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 35 "PascalDSL.l"
+#line 92 "E:\\Projekte\\SWIPL\\SWIPEL_ZWAP\\src\\lang\\PascalDSL.l"
 
-int pascalwrap(void) { return true; }
 
-bool
-yy_pascal_lex_main(void)
+int pascalwrap(void) { return 1; }
+
+void yy_pascal_fatal_error(char* message)
 {
+  sprintf(buffer,"error: %s",message);
+  MessageBox(0,buffer,"zeee",MB_OK);
+}
+
+BOOL yy_pascal_lex_main(char* filename)
+{
+  yyin = fopen(filename,"r");
+  if (!yyin) {
+    sprintf(buffer, "could not open file: %s", filename);
+    MessageBox(0,buffer,"test",0);
+    return false;
+  }
+
   yylex();
+  fclose(yyin);
+
   return true;
 }
 
-bool __declspec(dllexport) yy_pascal_lex_main(void);
+int yy_pascal_lex_getlines(void) { return yylineno-1; }
+
+int  __declspec(dllexport) yy_pascal_lex_getlines(void);
+BOOL __declspec(dllexport) yy_pascal_lex_main(char* filename);
 
 

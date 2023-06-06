@@ -12,7 +12,7 @@
     <RESDEPEN value="$(RESFILES)"/>
     <LIBFILES value=""/>
     <LIBRARIES value=""/>
-    <SPARELIBS value="rtl.lib"/>
+    <SPARELIBS value=""/>
     <PACKAGES value="vcl.bpi rtl.bpi dbrtl.bpi adortl.bpi vcldb.bpi vclx.bpi bdertl.bpi 
       vcldbx.bpi ibxpress.bpi dsnap.bpi cds.bpi bdecds.bpi qrpt.bpi teeui.bpi 
       teedb.bpi tee.bpi dss.bpi teeqr.bpi visualclx.bpi visualdbclx.bpi 
@@ -27,16 +27,17 @@
     <DEBUGLIBPATH value="$(BCB)\lib\debug"/>
     <RELEASELIBPATH value="$(BCB)\lib\release"/>
     <LINKER value="ilink32"/>
-    <USERDEFINES value="YY_NO_UNISTD_H"/>
-    <SYSDEFINES value="NO_STRICT;_RTLDLL;USEPACKAGES"/>
+    <USERDEFINES value=""/>
+    <SYSDEFINES value="NO_STRICT;_NO_VCL;_RTLDLL"/>
     <MAINSOURCE value="parsers.bpf"/>
     <INCLUDEPATH value="E:\Projekte\SWIPL\SWIPEL_ZWAP\src\lang;&quot;E:\Program Files (x86)\Borland\CBuilder6\Include&quot;;&quot;E:\Program Files (x86)\Borland\CBuilder6\Include\Vcl&quot;;&quot;E:\Program Files (x86)\Borland\CBuilder6\Projects&quot;;&quot;E:\Program Files (x86)\Borland\CBuilder6\Projects\Lib&quot;;E:\Projekte\jedi\jcl\jcl\lib\c6;E:\Projekte\jedi\jcl\jcl\packages\c6;E:\Projekte\jedi\jcl\jcl\source;E:\Projekte\jedi\jcl\jcl\source\common;E:\Projekte\jedi\jcl\jcl\source\include;E:\Projekte\jedi\jcl\jcl\source\include\jedi;E:\Projekte\jedi\jcl\jcl\source\vcl;E:\Projekte\jedi\jcl\jcl\source\windows;E:\Projekte\jedi\jcl\jcl\packages;E:\Projekte\jedi\jvcl\jvcl\common;E:\Projekte\jedi\jvcl\jvcl\packages\c6;E:\Projekte\jedi\jvcl\jvcl\resources;E:\Projekte\jedi\jvcl\jvcl\include"/>
-    <LIBPATH value="$(BCB)\Lib;E:\Projekte\SWIPL\SWIPEL_ZWAP\src\lang;&quot;E:\Program Files (x86)\Borland\CBuilder6\Lib\Obj&quot;;&quot;E:\Program Files (x86)\Borland\CBuilder6\Lib&quot;;&quot;E:\Program Files (x86)\Borland\CBuilder6\Projects\Lib&quot;;&quot;E:\Program Files (x86)\Borland\CBuilder6\Projects\Bpl&quot;"/>
+    <LIBPATH value="E:\Projekte\SWIPL\SWIPEL_ZWAP\src\lang;&quot;E:\Program Files (x86)\Borland\CBuilder6\Lib\Obj&quot;;&quot;E:\Program Files (x86)\Borland\CBuilder6\Lib&quot;;&quot;E:\Program Files (x86)\Borland\CBuilder6\Projects\Lib&quot;;&quot;E:\Program Files (x86)\Borland\CBuilder6\Projects\Bpl&quot;"/>
     <WARNINGS value="-w-par"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-I&quot;E:\Program Files (x86)\Borland\CBuilder6\Include&quot; 
+    <IDLCFLAGS value="-IE:\Projekte\SWIPL\SWIPEL_ZWAP\src\lang 
+      -I&quot;E:\Program Files (x86)\Borland\CBuilder6\Include&quot; 
       -I&quot;E:\Program Files (x86)\Borland\CBuilder6\Include\Vcl&quot; 
       -I&quot;E:\Program Files (x86)\Borland\CBuilder6\Projects&quot; 
       -I&quot;E:\Program Files (x86)\Borland\CBuilder6\Projects\Lib&quot; 
@@ -50,7 +51,7 @@
       -IE:\Projekte\jedi\jvcl\jvcl\packages\c6 
       -IE:\Projekte\jedi\jvcl\jvcl\resources 
       -IE:\Projekte\jedi\jvcl\jvcl\include -src_suffix cpp -boa"/>
-    <CFLAG1 value="-WD -O2 -Vx -Ve -VF -C -fp -ff -X- -a8 -6 -b- -k- -vi -tWD -tWM -c"/>
+    <CFLAG1 value="-WD -O2 -Vx -Ve -VF -C -fp -ff -X- -a8 -6 -b- -k- -vi -tWD -tWM- -c"/>
     <PFLAGS value="-$Y- -$U -$Q -$L- -$D- -$C- -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
     <AFLAGS value="/mx /w2 /zn"/>
@@ -58,15 +59,16 @@
     <OTHERFILES value=""/>
   </OPTIONS>
   <LINKER>
-    <ALLOBJ value="c0d32.obj $(PACKAGES) Memmgr.Lib sysinit.obj $(OBJFILES)"/>
+    <ALLOBJ value="c0d32.obj $(OBJFILES)"/>
     <ALLRES value="$(RESFILES)"/>
-    <ALLLIB value="$(LIBFILES) $(LIBRARIES) import32.lib cp32mti.lib"/>
+    <ALLLIB value="$(LIBFILES) $(LIBRARIES) import32.lib cw32i.lib"/>
     <OTHERFILES value=""/>
   </LINKER>
   <FILELIST>
       <FILE FILENAME="parsers.res" FORMNAME="" UNITNAME="parsers.res" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="parsers.bpf" FORMNAME="" UNITNAME="parsers" CONTAINERID="BPF" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="dllmain.cpp" FORMNAME="" UNITNAME="dllmain" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="common.h" FORMNAME="" UNITNAME="common.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="lex.pascal.c" FORMNAME="" UNITNAME="lex.pascal" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
@@ -100,10 +102,6 @@ ProductName=
 ProductVersion=1.0.0.0
 Comments=
 
-[Excluded Packages]
-e:\program files (x86)\borland\cbuilder6\Bin\dclclxdb60.bpl=Borland CLX Database Components
-E:\Program Files (x86)\Borland\CBuilder6\Bin\dclclxstd60.bpl=Borland CLX Standard Components
-
 [HistoryLists\hlIncludePath]
 Count=3
 Item0=E:\Projekte\SWIPL\SWIPEL_ZWAP\src\lang;E:\Program Files (x86)\Borland\CBuilder6\Include;E:\Program Files (x86)\Borland\CBuilder6\Include\Vcl;E:\Program Files (x86)\Borland\CBuilder6\Projects;E:\Program Files (x86)\Borland\CBuilder6\Projects\Lib;E:\Projekte\jedi\jcl\jcl\lib\c6;E:\Projekte\jedi\jcl\jcl\packages\c6;E:\Projekte\jedi\jcl\jcl\source;E:\Projekte\jedi\jcl\jcl\source\common;E:\Projekte\jedi\jcl\jcl\source\include;E:\Projekte\jedi\jcl\jcl\source\include\jedi;E:\Projekte\jedi\jcl\jcl\source\vcl;E:\Projekte\jedi\jcl\jcl\source\windows;E:\Projekte\jedi\jcl\jcl\packages;E:\Projekte\jedi\jvcl\jvcl\common;E:\Projekte\jedi\jvcl\jvcl\packages\c6;E:\Projekte\jedi\jvcl\jvcl\resources;E:\Projekte\jedi\jvcl\jvcl\include
@@ -112,7 +110,7 @@ Item2=$(BCB)\include;$(BCB)\include\vcl
 
 [HistoryLists\hlLibraryPath]
 Count=3
-Item0=$(BCB)\Lib;E:\Projekte\SWIPL\SWIPEL_ZWAP\src\lang;E:\Program Files (x86)\Borland\CBuilder6\Lib\Obj;E:\Program Files (x86)\Borland\CBuilder6\Lib;E:\Program Files (x86)\Borland\CBuilder6\Projects\Lib;E:\Program Files (x86)\Borland\CBuilder6\Projects\Bpl
+Item0=E:\Projekte\SWIPL\SWIPEL_ZWAP\src\lang;E:\Program Files (x86)\Borland\CBuilder6\Lib\Obj;E:\Program Files (x86)\Borland\CBuilder6\Lib;E:\Program Files (x86)\Borland\CBuilder6\Projects\Lib;E:\Program Files (x86)\Borland\CBuilder6\Projects\Bpl
 Item1=E:\Program Files (x86)\Borland\CBuilder6\Lib\Obj;E:\Program Files (x86)\Borland\CBuilder6\Lib;E:\Program Files (x86)\Borland\CBuilder6\Projects\Lib;E:\Program Files (x86)\Borland\CBuilder6\Projects\Bpl
 Item2=$(BCB)\lib\obj;$(BCB)\lib
 
@@ -120,10 +118,6 @@ Item2=$(BCB)\lib\obj;$(BCB)\lib
 Count=2
 Item0=E:\Program Files (x86)\Borland\CBuilder6\Source\vcl
 Item1=$(BCB)\source\vcl
-
-[HistoryLists\hlConditionals]
-Count=1
-Item0=YY_NO_UNISTD_H
 
 [Debugging]
 DebugSourceDirs=E:\Program Files (x86)\Borland\CBuilder6\Source\vcl
@@ -143,6 +137,12 @@ RemoteDebug=0
 [Compiler]
 ShowInfoMsgs=0
 LinkDebugVcl=0
+LinkCGLIB=0
+
+[CORBA]
+AddServerUnit=1
+AddClientUnit=1
+PrecompiledHeaders=1
 
 [Language]
 ActiveLang=
