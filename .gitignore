@@ -36,3 +36,13 @@ Editor.map
 *.dcu
 *.zip
 AboutBox.ddp
+src/AboutBox.~ddp
+src/AboutBox.~dfm
+src/AboutBox.~pas
+dcu/PascalDSL.tab.obj
+src/ErrorBoxForm.~dfm
+src/ErrorBoxForm.~pas
+src/EditorForm.~dfm
+src/EditorForm.~pas
+src/lex.pascal.c
+src/lex.pascal.c

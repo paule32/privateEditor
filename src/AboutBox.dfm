@@ -8,7 +8,7 @@ object OKRightDlg: TOKRightDlg
   Color = clBtnFace
   ParentFont = True
   OldCreateOrder = True
-  Position = poScreenCenter
+  Position = poDesktopCenter
   OnShow = FormShow
   PixelsPerInch = 115
   TextHeight = 16

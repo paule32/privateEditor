@@ -3,8 +3,8 @@
 <PROJECT>
   <MACROS>
     <VERSION value="BCB.06.00"/>
-    <PROJECT value=".\dcu\parsers.dll"/>
-    <OBJFILES value="dcu\dllmain.obj dcu\lex.pascal.obj"/>
+    <PROJECT value="..\dcu\parsers.dll"/>
+    <OBJFILES value="..\dcu\dllmain.obj ..\dcu\lex.pascal.obj ..\dcu\PascalDSL.tab.obj"/>
     <RESFILES value="parsers.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -52,10 +52,10 @@
       -IE:\Projekte\jedi\jvcl\jvcl\resources 
       -IE:\Projekte\jedi\jvcl\jvcl\include -src_suffix cpp -boa"/>
     <CFLAG1 value="-WD -O2 -Vx -Ve -VF -C -fp -ff -X- -a8 -6 -b- -k- -vi -tWD -tWM- -c"/>
-    <PFLAGS value="-N2.\dcu -N0.\dcu -$Y- -$U -$Q -$L- -$D- -$C- -$A8 -v -JPHNE -M"/>
+    <PFLAGS value="-N2..\dcu -N0..\dcu -$Y- -$U -$Q -$L- -$D- -$C- -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
     <AFLAGS value="/mx /w2 /zn"/>
-    <LFLAGS value="-l.\dcu -I.\dcu -D&quot;&quot; -aa -Tpd -x -Gn -Gi"/>
+    <LFLAGS value="-l..\dcu -I..\dcu -D&quot;&quot; -aa -Tpd -x -Gn -Gi"/>
     <OTHERFILES value=""/>
   </OPTIONS>
   <LINKER>
@@ -70,6 +70,7 @@
       <FILE FILENAME="dllmain.cpp" FORMNAME="" UNITNAME="dllmain" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="common.h" FORMNAME="" UNITNAME="common.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="lex.pascal.c" FORMNAME="" UNITNAME="lex.pascal" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="PascalDSL.tab.c" FORMNAME="" UNITNAME="PascalDSL.tab" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
@@ -120,17 +121,20 @@ Item0=E:\Program Files (x86)\Borland\CBuilder6\Source\vcl
 Item1=$(BCB)\source\vcl
 
 [HistoryLists\hlIntOutputDir]
-Count=1
-Item0=.\dcu
-
-[HistoryLists\hlFinalOutputDir]
 Count=2
-Item0=.\dcu\
+Item0=..\dcu
 Item1=.\dcu
 
+[HistoryLists\hlFinalOutputDir]
+Count=3
+Item0=..\dcu\
+Item1=.\dcu\
+Item2=.\dcu
+
 [HistoryLists\hIBPIOutputDir]
-Count=1
-Item0=.\dcu
+Count=2
+Item0=..\dcu
+Item1=.\dcu
 
 [Debugging]
 DebugSourceDirs=E:\Program Files (x86)\Borland\CBuilder6\Source\vcl

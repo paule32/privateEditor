@@ -16,8 +16,9 @@
 
 int pascalwrap(void);
 
-int  yy_pascal_lex_getlines(void);
-BOOL yy_pascal_lex_main(char* filename);
+void  yy_pascal_lex_parser_error(void (*func)(char*));
+int   yy_pascal_lex_getlines(void);
+BOOL  yy_pascal_lex_main(char* filename);
 
 void yy_pascal_fatal_error(char* message);
 

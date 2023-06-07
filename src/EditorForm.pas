@@ -7,7 +7,7 @@ uses
   Dialogs, ComCtrls, ExtCtrls, JvExControls, JvSpeedButton, ToolWin,
   SynEdit, JvGradientCaption, Menus, SynEditHighlighter, SynHighlighterPas,
   JvStringHolder, CtrlMenuBarButton, JvMenus, StdCtrls, Mask, JvExMask,
-  JvSpin, Buttons, CheckLst;
+  JvSpin, Buttons, CheckLst, ShellApi, ShlObj, ImgList;
 
 type
   TForm1 = class(TForm)
@@ -34,7 +34,7 @@ type
     localesList: TJvMultiStringHolder;
     LeftPageControl: TPageControl;
     TabSheet1: TTabSheet;
-    TreeView1: TTreeView;
+    UserHomeFolder: TTreeView;
     TabSheet3: TTabSheet;
     MenuBarButton_File: TCtrlMenuBarButton;
     MenuBarButton_Edit: TCtrlMenuBarButton;
@@ -118,14 +118,18 @@ type
     Button5: TButton;
     SpeedButton1: TSpeedButton;
     SpeedButton2: TSpeedButton;
-    SpeedButton3: TSpeedButton;
+    NewUserFolder: TSpeedButton;
     PageControl1: TPageControl;
     TabSheet7: TTabSheet;
-    CheckListBox1: TCheckListBox;
+    buildListBox: TCheckListBox;
     JvSpeedButton1: TJvSpeedButton;
     JvSpeedButton2: TJvSpeedButton;
     JvSpeedButton4: TJvSpeedButton;
     CtrlMenuBarButton2: TCtrlMenuBarButton;
+    Button6: TButton;
+    Button7: TButton;
+    TreeView2: TTreeView;
+    ImageList1: TImageList;
     procedure PopupMenu_File_NewClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -146,10 +150,23 @@ type
     procedure EditorOptions1Click(Sender: TObject);
     procedure SynEdit1KeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
+    procedure JvSpeedButton1MouseEnter(Sender: TObject);
+    procedure JvSpeedButton1MouseLeave(Sender: TObject);
+    procedure JvSpeedButton2MouseEnter(Sender: TObject);
+    procedure JvSpeedButton2MouseLeave(Sender: TObject);
+    procedure JvSpeedButton3MouseEnter(Sender: TObject);
+    procedure JvSpeedButton3MouseLeave(Sender: TObject);
+    procedure MenuBarButton_FileMouseEnter(Sender: TObject);
+    procedure MenuBarButton_FileMouseLeave(Sender: TObject);
+    procedure MenuBarButton_EditMouseEnter(Sender: TObject);
+    procedure MenuBarButton_EditMouseLeave(Sender: TObject);
+    procedure UserHomeFolderDblClick(Sender: TObject);
+    procedure NewUserFolderClick(Sender: TObject);
   private
     Cv1: TCanvas;
   public
     procedure ModifyControl(const AControl: TControl; LS: TStrings);
+    procedure ExpandTopLevel;
   end;
 
 var
@@ -160,8 +177,51 @@ implementation
 {$R *.dfm}
 
 uses
-  AboutBox;
+  ErrorBoxForm, AboutBox, InputBox;
 
+function GetShellFolder(CSIDLFolder : integer) : string;
+begin
+  SetLength(Result, MAX_PATH);
+  SHGetSpecialFolderPath(0, PChar(Result), CSIDLFolder, false);
+  SetLength(Result, StrLen(PChar(Result)));
+  if (Result <> '') then
+    Result  := IncludeTrailingBackslash(Result);
+end;
+
+procedure GetSubDirectories(const directory : string; list : TStrings) ;
+var
+  sr : TSearchRec;
+begin
+  try
+    if FindFirst(IncludeTrailingPathDelimiter(directory) + '*.*', faDirectory, sr) < 0 then
+    exit
+    else
+    repeat
+      if ((sr.Attr and faDirectory <> 0) and (sr.Name <> '.') and (sr.Name <> '..')) then
+      List.Add( sr.Name );
+    until FindNext(sr) <> 0;
+  finally
+    SysUtils.FindClose(sr);
+  end;
+end;
+
+procedure TForm1.ExpandTopLevel;
+var
+  i: Integer;
+  node: TTreeNode;
+begin
+  with UserHomeFolder.Items do
+  begin
+    BeginUpdate;
+      node := GetFirstNode;
+      while Assigned(node) do
+      begin
+        node.Expand(False);
+        node := node.getNextSibling;
+      end;
+    EndUpdate;
+  end;
+end;
 procedure TForm1.PopupMenu_File_NewClick(Sender: TObject);
 begin
   TabSheet2.Caption := 'Unnamed';
@@ -170,6 +230,8 @@ end;
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
+  ErrorBox := TErrorBox.Create(Form1);
+
   SynEdit1.Lines.Clear;
 
   // canvas for TextWidth:
@@ -184,8 +246,20 @@ begin
 end;
 
 procedure TForm1.FormShow(Sender: TObject);
+  function CurrentUserName: String;
+  var
+    UserName: array[0..127] of Char;
+    Size:DWord;
+  begin
+    Size := SizeOf(UserName);
+    GetUserName(UserName,Size);
+    Result:=UserName;
+  end;
 begin
   JvGradientCaption1.Active := true;
+
+  UserHomeFolder.Items.GetFirstNode.Text := CurrentUserName;
+  ExpandTopLevel;
 
   TabSheet2.Caption := 'Unnamed';
   TabSheet3.Caption := 'Project';
@@ -220,14 +294,14 @@ var
 begin
   if not(OpenDialog1.Execute) then
   begin
-    ShowMessage('something went wrong on open file.');
+    ErrorBox.Text('something went wrong on open file.');
     exit;
   end;
 
   if (Length(OpenDialog1.FileName) < 1)
   or (Length(OpenDialog1.FileName) > 255) then
   begin
-    ShowMessage('file name to short, or to long.');
+    ErrorBox.Text('file name to short, or to long.');
     exit;
   end;
 
@@ -236,7 +310,7 @@ begin
   begin
     if not(ExtractFileExt(OpenDialog1.FileName) = 'pas') then
     begin
-      ShowMessage('only .pas files allowed.');
+      ErrorBox.Text('only .pas files allowed.');
       exit;
     end;
     FS := TFileStream.Create(OpenDialog1.FileName,fmOpenRead);
@@ -254,14 +328,14 @@ procedure TForm1.PopupMenu_File_SaveAsClick(Sender: TObject);
 begin
   if not(SaveDialog1.Execute) then
   begin
-    ShowMessage('something went wrong on saving file.');
+    ErrorBox.Text('something went wrong on saving file.');
     exit;
   end;
 
   if (Length(SaveDialog1.FileName) < 1)
   or (Length(SaveDialog1.FileName) > 255) then
   begin
-    ShowMessage('file name to short, or to long.');
+    ErrorBox.Text('file name to short, or to long.');
     exit;
   end;
 
@@ -270,7 +344,7 @@ begin
   begin
     if not(ExtractFileExt(SaveDialog1.FileName) = 'pas') then
     begin
-      ShowMessage('only .pas files allowed.');
+      ErrorBox.Text('only .pas files allowed.');
       exit;
     end;
   end;
@@ -372,6 +446,7 @@ procedure TForm1.FormDestroy(Sender: TObject);
 begin
   Cv1.Free;
   Cv1 := nil;
+  ErrorBox.Free;
 end;
 
 procedure TForm1.PopupMenu_Help_AboutClick(Sender: TObject);
@@ -388,7 +463,7 @@ begin
 
   if not(OpenDialog1.Execute) then
   begin
-    ShowMessage('something goes wrong at open file.');
+    ErrorBox.Text('something goes wrong at open file.');
     exit
   end;
   SynEdit1.Lines.Clear;
@@ -405,7 +480,7 @@ procedure TForm1.JvSpeedButton2Click2(Sender: TObject);
 begin
   if not(OpenDialog1.Execute) then
   begin
-    ShowMessage('something went wrong at open file:' + #13 +
+    ErrorBox.Text('something went wrong at open file:' + #13 +
     OpenDialog1.FileName);
     exit;
   end;
@@ -428,7 +503,7 @@ begin
     begin
       if not(SaveDialog1.Execute) then
       begin
-        ShowMessage('something went wrong on save file.');
+        ErrorBox.Text('something went wrong on save file.');
         exit;
       end else
       begin
@@ -465,7 +540,7 @@ begin
   begin
     if not(OpenDialog1.Execute) then
     begin
-      ShowMessage('something went wrong on open file.');
+      ErrorBox.Text('something went wrong on open file.');
       exit;
     end;
     TabSheet2.Caption := OpenDialog1.FileName;
@@ -485,7 +560,7 @@ begin
   if not(SynEdit1.Modified) then exit;
   if not(SaveDialog1.Execute) then
   begin
-    ShowMessage('something went wrong at open file:' + #13 +
+    ErrorBox.Text('something went wrong at open file:' + #13 +
     SaveDialog1.FileName);
     exit;
   end else
@@ -506,36 +581,75 @@ procedure TForm1.JvSpeedButton3Click(Sender: TObject);
 var
   callParser:         function(fileSrc: PChar): BOOL; cdecl;
   callParserGetLines: function: Integer; cdecl;
+  callParserError   : procedure(msg: PChar); cdecl;
 
   Handle : THandle;
   yylines: Integer;
+  res: String;
+  procedure ParserError(msg: PChar);
+  begin
+    ErrorBox.Text('EIM: ' + msg);
+  end;
 begin
   JvSpeedButton2Click(Sender);
-  ShowMessage('xxxxx');
+  buildListBox.Items.Clear;
+
+  DateTimeToString(res,'',now);
+  buildListBox.Items.Insert(0,res + ': ' + 'initialize...');
 
   Handle := LoadLibrary(PChar(ExtractFilePath(Application.ExeName) + '\parsers.dll'));
   if Handle <> 0 then
   begin
-    @callParser         := GetProcAddress(Handle,'_yy_pascal_lex_main');
-    @callParserGetLines := GetProcAddress(Handle,'_yy_pascal_lex_getlines');
-    if @callParser <> nil then
+    DateTimeToString(res,'',now);
+    buildListBox.Items.Insert(0,res + ': load parsers.dll: OK.');
+
+    callParser         := GetProcAddress(Handle,'_yy_pascal_lex_main');
+    callParserGetLines := GetProcAddress(Handle,'_yy_pascal_lex_getlines');
+    callParserError    := GetProcAddress(Handle,'_yy_pascal_lex_parser_error');
+
+    // hook: yyerror
+    if @callParserError <> nil then
     begin
+      DateTimeToString(res,'',now);
+      buildListBox.Items.Insert(0,
+      res + ': ' + 'callParserError init success.');
+      callParserError(@ParserError);
+    end else
+    begin
+      DateTimeToString(res,'',now);
+      buildListBox.Items.Insert(0,
+      res + ': ' + 'callParserError init failed.');
+    end;
+
+    FreeLibrary(handle);
+
+    DateTimeToString(res,'',now);
+    buildListBox.Items.Insert(0,
+    res + ': ' + 'parser.dll: closed.');
+
+    Handle := 0;
+  end else
+  begin
+    DateTimeToString(res,'',now);
+    buildListBox.Items.Insert(0,res + ': load parsers.dll: FAIL.');
+  end;
+
+//    if @callParser <> nil then
+//    begin
+(*
       if not(callParser(PChar(TabSheet2.Caption))) then
       ShowMessage('error in function call from parser dll');
-
+*)
+(*
       if @callParserGetLines <> nil then
       begin
         yylines := callParserGetLines;
         ShowMessage('Lines: ' + IntToStr(yylines));
       end;
-    end;
-    if Handle <> 0 then
-    begin
-      FreeLibrary(handle);
-      Handle := 0;
-    end;
-  end else
-  ShowMessage('parser.dll error.');
+*)
+//    end;
+//  end else
+//  ShowMessage('parser.dll error.');
 end;
 
 procedure TForm1.EditorOptions1Click(Sender: TObject);
@@ -560,11 +674,104 @@ begin
     if key = Ord('O') then
     begin
       JvSpeedButton1Click(Sender);
+      exit;
     end else
     if key = Ord('S') then
     begin
       JvSpeedButton2Click(Sender);
+      exit;
     end;
+  end;
+
+  if key = VK_F2 then
+  begin
+    JvSpeedButton3Click(Sender);
+  end;
+end;
+
+procedure TForm1.JvSpeedButton1MouseEnter(Sender: TObject);
+begin
+  StatusBar1.Panels.Items[1].Text := 'Open source file ...';
+end;
+
+procedure TForm1.JvSpeedButton1MouseLeave(Sender: TObject);
+begin
+  StatusBar1.Panels.Items[1].Text := '';
+end;
+
+procedure TForm1.JvSpeedButton2MouseEnter(Sender: TObject);
+begin
+  StatusBar1.Panels.Items[1].Text := 'Save Modifications to file.'
+end;
+
+procedure TForm1.JvSpeedButton2MouseLeave(Sender: TObject);
+begin
+  StatusBar1.Panels.Items[1].Text := ''
+end;
+
+procedure TForm1.JvSpeedButton3MouseEnter(Sender: TObject);
+begin
+  StatusBar1.Panels.Items[1].Text := 'Run/Start Compiler ...'
+end;
+
+procedure TForm1.JvSpeedButton3MouseLeave(Sender: TObject);
+begin
+  StatusBar1.Panels.Items[1].Text := '';
+end;
+
+procedure TForm1.MenuBarButton_FileMouseEnter(Sender: TObject);
+begin
+  StatusBar1.Panels.Items[1].Text := 'File Menue, click to open.';
+end;
+
+procedure TForm1.MenuBarButton_FileMouseLeave(Sender: TObject);
+begin
+  StatusBar1.Panels.Items[1].Text := '';
+end;
+
+procedure TForm1.MenuBarButton_EditMouseEnter(Sender: TObject);
+begin
+  StatusBar1.Panels.Items[1].Text := 'Edit Menue, click to open.';
+end;
+
+procedure TForm1.MenuBarButton_EditMouseLeave(Sender: TObject);
+begin
+  StatusBar1.Panels.Items[1].Text := '';
+end;
+
+procedure TForm1.UserHomeFolderDblClick(Sender: TObject);
+var
+  sl: TStringList;
+begin
+  sl := TStringList.Create;
+  try
+    GetSubDirectories(GetShellFolder(CSIDL_PERSONAL),sl);
+    ErrorBox.Text(sl.Text);
+  finally
+    sl.Clear;
+    sl.Free;
+  end;
+end;
+
+procedure TForm1.NewUserFolderClick(Sender: TObject);
+begin
+  InputBoxWindow := TInputBoxWindow.Create(Form1);
+  try
+    InputBoxWindow.ShowModal;
+
+    if Length(Trim(InputBoxWindow.InputLineText)) < 1 then
+    begin
+      ErrorBox.Text('File name is empty');
+    end else
+    begin
+      ErrorBox.Text(GetShellFolder(CSIDL_PERSONAL) + '\' +
+      InputBoxWindow.InputLineText);
+      
+      //CreateDir(GetShellFolder(CSIDL_PERSONAL) + '\' +
+      //InputBoxWindow.InputLineText);
+    end;
+  finally
+    InputBoxWindow.Free;
   end;
 end;
 

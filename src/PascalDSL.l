@@ -1,7 +1,12 @@
 %{
 # include "common.h"
+# include "PascalDSL.tab.h"
 
 char buffer[200];
+typedef void (*addParserErrorText)(char* message);
+static addParserErrorText m_addParserErrorText;
+
+void* addTextPtr;
 %}
 
 DIGIT    [0-9]
@@ -59,12 +64,12 @@ Z [z|Z]
 
 {A}{N}{D}                     { return TOK_PAS_AND; }
 {A}{R}{R}{A}{Y}               { return TOK_PAS_ARRAY; }
-{B}{E}{G}{I{N}                { return TOK_PAS_BEGIN; }
+{B}{E}{G}{I}{N}               { return TOK_PAS_BEGIN; }
 {C}{A}{S}{E}                  { return TOK_PAS_CASE; }
 {C}{O}{N}{S}{T}               { return TOK_PAS_CONST; }
 {D}{I}{V}                     { return TOK_PAS_DIV; }
 {D}{O}                        { return TOK_PAS_DO; }
-{D}{O}{W}{N}{T{O}             { return TOK_PAS_DOWNTO; }
+{D}{O}{W}{N}{T}{O}            { return TOK_PAS_DOWNTO; }
 {E}{L}{S}{E}                  { return TOK_PAS_ELSE; }
 {F}{I}{L}{E}                  { return TOK_PAS_FILE; }
 {F}{O}{R}                     { return TOK_PAS_FOR; }
@@ -81,7 +86,7 @@ Z [z|Z]
 {O}{R}                        { return TOK_PAS_OR; }
 {P}{A}{C}{K}{E}{D}            { return TOK_PAS_PACKED; }
 {P}{R}{O}{C}{E}{D}{U}{R}{E}   { return TOK_PAS_PROCEDURE; }
-{P}{R}{O}{G}{R}{A}{M}         { return TOK_PAS_PROGRAM; }
+{P}{R}{O}{G}{R}{A}{M}         { MessageBox(0,"oooppp","test",0); return TOK_PAS_PROGRAM; }
 {R}{E}{C}{O}{R}{D}            { return TOK_PAS_RECORD; }
 {R}{E}{P}{E}{A}{T}            { return TOK_PAS_REPEAT; }
 {S}{E}{T}                     { return TOK_PAS_SET; }
@@ -89,9 +94,11 @@ Z [z|Z]
 {T}{O}                        { return TOK_PAS_TO; }
 {T}{Y}{P}{E}                  { return TOK_PAS_TYPE; }
 {U}{N}{T}{I}{L}               { return TOK_PAS_UNTIL; }
-[V}{A}{R}                     { return TOK_PAS_VAR; }
+{V}{A}{R}                     { return TOK_PAS_VAR; }
 {W}{H}{I}{L}{E}               { return TOK_PAS_WHILE; }
 {W}{I}{T}{H}                  { return TOK_PAS_WITH; }
+
+{ID}                          { return TOK_PAS_ID;  }
 
 {DIGIT}+  {
   sprintf(buffer, "An integer: %s (%d)\n", yytext,
@@ -106,12 +113,10 @@ Z [z|Z]
 }
 
 
-{ID}              {
-  sprintf( buffer, "An identifier: %s\n", yytext );
-  MessageBox(0,buffer,"test",0);
-}
+";" { return ';'; }
 
 "+"|"-"|"*"|"/"   {
+  return
   sprintf( buffer, "An operator: %s\n", yytext );
   MessageBox(0,buffer,"test",0);
 }
@@ -123,12 +128,28 @@ Z [z|Z]
 
 %%
 
+void yy_pascal_lex_parser_error(void (*func)(char*)) {
+  char* bu;
+  m_addParserErrorText = func;
+
+  bu = (char*) malloc(200);
+  strcpy(bu,"hallo ich");
+
+  m_addParserErrorText(bu);
+}
+
 int pascalwrap(void) { return 1; }
 
-void yy_pascal_fatal_error(char* message)
+void pascalerror(char* message)
 {
-  sprintf(buffer,"error: %s",message);
-  MessageBox(0,buffer,"zeee",MB_OK);
+  char* bu;
+  bu = (char*) malloc(200);
+  strcpy(bu,"hallo ich");
+
+  m_addParserErrorText(bu);
+
+//  sprintf(buffer,"error: %s",message);
+//  m_addText(buffer);
 }
 
 BOOL yy_pascal_lex_main(char* filename)
@@ -140,7 +161,8 @@ BOOL yy_pascal_lex_main(char* filename)
     return false;
   }
 
-  yylex();
+  //yylex();
+  pascalparse();
   fclose(yyin);
 
   return true;
@@ -148,6 +170,8 @@ BOOL yy_pascal_lex_main(char* filename)
 
 int yy_pascal_lex_getlines(void) { return yylineno-1; }
 
+void __declspec(dllexport) yy_pascal_lex_parser_error(void (*func)(char*));
 int  __declspec(dllexport) yy_pascal_lex_getlines(void);
+
 BOOL __declspec(dllexport) yy_pascal_lex_main(char* filename);
 

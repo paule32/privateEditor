@@ -1,2 +1,4 @@
-E:\msys64\usr\bin\flex.exe -Ppascal E:\Projekte\SWIPL\SWIPEL_ZWAP\src\lang\PascalDSL.l
+E:\msys64\usr\bin\bison.exe -d -ppascal PascalDSL.y
+E:\msys64\usr\bin\flex.exe     -Ppascal PascalDSL.l
+
 pause
