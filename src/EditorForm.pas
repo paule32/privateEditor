@@ -754,6 +754,8 @@ begin
 end;
 
 procedure TForm1.NewUserFolderClick(Sender: TObject);
+var
+  dirS1: String;
 begin
   InputBoxWindow := TInputBoxWindow.Create(Form1);
   try
@@ -764,11 +766,21 @@ begin
       ErrorBox.Text('File name is empty');
     end else
     begin
-      ErrorBox.Text(GetShellFolder(CSIDL_PERSONAL) + '\' +
-      InputBoxWindow.InputLineText);
-      
-      //CreateDir(GetShellFolder(CSIDL_PERSONAL) + '\' +
-      //InputBoxWindow.InputLineText);
+      dirS1 := GetShellFolder(CSIDL_PERSONAL) +
+      InputBoxWindow.InputLineText;
+
+      try
+        CreateDir(GetShellFolder(CSIDL_PERSONAL) +
+        InputBoxWindow.InputLineText);
+      except
+        on E: Exception do
+        begin
+          ErrorBox.Text(
+          'File System Error:'         + #13 +
+          InputBoxWindow.InputLineText + #13 +
+          'could not be created.');
+        end;
+      end;
     end;
   finally
     InputBoxWindow.Free;
