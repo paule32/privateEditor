@@ -129,13 +129,7 @@ Z [z|Z]
 %%
 
 void yy_pascal_lex_parser_error(void (*func)(char*)) {
-  char* bu;
   m_addParserErrorText = func;
-
-  bu = (char*) malloc(200);
-  strcpy(bu,"hallo ich");
-
-  m_addParserErrorText(bu);
 }
 
 int pascalwrap(void) { return 1; }
@@ -143,13 +137,11 @@ int pascalwrap(void) { return 1; }
 void pascalerror(char* message)
 {
   char* bu;
-  bu = (char*) malloc(200);
-  strcpy(bu,"hallo ich");
+  bu = (char*) malloc(strlen(message)+42);
+  strcpy(bu,"error: ");
+  strcat(bu,message);
 
   m_addParserErrorText(bu);
-
-//  sprintf(buffer,"error: %s",message);
-//  m_addText(buffer);
 }
 
 BOOL yy_pascal_lex_main(char* filename)
@@ -157,7 +149,7 @@ BOOL yy_pascal_lex_main(char* filename)
   yyin = fopen(filename,"r");
   if (!yyin) {
     sprintf(buffer, "could not open file: %s", filename);
-    MessageBox(0,buffer,"test",0);
+    m_addParserErrorText(buffer);
     return false;
   }
 

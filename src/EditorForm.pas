@@ -14,7 +14,7 @@ type
     CoolBar1: TCoolBar;
     Panel1: TPanel;
     Panel2: TPanel;
-    JvSpeedButton3: TJvSpeedButton;
+    StartCompile: TJvSpeedButton;
     ModeButton: TJvSpeedButton;
     StatusBar1: TStatusBar;
     ProgressBar1: TProgressBar;
@@ -116,9 +116,6 @@ type
     Button3: TButton;
     Button4: TButton;
     Button5: TButton;
-    SpeedButton1: TSpeedButton;
-    SpeedButton2: TSpeedButton;
-    NewUserFolder: TSpeedButton;
     PageControl1: TPageControl;
     TabSheet7: TTabSheet;
     buildListBox: TCheckListBox;
@@ -128,8 +125,13 @@ type
     CtrlMenuBarButton2: TCtrlMenuBarButton;
     Button6: TButton;
     Button7: TButton;
-    TreeView2: TTreeView;
     ImageList1: TImageList;
+    Splitter2: TSplitter;
+    Panel7: TPanel;
+    SpeedButton1: TSpeedButton;
+    SpeedButton2: TSpeedButton;
+    NewUserFolder: TSpeedButton;
+    TreeView1: TTreeView;
     procedure PopupMenu_File_NewClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -146,7 +148,7 @@ type
     procedure JvSpeedButton2Click2(Sender: TObject);
     procedure JvSpeedButton1Click(Sender: TObject);
     procedure JvSpeedButton2Click(Sender: TObject);
-    procedure JvSpeedButton3Click(Sender: TObject);
+    procedure StartCompileClick(Sender: TObject);
     procedure EditorOptions1Click(Sender: TObject);
     procedure SynEdit1KeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
@@ -154,14 +156,16 @@ type
     procedure JvSpeedButton1MouseLeave(Sender: TObject);
     procedure JvSpeedButton2MouseEnter(Sender: TObject);
     procedure JvSpeedButton2MouseLeave(Sender: TObject);
-    procedure JvSpeedButton3MouseEnter(Sender: TObject);
-    procedure JvSpeedButton3MouseLeave(Sender: TObject);
+    procedure StartCompileMouseEnter(Sender: TObject);
+    procedure StartCompileMouseLeave(Sender: TObject);
     procedure MenuBarButton_FileMouseEnter(Sender: TObject);
     procedure MenuBarButton_FileMouseLeave(Sender: TObject);
     procedure MenuBarButton_EditMouseEnter(Sender: TObject);
     procedure MenuBarButton_EditMouseLeave(Sender: TObject);
     procedure UserHomeFolderDblClick(Sender: TObject);
     procedure NewUserFolderClick(Sender: TObject);
+    procedure UserHomeFolderChange(Sender: TObject; Node: TTreeNode);
+    procedure UserHomeFolderClick(Sender: TObject);
   private
     Cv1: TCanvas;
   public
@@ -577,7 +581,7 @@ begin
   end;
 end;
 
-procedure TForm1.JvSpeedButton3Click(Sender: TObject);
+procedure TForm1.StartCompileClick(Sender: TObject);
 var
   callParser:         function(fileSrc: PChar): BOOL; cdecl;
   callParserGetLines: function: Integer; cdecl;
@@ -588,7 +592,7 @@ var
   res: String;
   procedure ParserError(msg: PChar);
   begin
-    ErrorBox.Text('EIM: ' + msg);
+    ErrorBox.Text(msg);
   end;
 begin
   JvSpeedButton2Click(Sender);
@@ -619,6 +623,11 @@ begin
       DateTimeToString(res,'',now);
       buildListBox.Items.Insert(0,
       res + ': ' + 'callParserError init failed.');
+    end;
+
+    if @callParser <> nil then
+    begin
+      callParser(PChar(TabSheet2.Caption));
     end;
 
     FreeLibrary(handle);
@@ -685,7 +694,7 @@ begin
 
   if key = VK_F2 then
   begin
-    JvSpeedButton3Click(Sender);
+    StartCompileClick(Sender);
   end;
 end;
 
@@ -709,12 +718,12 @@ begin
   StatusBar1.Panels.Items[1].Text := ''
 end;
 
-procedure TForm1.JvSpeedButton3MouseEnter(Sender: TObject);
+procedure TForm1.StartCompileMouseEnter(Sender: TObject);
 begin
   StatusBar1.Panels.Items[1].Text := 'Run/Start Compiler ...'
 end;
 
-procedure TForm1.JvSpeedButton3MouseLeave(Sender: TObject);
+procedure TForm1.StartCompileMouseLeave(Sender: TObject);
 begin
   StatusBar1.Panels.Items[1].Text := '';
 end;
@@ -742,11 +751,15 @@ end;
 procedure TForm1.UserHomeFolderDblClick(Sender: TObject);
 var
   sl: TStringList;
+  S1: String;
 begin
   sl := TStringList.Create;
   try
+    S1 := UserHomeFolder.Selected.Text;
+    ShowMessage(S1);
     GetSubDirectories(GetShellFolder(CSIDL_PERSONAL),sl);
     ErrorBox.Text(sl.Text);
+    ExpandTopLevel;
   finally
     sl.Clear;
     sl.Free;
@@ -785,6 +798,16 @@ begin
   finally
     InputBoxWindow.Free;
   end;
+end;
+
+procedure TForm1.UserHomeFolderChange(Sender: TObject; Node: TTreeNode);
+begin
+  ExpandTopLevel;
+end;
+
+procedure TForm1.UserHomeFolderClick(Sender: TObject);
+begin
+  ExpandTopLevel;
 end;
 
 end.
