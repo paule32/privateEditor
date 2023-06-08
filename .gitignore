@@ -46,3 +46,5 @@ src/EditorForm.~dfm
 src/EditorForm.~pas
 src/lex.pascal.c
 src/lex.pascal.c
+src/PascalDSL.~y
+src/6

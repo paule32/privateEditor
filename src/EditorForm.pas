@@ -22,11 +22,7 @@ type
     Splitter1: TSplitter;
     LeftPanel: TPanel;
     LeftSplitter: TSplitter;
-    Panel5: TPanel;
-    MainPageControl: TPageControl;
-    TabSheet2: TTabSheet;
-    Panel6: TPanel;
-    SynEdit1: TSynEdit;
+    EditPanel: TPanel;
     JvGradientCaption1: TJvGradientCaption;
     SynPasSyn1: TSynPasSyn;
     OpenDialog1: TOpenDialog;
@@ -92,30 +88,6 @@ type
     EditorOptions1: TMenuItem;
     ConfigureTools1: TMenuItem;
     N12: TMenuItem;
-    TabSheet_Options: TTabSheet;
-    ScrollBox1: TScrollBox;
-    PageControl3: TPageControl;
-    TabSheet5: TTabSheet;
-    GroupBox1: TGroupBox;
-    CheckBox1: TCheckBox;
-    CheckBox2: TCheckBox;
-    JvSpinEdit1: TJvSpinEdit;
-    Label1: TLabel;
-    CheckBox3: TCheckBox;
-    TabSheet6: TTabSheet;
-    Label2: TLabel;
-    ComboBox1: TComboBox;
-    Button1: TButton;
-    Button2: TButton;
-    GroupBox2: TGroupBox;
-    Label3: TLabel;
-    ComboBox2: TComboBox;
-    Label4: TLabel;
-    Edit1: TEdit;
-    Panel4: TPanel;
-    Button3: TButton;
-    Button4: TButton;
-    Button5: TButton;
     PageControl1: TPageControl;
     TabSheet7: TTabSheet;
     buildListBox: TCheckListBox;
@@ -132,6 +104,58 @@ type
     SpeedButton2: TSpeedButton;
     NewUserFolder: TSpeedButton;
     TreeView1: TTreeView;
+    Splitter3: TSplitter;
+    PageControl2: TPageControl;
+    TabSheet4: TTabSheet;
+    TabSheet8: TTabSheet;
+    TabSheet9: TTabSheet;
+    SynEdit3: TSynEdit;
+    SynEdit4: TSynEdit;
+    Button8: TButton;
+    SynEdit2: TSynEdit;
+    Splitter4: TSplitter;
+    PageControl4: TPageControl;
+    TabSheet10: TTabSheet;
+    TreeView3: TTreeView;
+    TabSheet11: TTabSheet;
+    TreeView2: TTreeView;
+    Panel8: TPanel;
+    MainPageControl: TPageControl;
+    TabSheet2: TTabSheet;
+    TabSheet_Options: TTabSheet;
+    ScrollBox1: TScrollBox;
+    PageControl3: TPageControl;
+    TabSheet5: TTabSheet;
+    Label1: TLabel;
+    GroupBox1: TGroupBox;
+    CheckBox1: TCheckBox;
+    CheckBox2: TCheckBox;
+    CheckBox3: TCheckBox;
+    JvSpinEdit1: TJvSpinEdit;
+    TabSheet6: TTabSheet;
+    Label2: TLabel;
+    ComboBox1: TComboBox;
+    Button1: TButton;
+    Button2: TButton;
+    GroupBox2: TGroupBox;
+    Label3: TLabel;
+    Label4: TLabel;
+    ComboBox2: TComboBox;
+    Edit1: TEdit;
+    Panel4: TPanel;
+    Button3: TButton;
+    Button4: TButton;
+    Button5: TButton;
+    SynEdit1: TSynEdit;
+    Splitter5: TSplitter;
+    PageControl5: TPageControl;
+    TabSheet12: TTabSheet;
+    TreeView4: TTreeView;
+    TabSheet13: TTabSheet;
+    PreviewPanel: TPanel;
+    PreviewPageControl: TPageControl;
+    TabSheet14: TTabSheet;
+    TabSheet15: TTabSheet;
     procedure PopupMenu_File_NewClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -166,6 +190,9 @@ type
     procedure NewUserFolderClick(Sender: TObject);
     procedure UserHomeFolderChange(Sender: TObject; Node: TTreeNode);
     procedure UserHomeFolderClick(Sender: TObject);
+    procedure MainPageControlChange(Sender: TObject);
+    procedure PreviewPageControlChange(Sender: TObject);
+    procedure Options1Click(Sender: TObject);
   private
     Cv1: TCanvas;
   public
@@ -808,6 +835,37 @@ end;
 procedure TForm1.UserHomeFolderClick(Sender: TObject);
 begin
   ExpandTopLevel;
+end;
+
+procedure TForm1.MainPageControlChange(Sender: TObject);
+begin
+  if MainPageControl.ActivePage.Caption = 'Preview' then
+  begin
+    EditPanel   .Visible := false;
+
+    PreviewPanel.Parent  := Form1;
+    PreviewPanel.Visible := true;
+    PreviewPanel.Align := alclient;
+
+    PreviewPageControl.ActivePageIndex := 0;
+  end;
+end;
+
+procedure TForm1.PreviewPageControlChange(Sender: TObject);
+begin
+  if PreviewPageControl.ActivePage.Caption = 'Editing' then
+  begin
+    PreviewPanel.Visible := false;
+    EditPanel.Visible    := true;
+    MainPageControl.Visible := true;
+    MainPageControl.ActivePageIndex := 0;
+  end;
+end;
+
+procedure TForm1.Options1Click(Sender: TObject);
+begin
+  TabSheet_Options.Visible   := true;
+  MainPageControl.ActivePage := TabSheet_Options;
 end;
 
 end.

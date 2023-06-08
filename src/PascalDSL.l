@@ -71,6 +71,7 @@ Z [z|Z]
 {D}{O}                        { return TOK_PAS_DO; }
 {D}{O}{W}{N}{T}{O}            { return TOK_PAS_DOWNTO; }
 {E}{L}{S}{E}                  { return TOK_PAS_ELSE; }
+{E}{N}{D}                     { return TOK_PAS_END; }
 {F}{I}{L}{E}                  { return TOK_PAS_FILE; }
 {F}{O}{R}                     { return TOK_PAS_FOR; }
 {F}{O}{R}{W}{A}{R}{D}         { return TOK_PAS_FORWARD; }
@@ -114,6 +115,7 @@ Z [z|Z]
 
 
 ";" { return ';'; }
+\.  { return '.'; }
 
 "+"|"-"|"*"|"/"   {
   return

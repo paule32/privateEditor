@@ -19,6 +19,7 @@ type
     procedure FormShow(Sender: TObject);
     procedure JvImgBtn2Click(Sender: TObject);
     procedure JvImgBtn1Click(Sender: TObject);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
   private
     { Private declarations }
   public
@@ -52,6 +53,12 @@ end;
 procedure TErrorBox.JvImgBtn1Click(Sender: TObject);
 begin
   Close;
+end;
+
+procedure TErrorBox.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+  if key = #27 then
+  close;
 end;
 
 end.

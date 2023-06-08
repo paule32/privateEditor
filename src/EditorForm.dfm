@@ -1,8 +1,8 @@
 object Form1: TForm1
-  Left = 522
-  Top = 261
-  Width = 685
-  Height = 591
+  Left = 207
+  Top = 228
+  Width = 1079
+  Height = 689
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -17,8 +17,8 @@ object Form1: TForm1
   TextHeight = 16
   object Splitter1: TSplitter
     Left = 0
-    Top = 423
-    Width = 667
+    Top = 521
+    Width = 1061
     Height = 3
     Cursor = crVSplit
     Align = alBottom
@@ -26,7 +26,7 @@ object Form1: TForm1
   object LeftSplitter: TSplitter
     Left = 225
     Top = 99
-    Height = 324
+    Height = 422
     AutoSnap = False
     Color = clGradientInactiveCaption
     MinSize = 42
@@ -35,27 +35,27 @@ object Form1: TForm1
   object CoolBar1: TCoolBar
     Left = 0
     Top = 0
-    Width = 667
+    Width = 1061
     Height = 89
     Bands = <
       item
         Control = Panel1
         ImageIndex = -1
         MinHeight = 34
-        Width = 663
+        Width = 1057
       end
       item
         Control = Panel2
         HorizontalOnly = True
         ImageIndex = -1
         MinHeight = 42
-        Width = 663
+        Width = 1057
       end>
     FixedSize = True
     object Panel1: TPanel
       Left = 9
       Top = 4
-      Width = 650
+      Width = 1044
       Height = 34
       Align = alClient
       AutoSize = True
@@ -200,7 +200,7 @@ object Form1: TForm1
         Transparent = True
       end
       object CtrlMenuBarButton2: TCtrlMenuBarButton
-        Left = 608
+        Left = 1002
         Top = 1
         Width = 41
         Height = 32
@@ -360,7 +360,7 @@ object Form1: TForm1
     object Panel2: TPanel
       Left = 9
       Top = 44
-      Width = 650
+      Width = 1044
       Height = 42
       TabOrder = 1
       object StartCompile: TJvSpeedButton
@@ -518,7 +518,7 @@ object Form1: TForm1
         OnClick = StartCompileClick
       end
       object ModeButton: TJvSpeedButton
-        Left = 504
+        Left = 898
         Top = 1
         Width = 145
         Height = 40
@@ -1007,8 +1007,8 @@ object Form1: TForm1
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 519
-    Width = 667
+    Top = 617
+    Width = 1061
     Height = 27
     Panels = <
       item
@@ -1023,7 +1023,7 @@ object Form1: TForm1
   object ProgressBar1: TProgressBar
     Left = 0
     Top = 89
-    Width = 667
+    Width = 1061
     Height = 10
     Align = alTop
     Position = 20
@@ -1031,8 +1031,8 @@ object Form1: TForm1
   end
   object Panel3: TPanel
     Left = 0
-    Top = 426
-    Width = 667
+    Top = 524
+    Width = 1061
     Height = 93
     Align = alBottom
     Caption = 'Panel3'
@@ -1040,7 +1040,7 @@ object Form1: TForm1
     object PageControl1: TPageControl
       Left = 1
       Top = 1
-      Width = 665
+      Width = 1059
       Height = 91
       ActivePage = TabSheet7
       Align = alClient
@@ -1072,6 +1072,14 @@ object Form1: TForm1
           Caption = 'Clear'
           TabOrder = 2
         end
+        object Button8: TButton
+          Left = 648
+          Top = 0
+          Width = 75
+          Height = 25
+          Caption = 'Export'
+          TabOrder = 3
+        end
       end
     end
   end
@@ -1079,7 +1087,7 @@ object Form1: TForm1
     Left = 0
     Top = 99
     Width = 225
-    Height = 324
+    Height = 422
     Align = alLeft
     Caption = 'LeftPanel'
     TabOrder = 4
@@ -1087,7 +1095,7 @@ object Form1: TForm1
       Left = 1
       Top = 1
       Width = 223
-      Height = 322
+      Height = 420
       ActivePage = TabSheet1
       Align = alClient
       TabOrder = 0
@@ -1134,7 +1142,7 @@ object Form1: TForm1
         end
         object Panel7: TPanel
           Left = 0
-          Top = 238
+          Top = 336
           Width = 215
           Height = 53
           Align = alBottom
@@ -1500,7 +1508,7 @@ object Form1: TForm1
           Left = 0
           Top = 132
           Width = 215
-          Height = 106
+          Height = 204
           Align = alClient
           Indent = 21
           TabOrder = 2
@@ -1512,45 +1520,56 @@ object Form1: TForm1
       end
     end
   end
-  object Panel5: TPanel
+  object EditPanel: TPanel
     Left = 228
     Top = 99
-    Width = 439
-    Height = 324
+    Width = 833
+    Height = 422
     Align = alClient
-    Caption = 'Panel5'
+    Caption = 'EditPanel'
     TabOrder = 5
-    object MainPageControl: TPageControl
+    object Splitter3: TSplitter
       Left = 1
-      Top = 1
-      Width = 437
-      Height = 322
-      ActivePage = TabSheet2
-      Align = alClient
+      Top = 313
+      Width = 831
+      Height = 3
+      Cursor = crVSplit
+      Align = alTop
+    end
+    object Splitter4: TSplitter
+      Left = 521
+      Top = 316
+      Height = 105
+    end
+    object PageControl2: TPageControl
+      Left = 1
+      Top = 316
+      Width = 520
+      Height = 105
+      ActivePage = TabSheet4
+      Align = alLeft
+      Anchors = [akLeft, akTop, akRight, akBottom]
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -16
+      Font.Name = 'Consolas'
+      Font.Style = []
+      ParentFont = False
       TabOrder = 0
-      object TabSheet2: TTabSheet
-        Caption = 'TabSheet2'
-        object Panel6: TPanel
-          Left = 0
-          Top = 260
-          Width = 429
-          Height = 31
-          Align = alBottom
-          Caption = 'Panel6'
-          TabOrder = 0
-        end
-        object SynEdit1: TSynEdit
+      object TabSheet4: TTabSheet
+        Caption = 'JavaScript'
+        object SynEdit2: TSynEdit
           Left = 0
           Top = 0
-          Width = 429
-          Height = 260
+          Width = 512
+          Height = 71
           Align = alClient
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -16
           Font.Name = 'Consolas'
           Font.Style = []
-          TabOrder = 1
+          TabOrder = 0
           OnKeyDown = SynEdit1KeyDown
           Gutter.Font.Charset = DEFAULT_CHARSET
           Gutter.Font.Color = clWindowText
@@ -1566,192 +1585,416 @@ object Form1: TForm1
           FontSmoothing = fsmNone
         end
       end
-      object TabSheet_Options: TTabSheet
-        Caption = 'Editor Options ...'
+      object TabSheet8: TTabSheet
+        Caption = 'AsmJit'
         ImageIndex = 1
-        object ScrollBox1: TScrollBox
+        object SynEdit3: TSynEdit
           Left = 0
           Top = 0
-          Width = 429
-          Height = 291
+          Width = 512
+          Height = 71
           Align = alClient
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -16
+          Font.Name = 'Consolas'
+          Font.Style = []
           TabOrder = 0
-          object PageControl3: TPageControl
-            Left = 8
-            Top = 8
-            Width = 369
-            Height = 258
-            ActivePage = TabSheet5
+          OnKeyDown = SynEdit1KeyDown
+          Gutter.Font.Charset = DEFAULT_CHARSET
+          Gutter.Font.Color = clWindowText
+          Gutter.Font.Height = -16
+          Gutter.Font.Name = 'Consolas'
+          Gutter.Font.Style = []
+          Gutter.ShowLineNumbers = True
+          Gutter.ShowModification = True
+          Gutter.Width = 49
+          Highlighter = SynPasSyn1
+          Lines.UnicodeStrings = 'SynEdit1'
+          WantTabs = True
+          FontSmoothing = fsmNone
+        end
+      end
+      object TabSheet9: TTabSheet
+        Caption = 'C++'
+        ImageIndex = 2
+        object SynEdit4: TSynEdit
+          Left = 0
+          Top = 0
+          Width = 512
+          Height = 71
+          Align = alClient
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -16
+          Font.Name = 'Consolas'
+          Font.Style = []
+          TabOrder = 0
+          OnKeyDown = SynEdit1KeyDown
+          Gutter.Font.Charset = DEFAULT_CHARSET
+          Gutter.Font.Color = clWindowText
+          Gutter.Font.Height = -16
+          Gutter.Font.Name = 'Consolas'
+          Gutter.Font.Style = []
+          Gutter.ShowLineNumbers = True
+          Gutter.ShowModification = True
+          Gutter.Width = 49
+          Highlighter = SynPasSyn1
+          Lines.UnicodeStrings = 'SynEdit1'
+          WantTabs = True
+          FontSmoothing = fsmNone
+        end
+      end
+    end
+    object PageControl4: TPageControl
+      Left = 524
+      Top = 316
+      Width = 308
+      Height = 105
+      ActivePage = TabSheet10
+      Align = alClient
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -16
+      Font.Name = 'Consolas'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 1
+      object TabSheet10: TTabSheet
+        Caption = 'Members'
+        object TreeView3: TTreeView
+          Left = 0
+          Top = 0
+          Width = 300
+          Height = 71
+          Align = alClient
+          Indent = 21
+          TabOrder = 0
+        end
+      end
+      object TabSheet11: TTabSheet
+        Caption = 'Document'
+        ImageIndex = 1
+        object TreeView2: TTreeView
+          Left = 0
+          Top = 0
+          Width = 300
+          Height = 71
+          Align = alClient
+          Indent = 21
+          TabOrder = 0
+        end
+      end
+    end
+    object Panel8: TPanel
+      Left = 1
+      Top = 97
+      Width = 831
+      Height = 216
+      Align = alTop
+      Anchors = [akLeft, akTop, akRight, akBottom]
+      Caption = 'Panel6'
+      TabOrder = 2
+      object Splitter5: TSplitter
+        Left = 521
+        Top = 1
+        Height = 214
+      end
+      object MainPageControl: TPageControl
+        Left = 1
+        Top = 1
+        Width = 520
+        Height = 214
+        ActivePage = TabSheet_Options
+        Align = alLeft
+        Anchors = [akLeft, akTop, akRight, akBottom]
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -16
+        Font.Name = 'Consolas'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 0
+        OnChange = MainPageControlChange
+        object TabSheet2: TTabSheet
+          Caption = 'TabSheet2'
+          object SynEdit1: TSynEdit
+            Left = 0
+            Top = 0
+            Width = 512
+            Height = 180
+            Align = alClient
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -16
+            Font.Name = 'Consolas'
+            Font.Style = []
             TabOrder = 0
-            object TabSheet5: TTabSheet
-              Caption = 'General'
-              object Label1: TLabel
-                Left = 8
-                Top = 112
-                Width = 66
-                Height = 16
-                Caption = 'Undo Limit:'
-              end
-              object GroupBox1: TGroupBox
-                Left = 8
-                Top = 0
-                Width = 345
-                Height = 105
-                Caption = ' Editor Options: '
-                TabOrder = 0
-                object CheckBox1: TCheckBox
-                  Left = 8
-                  Top = 24
-                  Width = 145
-                  Height = 17
-                  Caption = 'Insert Mode'
-                  TabOrder = 0
-                end
-                object CheckBox2: TCheckBox
-                  Left = 8
-                  Top = 48
-                  Width = 145
-                  Height = 17
-                  Caption = 'Auto-complete Text'
-                  TabOrder = 1
-                end
-                object CheckBox3: TCheckBox
-                  Left = 8
-                  Top = 72
-                  Width = 145
-                  Height = 17
-                  Caption = 'Cursor behind EOF'
-                  TabOrder = 2
-                end
-              end
-              object JvSpinEdit1: TJvSpinEdit
-                Left = 8
-                Top = 128
-                Width = 121
-                Height = 24
-                ButtonKind = bkClassic
-                Decimal = 4
-                MaxValue = 1000.000000000000000000
-                MinValue = 10.000000000000000000
-                Value = 10.000000000000000000
-                MaxLength = 4
-                TabOrder = 1
-              end
-            end
-            object TabSheet6: TTabSheet
-              Caption = 'Source Options'
-              ImageIndex = 1
-              object Label2: TLabel
-                Left = 8
-                Top = 11
-                Width = 106
-                Height = 16
-                Caption = 'Source File Type:'
-              end
-              object ComboBox1: TComboBox
-                Left = 120
-                Top = 8
-                Width = 137
-                Height = 24
-                ItemHeight = 16
-                TabOrder = 0
-                Text = 'ComboBox1'
-              end
-              object Button1: TButton
-                Left = 8
-                Top = 40
-                Width = 75
-                Height = 25
-                Caption = 'Delete'
-                TabOrder = 1
-              end
-              object Button2: TButton
-                Left = 120
-                Top = 40
-                Width = 75
-                Height = 25
-                Caption = 'New'
-                Font.Charset = DEFAULT_CHARSET
-                Font.Color = clWindowText
-                Font.Height = -13
-                Font.Name = 'MS Sans Serif'
-                Font.Style = [fsBold]
-                ParentFont = False
-                TabOrder = 2
-              end
-              object GroupBox2: TGroupBox
-                Left = 8
-                Top = 80
-                Width = 345
-                Height = 137
-                Caption = ' Options: '
-                TabOrder = 3
-                object Label3: TLabel
-                  Left = 16
-                  Top = 28
-                  Width = 113
-                  Height = 16
-                  Caption = 'Syntax Highlighter :'
-                end
-                object Label4: TLabel
-                  Left = 16
-                  Top = 56
-                  Width = 79
-                  Height = 16
-                  Caption = 'Block Indent :'
-                end
-                object ComboBox2: TComboBox
-                  Left = 144
-                  Top = 24
-                  Width = 145
-                  Height = 24
-                  ItemHeight = 16
-                  TabOrder = 0
-                  Text = 'ComboBox2'
-                end
-                object Edit1: TEdit
-                  Left = 144
-                  Top = 56
-                  Width = 145
-                  Height = 24
-                  TabOrder = 1
-                  Text = 'Edit1'
-                end
-              end
-            end
+            OnKeyDown = SynEdit1KeyDown
+            Gutter.Font.Charset = DEFAULT_CHARSET
+            Gutter.Font.Color = clWindowText
+            Gutter.Font.Height = -16
+            Gutter.Font.Name = 'Consolas'
+            Gutter.Font.Style = []
+            Gutter.ShowLineNumbers = True
+            Gutter.ShowModification = True
+            Gutter.Width = 49
+            Highlighter = SynPasSyn1
+            Lines.UnicodeStrings = 'SynEdit1'
+            WantTabs = True
+            FontSmoothing = fsmNone
           end
-          object Panel4: TPanel
-            Left = 8
-            Top = 275
-            Width = 369
-            Height = 71
-            BevelOuter = bvNone
-            TabOrder = 1
-            object Button3: TButton
+        end
+        object TabSheet_Options: TTabSheet
+          Caption = 'Editor Options ...'
+          ImageIndex = 1
+          object ScrollBox1: TScrollBox
+            Left = 0
+            Top = 0
+            Width = 512
+            Height = 180
+            Align = alClient
+            TabOrder = 0
+            object PageControl3: TPageControl
               Left = 8
               Top = 8
-              Width = 75
-              Height = 25
-              Caption = 'Save'
+              Width = 393
+              Height = 258
+              ActivePage = TabSheet5
               TabOrder = 0
+              object TabSheet5: TTabSheet
+                Caption = 'General'
+                object Label1: TLabel
+                  Left = 8
+                  Top = 112
+                  Width = 99
+                  Height = 19
+                  Caption = 'Undo Limit:'
+                end
+                object GroupBox1: TGroupBox
+                  Left = 8
+                  Top = 0
+                  Width = 345
+                  Height = 105
+                  Caption = ' Editor Options: '
+                  TabOrder = 0
+                  object CheckBox1: TCheckBox
+                    Left = 8
+                    Top = 24
+                    Width = 145
+                    Height = 17
+                    Caption = 'Insert Mode'
+                    TabOrder = 0
+                  end
+                  object CheckBox2: TCheckBox
+                    Left = 8
+                    Top = 48
+                    Width = 145
+                    Height = 17
+                    Caption = 'Auto-complete Text'
+                    TabOrder = 1
+                  end
+                  object CheckBox3: TCheckBox
+                    Left = 8
+                    Top = 72
+                    Width = 145
+                    Height = 17
+                    Caption = 'Cursor behind EOF'
+                    TabOrder = 2
+                  end
+                end
+                object JvSpinEdit1: TJvSpinEdit
+                  Left = 8
+                  Top = 136
+                  Width = 121
+                  Height = 27
+                  ButtonKind = bkClassic
+                  Decimal = 4
+                  MaxValue = 1000.000000000000000000
+                  MinValue = 10.000000000000000000
+                  Value = 10.000000000000000000
+                  MaxLength = 4
+                  TabOrder = 1
+                end
+              end
+              object TabSheet6: TTabSheet
+                Caption = 'Source Options'
+                ImageIndex = 1
+                object Label2: TLabel
+                  Left = 8
+                  Top = 11
+                  Width = 153
+                  Height = 19
+                  Caption = 'Source File Type:'
+                end
+                object ComboBox1: TComboBox
+                  Left = 176
+                  Top = 8
+                  Width = 137
+                  Height = 27
+                  ItemHeight = 19
+                  TabOrder = 0
+                  Text = 'ComboBox1'
+                end
+                object Button1: TButton
+                  Left = 8
+                  Top = 40
+                  Width = 75
+                  Height = 25
+                  Caption = 'Delete'
+                  TabOrder = 1
+                end
+                object Button2: TButton
+                  Left = 120
+                  Top = 40
+                  Width = 75
+                  Height = 25
+                  Caption = 'New'
+                  Font.Charset = DEFAULT_CHARSET
+                  Font.Color = clWindowText
+                  Font.Height = -13
+                  Font.Name = 'MS Sans Serif'
+                  Font.Style = [fsBold]
+                  ParentFont = False
+                  TabOrder = 2
+                end
+                object GroupBox2: TGroupBox
+                  Left = 8
+                  Top = 80
+                  Width = 369
+                  Height = 137
+                  Caption = ' Options: '
+                  TabOrder = 3
+                  object Label3: TLabel
+                    Left = 16
+                    Top = 28
+                    Width = 180
+                    Height = 19
+                    Caption = 'Syntax Highlighter :'
+                  end
+                  object Label4: TLabel
+                    Left = 16
+                    Top = 56
+                    Width = 126
+                    Height = 19
+                    Caption = 'Block Indent :'
+                  end
+                  object ComboBox2: TComboBox
+                    Left = 208
+                    Top = 24
+                    Width = 145
+                    Height = 27
+                    ItemHeight = 19
+                    TabOrder = 0
+                    Text = 'ComboBox2'
+                  end
+                  object Edit1: TEdit
+                    Left = 208
+                    Top = 56
+                    Width = 145
+                    Height = 27
+                    TabOrder = 1
+                    Text = 'Edit1'
+                  end
+                end
+              end
             end
-            object Button4: TButton
-              Left = 96
-              Top = 8
-              Width = 75
-              Height = 25
-              Caption = 'Apply'
+            object Panel4: TPanel
+              Left = 408
+              Top = 19
+              Width = 98
+              Height = 150
+              BevelOuter = bvNone
               TabOrder = 1
-            end
-            object Button5: TButton
-              Left = 184
-              Top = 8
-              Width = 75
-              Height = 25
-              Caption = 'Cancel'
-              TabOrder = 2
+              object Button3: TButton
+                Left = 8
+                Top = 8
+                Width = 75
+                Height = 25
+                Caption = 'Save'
+                TabOrder = 0
+              end
+              object Button4: TButton
+                Left = 8
+                Top = 40
+                Width = 75
+                Height = 25
+                Caption = 'Apply'
+                TabOrder = 1
+              end
+              object Button5: TButton
+                Left = 8
+                Top = 88
+                Width = 75
+                Height = 25
+                Caption = 'Cancel'
+                TabOrder = 2
+              end
             end
           end
+        end
+        object TabSheet13: TTabSheet
+          Caption = 'Preview'
+          ImageIndex = 2
+        end
+      end
+      object PageControl5: TPageControl
+        Left = 524
+        Top = 1
+        Width = 306
+        Height = 214
+        ActivePage = TabSheet12
+        Align = alClient
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -16
+        Font.Name = 'Consolas'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 1
+        object TabSheet12: TTabSheet
+          Caption = 'Members'
+          object TreeView4: TTreeView
+            Left = 0
+            Top = 0
+            Width = 298
+            Height = 180
+            Align = alClient
+            Indent = 21
+            TabOrder = 0
+          end
+        end
+      end
+    end
+    object PreviewPanel: TPanel
+      Left = 1
+      Top = 1
+      Width = 831
+      Height = 96
+      Align = alTop
+      Caption = 'PreviewPanel'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -16
+      Font.Name = 'Consolas'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 3
+      object PreviewPageControl: TPageControl
+        Left = 1
+        Top = 1
+        Width = 829
+        Height = 94
+        ActivePage = TabSheet15
+        Align = alClient
+        TabOrder = 0
+        OnChange = PreviewPageControlChange
+        object TabSheet14: TTabSheet
+          Caption = 'Preview'
+        end
+        object TabSheet15: TTabSheet
+          Caption = 'Editing'
+          ImageIndex = 1
         end
       end
     end
@@ -1867,7 +2110,7 @@ object Form1: TForm1
     ImageSize.Height = 0
     ImageSize.Width = 14
     Left = 29
-    Top = 184
+    Top = 312
     object PopupMenu_File_New: TMenuItem
       Caption = 'New ...'
       OnClick = PopupMenu_File_NewClick
@@ -1915,7 +2158,7 @@ object Form1: TForm1
     ImageSize.Height = 0
     ImageSize.Width = 14
     Left = 61
-    Top = 184
+    Top = 312
     object PopupMenu_Edit_Undo: TMenuItem
       Caption = 'Undo'
       ShortCut = 16474
@@ -1958,7 +2201,7 @@ object Form1: TForm1
     ImageSize.Height = 0
     ImageSize.Width = 14
     Left = 125
-    Top = 184
+    Top = 312
     object PopupMenu_Help_Help: TMenuItem
       Caption = 'Help'
       ShortCut = 112
@@ -1981,7 +2224,7 @@ object Form1: TForm1
     ImageSize.Height = 0
     ImageSize.Width = 14
     Left = 29
-    Top = 216
+    Top = 344
     object Pascal1: TMenuItem
       Caption = 'Pascal'
       OnClick = Pascal1Click
@@ -2000,7 +2243,7 @@ object Form1: TForm1
     ImageSize.Height = 0
     ImageSize.Width = 14
     Left = 93
-    Top = 184
+    Top = 312
     object PopupMenu_Tools_Language: TMenuItem
       Caption = 'Language'
       object PopupMenu_Tools_Language_English: TMenuItem
@@ -2042,7 +2285,7 @@ object Form1: TForm1
     ImageSize.Height = 0
     ImageSize.Width = 14
     Left = 125
-    Top = 216
+    Top = 344
     object MenuItem1: TMenuItem
       Caption = 'Convert'
       object FromPascaltoAsmJit1: TMenuItem
@@ -2075,6 +2318,7 @@ object Form1: TForm1
     end
     object Options1: TMenuItem
       Caption = 'Options'
+      OnClick = Options1Click
     end
   end
   object ImageList1: TImageList
@@ -2084,7 +2328,7 @@ object Form1: TForm1
     Left = 69
     Top = 271
     Bitmap = {
-      494C010103000400040015001500FFFFFFFFFF00FFFFFFFFFFFFFFFF424D3600
+      494C010103000400040015001500FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000054000000150000000100200000000000901B
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -2316,6 +2560,7 @@ object Form1: TForm1
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       00000000003C00000000000080000000003C000200000000FF800000003C001E
-      00000000FF800000003C001E00000000FFFFFC00007C001E00000000}
+      00000000FF800000003C001E00000000FFFFFC00007C001E0000000000000000
+      000000000000000000000000000000000000}
   end
 end

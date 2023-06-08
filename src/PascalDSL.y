@@ -4,7 +4,6 @@
 void pascalerror(char* message);
 %}
 
-
 %token TOK_PAS_AND
 %token TOK_PAS_ARRAY
 %token TOK_PAS_BEGIN
@@ -14,6 +13,7 @@ void pascalerror(char* message);
 %token TOK_PAS_DO
 %token TOK_PAS_DOWNTO
 %token TOK_PAS_ELSE
+%token TOK_PAS_END
 %token TOK_PAS_FILE
 %token TOK_PAS_FOR
 %token TOK_PAS_FORWARD
@@ -46,6 +46,15 @@ void pascalerror(char* message);
 %%
 
 translate_unit
+  : program ';' begin end '.'
+  ;
+begin
+  : TOK_PAS_BEGIN
+  ;
+end
+  : TOK_PAS_END
+  ;
+program
   : TOK_PAS_PROGRAM TOK_PAS_ID { MessageBox(0,"buffer","test",0);
   }
   ;
