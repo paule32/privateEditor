@@ -9,7 +9,8 @@ uses
   JvStringHolder, CtrlMenuBarButton, JvMenus, StdCtrls, Mask, JvExMask,
   JvSpin, Buttons, CheckLst, ShellApi, ShlObj, ImgList, OleCtrls, SHDocVw,
   IdComponent, IdTCPConnection, IdTCPClient, IdIRC, IdBaseComponent,
-  IdAntiFreezeBase, IdAntiFreeze;
+  IdAntiFreezeBase, IdAntiFreeze, JvExComCtrls, JvComCtrls, JvCheckTreeView,
+  JvExCheckLst, JvCheckListBox;
 
 type
   TForm1 = class(TForm)
@@ -19,7 +20,7 @@ type
     StartCompile: TJvSpeedButton;
     ModeButton: TJvSpeedButton;
     StatusBar1: TStatusBar;
-    ProgressBar1: TProgressBar;
+    statusProgress: TProgressBar;
     Panel3: TPanel;
     Splitter1: TSplitter;
     LeftPanel: TPanel;
@@ -152,7 +153,6 @@ type
     Splitter5: TSplitter;
     PageControl5: TPageControl;
     TabSheet12: TTabSheet;
-    TreeView4: TTreeView;
     TabSheet13: TTabSheet;
     PreviewPanel: TPanel;
     PreviewPageControl: TPageControl;
@@ -163,24 +163,35 @@ type
     PageControl6: TPageControl;
     TabSheet17: TTabSheet;
     TabSheet18: TTabSheet;
-    ListBox1: TListBox;
     Panel5: TPanel;
-    Edit2: TEdit;
+    sendChatTextEdit: TEdit;
     Button9: TButton;
     Panel6: TPanel;
     Splitter6: TSplitter;
     ListBox2: TListBox;
     Panel9: TPanel;
-    Edit3: TEdit;
-    Panel10: TPanel;
+    ircTopicEdit: TEdit;
     IdAntiFreeze1: TIdAntiFreeze;
     IdIRC1: TIdIRC;
-    Button10: TButton;
     PageControl7: TPageControl;
     TabSheet19: TTabSheet;
     RichEdit1: TRichEdit;
+    Panel10: TPanel;
+    Panel11: TPanel;
+    ircListBox: TListBox;
+    Splitter7: TSplitter;
+    PageControl8: TPageControl;
+    TabSheet20: TTabSheet;
+    ScrollBox2: TScrollBox;
     ircUserName: TEdit;
     ircUserPass: TEdit;
+    ircConnectButton: TButton;
+    Label5: TLabel;
+    Label6: TLabel;
+    ircChannelEdit: TEdit;
+    ircChannel: TEdit;
+    Label7: TLabel;
+    ListBox1: TJvCheckListBox;
     procedure PopupMenu_File_NewClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -218,14 +229,20 @@ type
     procedure MainPageControlChange(Sender: TObject);
     procedure PreviewPageControlChange(Sender: TObject);
     procedure Options1Click(Sender: TObject);
-    procedure Button10Click(Sender: TObject);
+    procedure ircConnectButtonClick(Sender: TObject);
     procedure IdIRC1CTCPQuery(Sender: TObject; User: TIdIRCUser;
       AChannel: TIdIRCChannel; Command, Args: String;
       var ASuppress: Boolean);
     procedure IdIRC1Message(Sender: TObject; AUser: TIdIRCUser;
       AChannel: TIdIRCChannel; Content: String);
+    procedure Button9Click(Sender: TObject);
+    procedure IdIRC1List(Sender: TObject; AChans: TStringList;
+      APosition: Integer; ALast: Boolean);
+    procedure IdIRC1Names(Sender: TObject; AUsers: TIdIRCUsers;
+      AChannel: TIdIRCChannel);
   private
     Cv1: TCanvas;
+    ircListLimit: Integer;
   public
     procedure ModifyControl(const AControl: TControl; LS: TStrings);
     procedure ExpandTopLevel;
@@ -932,9 +949,19 @@ begin
   MainPageControl.ActivePage := TabSheet_Options;
 end;
 
-procedure TForm1.Button10Click(Sender: TObject);
+procedure TForm1.ircConnectButtonClick(Sender: TObject);
+var
+  ares: array [0..10] of SmallInt;
+var
+  I: Integer;
+  S1: String;
 begin
   try
+    ircConnectButton.Enabled := false;
+
+    ListBox1.Items.Clear;
+    ListBox2.Items.Clear;
+
     idirc1.Host := 'irc.libera.chat';
     idirc1.Port := 6667;
 
@@ -943,9 +970,19 @@ begin
     idirc1.Password := ircUserPass.Text;
 
     idirc1.Connect(10000);
-    idirc1.Join('#dbase.de');
+    idirc1.Join(ircChannel.Text);
+
+    // channels
+    ircListLimit := 0;
+    statusProgress.Max := 50;
+    statusProgress.Position := 0;
+    idirc1.SendCmd('LIST',ares);
+
+    // users
+    idirc1.SendCmd('NAMES ' + ircChannel.Text,ares);
   except
-    ShowMessage('connect error');
+    ErrorBox.Text('connect error');
+    ircConnectButton.Enabled := true;
   end;
 end;
 
@@ -955,10 +992,49 @@ begin
   ShowMessage(Command);
 end;
 
-procedure TForm1.IdIRC1Message(Sender: TObject; AUser: TIdIRCUser;
-  AChannel: TIdIRCChannel; Content: String);
+procedure TForm1.IdIRC1Message(
+  Sender  : TObject;
+  AUser   : TIdIRCUser;
+  AChannel: TIdIRCChannel;
+  Content : String);
+var
+  S1: String;
 begin
-  RichEdit1.Lines.Add(Content);
+  S1 := AUser.Nick;
+  S1 := S1 + ': ' + Content;
+  RichEdit1.Lines.Add(S1);
+end;
+
+procedure TForm1.Button9Click(Sender: TObject);
+begin
+  idIRC1.Say(ircChannel.Text, sendChatTextEdit.Text)
+end;
+
+procedure TForm1.IdIRC1List(
+  Sender   : TObject;
+  AChans   : TStringList;
+  APosition: Integer;
+  ALast    : Boolean);
+begin
+  statusProgress.Position := ListBox1.Items.Count;
+  if ListBox1.Items.Count >= 50 then
+  begin
+    exit;
+  end;
+  ListBox1.Items.AddStrings(AChans);
+end;
+
+procedure TForm1.IdIRC1Names(
+  Sender  : TObject;
+  AUsers  : TIdIRCUsers;
+  AChannel: TIdIRCChannel);
+var
+  I: Integer;
+begin
+  for I := 0 to AUsers.Count - 1 do
+  begin
+    ListBox2.Items.Add(Ausers.Items[I].Nick);
+  end;
 end;
 
 end.

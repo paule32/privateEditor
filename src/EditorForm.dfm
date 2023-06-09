@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 187
-  Top = 163
+  Left = 254
+  Top = 158
   Width = 1157
   Height = 806
   Color = clBtnFace
@@ -1020,7 +1020,7 @@ object Form1: TForm1
         Width = 50
       end>
   end
-  object ProgressBar1: TProgressBar
+  object statusProgress: TProgressBar
     Left = 0
     Top = 89
     Width = 1139
@@ -1945,7 +1945,7 @@ object Form1: TForm1
             Top = 0
             Width = 590
             Height = 297
-            ActivePage = TabSheet17
+            ActivePage = TabSheet18
             Align = alClient
             TabOrder = 0
             object TabSheet17: TTabSheet
@@ -1969,24 +1969,24 @@ object Form1: TForm1
                 DesignSize = (
                   582
                   26)
-                object Edit2: TEdit
+                object sendChatTextEdit: TEdit
                   Left = 0
                   Top = 0
-                  Width = 471
+                  Width = 409
                   Height = 27
                   Anchors = [akLeft, akTop, akRight]
                   TabOrder = 0
-                  Text = 'Edit2'
                 end
               end
               object Button9: TButton
-                Left = 494
+                Left = 414
                 Top = 237
                 Width = 75
                 Height = 25
                 Anchors = [akRight, akBottom]
                 Caption = 'Send'
                 TabOrder = 1
+                OnClick = Button9Click
               end
               object Panel6: TPanel
                 Left = 0
@@ -2008,63 +2008,30 @@ object Form1: TForm1
                   DesignSize = (
                     405
                     32)
-                  object Edit3: TEdit
+                  object ircTopicEdit: TEdit
                     Left = 8
                     Top = 0
                     Width = 391
                     Height = 27
                     Anchors = [akLeft, akTop, akRight]
                     TabOrder = 0
-                    Text = 'Edit3'
-                  end
-                end
-                object Panel10: TPanel
-                  Left = 1
-                  Top = 33
-                  Width = 405
-                  Height = 32
-                  Align = alTop
-                  TabOrder = 1
-                  object Button10: TButton
-                    Left = 320
-                    Top = 3
-                    Width = 75
-                    Height = 25
-                    Caption = 'Login'
-                    TabOrder = 0
-                    OnClick = Button10Click
-                  end
-                  object ircUserName: TEdit
-                    Left = 8
-                    Top = 0
-                    Width = 121
-                    Height = 27
-                    TabOrder = 1
-                  end
-                  object ircUserPass: TEdit
-                    Left = 152
-                    Top = 0
-                    Width = 121
-                    Height = 27
-                    PasswordChar = '+'
-                    TabOrder = 2
                   end
                 end
                 object PageControl7: TPageControl
                   Left = 1
-                  Top = 65
+                  Top = 33
                   Width = 405
-                  Height = 171
+                  Height = 203
                   ActivePage = TabSheet19
                   Align = alClient
-                  TabOrder = 2
+                  TabOrder = 1
                   object TabSheet19: TTabSheet
                     Caption = 'main'
                     object RichEdit1: TRichEdit
                       Left = 0
                       Top = 0
                       Width = 397
-                      Height = 137
+                      Height = 169
                       Align = alClient
                       ReadOnly = True
                       ScrollBars = ssVertical
@@ -2084,16 +2051,123 @@ object Form1: TForm1
               end
             end
             object TabSheet18: TTabSheet
-              Caption = 'LogInfo'
+              Caption = 'Login'
               ImageIndex = 1
-              object ListBox1: TListBox
+              object Splitter7: TSplitter
+                Left = 201
+                Top = 32
+                Height = 200
+              end
+              object Panel10: TPanel
                 Left = 0
                 Top = 0
                 Width = 582
-                Height = 263
-                Align = alClient
-                ItemHeight = 19
+                Height = 32
+                Align = alTop
                 TabOrder = 0
+                object ircConnectButton: TButton
+                  Left = 0
+                  Top = 3
+                  Width = 129
+                  Height = 25
+                  Caption = 'Connect'
+                  TabOrder = 0
+                  OnClick = ircConnectButtonClick
+                end
+                object ircChannelEdit: TEdit
+                  Left = 136
+                  Top = 0
+                  Width = 281
+                  Height = 27
+                  TabOrder = 1
+                  Text = 'irc.libera.chat'
+                end
+              end
+              object Panel11: TPanel
+                Left = 0
+                Top = 232
+                Width = 582
+                Height = 31
+                Align = alBottom
+                Caption = 'Panel11'
+                TabOrder = 1
+              end
+              object ircListBox: TListBox
+                Left = 0
+                Top = 32
+                Width = 201
+                Height = 200
+                Align = alLeft
+                ItemHeight = 19
+                Items.Strings = (
+                  'irc.libera.chat')
+                TabOrder = 2
+              end
+              object PageControl8: TPageControl
+                Left = 204
+                Top = 32
+                Width = 378
+                Height = 200
+                ActivePage = TabSheet20
+                Align = alClient
+                TabOrder = 3
+                object TabSheet20: TTabSheet
+                  Caption = 'User Info'
+                  object ScrollBox2: TScrollBox
+                    Left = 0
+                    Top = 0
+                    Width = 370
+                    Height = 166
+                    Align = alClient
+                    TabOrder = 0
+                    object Label5: TLabel
+                      Left = 8
+                      Top = 2
+                      Width = 45
+                      Height = 19
+                      Caption = 'Nick:'
+                    end
+                    object Label6: TLabel
+                      Left = 8
+                      Top = 50
+                      Width = 81
+                      Height = 19
+                      Caption = 'Password:'
+                    end
+                    object Label7: TLabel
+                      Left = 8
+                      Top = 98
+                      Width = 72
+                      Height = 19
+                      Caption = 'Channel:'
+                    end
+                    object ircUserName: TEdit
+                      Left = 8
+                      Top = 24
+                      Width = 201
+                      Height = 27
+                      TabOrder = 0
+                      Text = 'rufi123'
+                    end
+                    object ircUserPass: TEdit
+                      Left = 8
+                      Top = 72
+                      Width = 201
+                      Height = 27
+                      PasswordChar = '+'
+                      TabOrder = 1
+                      Text = 'test123'
+                    end
+                    object ircChannel: TEdit
+                      Left = 8
+                      Top = 120
+                      Width = 201
+                      Height = 27
+                      TabOrder = 2
+                      Text = '#tmp'
+                    end
+                  end
+                end
               end
             end
           end
@@ -2115,13 +2189,14 @@ object Form1: TForm1
         TabOrder = 1
         object TabSheet12: TTabSheet
           Caption = 'Members'
-          object TreeView4: TTreeView
+          object ListBox1: TJvCheckListBox
             Left = 0
             Top = 0
             Width = 298
             Height = 297
             Align = alClient
-            Indent = 21
+            ItemHeight = 19
+            Sorted = True
             TabOrder = 0
           end
         end
@@ -2740,8 +2815,8 @@ object Form1: TForm1
       000000000000000000000000000000000000}
   end
   object IdAntiFreeze1: TIdAntiFreeze
-    Left = 813
-    Top = 283
+    Left = 597
+    Top = 331
   end
   object IdIRC1: TIdIRC
     MaxLineAction = maException
@@ -2756,7 +2831,9 @@ object Form1: TForm1
       'elphi.'
     UserMode = []
     OnMessage = IdIRC1Message
+    OnNames = IdIRC1Names
     OnCTCPQuery = IdIRC1CTCPQuery
+    OnList = IdIRC1List
     Left = 589
     Top = 363
   end
