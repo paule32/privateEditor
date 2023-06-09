@@ -6,7 +6,12 @@ char buffer[200];
 typedef void (*addParserErrorText)(char* message);
 static addParserErrorText m_addParserErrorText;
 
+int count(void);
 void* addTextPtr;
+
+int count(void) { return yylineno; }
+int yy_pascal_lex_get_line(void) { return count(); }
+int yy_pascal_lex_getlines(void) { return count(); }
 %}
 
 DIGIT    [0-9]
@@ -42,62 +47,64 @@ Z [z|Z]
 %x Comment1 Comment2
 %%
 
-"//".*                  { /* DO NOTHING */ }
-"//".*\n                { /* DO NOTHING */ ++yylineno; }
+"//".*                  { count(); /* DO NOTHING */ }
+"//".*\n                { count(); /* DO NOTHING */ ++yylineno; }
 
-"&&".*                  { /* DO NOTHING */ }
-"&&".*\n                { /* DO NOTHING */ ++yylineno; }
+"&&".*                  { count(); /* DO NOTHING */ }
+"&&".*\n                { count(); /* DO NOTHING */ ++yylineno; }
 
-"**".*                  { /* DO NOTHING */ }
-"**".*\n                { /* DO NOTHING */ ++yylineno; }
+"**".*                  { count(); /* DO NOTHING */ }
+"**".*\n                { count(); /* DO NOTHING */ ++yylineno; }
 
-"/*"                    {             BEGIN(Comment1); }
-<Comment1>\n*           { ++yylineno;      }
-<Comment1>"*"+"/"       { BEGIN(INITIAL);  }
+"/*"                    { count(); BEGIN(Comment1); }
+<Comment1>\n*           { count(); ++yylineno;      }
+<Comment1>"*"+"/"       { count(); BEGIN(INITIAL);  }
 
-"(*"                    {             BEGIN(Comment2); }
-<Comment2>\n*           { ++yylineno;      }
-<Comment2>"*"+")"       { BEGIN(INITIAL);  }
+"(*"                    { count(); BEGIN(Comment2); }
+<Comment2>\n*           { count(); ++yylineno;      }
+<Comment2>"*"+")"       { count(); BEGIN(INITIAL);  }
 
 [ \t]*                  { /* empty */ }
-[\n|\r\n]               { ++yylineno; }
+[\n|\r\n]               { count(); ++yylineno; }
 
-{A}{N}{D}                     { return TOK_PAS_AND; }
-{A}{R}{R}{A}{Y}               { return TOK_PAS_ARRAY; }
-{B}{E}{G}{I}{N}               { return TOK_PAS_BEGIN; }
-{C}{A}{S}{E}                  { return TOK_PAS_CASE; }
-{C}{O}{N}{S}{T}               { return TOK_PAS_CONST; }
-{D}{I}{V}                     { return TOK_PAS_DIV; }
-{D}{O}                        { return TOK_PAS_DO; }
-{D}{O}{W}{N}{T}{O}            { return TOK_PAS_DOWNTO; }
-{E}{L}{S}{E}                  { return TOK_PAS_ELSE; }
-{E}{N}{D}                     { return TOK_PAS_END; }
-{F}{I}{L}{E}                  { return TOK_PAS_FILE; }
-{F}{O}{R}                     { return TOK_PAS_FOR; }
-{F}{O}{R}{W}{A}{R}{D}         { return TOK_PAS_FORWARD; }
-{F}{U}{N}{C}{T}{I}{O}{N}      { return TOK_PAS_FUNCTION; }
-{G}{O}{T}{O}                  { return TOK_PAS_GOTO; }
-{I}{F}                        { return TOK_PAS_IF; }
-{I}{N}                        { return TOK_PAS_IN; }
-{L}{A}{B}{E}{L}               { return TOK_PAS_LABEL; }
-{M}{O}{D}                     { return TOK_PAS_MOD; }
-{N}{I}{L}                     { return TOK_PAS_NIL; }
-{N}{O}{T}                     { return TOK_PAS_NOT; }
-{O}{F}                        { return TOK_PAS_OF; }
-{O}{R}                        { return TOK_PAS_OR; }
-{P}{A}{C}{K}{E}{D}            { return TOK_PAS_PACKED; }
-{P}{R}{O}{C}{E}{D}{U}{R}{E}   { return TOK_PAS_PROCEDURE; }
-{P}{R}{O}{G}{R}{A}{M}         { MessageBox(0,"oooppp","test",0); return TOK_PAS_PROGRAM; }
-{R}{E}{C}{O}{R}{D}            { return TOK_PAS_RECORD; }
-{R}{E}{P}{E}{A}{T}            { return TOK_PAS_REPEAT; }
-{S}{E}{T}                     { return TOK_PAS_SET; }
-{T}{H}{E}{N}                  { return TOK_PAS_THEN; }
-{T}{O}                        { return TOK_PAS_TO; }
-{T}{Y}{P}{E}                  { return TOK_PAS_TYPE; }
-{U}{N}{T}{I}{L}               { return TOK_PAS_UNTIL; }
-{V}{A}{R}                     { return TOK_PAS_VAR; }
-{W}{H}{I}{L}{E}               { return TOK_PAS_WHILE; }
-{W}{I}{T}{H}                  { return TOK_PAS_WITH; }
+{A}{N}{D}                     { count(); return TOK_PAS_AND; }
+{A}{R}{R}{A}{Y}               { count(); return TOK_PAS_ARRAY; }
+{B}{E}{G}{I}{N}               { count(); return TOK_PAS_BEGIN; }
+{C}{A}{S}{E}                  { count(); return TOK_PAS_CASE; }
+{C}{O}{N}{S}{T}               { count(); return TOK_PAS_CONST; }
+{D}{I}{V}                     { count(); return TOK_PAS_DIV; }
+{D}{O}                        { count(); return TOK_PAS_DO; }
+{D}{O}{W}{N}{T}{O}            { count(); return TOK_PAS_DOWNTO; }
+{E}{L}{S}{E}                  { count(); return TOK_PAS_ELSE; }
+{E}{N}{D}                     { count(); return TOK_PAS_END; }
+{F}{I}{L}{E}                  { count(); return TOK_PAS_FILE; }
+{F}{O}{R}                     { count(); return TOK_PAS_FOR; }
+{F}{O}{R}{W}{A}{R}{D}         { count(); return TOK_PAS_FORWARD; }
+{F}{U}{N}{C}{T}{I}{O}{N}      { count(); return TOK_PAS_FUNCTION; }
+{G}{O}{T}{O}                  { count(); return TOK_PAS_GOTO; }
+{I}{F}                        { count(); return TOK_PAS_IF; }
+{I}{N}                        { count(); return TOK_PAS_IN; }
+{L}{A}{B}{E}{L}               { count(); return TOK_PAS_LABEL; }
+{L}{I}{B}{R}{A}{R}{Y}         { count(); return TOK_PAS_LIBRARY; }
+{M}{O}{D}                     { count(); return TOK_PAS_MOD; }
+{N}{I}{L}                     { count(); return TOK_PAS_NIL; }
+{N}{O}{T}                     { count(); return TOK_PAS_NOT; }
+{O}{F}                        { count(); return TOK_PAS_OF; }
+{O}{R}                        { count(); return TOK_PAS_OR; }
+{P}{A}{C}{K}{E}{D}            { count(); return TOK_PAS_PACKED; }
+{P}{R}{O}{C}{E}{D}{U}{R}{E}   { count(); return TOK_PAS_PROCEDURE; }
+{P}{R}{O}{G}{R}{A}{M}         { count(); return TOK_PAS_PROGRAM; }
+{R}{E}{C}{O}{R}{D}            { count(); return TOK_PAS_RECORD; }
+{R}{E}{P}{E}{A}{T}            { count(); return TOK_PAS_REPEAT; }
+{S}{E}{T}                     { count(); return TOK_PAS_SET; }
+{T}{H}{E}{N}                  { count(); return TOK_PAS_THEN; }
+{T}{O}                        { count(); return TOK_PAS_TO; }
+{T}{Y}{P}{E}                  { count(); return TOK_PAS_TYPE; }
+{U}{N}{I}{T}                  { count(); return TOK_PAS_UNIT; }
+{U}{N}{T}{I}{L}               { count(); return TOK_PAS_UNTIL; }
+{V}{A}{R}                     { count(); return TOK_PAS_VAR; }
+{W}{H}{I}{L}{E}               { count(); return TOK_PAS_WHILE; }
+{W}{I}{T}{H}                  { count(); return TOK_PAS_WITH; }
 
 {ID}                          { return TOK_PAS_ID;  }
 
@@ -125,7 +132,7 @@ Z [z|Z]
 
 .                 {
   sprintf( buffer, "Unrecognized character: %s\n", yytext );
-  MessageBox(0,buffer,"test",0);
+  pascalerror(buffer);
 }
 
 %%
@@ -136,18 +143,17 @@ void yy_pascal_lex_parser_error(void (*func)(char*)) {
 
 int pascalwrap(void) { return 1; }
 
-void pascalerror(char* message)
+void pascalerror(char* m)
 {
-  char* bu;
-  bu = (char*) malloc(strlen(message)+42);
-  strcpy(bu,"error: ");
-  strcat(bu,message);
-
+  char bu[320];
+  sprintf(bu,"error: %d: %s",
+  yylineno, m);
   m_addParserErrorText(bu);
 }
 
 BOOL yy_pascal_lex_main(char* filename)
 {
+  BOOL result;
   yyin = fopen(filename,"r");
   if (!yyin) {
     sprintf(buffer, "could not open file: %s", filename);
@@ -156,15 +162,20 @@ BOOL yy_pascal_lex_main(char* filename)
   }
 
   //yylex();
-  pascalparse();
+  result = pascalparse();
   fclose(yyin);
 
-  return true;
+  return result;
 }
 
-int yy_pascal_lex_getlines(void) { return yylineno-1; }
+void yy_pascal_lex_close(void) {
+  fclose(yyin);
+}
 
 void __declspec(dllexport) yy_pascal_lex_parser_error(void (*func)(char*));
+void __declspec(dllexport) yy_pascal_lex_close(void);
+
+int  __declspec(dllexport) yy_pascal_lex_get_line(void);
 int  __declspec(dllexport) yy_pascal_lex_getlines(void);
 
 BOOL __declspec(dllexport) yy_pascal_lex_main(char* filename);

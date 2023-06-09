@@ -129,32 +129,36 @@ enum yysymbol_kind_t
   YYSYMBOL_TOK_PAS_IF = 18,                /* TOK_PAS_IF  */
   YYSYMBOL_TOK_PAS_IN = 19,                /* TOK_PAS_IN  */
   YYSYMBOL_TOK_PAS_LABEL = 20,             /* TOK_PAS_LABEL  */
-  YYSYMBOL_TOK_PAS_MOD = 21,               /* TOK_PAS_MOD  */
-  YYSYMBOL_TOK_PAS_NIL = 22,               /* TOK_PAS_NIL  */
-  YYSYMBOL_TOK_PAS_NOT = 23,               /* TOK_PAS_NOT  */
-  YYSYMBOL_TOK_PAS_OF = 24,                /* TOK_PAS_OF  */
-  YYSYMBOL_TOK_PAS_OR = 25,                /* TOK_PAS_OR  */
-  YYSYMBOL_TOK_PAS_PACKED = 26,            /* TOK_PAS_PACKED  */
-  YYSYMBOL_TOK_PAS_PROCEDURE = 27,         /* TOK_PAS_PROCEDURE  */
-  YYSYMBOL_TOK_PAS_PROGRAM = 28,           /* TOK_PAS_PROGRAM  */
-  YYSYMBOL_TOK_PAS_RECORD = 29,            /* TOK_PAS_RECORD  */
-  YYSYMBOL_TOK_PAS_REPEAT = 30,            /* TOK_PAS_REPEAT  */
-  YYSYMBOL_TOK_PAS_SET = 31,               /* TOK_PAS_SET  */
-  YYSYMBOL_TOK_PAS_THEN = 32,              /* TOK_PAS_THEN  */
-  YYSYMBOL_TOK_PAS_TO = 33,                /* TOK_PAS_TO  */
-  YYSYMBOL_TOK_PAS_TYPE = 34,              /* TOK_PAS_TYPE  */
-  YYSYMBOL_TOK_PAS_UNTIL = 35,             /* TOK_PAS_UNTIL  */
-  YYSYMBOL_TOK_PAS_VAR = 36,               /* TOK_PAS_VAR  */
-  YYSYMBOL_TOK_PAS_WHILE = 37,             /* TOK_PAS_WHILE  */
-  YYSYMBOL_TOK_PAS_WITH = 38,              /* TOK_PAS_WITH  */
-  YYSYMBOL_TOK_PAS_ID = 39,                /* TOK_PAS_ID  */
-  YYSYMBOL_40_ = 40,                       /* ';'  */
-  YYSYMBOL_41_ = 41,                       /* '.'  */
-  YYSYMBOL_YYACCEPT = 42,                  /* $accept  */
-  YYSYMBOL_translate_unit = 43,            /* translate_unit  */
-  YYSYMBOL_begin = 44,                     /* begin  */
-  YYSYMBOL_end = 45,                       /* end  */
-  YYSYMBOL_program = 46                    /* program  */
+  YYSYMBOL_TOK_PAS_LIBRARY = 21,           /* TOK_PAS_LIBRARY  */
+  YYSYMBOL_TOK_PAS_MOD = 22,               /* TOK_PAS_MOD  */
+  YYSYMBOL_TOK_PAS_NIL = 23,               /* TOK_PAS_NIL  */
+  YYSYMBOL_TOK_PAS_NOT = 24,               /* TOK_PAS_NOT  */
+  YYSYMBOL_TOK_PAS_OF = 25,                /* TOK_PAS_OF  */
+  YYSYMBOL_TOK_PAS_OR = 26,                /* TOK_PAS_OR  */
+  YYSYMBOL_TOK_PAS_PACKED = 27,            /* TOK_PAS_PACKED  */
+  YYSYMBOL_TOK_PAS_PROCEDURE = 28,         /* TOK_PAS_PROCEDURE  */
+  YYSYMBOL_TOK_PAS_PROGRAM = 29,           /* TOK_PAS_PROGRAM  */
+  YYSYMBOL_TOK_PAS_RECORD = 30,            /* TOK_PAS_RECORD  */
+  YYSYMBOL_TOK_PAS_REPEAT = 31,            /* TOK_PAS_REPEAT  */
+  YYSYMBOL_TOK_PAS_SET = 32,               /* TOK_PAS_SET  */
+  YYSYMBOL_TOK_PAS_THEN = 33,              /* TOK_PAS_THEN  */
+  YYSYMBOL_TOK_PAS_TO = 34,                /* TOK_PAS_TO  */
+  YYSYMBOL_TOK_PAS_TYPE = 35,              /* TOK_PAS_TYPE  */
+  YYSYMBOL_TOK_PAS_UNIT = 36,              /* TOK_PAS_UNIT  */
+  YYSYMBOL_TOK_PAS_UNTIL = 37,             /* TOK_PAS_UNTIL  */
+  YYSYMBOL_TOK_PAS_VAR = 38,               /* TOK_PAS_VAR  */
+  YYSYMBOL_TOK_PAS_WHILE = 39,             /* TOK_PAS_WHILE  */
+  YYSYMBOL_TOK_PAS_WITH = 40,              /* TOK_PAS_WITH  */
+  YYSYMBOL_TOK_PAS_ID = 41,                /* TOK_PAS_ID  */
+  YYSYMBOL_42_ = 42,                       /* ';'  */
+  YYSYMBOL_43_ = 43,                       /* '.'  */
+  YYSYMBOL_YYACCEPT = 44,                  /* $accept  */
+  YYSYMBOL_translate_unit = 45,            /* translate_unit  */
+  YYSYMBOL_begin = 46,                     /* begin  */
+  YYSYMBOL_end = 47,                       /* end  */
+  YYSYMBOL_program = 48,                   /* program  */
+  YYSYMBOL_unit = 49,                      /* unit  */
+  YYSYMBOL_library = 50                    /* library  */
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
 
@@ -480,21 +484,21 @@ union yyalloc
 #endif /* !YYCOPY_NEEDED */
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  5
+#define YYFINAL  11
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   6
+#define YYLAST   18
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  42
+#define YYNTOKENS  44
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  5
+#define YYNNTS  7
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  5
+#define YYNRULES  9
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  12
+#define YYNSTATES  26
 
 /* YYMAXUTOK -- Last valid token kind.  */
-#define YYMAXUTOK   294
+#define YYMAXUTOK   296
 
 
 /* YYTRANSLATE(TOKEN-NUM) -- Symbol number corresponding to TOKEN-NUM
@@ -512,8 +516,8 @@ static const yytype_int8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,    41,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,    40,
+       2,     2,     2,     2,     2,     2,    43,     2,     2,     2,
+       2,     2,     2,     2,     2,     2,     2,     2,     2,    42,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -537,14 +541,14 @@ static const yytype_int8 yytranslate[] =
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
       15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
       25,    26,    27,    28,    29,    30,    31,    32,    33,    34,
-      35,    36,    37,    38,    39
+      35,    36,    37,    38,    39,    40,    41
 };
 
 #if YYDEBUG
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    49,    49,    52,    55,    58
+       0,    51,    51,    52,    53,    57,    60,    64,    67,    70
 };
 #endif
 
@@ -565,12 +569,13 @@ static const char *const yytname[] =
   "TOK_PAS_DIV", "TOK_PAS_DO", "TOK_PAS_DOWNTO", "TOK_PAS_ELSE",
   "TOK_PAS_END", "TOK_PAS_FILE", "TOK_PAS_FOR", "TOK_PAS_FORWARD",
   "TOK_PAS_FUNCTION", "TOK_PAS_GOTO", "TOK_PAS_IF", "TOK_PAS_IN",
-  "TOK_PAS_LABEL", "TOK_PAS_MOD", "TOK_PAS_NIL", "TOK_PAS_NOT",
-  "TOK_PAS_OF", "TOK_PAS_OR", "TOK_PAS_PACKED", "TOK_PAS_PROCEDURE",
-  "TOK_PAS_PROGRAM", "TOK_PAS_RECORD", "TOK_PAS_REPEAT", "TOK_PAS_SET",
-  "TOK_PAS_THEN", "TOK_PAS_TO", "TOK_PAS_TYPE", "TOK_PAS_UNTIL",
-  "TOK_PAS_VAR", "TOK_PAS_WHILE", "TOK_PAS_WITH", "TOK_PAS_ID", "';'",
-  "'.'", "$accept", "translate_unit", "begin", "end", "program", YY_NULLPTR
+  "TOK_PAS_LABEL", "TOK_PAS_LIBRARY", "TOK_PAS_MOD", "TOK_PAS_NIL",
+  "TOK_PAS_NOT", "TOK_PAS_OF", "TOK_PAS_OR", "TOK_PAS_PACKED",
+  "TOK_PAS_PROCEDURE", "TOK_PAS_PROGRAM", "TOK_PAS_RECORD",
+  "TOK_PAS_REPEAT", "TOK_PAS_SET", "TOK_PAS_THEN", "TOK_PAS_TO",
+  "TOK_PAS_TYPE", "TOK_PAS_UNIT", "TOK_PAS_UNTIL", "TOK_PAS_VAR",
+  "TOK_PAS_WHILE", "TOK_PAS_WITH", "TOK_PAS_ID", "';'", "'.'", "$accept",
+  "translate_unit", "begin", "end", "program", "unit", "library", YY_NULLPTR
 };
 
 static const char *
@@ -580,7 +585,7 @@ yysymbol_name (yysymbol_kind_t yysymbol)
 }
 #endif
 
-#define YYPACT_NINF (-39)
+#define YYPACT_NINF (-37)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
@@ -594,8 +599,9 @@ yysymbol_name (yysymbol_kind_t yysymbol)
    STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-     -28,   -38,     2,   -37,   -39,   -39,    -1,   -39,    -7,   -39,
-     -35,   -39
+     -21,   -36,   -35,   -34,     9,   -32,   -31,   -30,   -37,   -37,
+     -37,   -37,     8,     8,     8,   -37,     2,     2,     2,   -37,
+     -27,   -26,   -25,   -37,   -37,   -37
 };
 
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -603,20 +609,21 @@ static const yytype_int8 yypact[] =
    means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-       0,     0,     0,     0,     5,     1,     0,     3,     0,     4,
-       0,     2
+       0,     0,     0,     0,     0,     0,     0,     0,     9,     7,
+       8,     1,     0,     0,     0,     5,     0,     0,     0,     6,
+       0,     0,     0,     2,     3,     4
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -39,   -39,   -39,   -39,   -39
+     -37,   -37,   -12,   -14,   -37,   -37,   -37
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-       0,     2,     8,    10,     3
+       0,     4,    16,    20,     5,     6,     7
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -624,32 +631,35 @@ static const yytype_int8 yydefgoto[] =
    number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-       1,     4,     5,     6,     7,     9,    11
+       1,    17,    18,    21,    22,     8,     9,    10,     2,    11,
+      12,    13,    14,    15,    19,     3,    23,    24,    25
 };
 
 static const yytype_int8 yycheck[] =
 {
-      28,    39,     0,    40,     5,    12,    41
+      21,    13,    14,    17,    18,    41,    41,    41,    29,     0,
+      42,    42,    42,     5,    12,    36,    43,    43,    43
 };
 
 /* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
    state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,    28,    43,    46,    39,     0,    40,     5,    44,    12,
-      45,    41
+       0,    21,    29,    36,    45,    48,    49,    50,    41,    41,
+      41,     0,    42,    42,    42,     5,    46,    46,    46,    12,
+      47,    47,    47,    43,    43,    43
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr1[] =
 {
-       0,    42,    43,    44,    45,    46
+       0,    44,    45,    45,    45,    46,    47,    48,    49,    50
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr2[] =
 {
-       0,     2,     5,     1,     1,     2
+       0,     2,     5,     5,     5,     1,     1,     2,     2,     2
 };
 
 
@@ -1112,15 +1122,8 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-  case 5: /* program: TOK_PAS_PROGRAM TOK_PAS_ID  */
-#line 58 "PascalDSL.y"
-                               { MessageBox(0,"buffer","test",0);
-  }
-#line 1120 "PascalDSL.tab.c"
-    break;
 
-
-#line 1124 "PascalDSL.tab.c"
+#line 1127 "PascalDSL.tab.c"
 
       default: break;
     }
@@ -1313,6 +1316,6 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 62 "PascalDSL.y"
+#line 73 "PascalDSL.y"
 
 

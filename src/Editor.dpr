@@ -6,7 +6,8 @@ uses
   AboutBox in 'AboutBox.pas' {OKRightDlg},
   FolderHelper in 'FolderHelper.pas',
   InputBox in 'InputBox.pas' {InputBoxWindow},
-  ErrorBoxForm in 'ErrorBoxForm.pas' {ErrorBox};
+  ErrorBoxForm in 'ErrorBoxForm.pas' {ErrorBox},
+  InfoBoxForm in 'InfoBoxForm.pas' {InfoBox};
 
 {$R *.res}
 

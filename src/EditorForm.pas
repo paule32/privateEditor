@@ -7,7 +7,9 @@ uses
   Dialogs, ComCtrls, ExtCtrls, JvExControls, JvSpeedButton, ToolWin,
   SynEdit, JvGradientCaption, Menus, SynEditHighlighter, SynHighlighterPas,
   JvStringHolder, CtrlMenuBarButton, JvMenus, StdCtrls, Mask, JvExMask,
-  JvSpin, Buttons, CheckLst, ShellApi, ShlObj, ImgList;
+  JvSpin, Buttons, CheckLst, ShellApi, ShlObj, ImgList, OleCtrls, SHDocVw,
+  IdComponent, IdTCPConnection, IdTCPClient, IdIRC, IdBaseComponent,
+  IdAntiFreezeBase, IdAntiFreeze;
 
 type
   TForm1 = class(TForm)
@@ -156,6 +158,29 @@ type
     PreviewPageControl: TPageControl;
     TabSheet14: TTabSheet;
     TabSheet15: TTabSheet;
+    WebBrowser1: TWebBrowser;
+    TabSheet16: TTabSheet;
+    PageControl6: TPageControl;
+    TabSheet17: TTabSheet;
+    TabSheet18: TTabSheet;
+    ListBox1: TListBox;
+    Panel5: TPanel;
+    Edit2: TEdit;
+    Button9: TButton;
+    Panel6: TPanel;
+    Splitter6: TSplitter;
+    ListBox2: TListBox;
+    Panel9: TPanel;
+    Edit3: TEdit;
+    Panel10: TPanel;
+    IdAntiFreeze1: TIdAntiFreeze;
+    IdIRC1: TIdIRC;
+    Button10: TButton;
+    PageControl7: TPageControl;
+    TabSheet19: TTabSheet;
+    RichEdit1: TRichEdit;
+    ircUserName: TEdit;
+    ircUserPass: TEdit;
     procedure PopupMenu_File_NewClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -193,6 +218,12 @@ type
     procedure MainPageControlChange(Sender: TObject);
     procedure PreviewPageControlChange(Sender: TObject);
     procedure Options1Click(Sender: TObject);
+    procedure Button10Click(Sender: TObject);
+    procedure IdIRC1CTCPQuery(Sender: TObject; User: TIdIRCUser;
+      AChannel: TIdIRCChannel; Command, Args: String;
+      var ASuppress: Boolean);
+    procedure IdIRC1Message(Sender: TObject; AUser: TIdIRCUser;
+      AChannel: TIdIRCChannel; Content: String);
   private
     Cv1: TCanvas;
   public
@@ -208,7 +239,7 @@ implementation
 {$R *.dfm}
 
 uses
-  ErrorBoxForm, AboutBox, InputBox;
+  ErrorBoxForm, InfoBoxForm, AboutBox, InputBox;
 
 function GetShellFolder(CSIDLFolder : integer) : string;
 begin
@@ -262,6 +293,7 @@ end;
 procedure TForm1.FormCreate(Sender: TObject);
 begin
   ErrorBox := TErrorBox.Create(Form1);
+  InfoBox  := TInfoBox.Create(Form1);
 
   SynEdit1.Lines.Clear;
 
@@ -321,7 +353,7 @@ end;
 procedure TForm1.PopupMenu_File_OpenClick(Sender: TObject);
 var
   FS: TFileStream;
-  S: String;
+  S1, S2: String;
 begin
   if not(OpenDialog1.Execute) then
   begin
@@ -329,8 +361,11 @@ begin
     exit;
   end;
 
-  if (Length(OpenDialog1.FileName) < 1)
-  or (Length(OpenDialog1.FileName) > 255) then
+  S1 := OpenDialog1.FileName;
+  S2 := ExtractFileName(S1);
+
+  if (Length(S2) < 1)
+  or (Length(S2) > 255) then
   begin
     ErrorBox.Text('file name to short, or to long.');
     exit;
@@ -339,16 +374,16 @@ begin
   // Pascal
   if ModeButton.Tag = 1 then
   begin
-    if not(ExtractFileExt(OpenDialog1.FileName) = 'pas') then
+    if not(ExtractFileExt(S2) = 'pas') then
     begin
       ErrorBox.Text('only .pas files allowed.');
       exit;
     end;
-    FS := TFileStream.Create(OpenDialog1.FileName,fmOpenRead);
+    FS := TFileStream.Create(S1,fmOpenRead);
     try
-      FS.ReadBuffer(S,FS.Size);
+      FS.ReadBuffer(S1,FS.Size);
       SynEdit1.Lines.Clear;
-      SynEdit1.Lines.Add(S);
+      SynEdit1.Lines.Add(S1);
     finally
       FS.Free;
     end;
@@ -478,6 +513,7 @@ begin
   Cv1.Free;
   Cv1 := nil;
   ErrorBox.Free;
+  InfoBox.Free;
 end;
 
 procedure TForm1.PopupMenu_Help_AboutClick(Sender: TObject);
@@ -525,7 +561,7 @@ end;
 
 procedure TForm1.JvSpeedButton1Click(Sender: TObject);
 var
-  S: String;
+  S1,S2: String;
   SL: TStringList;
 begin
   if SynEdit1.Modified then
@@ -536,51 +572,58 @@ begin
       begin
         ErrorBox.Text('something went wrong on save file.');
         exit;
-      end else
+      end;
+
+      S1 := SaveDialog1.FileName;
+      S2 := ExtractFileName(s1);
+
+      if FileExists(S1) then
       begin
-        if FileExists(SaveDialog1.FileName) then
-        begin
-          if MessageDlg('The file already exists !' + #13 +
-          'Would you override the old Version ?',
-          mtWarning,mbOKCancel,0) = mrCancel then
-          exit;
-        end;
-        TabSheet2.Caption := SaveDialog1.FileName;
-        S := SynEdit1.Lines.Text;
-        sl := TStringList.Create;
-        sl.Add(S);
-        sl.SaveToFile(SaveDialog1.FileName);
-        sl.Free;
-        //SynEdit1.Lines.SaveToFile(SaveDialog1.FileName);
-        SynEdit1.Modified := false;
+        if MessageDlg('The file already exists !' + #13 +
+        'Would you override the old Version ?',
+        mtWarning,mbOKCancel,0) = mrCancel then
         exit;
       end;
-    end else
-    begin
-      TabSheet2.Caption := SaveDialog1.FileName;
-      S := SynEdit1.Lines.Text;
+
+      TabSheet2.Caption := S2;
+
       sl := TStringList.Create;
-      sl.Add(S);
-      sl.SaveToFile(SaveDialog1.FileName);
+      sl.Add(SynEdit1.Lines.Text);
+      sl.SaveToFile(S1);
       sl.Free;
-      //SynEdit1.Lines.SaveToFile(SaveDialog1.FileName);
+
       SynEdit1.Modified := false;
       exit;
     end;
-  end else
-  begin
-    if not(OpenDialog1.Execute) then
-    begin
-      ErrorBox.Text('something went wrong on open file.');
-      exit;
-    end;
-    TabSheet2.Caption := OpenDialog1.FileName;
-    SynEdit1.Lines.Clear;
-    SynEdit1.Lines.LoadFromFile(OpenDialog1.FileName);
-    SynEdit1.Lines.Delete(SynEdit1.Lines.Count - 1);
+
+    S1 := SaveDialog1.FileName;
+    S2 := ExtractFileName(s1);
+
+    TabSheet2.Caption := S2;
+
+    sl := TStringList.Create;
+    sl.Add(SynEdit1.Lines.Text);
+    sl.SaveToFile(S1);
+    sl.Free;
+
     SynEdit1.Modified := false;
     exit;
   end;
+
+  if not(OpenDialog1.Execute) then
+  begin
+    ErrorBox.Text('something went wrong on open file.');
+    exit;
+  end;
+
+  S1 := OpenDialog1.FileName;
+  S2 := ExtractFileName(s1);
+
+  TabSheet2.Caption := S2;
+  SynEdit1.Lines.Clear;
+  SynEdit1.Lines.LoadFromFile(S1);
+  SynEdit1.Lines.Delete(SynEdit1.Lines.Count - 1);
+  SynEdit1.Modified := false;
 end;
 
 procedure TForm1.JvSpeedButton2Click(Sender: TObject);
@@ -610,16 +653,19 @@ end;
 
 procedure TForm1.StartCompileClick(Sender: TObject);
 var
-  callParser:         function(fileSrc: PChar): BOOL; cdecl;
-  callParserGetLines: function: Integer; cdecl;
-  callParserError   : procedure(msg: PChar); cdecl;
+  callParser:          function(fileSrc: PChar): BOOL; cdecl;
+  callParserGetLine  : function: Integer; cdecl;
+  callParserGetLines : function: Integer; cdecl;
+  callParserCloseFile: procedure; cdecl;
+  callParserError    : procedure(msg: PChar); cdecl;
 
   Handle : THandle;
   yylines: Integer;
   res: String;
+
   procedure ParserError(msg: PChar);
   begin
-    ErrorBox.Text(msg);
+    raise Exception.Create(msg);
   end;
 begin
   JvSpeedButton2Click(Sender);
@@ -634,9 +680,11 @@ begin
     DateTimeToString(res,'',now);
     buildListBox.Items.Insert(0,res + ': load parsers.dll: OK.');
 
-    callParser         := GetProcAddress(Handle,'_yy_pascal_lex_main');
-    callParserGetLines := GetProcAddress(Handle,'_yy_pascal_lex_getlines');
-    callParserError    := GetProcAddress(Handle,'_yy_pascal_lex_parser_error');
+    callParser          := GetProcAddress(Handle,'_yy_pascal_lex_main');
+    callParserCloseFile := GetProcAddress(Handle,'_yy_pascal_lex_close');
+    callParserGetLine   := GetProcAddress(Handle,'_yy_pascal_lex_get_line');
+    callParserGetLines  := GetProcAddress(Handle,'_yy_pascal_lex_getlines');
+    callParserError     := GetProcAddress(Handle,'_yy_pascal_lex_parser_error');
 
     // hook: yyerror
     if @callParserError <> nil then
@@ -654,7 +702,18 @@ begin
 
     if @callParser <> nil then
     begin
-      callParser(PChar(TabSheet2.Caption));
+      try
+        callParser(PChar(TabSheet2.Caption));
+        InfoBox.Text('Compile OK' + #13#10 +
+        'Lines: ' + IntToStr(callParserGetLines-1));
+      except
+        on E: Exception do
+        begin
+          callParserCloseFile;
+          ErrorBox.Text('Exception:' + #13 +
+          E.Message);
+        end;
+      end;
     end;
 
     FreeLibrary(handle);
@@ -690,16 +749,21 @@ end;
 
 procedure TForm1.EditorOptions1Click(Sender: TObject);
 begin
+(*
   MainPageControl.Pages[0].TabVisible := false;
   MainPageControl.Pages[1].TabVisible := true;
   MainPageControl.Pages[0].TabVisible := true;
+*)
   TabSheet_Options.Visible := true;
   TabSheet_Options.Enabled := true;
   TabSheet_Options.SetFocus;
-  PageControl3.Pages[0].TabVisible := true;
-  TabSheet5.Visible := true;
-  TabSheet5.Enabled := true;
-  TabSheet5.SetFocus;
+
+  MainPageControl.ActivePage := TabSheet_Options;
+
+//  PageControl3.Pages[0].TabVisible := true;
+//  TabSheet5.Visible := true;
+//  TabSheet5.Enabled := true;
+//  TabSheet5.SetFocus;
 end;
 
 procedure TForm1.SynEdit1KeyDown(Sender: TObject; var Key: Word;
@@ -866,6 +930,35 @@ procedure TForm1.Options1Click(Sender: TObject);
 begin
   TabSheet_Options.Visible   := true;
   MainPageControl.ActivePage := TabSheet_Options;
+end;
+
+procedure TForm1.Button10Click(Sender: TObject);
+begin
+  try
+    idirc1.Host := 'irc.libera.chat';
+    idirc1.Port := 6667;
+
+    idirc1.Username := ircUserName.Text;
+    idirc1.Nick     := ircUserName.Text;
+    idirc1.Password := ircUserPass.Text;
+
+    idirc1.Connect(10000);
+    idirc1.Join('#dbase.de');
+  except
+    ShowMessage('connect error');
+  end;
+end;
+
+procedure TForm1.IdIRC1CTCPQuery(Sender: TObject; User: TIdIRCUser;
+  AChannel: TIdIRCChannel; Command, Args: String; var ASuppress: Boolean);
+begin
+  ShowMessage(Command);
+end;
+
+procedure TForm1.IdIRC1Message(Sender: TObject; AUser: TIdIRCUser;
+  AChannel: TIdIRCChannel; Content: String);
+begin
+  RichEdit1.Lines.Add(Content);
 end;
 
 end.

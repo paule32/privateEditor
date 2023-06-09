@@ -48,3 +48,8 @@ src/lex.pascal.c
 src/lex.pascal.c
 src/PascalDSL.~y
 src/6
+src/Editor.~dpr
+src/Editor.~dpr
+src/InfoBoxForm.~pas
+src/InfoBoxForm.~dfm
+src/PascalDSL.~y

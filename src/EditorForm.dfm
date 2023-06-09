@@ -1,8 +1,8 @@
 object Form1: TForm1
-  Left = 207
-  Top = 228
-  Width = 1079
-  Height = 689
+  Left = 187
+  Top = 163
+  Width = 1157
+  Height = 806
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -17,8 +17,8 @@ object Form1: TForm1
   TextHeight = 16
   object Splitter1: TSplitter
     Left = 0
-    Top = 521
-    Width = 1061
+    Top = 638
+    Width = 1139
     Height = 3
     Cursor = crVSplit
     Align = alBottom
@@ -26,7 +26,7 @@ object Form1: TForm1
   object LeftSplitter: TSplitter
     Left = 225
     Top = 99
-    Height = 422
+    Height = 539
     AutoSnap = False
     Color = clGradientInactiveCaption
     MinSize = 42
@@ -35,27 +35,27 @@ object Form1: TForm1
   object CoolBar1: TCoolBar
     Left = 0
     Top = 0
-    Width = 1061
+    Width = 1139
     Height = 89
     Bands = <
       item
         Control = Panel1
         ImageIndex = -1
         MinHeight = 34
-        Width = 1057
+        Width = 1135
       end
       item
         Control = Panel2
         HorizontalOnly = True
         ImageIndex = -1
         MinHeight = 42
-        Width = 1057
+        Width = 1135
       end>
     FixedSize = True
     object Panel1: TPanel
       Left = 9
       Top = 4
-      Width = 1044
+      Width = 1122
       Height = 34
       Align = alClient
       AutoSize = True
@@ -200,7 +200,7 @@ object Form1: TForm1
         Transparent = True
       end
       object CtrlMenuBarButton2: TCtrlMenuBarButton
-        Left = 1002
+        Left = 1080
         Top = 1
         Width = 41
         Height = 32
@@ -360,7 +360,7 @@ object Form1: TForm1
     object Panel2: TPanel
       Left = 9
       Top = 44
-      Width = 1044
+      Width = 1122
       Height = 42
       TabOrder = 1
       object StartCompile: TJvSpeedButton
@@ -518,7 +518,7 @@ object Form1: TForm1
         OnClick = StartCompileClick
       end
       object ModeButton: TJvSpeedButton
-        Left = 898
+        Left = 976
         Top = 1
         Width = 145
         Height = 40
@@ -1007,8 +1007,8 @@ object Form1: TForm1
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 617
-    Width = 1061
+    Top = 734
+    Width = 1139
     Height = 27
     Panels = <
       item
@@ -1023,7 +1023,7 @@ object Form1: TForm1
   object ProgressBar1: TProgressBar
     Left = 0
     Top = 89
-    Width = 1061
+    Width = 1139
     Height = 10
     Align = alTop
     Position = 20
@@ -1031,8 +1031,8 @@ object Form1: TForm1
   end
   object Panel3: TPanel
     Left = 0
-    Top = 524
-    Width = 1061
+    Top = 641
+    Width = 1139
     Height = 93
     Align = alBottom
     Caption = 'Panel3'
@@ -1040,7 +1040,7 @@ object Form1: TForm1
     object PageControl1: TPageControl
       Left = 1
       Top = 1
-      Width = 1059
+      Width = 1137
       Height = 91
       ActivePage = TabSheet7
       Align = alClient
@@ -1087,7 +1087,7 @@ object Form1: TForm1
     Left = 0
     Top = 99
     Width = 225
-    Height = 422
+    Height = 539
     Align = alLeft
     Caption = 'LeftPanel'
     TabOrder = 4
@@ -1095,7 +1095,7 @@ object Form1: TForm1
       Left = 1
       Top = 1
       Width = 223
-      Height = 420
+      Height = 537
       ActivePage = TabSheet1
       Align = alClient
       TabOrder = 0
@@ -1142,7 +1142,7 @@ object Form1: TForm1
         end
         object Panel7: TPanel
           Left = 0
-          Top = 336
+          Top = 453
           Width = 215
           Height = 53
           Align = alBottom
@@ -1508,7 +1508,7 @@ object Form1: TForm1
           Left = 0
           Top = 132
           Width = 215
-          Height = 204
+          Height = 321
           Align = alClient
           Indent = 21
           TabOrder = 2
@@ -1523,28 +1523,28 @@ object Form1: TForm1
   object EditPanel: TPanel
     Left = 228
     Top = 99
-    Width = 833
-    Height = 422
+    Width = 911
+    Height = 539
     Align = alClient
     Caption = 'EditPanel'
     TabOrder = 5
     object Splitter3: TSplitter
       Left = 1
-      Top = 313
-      Width = 831
+      Top = 430
+      Width = 909
       Height = 3
       Cursor = crVSplit
       Align = alTop
     end
     object Splitter4: TSplitter
-      Left = 521
-      Top = 316
+      Left = 599
+      Top = 433
       Height = 105
     end
     object PageControl2: TPageControl
       Left = 1
-      Top = 316
-      Width = 520
+      Top = 433
+      Width = 598
       Height = 105
       ActivePage = TabSheet4
       Align = alLeft
@@ -1561,7 +1561,7 @@ object Form1: TForm1
         object SynEdit2: TSynEdit
           Left = 0
           Top = 0
-          Width = 512
+          Width = 590
           Height = 71
           Align = alClient
           Font.Charset = DEFAULT_CHARSET
@@ -1591,7 +1591,7 @@ object Form1: TForm1
         object SynEdit3: TSynEdit
           Left = 0
           Top = 0
-          Width = 512
+          Width = 590
           Height = 71
           Align = alClient
           Font.Charset = DEFAULT_CHARSET
@@ -1621,7 +1621,7 @@ object Form1: TForm1
         object SynEdit4: TSynEdit
           Left = 0
           Top = 0
-          Width = 512
+          Width = 590
           Height = 71
           Align = alClient
           Font.Charset = DEFAULT_CHARSET
@@ -1647,8 +1647,8 @@ object Form1: TForm1
       end
     end
     object PageControl4: TPageControl
-      Left = 524
-      Top = 316
+      Left = 602
+      Top = 433
       Width = 308
       Height = 105
       ActivePage = TabSheet10
@@ -1689,23 +1689,23 @@ object Form1: TForm1
     object Panel8: TPanel
       Left = 1
       Top = 97
-      Width = 831
-      Height = 216
+      Width = 909
+      Height = 333
       Align = alTop
       Anchors = [akLeft, akTop, akRight, akBottom]
       Caption = 'Panel6'
       TabOrder = 2
       object Splitter5: TSplitter
-        Left = 521
+        Left = 599
         Top = 1
-        Height = 214
+        Height = 331
       end
       object MainPageControl: TPageControl
         Left = 1
         Top = 1
-        Width = 520
-        Height = 214
-        ActivePage = TabSheet_Options
+        Width = 598
+        Height = 331
+        ActivePage = TabSheet16
         Align = alLeft
         Anchors = [akLeft, akTop, akRight, akBottom]
         Font.Charset = DEFAULT_CHARSET
@@ -1721,8 +1721,8 @@ object Form1: TForm1
           object SynEdit1: TSynEdit
             Left = 0
             Top = 0
-            Width = 512
-            Height = 180
+            Width = 590
+            Height = 297
             Align = alClient
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clWindowText
@@ -1751,8 +1751,8 @@ object Form1: TForm1
           object ScrollBox1: TScrollBox
             Left = 0
             Top = 0
-            Width = 512
-            Height = 180
+            Width = 590
+            Height = 297
             Align = alClient
             TabOrder = 0
             object PageControl3: TPageControl
@@ -1937,12 +1937,173 @@ object Form1: TForm1
           Caption = 'Preview'
           ImageIndex = 2
         end
+        object TabSheet16: TTabSheet
+          Caption = 'Chat #fpc'
+          ImageIndex = 3
+          object PageControl6: TPageControl
+            Left = 0
+            Top = 0
+            Width = 590
+            Height = 297
+            ActivePage = TabSheet17
+            Align = alClient
+            TabOrder = 0
+            object TabSheet17: TTabSheet
+              Caption = '#FPC'
+              DesignSize = (
+                582
+                263)
+              object Splitter6: TSplitter
+                Left = 407
+                Top = 0
+                Height = 237
+              end
+              object Panel5: TPanel
+                Left = 0
+                Top = 237
+                Width = 582
+                Height = 26
+                Align = alBottom
+                Caption = 'Panel5'
+                TabOrder = 0
+                DesignSize = (
+                  582
+                  26)
+                object Edit2: TEdit
+                  Left = 0
+                  Top = 0
+                  Width = 471
+                  Height = 27
+                  Anchors = [akLeft, akTop, akRight]
+                  TabOrder = 0
+                  Text = 'Edit2'
+                end
+              end
+              object Button9: TButton
+                Left = 494
+                Top = 237
+                Width = 75
+                Height = 25
+                Anchors = [akRight, akBottom]
+                Caption = 'Send'
+                TabOrder = 1
+              end
+              object Panel6: TPanel
+                Left = 0
+                Top = 0
+                Width = 407
+                Height = 237
+                Align = alLeft
+                Anchors = [akLeft, akTop, akRight, akBottom]
+                Caption = 'Panel6'
+                TabOrder = 2
+                object Panel9: TPanel
+                  Left = 1
+                  Top = 1
+                  Width = 405
+                  Height = 32
+                  Align = alTop
+                  Caption = 'Panel9'
+                  TabOrder = 0
+                  DesignSize = (
+                    405
+                    32)
+                  object Edit3: TEdit
+                    Left = 8
+                    Top = 0
+                    Width = 391
+                    Height = 27
+                    Anchors = [akLeft, akTop, akRight]
+                    TabOrder = 0
+                    Text = 'Edit3'
+                  end
+                end
+                object Panel10: TPanel
+                  Left = 1
+                  Top = 33
+                  Width = 405
+                  Height = 32
+                  Align = alTop
+                  TabOrder = 1
+                  object Button10: TButton
+                    Left = 320
+                    Top = 3
+                    Width = 75
+                    Height = 25
+                    Caption = 'Login'
+                    TabOrder = 0
+                    OnClick = Button10Click
+                  end
+                  object ircUserName: TEdit
+                    Left = 8
+                    Top = 0
+                    Width = 121
+                    Height = 27
+                    TabOrder = 1
+                  end
+                  object ircUserPass: TEdit
+                    Left = 152
+                    Top = 0
+                    Width = 121
+                    Height = 27
+                    PasswordChar = '+'
+                    TabOrder = 2
+                  end
+                end
+                object PageControl7: TPageControl
+                  Left = 1
+                  Top = 65
+                  Width = 405
+                  Height = 171
+                  ActivePage = TabSheet19
+                  Align = alClient
+                  TabOrder = 2
+                  object TabSheet19: TTabSheet
+                    Caption = 'main'
+                    object RichEdit1: TRichEdit
+                      Left = 0
+                      Top = 0
+                      Width = 397
+                      Height = 137
+                      Align = alClient
+                      ReadOnly = True
+                      ScrollBars = ssVertical
+                      TabOrder = 0
+                    end
+                  end
+                end
+              end
+              object ListBox2: TListBox
+                Left = 410
+                Top = 0
+                Width = 172
+                Height = 237
+                Align = alClient
+                ItemHeight = 19
+                TabOrder = 3
+              end
+            end
+            object TabSheet18: TTabSheet
+              Caption = 'LogInfo'
+              ImageIndex = 1
+              object ListBox1: TListBox
+                Left = 0
+                Top = 0
+                Width = 582
+                Height = 263
+                Align = alClient
+                ItemHeight = 19
+                TabOrder = 0
+              end
+            end
+          end
+        end
       end
       object PageControl5: TPageControl
-        Left = 524
+        Left = 602
         Top = 1
         Width = 306
-        Height = 214
+        Height = 331
         ActivePage = TabSheet12
         Align = alClient
         Font.Charset = DEFAULT_CHARSET
@@ -1958,7 +2119,7 @@ object Form1: TForm1
             Left = 0
             Top = 0
             Width = 298
-            Height = 180
+            Height = 297
             Align = alClient
             Indent = 21
             TabOrder = 0
@@ -1969,7 +2130,7 @@ object Form1: TForm1
     object PreviewPanel: TPanel
       Left = 1
       Top = 1
-      Width = 831
+      Width = 909
       Height = 96
       Align = alTop
       Caption = 'PreviewPanel'
@@ -1980,17 +2141,32 @@ object Form1: TForm1
       Font.Style = []
       ParentFont = False
       TabOrder = 3
+      Visible = False
       object PreviewPageControl: TPageControl
         Left = 1
         Top = 1
-        Width = 829
+        Width = 907
         Height = 94
-        ActivePage = TabSheet15
+        ActivePage = TabSheet14
         Align = alClient
         TabOrder = 0
         OnChange = PreviewPageControlChange
         object TabSheet14: TTabSheet
           Caption = 'Preview'
+          object WebBrowser1: TWebBrowser
+            Left = 0
+            Top = 0
+            Width = 899
+            Height = 60
+            Align = alClient
+            TabOrder = 0
+            ControlData = {
+              4C000000904D00002D0500000000000000000000000000000000000000000000
+              000000004C000000000000000000000001000000E0D057007335CF11AE690800
+              2B2E126208000000000000004C0000000114020000000000C000000000000046
+              8000000000000000000000000000000000000000000000000000000000000000
+              00000000000000000100000000000000000000000000000000000000}
+          end
         end
         object TabSheet15: TTabSheet
           Caption = 'Editing'
@@ -2562,5 +2738,26 @@ object Form1: TForm1
       00000000003C00000000000080000000003C000200000000FF800000003C001E
       00000000FF800000003C001E00000000FFFFFC00007C001E0000000000000000
       000000000000000000000000000000000000}
+  end
+  object IdAntiFreeze1: TIdAntiFreeze
+    Left = 813
+    Top = 283
+  end
+  object IdIRC1: TIdIRC
+    MaxLineAction = maException
+    ReadTimeout = 0
+    Nick = 'Nick'
+    AltNick = 'OtherNick'
+    Username = 'username'
+    RealName = 'Real name'
+    Replies.Version = 'TIdIRC 1.061 by Steve Williams'
+    Replies.ClientInfo = 
+      'TIdIRC 1.061 by Steve Williams Non-visual component for 32-bit D' +
+      'elphi.'
+    UserMode = []
+    OnMessage = IdIRC1Message
+    OnCTCPQuery = IdIRC1CTCPQuery
+    Left = 589
+    Top = 363
   end
 end

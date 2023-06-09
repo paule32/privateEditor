@@ -72,25 +72,27 @@ extern int pascaldebug;
     TOK_PAS_IF = 273,              /* TOK_PAS_IF  */
     TOK_PAS_IN = 274,              /* TOK_PAS_IN  */
     TOK_PAS_LABEL = 275,           /* TOK_PAS_LABEL  */
-    TOK_PAS_MOD = 276,             /* TOK_PAS_MOD  */
-    TOK_PAS_NIL = 277,             /* TOK_PAS_NIL  */
-    TOK_PAS_NOT = 278,             /* TOK_PAS_NOT  */
-    TOK_PAS_OF = 279,              /* TOK_PAS_OF  */
-    TOK_PAS_OR = 280,              /* TOK_PAS_OR  */
-    TOK_PAS_PACKED = 281,          /* TOK_PAS_PACKED  */
-    TOK_PAS_PROCEDURE = 282,       /* TOK_PAS_PROCEDURE  */
-    TOK_PAS_PROGRAM = 283,         /* TOK_PAS_PROGRAM  */
-    TOK_PAS_RECORD = 284,          /* TOK_PAS_RECORD  */
-    TOK_PAS_REPEAT = 285,          /* TOK_PAS_REPEAT  */
-    TOK_PAS_SET = 286,             /* TOK_PAS_SET  */
-    TOK_PAS_THEN = 287,            /* TOK_PAS_THEN  */
-    TOK_PAS_TO = 288,              /* TOK_PAS_TO  */
-    TOK_PAS_TYPE = 289,            /* TOK_PAS_TYPE  */
-    TOK_PAS_UNTIL = 290,           /* TOK_PAS_UNTIL  */
-    TOK_PAS_VAR = 291,             /* TOK_PAS_VAR  */
-    TOK_PAS_WHILE = 292,           /* TOK_PAS_WHILE  */
-    TOK_PAS_WITH = 293,            /* TOK_PAS_WITH  */
-    TOK_PAS_ID = 294               /* TOK_PAS_ID  */
+    TOK_PAS_LIBRARY = 276,         /* TOK_PAS_LIBRARY  */
+    TOK_PAS_MOD = 277,             /* TOK_PAS_MOD  */
+    TOK_PAS_NIL = 278,             /* TOK_PAS_NIL  */
+    TOK_PAS_NOT = 279,             /* TOK_PAS_NOT  */
+    TOK_PAS_OF = 280,              /* TOK_PAS_OF  */
+    TOK_PAS_OR = 281,              /* TOK_PAS_OR  */
+    TOK_PAS_PACKED = 282,          /* TOK_PAS_PACKED  */
+    TOK_PAS_PROCEDURE = 283,       /* TOK_PAS_PROCEDURE  */
+    TOK_PAS_PROGRAM = 284,         /* TOK_PAS_PROGRAM  */
+    TOK_PAS_RECORD = 285,          /* TOK_PAS_RECORD  */
+    TOK_PAS_REPEAT = 286,          /* TOK_PAS_REPEAT  */
+    TOK_PAS_SET = 287,             /* TOK_PAS_SET  */
+    TOK_PAS_THEN = 288,            /* TOK_PAS_THEN  */
+    TOK_PAS_TO = 289,              /* TOK_PAS_TO  */
+    TOK_PAS_TYPE = 290,            /* TOK_PAS_TYPE  */
+    TOK_PAS_UNIT = 291,            /* TOK_PAS_UNIT  */
+    TOK_PAS_UNTIL = 292,           /* TOK_PAS_UNTIL  */
+    TOK_PAS_VAR = 293,             /* TOK_PAS_VAR  */
+    TOK_PAS_WHILE = 294,           /* TOK_PAS_WHILE  */
+    TOK_PAS_WITH = 295,            /* TOK_PAS_WITH  */
+    TOK_PAS_ID = 296               /* TOK_PAS_ID  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif

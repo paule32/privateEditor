@@ -1,10 +1,10 @@
-object ErrorBox: TErrorBox
-  Left = 1327
-  Top = 809
+object InfoBox: TInfoBox
+  Left = 213
+  Top = 180
   BorderStyle = bsDialog
-  Caption = 'Error:'
-  ClientHeight = 170
-  ClientWidth = 386
+  Caption = 'Information'
+  ClientHeight = 188
+  ClientWidth = 388
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -13,7 +13,7 @@ object ErrorBox: TErrorBox
   Font.Style = []
   KeyPreview = True
   OldCreateOrder = False
-  Position = poDesktopCenter
+  Position = poMainFormCenter
   OnKeyPress = FormKeyPress
   OnShow = FormShow
   PixelsPerInch = 115
@@ -21,17 +21,17 @@ object ErrorBox: TErrorBox
   object JvGradient1: TJvGradient
     Left = 0
     Top = 0
-    Width = 386
-    Height = 170
+    Width = 388
+    Height = 188
     Style = grVertical
-    StartColor = clRed
-    EndColor = clYellow
+    StartColor = clTeal
+    EndColor = clLime
   end
   object JvScrollBox1: TJvScrollBox
     Left = 24
     Top = 16
-    Width = 335
-    Height = 97
+    Width = 337
+    Height = 121
     Color = clYellow
     ParentColor = False
     TabOrder = 0
@@ -39,7 +39,7 @@ object ErrorBox: TErrorBox
       Left = 8
       Top = 8
       Width = 313
-      Height = 76
+      Height = 97
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -16
@@ -53,7 +53,7 @@ object ErrorBox: TErrorBox
   end
   object JvImgBtn1: TJvImgBtn
     Left = 24
-    Top = 128
+    Top = 152
     Width = 75
     Height = 25
     Caption = 'OK'
@@ -65,7 +65,7 @@ object ErrorBox: TErrorBox
     ParentFont = False
     TabOrder = 1
     OnClick = JvImgBtn1Click
-    Color = clLime
+    Color = clSilver
     HotTrackFont.Charset = DEFAULT_CHARSET
     HotTrackFont.Color = clWindowText
     HotTrackFont.Height = -13
@@ -73,26 +73,31 @@ object ErrorBox: TErrorBox
     HotTrackFont.Style = []
   end
   object JvImgBtn2: TJvImgBtn
-    Left = 288
-    Top = 128
+    Left = 112
+    Top = 152
     Width = 75
     Height = 25
-    Caption = 'Cancel'
+    Caption = 'Help'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
     Font.Name = 'MS Sans Serif'
-    Font.Style = []
+    Font.Style = [fsBold]
     ParentFont = False
     TabOrder = 2
     OnClick = JvImgBtn2Click
-    Color = clLime
+    Color = clMoneyGreen
+    HotTrackFont.Charset = DEFAULT_CHARSET
+    HotTrackFont.Color = clWindowText
+    HotTrackFont.Height = -13
+    HotTrackFont.Name = 'MS Sans Serif'
+    HotTrackFont.Style = []
   end
   object JvGradientCaption1: TJvGradientCaption
     Active = False
     Captions = <>
     DefaultFont = False
-    FormCaption = 'Error:'
+    FormCaption = 'Information'
     FontInactiveColor = clBlack
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clCaptionText
@@ -100,9 +105,9 @@ object ErrorBox: TErrorBox
     Font.Name = 'Arial'
     Font.Style = [fsBold]
     GradientInactive = True
-    StartColor = clRed
-    EndColor = clYellow
-    Left = 161
-    Top = 128
+    StartColor = clLime
+    EndColor = clTeal
+    Left = 249
+    Top = 152
   end
 end
