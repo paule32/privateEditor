@@ -53,3 +53,7 @@ src/Editor.~dpr
 src/InfoBoxForm.~pas
 src/InfoBoxForm.~dfm
 src/PascalDSL.~y
+src/Editor.~dpr
+src/DesignerFrame.~pas
+src/DesignerFrame.~dfm
+src/6.dfm

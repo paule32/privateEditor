@@ -7,7 +7,8 @@ uses
   FolderHelper in 'FolderHelper.pas',
   InputBox in 'InputBox.pas' {InputBoxWindow},
   ErrorBoxForm in 'ErrorBoxForm.pas' {ErrorBox},
-  InfoBoxForm in 'InfoBoxForm.pas' {InfoBox};
+  InfoBoxForm in 'InfoBoxForm.pas' {InfoBox},
+  DesignerFrame in 'DesignerFrame.pas' {Frame1: TFrame};
 
 {$R *.res}
 

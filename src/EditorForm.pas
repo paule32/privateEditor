@@ -10,7 +10,8 @@ uses
   JvSpin, Buttons, CheckLst, ShellApi, ShlObj, ImgList, OleCtrls, SHDocVw,
   IdComponent, IdTCPConnection, IdTCPClient, IdIRC, IdBaseComponent,
   IdAntiFreezeBase, IdAntiFreeze, JvExComCtrls, JvComCtrls, JvCheckTreeView,
-  JvExCheckLst, JvCheckListBox;
+  JvExCheckLst, JvCheckListBox, JvExButtons, JvBitBtn, JvExStdCtrls,
+  JvButton, JvCtrls, JvComponentBase;
 
 type
   TForm1 = class(TForm)
@@ -31,10 +32,6 @@ type
     OpenDialog1: TOpenDialog;
     SaveDialog1: TSaveDialog;
     localesList: TJvMultiStringHolder;
-    LeftPageControl: TPageControl;
-    TabSheet1: TTabSheet;
-    UserHomeFolder: TTreeView;
-    TabSheet3: TTabSheet;
     MenuBarButton_File: TCtrlMenuBarButton;
     MenuBarButton_Edit: TCtrlMenuBarButton;
     MenuBarButton_Tools: TCtrlMenuBarButton;
@@ -91,30 +88,18 @@ type
     EditorOptions1: TMenuItem;
     ConfigureTools1: TMenuItem;
     N12: TMenuItem;
-    PageControl1: TPageControl;
-    TabSheet7: TTabSheet;
-    buildListBox: TCheckListBox;
     JvSpeedButton1: TJvSpeedButton;
     JvSpeedButton2: TJvSpeedButton;
     JvSpeedButton4: TJvSpeedButton;
     CtrlMenuBarButton2: TCtrlMenuBarButton;
-    Button6: TButton;
-    Button7: TButton;
     ImageList1: TImageList;
-    Splitter2: TSplitter;
-    Panel7: TPanel;
-    SpeedButton1: TSpeedButton;
-    SpeedButton2: TSpeedButton;
-    NewUserFolder: TSpeedButton;
-    TreeView1: TTreeView;
     Splitter3: TSplitter;
-    PageControl2: TPageControl;
+    PageControl2: TJvPageControl;
     TabSheet4: TTabSheet;
     TabSheet8: TTabSheet;
     TabSheet9: TTabSheet;
     SynEdit3: TSynEdit;
     SynEdit4: TSynEdit;
-    Button8: TButton;
     SynEdit2: TSynEdit;
     Splitter4: TSplitter;
     PageControl4: TPageControl;
@@ -123,11 +108,40 @@ type
     TabSheet11: TTabSheet;
     TreeView2: TTreeView;
     Panel8: TPanel;
+    Splitter5: TSplitter;
+    PreviewPanel: TPanel;
+    PreviewPageControl: TPageControl;
+    TabSheet14: TTabSheet;
+    TabSheet15: TTabSheet;
+    WebBrowser1: TWebBrowser;
+    IdAntiFreeze1: TIdAntiFreeze;
+    IdIRC1: TIdIRC;
     MainPageControl: TPageControl;
     TabSheet2: TTabSheet;
+    SynEdit1: TSynEdit;
     TabSheet_Options: TTabSheet;
     ScrollBox1: TScrollBox;
-    PageControl3: TPageControl;
+    Panel4: TPanel;
+    Button3: TJvImgBtn;
+    Button4: TJvImgBtn;
+    Button5: TJvImgBtn;
+    TabSheet13: TTabSheet;
+    TabSheet16: TTabSheet;
+    PageControl1: TJvPageControl;
+    TabSheet7: TTabSheet;
+    Panel12: TPanel;
+    buildListBox: TCheckListBox;
+    Button6: TJvImgBtn;
+    Button7: TJvImgBtn;
+    Button8: TJvImgBtn;
+    LeftPageControl: TJvPageControl;
+    TabSheet1: TTabSheet;
+    Splitter2: TSplitter;
+    UserHomeFolder: TTreeView;
+    Panel7: TPanel;
+    TreeView1: TTreeView;
+    TabSheet3: TTabSheet;
+    PageControl3: TJvPageControl;
     TabSheet5: TTabSheet;
     Label1: TLabel;
     GroupBox1: TGroupBox;
@@ -138,60 +152,58 @@ type
     TabSheet6: TTabSheet;
     Label2: TLabel;
     ComboBox1: TComboBox;
-    Button1: TButton;
-    Button2: TButton;
+    Button1: TJvImgBtn;
+    Button2: TJvImgBtn;
     GroupBox2: TGroupBox;
     Label3: TLabel;
     Label4: TLabel;
     ComboBox2: TComboBox;
     Edit1: TEdit;
-    Panel4: TPanel;
-    Button3: TButton;
-    Button4: TButton;
-    Button5: TButton;
-    SynEdit1: TSynEdit;
-    Splitter5: TSplitter;
-    PageControl5: TPageControl;
-    TabSheet12: TTabSheet;
-    TabSheet13: TTabSheet;
-    PreviewPanel: TPanel;
-    PreviewPageControl: TPageControl;
-    TabSheet14: TTabSheet;
-    TabSheet15: TTabSheet;
-    WebBrowser1: TWebBrowser;
-    TabSheet16: TTabSheet;
-    PageControl6: TPageControl;
+    heme1: TMenuItem;
+    light1: TMenuItem;
+    dark1: TMenuItem;
+    PageControl6: TJvPageControl;
     TabSheet17: TTabSheet;
-    TabSheet18: TTabSheet;
+    Splitter6: TSplitter;
     Panel5: TPanel;
     sendChatTextEdit: TEdit;
-    Button9: TButton;
+    Button9: TJvImgBtn;
     Panel6: TPanel;
-    Splitter6: TSplitter;
-    ListBox2: TListBox;
     Panel9: TPanel;
     ircTopicEdit: TEdit;
-    IdAntiFreeze1: TIdAntiFreeze;
-    IdIRC1: TIdIRC;
-    PageControl7: TPageControl;
+    PageControl7: TJvPageControl;
     TabSheet19: TTabSheet;
-    RichEdit1: TRichEdit;
+    ircRichEdit: TRichEdit;
+    ListBox2: TListBox;
+    TabSheet18: TTabSheet;
+    Splitter7: TSplitter;
     Panel10: TPanel;
+    ircChannelEdit: TEdit;
     Panel11: TPanel;
     ircListBox: TListBox;
-    Splitter7: TSplitter;
-    PageControl8: TPageControl;
+    PageControl8: TJvPageControl;
     TabSheet20: TTabSheet;
     ScrollBox2: TScrollBox;
+    ircLabelNick: TLabel;
+    ircLabelPassword: TLabel;
+    ircLabelChannel: TLabel;
     ircUserName: TEdit;
     ircUserPass: TEdit;
-    ircConnectButton: TButton;
-    Label5: TLabel;
-    Label6: TLabel;
-    ircChannelEdit: TEdit;
     ircChannel: TEdit;
-    Label7: TLabel;
+    PageControl5: TJvPageControl;
+    TabSheet12: TTabSheet;
     ListBox1: TJvCheckListBox;
+    ircConnectButton: TJvImgBtn;
+    SpeedButton1: TJvSpeedButton;
+    SpeedButton2: TJvSpeedButton;
+    NewUserFolder: TJvSpeedButton;
+    TabSheet22: TTabSheet;
+    DesignPanelPage: TPanel;
+    PageControl9: TPageControl;
+    TabSheet21: TTabSheet;
+    TabSheet23: TTabSheet;
+    ScrollBox4: TScrollBox;
+    ScrollBox3: TScrollBox;
     procedure PopupMenu_File_NewClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -240,6 +252,9 @@ type
       APosition: Integer; ALast: Boolean);
     procedure IdIRC1Names(Sender: TObject; AUsers: TIdIRCUsers;
       AChannel: TIdIRCChannel);
+    procedure dark1Click(Sender: TObject);
+    procedure light1Click(Sender: TObject);
+    procedure PageControl9Change(Sender: TObject);
   private
     Cv1: TCanvas;
     ircListLimit: Integer;
@@ -256,7 +271,10 @@ implementation
 {$R *.dfm}
 
 uses
-  ErrorBoxForm, InfoBoxForm, AboutBox, InputBox;
+  ErrorBoxForm, InfoBoxForm, AboutBox, InputBox, DesignerFrame;
+
+var
+  DFrame : TFrame1;
 
 function GetShellFolder(CSIDLFolder : integer) : string;
 begin
@@ -311,6 +329,11 @@ procedure TForm1.FormCreate(Sender: TObject);
 begin
   ErrorBox := TErrorBox.Create(Form1);
   InfoBox  := TInfoBox.Create(Form1);
+
+  DFrame := TFrame1.Create(ScrollBox4);
+  DFrame.Parent  := ScrollBox4;
+  DFrame.Align   := alClient;
+  DFrame.Visible := true;
 
   SynEdit1.Lines.Clear;
 
@@ -929,6 +952,17 @@ begin
     PreviewPanel.Align := alclient;
 
     PreviewPageControl.ActivePageIndex := 0;
+  end else
+  if MainPageControl.ActivePage.Caption = 'Designer' then
+  begin
+    EditPanel   .Visible := false;
+    PreviewPanel.Visible := false;
+
+    DesignPanelPage.Parent  := Form1;
+    DesignPanelPage.Visible := true;
+    DesignPanelPage.Align   := alClient;
+
+    PageControl9.ActivePageIndex := 1;
   end;
 end;
 
@@ -1002,7 +1036,7 @@ var
 begin
   S1 := AUser.Nick;
   S1 := S1 + ': ' + Content;
-  RichEdit1.Lines.Add(S1);
+  ircRichEdit.Lines.Add(S1);
 end;
 
 procedure TForm1.Button9Click(Sender: TObject);
@@ -1034,6 +1068,209 @@ begin
   for I := 0 to AUsers.Count - 1 do
   begin
     ListBox2.Items.Add(Ausers.Items[I].Nick);
+  end;
+end;
+
+procedure TForm1.dark1Click(Sender: TObject);
+begin
+  Form1.Color := clGray;
+  CoolBar1.Color := clGray;
+
+  MenuBarButton_File .Font.Color := clWhite;
+  MenuBarButton_Edit .Font.Color := clWhite;
+  MenuBarButton_Tools.Font.Color := clWhite;
+  MenuBarButton_Help .Font.Color := clWhite;
+  CtrlMenuBarButton1 .Font.Color := clWhite;
+
+  Panel1 .Color := clGray;
+  Panel2 .Color := clGray;
+  Panel3 .Color := clGray;
+  Panel7 .Color := clGray;
+  Panel8 .Color := clGray;
+  Panel10.Color := clGray;
+  Panel11.Color := clGray;
+  Panel12.Color := clGray;
+
+  SpeedButton1 .Color := clGray;
+  SpeedButton2 .Color := clGray;
+  newUserFolder.Color := clGray;
+
+  JvSpeedButton1.Color := clGray;
+  JvSpeedButton2.Color := clGray;
+  JvSpeedButton4.Color := clGray;
+  StartCompile.Color := clGray;
+  StatusBar1.Color := clGray;
+
+  PageControl1.Color := clGray;
+  PageControl2.Color := clGray;
+  PageControl3.Color := clGray;
+  PageControl5.Color := clGray;
+  PageControl6.Color := clGray;
+  PageControl7.Color := clGray;
+  PageControl8.Color := clGray;
+
+  sendChatTextEdit.Color := clYellow;
+
+  ListBox1.Color := clSilver;
+  ListBox1.Font.Color := clBlack;
+
+  ListBox2.Color := clSilver;
+  ListBox2.Font.Color := clBlack;
+
+  BuildListBox.Color := clSilver;
+  BuildListBox.Font.Color := clBlack;
+
+  UserHomeFolder.Color := clSilver;
+  UserHomeFolder.Font.Color := clBlack;
+
+  TreeView1.Color := clSilver;
+  TreeView1.Font.Color := clBlack;
+  TreeView3.Color := clSilver;
+  TreeView3.Font.Color := clBlack;
+
+  LeftPageControl.Color := clGray;
+  ScrollBox1.Color := clGray;
+
+  ircChannelEdit.Color := clYellow;
+  ircUserName.Color := clYellow;
+  ircUserPass.Color := clYellow;
+  ircChannel.Color := clYellow;
+
+  ircLabelNick    .Font.Color := clWhite;
+  ircLabelPassword.Font.Color := clWhite;
+  ircLabelChannel .Font.Color := clWhite;
+
+  ircListBox.Color := clSilver;
+  ircListBox.Font.Color := clBlack;
+
+  ircTopicEdit.Color := clYellow;
+  ircRichEdit.Color  := clSilver;
+
+
+  SynEdit1.Color := clBlue;
+  SynEdit1.Font.Color := clYellow;
+  SynEdit1.Gutter.Color := $00FF8000;
+
+  SynEdit2.Color := clBlue;
+  SynEdit2.Font.Color := clYellow;
+  SynEdit2.Gutter.Color := $00FF8000;
+
+  SynEdit3.Color := clBlue;
+  SynEdit3.Font.Color := clYellow;
+  SynEdit3.Gutter.Color := $00FF8000;
+
+  SynEdit4.Color := clBlue;
+  SynEdit4.Font.Color := clYellow;
+  SynEdit4.Gutter.Color := $00FF8000;
+
+  Width := width + 4;
+  Width := width - 4;
+  Form1.Resize;
+end;
+
+procedure TForm1.light1Click(Sender: TObject);
+begin
+  Form1.Color := clBtnFace;
+  CoolBar1.Color := clBtnFace;
+
+  MenuBarButton_File .Font.Color := clBlack;
+  MenuBarButton_Edit .Font.Color := clBlack;
+  MenuBarButton_Tools.Font.Color := clBlack;
+  MenuBarButton_Help .Font.Color := clBlack;
+  CtrlMenuBarButton1 .Font.Color := clBlack;
+
+  Panel1 .Color := clBtnFace;
+  Panel2 .Color := clBtnFace;
+  Panel3 .Color := clBtnFace;
+  Panel7 .Color := clBtnFace;
+  Panel8 .Color := clBtnFace;
+  Panel10.Color := clBtnFace;
+  Panel11.Color := clBtnFace;
+  Panel12.Color := clBtnFace;
+
+  JvSpeedButton1.Color := clBtnFace;
+  JvSpeedButton2.Color := clBtnFace;
+  JvSpeedButton4.Color := clBtnFace;
+  StartCompile  .Color := clBtnFace;
+
+  StatusBar1.Color := clBtnFace;
+
+  sendChatTextEdit.Color := clWhite;
+
+  PageControl1.Color := clBtnFace;
+  PageControl2.Color := clBtnFace;
+  PageControl3.Color := clBtnFace;
+  PageControl5.Color := clBtnFace;
+  PageControl6.Color := clBtnFace;
+  PageControl7.Color := clBtnFace;
+  PageControl8.Color := clBtnFace;
+
+  SpeedButton1 .Color := clBtnFace;
+  SpeedButton2 .Color := clBtnFace;
+  newUserFolder.Color := clBtnFace;
+
+  LeftPageControl.Color := clBtnFace;
+  ScrollBox1.Color := clBtnFace;
+
+  ListBox1.Color := clWhite;
+  ListBox1.Font.Color := clBlack;
+
+  ListBox2.Color := clWhite;
+  ListBox2.Font.Color := clBlack;
+
+  BuildListBox.Color := clWhite;
+  BuildListBox.Font.Color := clBlack;
+
+  UserHomeFolder.Color := clWhite;
+  UserHomeFolder.Font.Color := clBlack;
+
+  TreeView1.Color := clWhite;
+  TreeView1.Font.Color := clBlack;
+
+  ircChannelEdit.Color := clWhite;
+  ircUserName.Color := clWhite;
+  ircUserPass.Color := clWhite;
+  ircChannel .Color := clWhite;
+
+  ircLabelNick    .Font.Color := clBlack;
+  ircLabelPassword.Font.Color := clBlack;
+  ircLabelChannel .Font.Color := clBlack;
+
+  ircListBox.Color := clWhite;
+  ircListBox.Font.Color := clBlack;
+
+  ircTopicEdit.Color := clWhite;
+  ircRichEdit.Color  := clWhite;
+
+  SynEdit1.Color := clWhite;
+  SynEdit1.Font.Color := clBlack;
+  SynEdit1.Gutter.Color := clBtnFace;
+
+  SynEdit2.Color := clWhite;
+  SynEdit2.Font.Color := clBlack;
+  SynEdit2.Gutter.Color := clBtnFace;
+
+  SynEdit3.Color := clWhite;
+  SynEdit3.Font.Color := clBlack;
+  SynEdit3.Gutter.Color := clBtnFace;
+
+  SynEdit4.Color := clWhite;
+  SynEdit4.Font.Color := clBlack;
+  SynEdit4.Gutter.Color := clBtnFace;
+
+  Width := width + 4;
+  Width := width - 4;
+  Form1.Resize;
+end;
+
+procedure TForm1.PageControl9Change(Sender: TObject);
+begin
+  if PageControl9.ActivePage.Caption = 'Editing' then
+  begin
+    DesignPanelPage.Visible := false;
+    PreviewPanel   .Visible := false;
+    EditPanel      .Visible := true;
+    MainPageControl.ActivePageIndex := 0;
   end;
 end;
 
