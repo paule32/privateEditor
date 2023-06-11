@@ -1,5 +1,5 @@
 (* this is a comment line *)
-program test;
+unit test;
 begin
 end.
 
