@@ -15,7 +15,7 @@ int yy_pascal_lex_getlines(void) { return count(); }
 %}
 
 DIGIT    [0-9]
-ID       [a-z][a-z0-9]*
+ID       [a-zA-Z][a-zA-Z0-9]*
 
 A [a|A]
 B [b|B]
@@ -44,7 +44,7 @@ X [x|X]
 Y [y|Y]
 Z [z|Z]
 
-%x Comment1 Comment2
+%x Comment1 Comment2 Comment3
 %%
 
 "//".*                  { count(); /* DO NOTHING */ }
@@ -61,16 +61,23 @@ Z [z|Z]
 <Comment1>"*"+"/"       { count(); BEGIN(INITIAL);  }
 
 "(*"                    { count(); BEGIN(Comment2); }
-<Comment2>\n*           { count(); ++yylineno;      }
-<Comment2>"*"+")"       { count(); BEGIN(INITIAL);  }
+<Comment2>\n            { count(); ++yylineno;      }
+<Comment2>"*)"          { count(); BEGIN(INITIAL);  }
+
+\{                      { count(); BEGIN(Comment3); }
+<Comment3>\n            { count(); ++yylineno;      }
+<Comment3>\}            { count(); BEGIN(INITIAL);  }
 
 [ \t]*                  { /* empty */ }
 [\n|\r\n]               { count(); ++yylineno; }
+
+{DIGIT}+".."+{DIGIT}+ { return TOK_PAS_RANGE; }
 
 {A}{N}{D}                     { count(); return TOK_PAS_AND; }
 {A}{R}{R}{A}{Y}               { count(); return TOK_PAS_ARRAY; }
 {B}{E}{G}{I}{N}               { count(); return TOK_PAS_BEGIN; }
 {C}{A}{S}{E}                  { count(); return TOK_PAS_CASE; }
+{C}{L}{A}{S}{S}               { count(); return TOK_PAS_CLASS; }
 {C}{O}{N}{S}{T}               { count(); return TOK_PAS_CONST; }
 {D}{I}{V}                     { count(); return TOK_PAS_DIV; }
 {D}{O}                        { count(); return TOK_PAS_DO; }
@@ -83,7 +90,9 @@ Z [z|Z]
 {F}{U}{N}{C}{T}{I}{O}{N}      { count(); return TOK_PAS_FUNCTION; }
 {G}{O}{T}{O}                  { count(); return TOK_PAS_GOTO; }
 {I}{F}                        { count(); return TOK_PAS_IF; }
+{I}{M}{P}{L}{E}{M}{E}{N}{T}{A}{T}{I}{O}{N}   { count(); return TOK_PAS_IMPLEMENTATION; }
 {I}{N}                        { count(); return TOK_PAS_IN; }
+{I}{N}{T}{E}{R}{F}{A}{C}{E}   { count(); return TOK_PAS_INTERFACE; }
 {L}{A}{B}{E}{L}               { count(); return TOK_PAS_LABEL; }
 {L}{I}{B}{R}{A}{R}{Y}         { count(); return TOK_PAS_LIBRARY; }
 {M}{O}{D}                     { count(); return TOK_PAS_MOD; }
@@ -92,8 +101,12 @@ Z [z|Z]
 {O}{F}                        { count(); return TOK_PAS_OF; }
 {O}{R}                        { count(); return TOK_PAS_OR; }
 {P}{A}{C}{K}{E}{D}            { count(); return TOK_PAS_PACKED; }
+{P}{R}{I}{V}{A}{T}{E}         { count(); return TOK_PAS_PRIVATE; }
 {P}{R}{O}{C}{E}{D}{U}{R}{E}   { count(); return TOK_PAS_PROCEDURE; }
 {P}{R}{O}{G}{R}{A}{M}         { count(); return TOK_PAS_PROGRAM; }
+{P}{R}{O}{T}{E}{C}{T}{E}{D}   { count(); return TOK_PAS_PROTECTED; }
+{P}{U}{B}{L}{I}{C}            { count(); return TOK_PAS_PUBLIC; }
+{P}{U}{B}{L}{I}{S}{H}{E}{D}   { count(); return TOK_PAS_PUBLISHED; }
 {R}{E}{C}{O}{R}{D}            { count(); return TOK_PAS_RECORD; }
 {R}{E}{P}{E}{A}{T}            { count(); return TOK_PAS_REPEAT; }
 {S}{E}{T}                     { count(); return TOK_PAS_SET; }
@@ -102,27 +115,25 @@ Z [z|Z]
 {T}{Y}{P}{E}                  { count(); return TOK_PAS_TYPE; }
 {U}{N}{I}{T}                  { count(); return TOK_PAS_UNIT; }
 {U}{N}{T}{I}{L}               { count(); return TOK_PAS_UNTIL; }
+{U}{S}{E}{S}                  { count(); return TOK_PAS_USES; }
 {V}{A}{R}                     { count(); return TOK_PAS_VAR; }
 {W}{H}{I}{L}{E}               { count(); return TOK_PAS_WHILE; }
 {W}{I}{T}{H}                  { count(); return TOK_PAS_WITH; }
 
 {ID}                          { return TOK_PAS_ID;  }
 
-{DIGIT}+  {
-  sprintf(buffer, "An integer: %s (%d)\n", yytext,
-  atoi( yytext ) );
-  MessageBox(0,buffer,"test",0);
-}
+{DIGIT}+           { return TOK_PAS_NUMBER; }
+{DIGIT}+\.{DIGIT}+ { return TOK_PAS_FLOAT;  }
 
-{DIGIT}+"."{DIGIT}*  {
-  sprintf(buffer, "A float: %s (%g)\n", yytext,
-  atof( yytext ) );
-  MessageBox(0,buffer,"test",0);
-}
-
-
-";" { return ';'; }
-\.  { return '.'; }
+";"  { return ';'; }
+\:   { return ':'; }
+\.   { return '.'; }
+\,   { return ','; }
+\=   { return '='; }
+\(   { return '('; }
+\)   { return ')'; }
+\[   { return '['; }
+\]   { return ']'; }
 
 "+"|"-"|"*"|"/"   {
   return

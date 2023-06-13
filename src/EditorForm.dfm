@@ -1736,7 +1736,7 @@ object Form1: TForm1
         Top = 1
         Width = 529
         Height = 374
-        ActivePage = TabSheet2
+        ActivePage = TabSheet24
         Align = alLeft
         Anchors = [akLeft, akTop, akRight, akBottom]
         Font.Charset = DEFAULT_CHARSET
@@ -2244,6 +2244,41 @@ object Form1: TForm1
             Height = 340
             Align = alClient
             TabOrder = 0
+          end
+        end
+        object TabSheet24: TTabSheet
+          Caption = 'Console'
+          ImageIndex = 5
+          object ScrollBox5: TScrollBox
+            Left = 0
+            Top = 0
+            Width = 521
+            Height = 340
+            Align = alClient
+            TabOrder = 0
+            object Console1: TConsole
+              Left = 0
+              Top = 0
+              Width = 517
+              Height = 336
+              AutoUseInsertMode = True
+              InsertMode = True
+              InsertCaret = ctHorizontalLine
+              OverwriteCaret = ctHalfBlock
+              BorderSize = 3
+              ExtraLineSpacing = 0
+              Align = alClient
+              Color = clBlack
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWhite
+              Font.Height = -16
+              Font.Name = 'Courier New'
+              Font.Style = [fsBold]
+              ParentColor = False
+              TabOrder = 0
+              TabStop = False
+              OnDblClick = Console1DblClick
+            end
           end
         end
       end

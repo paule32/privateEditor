@@ -11,7 +11,7 @@ uses
   IdComponent, IdTCPConnection, IdTCPClient, IdIRC, IdBaseComponent,
   IdAntiFreezeBase, IdAntiFreeze, JvExComCtrls, JvComCtrls, JvCheckTreeView,
   JvExCheckLst, JvCheckListBox, JvExButtons, JvBitBtn, JvExStdCtrls,
-  JvButton, JvCtrls, JvComponentBase;
+  JvButton, JvCtrls, JvComponentBase, Console;
 
 type
   TForm1 = class(TForm)
@@ -204,6 +204,9 @@ type
     TabSheet23: TTabSheet;
     ScrollBox4: TScrollBox;
     ScrollBox3: TScrollBox;
+    TabSheet24: TTabSheet;
+    ScrollBox5: TScrollBox;
+    Console1: TConsole;
     procedure PopupMenu_File_NewClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -255,6 +258,7 @@ type
     procedure dark1Click(Sender: TObject);
     procedure light1Click(Sender: TObject);
     procedure PageControl9Change(Sender: TObject);
+    procedure Console1DblClick(Sender: TObject);
   private
     Cv1: TCanvas;
     ircListLimit: Integer;
@@ -391,43 +395,8 @@ begin
 end;
 
 procedure TForm1.PopupMenu_File_OpenClick(Sender: TObject);
-var
-  FS: TFileStream;
-  S1, S2: String;
 begin
-  if not(OpenDialog1.Execute) then
-  begin
-    ErrorBox.Text('something went wrong on open file.');
-    exit;
-  end;
-
-  S1 := OpenDialog1.FileName;
-  S2 := ExtractFileName(S1);
-
-  if (Length(S2) < 1)
-  or (Length(S2) > 255) then
-  begin
-    ErrorBox.Text('file name to short, or to long.');
-    exit;
-  end;
-
-  // Pascal
-  if ModeButton.Tag = 1 then
-  begin
-    if not(ExtractFileExt(S2) = 'pas') then
-    begin
-      ErrorBox.Text('only .pas files allowed.');
-      exit;
-    end;
-    FS := TFileStream.Create(S1,fmOpenRead);
-    try
-      FS.ReadBuffer(S1,FS.Size);
-      SynEdit1.Lines.Clear;
-      SynEdit1.Lines.Add(S1);
-    finally
-      FS.Free;
-    end;
-  end;
+  JvSpeedButton1Click(Sender);
 end;
 
 procedure TForm1.PopupMenu_File_SaveAsClick(Sender: TObject);
@@ -633,6 +602,12 @@ begin
       sl.Free;
 
       SynEdit1.Modified := false;
+      exit;
+    end;
+
+    if not(SaveDialog1.Execute) then
+    begin
+      ErrorBox.Text('something went wrong on save file.');
       exit;
     end;
 
@@ -1272,6 +1247,14 @@ begin
     EditPanel      .Visible := true;
     MainPageControl.ActivePageIndex := 0;
   end;
+end;
+
+procedure TForm1.Console1DblClick(Sender: TObject);
+begin
+  Console1.Active := true;
+  Console1.Boot;
+  Console1.Writeln('hallo');
+  Console1.Prompt := true;
 end;
 
 end.

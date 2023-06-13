@@ -1,6 +1,6 @@
 object ErrorBox: TErrorBox
-  Left = 1327
-  Top = 809
+  Left = 613
+  Top = 391
   BorderStyle = bsDialog
   Caption = 'Error:'
   ClientHeight = 170
