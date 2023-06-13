@@ -11,7 +11,8 @@ uses
   IdComponent, IdTCPConnection, IdTCPClient, IdIRC, IdBaseComponent,
   IdAntiFreezeBase, IdAntiFreeze, JvExComCtrls, JvComCtrls, JvCheckTreeView,
   JvExCheckLst, JvCheckListBox, JvExButtons, JvBitBtn, JvExStdCtrls,
-  JvButton, JvCtrls, JvComponentBase, Console;
+  JvButton, JvCtrls, JvComponentBase, Console, Grids, ValEdit, JvInspector,
+  JvCombobox, JvDesignSurface;
 
 type
   TForm1 = class(TForm)
@@ -139,7 +140,6 @@ type
     Splitter2: TSplitter;
     UserHomeFolder: TTreeView;
     Panel7: TPanel;
-    TreeView1: TTreeView;
     TabSheet3: TTabSheet;
     PageControl3: TJvPageControl;
     TabSheet5: TTabSheet;
@@ -207,6 +207,20 @@ type
     TabSheet24: TTabSheet;
     ScrollBox5: TScrollBox;
     Console1: TConsole;
+    JvInspectorBorlandPainter1: TJvInspectorBorlandPainter;
+    JvDesignScrollBox1: TJvDesignScrollBox;
+    JvDesignSurface1: TJvDesignSurface;
+    Panel13: TPanel;
+    JvComboBox1: TJvComboBox;
+    PageControl10: TPageControl;
+    TabSheet25: TTabSheet;
+    TabSheet26: TTabSheet;
+    JvInspector1: TJvInspector;
+    EventMethodeListBox: TValueListEditor;
+    Splitter8: TSplitter;
+    PageControl11: TPageControl;
+    TabSheet27: TTabSheet;
+    ListView1: TListView;
     procedure PopupMenu_File_NewClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -350,6 +364,14 @@ begin
   Cv1.Font.Color := clRed;
 
   MainPageControl.Pages[1].TabVisible := false;
+
+  EventMethodeListBox.InsertRow('Caption','Text1',true);
+  EventMethodeListBox.InsertRow('Height' ,'0'    ,true);
+  EventMethodeListBox.InsertRow('Left'   ,'0'    ,true);
+  EventMethodeListBox.InsertRow('Top'    ,'0'    ,true);
+  EventMethodeListBox.InsertRow('Width'  ,'0'    ,true);
+
+  EventMethodeListBox.InsertRow('Name'   ,'ObjectName',true);
 end;
 
 procedure TForm1.FormShow(Sender: TObject);
@@ -1098,10 +1120,10 @@ begin
   UserHomeFolder.Color := clSilver;
   UserHomeFolder.Font.Color := clBlack;
 
-  TreeView1.Color := clSilver;
-  TreeView1.Font.Color := clBlack;
-  TreeView3.Color := clSilver;
-  TreeView3.Font.Color := clBlack;
+//  TreeView1.Color := clSilver;
+//  TreeView1.Font.Color := clBlack;
+//  TreeView3.Color := clSilver;
+//  TreeView3.Font.Color := clBlack;
 
   LeftPageControl.Color := clGray;
   ScrollBox1.Color := clGray;
@@ -1199,8 +1221,8 @@ begin
   UserHomeFolder.Color := clWhite;
   UserHomeFolder.Font.Color := clBlack;
 
-  TreeView1.Color := clWhite;
-  TreeView1.Font.Color := clBlack;
+//  TreeView1.Color := clWhite;
+//  TreeView1.Font.Color := clBlack;
 
   ircChannelEdit.Color := clWhite;
   ircUserName.Color := clWhite;

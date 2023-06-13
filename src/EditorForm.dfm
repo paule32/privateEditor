@@ -1124,6 +1124,14 @@ object Form1: TForm1
           Cursor = crVSplit
           Align = alTop
         end
+        object Splitter8: TSplitter
+          Left = 0
+          Top = 353
+          Width = 215
+          Height = 5
+          Cursor = crVSplit
+          Align = alTop
+        end
         object UserHomeFolder: TTreeView
           Left = 0
           Top = 0
@@ -1532,14 +1540,94 @@ object Form1: TForm1
             OnClick = NewUserFolderClick
           end
         end
-        object TreeView1: TTreeView
+        object Panel13: TPanel
           Left = 0
           Top = 137
           Width = 215
-          Height = 375
-          Align = alClient
-          Indent = 21
+          Height = 216
+          Align = alTop
+          Caption = 'Panel13'
           TabOrder = 2
+          object JvComboBox1: TJvComboBox
+            Left = 1
+            Top = 1
+            Width = 213
+            Height = 24
+            Align = alTop
+            TabOrder = 0
+            Text = 'JvComboBox1'
+          end
+          object PageControl10: TPageControl
+            Left = 1
+            Top = 25
+            Width = 213
+            Height = 190
+            ActivePage = TabSheet26
+            Align = alClient
+            TabOrder = 1
+            object TabSheet25: TTabSheet
+              Caption = 'Properties'
+              object JvInspector1: TJvInspector
+                Left = 0
+                Top = 0
+                Width = 205
+                Height = 159
+                Align = alClient
+                ItemHeight = 16
+                TabStop = True
+                TabOrder = 0
+              end
+            end
+            object TabSheet26: TTabSheet
+              Caption = 'Events'
+              ImageIndex = 1
+              object EventMethodeListBox: TValueListEditor
+                Left = 0
+                Top = 0
+                Width = 205
+                Height = 159
+                Align = alClient
+                TabOrder = 0
+                TitleCaptions.Strings = (
+                  'Event'
+                  'Methode')
+                ColWidths = (
+                  92
+                  107)
+              end
+            end
+          end
+        end
+        object PageControl11: TPageControl
+          Left = 0
+          Top = 358
+          Width = 215
+          Height = 154
+          ActivePage = TabSheet27
+          Align = alClient
+          TabOrder = 3
+          object TabSheet27: TTabSheet
+            Caption = 'Standard'
+            object ListView1: TListView
+              Left = 0
+              Top = 0
+              Width = 207
+              Height = 123
+              Align = alClient
+              Columns = <
+                item
+                  Caption = 'Object'
+                end
+                item
+                  Caption = 'Desc.'
+                end>
+              Items.Data = {
+                210000000100000000000000FFFFFFFFFFFFFFFF000000000000000004746573
+                74}
+              TabOrder = 0
+              ViewStyle = vsReport
+            end
+          end
         end
       end
       object TabSheet3: TTabSheet
@@ -1736,7 +1824,7 @@ object Form1: TForm1
         Top = 1
         Width = 529
         Height = 374
-        ActivePage = TabSheet24
+        ActivePage = TabSheet2
         Align = alLeft
         Anchors = [akLeft, akTop, akRight, akBottom]
         Font.Charset = DEFAULT_CHARSET
@@ -2348,6 +2436,14 @@ object Form1: TForm1
             Height = 28
             Align = alClient
             TabOrder = 0
+            object JvDesignScrollBox1: TJvDesignScrollBox
+              Left = 0
+              Top = 0
+              Width = 826
+              Height = 24
+              Align = alClient
+              TabOrder = 0
+            end
           end
         end
       end
@@ -3000,5 +3096,29 @@ object Form1: TForm1
     OnList = IdIRC1List
     Left = 589
     Top = 363
+  end
+  object JvInspectorBorlandPainter1: TJvInspectorBorlandPainter
+    CategoryFont.Charset = DEFAULT_CHARSET
+    CategoryFont.Color = clBtnText
+    CategoryFont.Height = -13
+    CategoryFont.Name = 'MS Sans Serif'
+    CategoryFont.Style = []
+    NameFont.Charset = DEFAULT_CHARSET
+    NameFont.Color = clWindowText
+    NameFont.Height = -13
+    NameFont.Name = 'MS Sans Serif'
+    NameFont.Style = []
+    ValueFont.Charset = DEFAULT_CHARSET
+    ValueFont.Color = clNavy
+    ValueFont.Height = -13
+    ValueFont.Name = 'MS Sans Serif'
+    ValueFont.Style = []
+    DrawNameEndEllipsis = False
+    Left = 125
+    Top = 383
+  end
+  object JvDesignSurface1: TJvDesignSurface
+    Left = 154
+    Top = 379
   end
 end
