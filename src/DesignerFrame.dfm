@@ -20,6 +20,7 @@ object Frame1: TFrame1
       Caption = 'JvDesignPanel1'
       TabOrder = 0
       OnEnter = JvDesignPanel1Enter
+      OnMouseUp = JvDesignPanel1MouseUp
       OnPaint = JvDesignPanel1Paint
       object Button1: TButton
         Left = 24
@@ -28,7 +29,6 @@ object Frame1: TFrame1
         Height = 25
         Caption = 'Button1'
         TabOrder = 0
-        OnClick = Button1Click
       end
     end
   end

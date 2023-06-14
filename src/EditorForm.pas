@@ -12,7 +12,7 @@ uses
   IdAntiFreezeBase, IdAntiFreeze, JvExComCtrls, JvComCtrls, JvCheckTreeView,
   JvExCheckLst, JvCheckListBox, JvExButtons, JvBitBtn, JvExStdCtrls,
   JvButton, JvCtrls, JvComponentBase, Console, Grids, ValEdit, JvInspector,
-  JvCombobox, JvDesignSurface;
+  JvCombobox, JvDesignSurface, JvDesignUtils;
 
 type
   TForm1 = class(TForm)
@@ -202,14 +202,10 @@ type
     PageControl9: TPageControl;
     TabSheet21: TTabSheet;
     TabSheet23: TTabSheet;
-    ScrollBox4: TScrollBox;
     ScrollBox3: TScrollBox;
     TabSheet24: TTabSheet;
     ScrollBox5: TScrollBox;
     Console1: TConsole;
-    JvInspectorBorlandPainter1: TJvInspectorBorlandPainter;
-    JvDesignScrollBox1: TJvDesignScrollBox;
-    JvDesignSurface1: TJvDesignSurface;
     Panel13: TPanel;
     JvComboBox1: TJvComboBox;
     PageControl10: TPageControl;
@@ -221,6 +217,7 @@ type
     PageControl11: TPageControl;
     TabSheet27: TTabSheet;
     ListView1: TListView;
+    ScrollBox4: TScrollBox;
     procedure PopupMenu_File_NewClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -279,6 +276,7 @@ type
   public
     procedure ModifyControl(const AControl: TControl; LS: TStrings);
     procedure ExpandTopLevel;
+    procedure JvDesignPanelPaint(Sender: TObject);
   end;
 
 var
@@ -289,7 +287,8 @@ implementation
 {$R *.dfm}
 
 uses
-  ErrorBoxForm, InfoBoxForm, AboutBox, InputBox, DesignerFrame;
+  ErrorBoxForm, InfoBoxForm, AboutBox, InputBox, DesignerFrame,
+  JvDesignImp;
 
 var
   DFrame : TFrame1;
@@ -343,6 +342,10 @@ begin
   SynEdit1.Lines.Clear;
 end;
 
+procedure TForm1.JvDesignPanelPaint(Sender: TObject);
+begin
+end;
+
 procedure TForm1.FormCreate(Sender: TObject);
 begin
   ErrorBox := TErrorBox.Create(Form1);
@@ -364,6 +367,7 @@ begin
   Cv1.Font.Color := clRed;
 
   MainPageControl.Pages[1].TabVisible := false;
+
 
   EventMethodeListBox.InsertRow('Caption','Text1',true);
   EventMethodeListBox.InsertRow('Height' ,'0'    ,true);

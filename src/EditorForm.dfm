@@ -2436,14 +2436,6 @@ object Form1: TForm1
             Height = 28
             Align = alClient
             TabOrder = 0
-            object JvDesignScrollBox1: TJvDesignScrollBox
-              Left = 0
-              Top = 0
-              Width = 826
-              Height = 24
-              Align = alClient
-              TabOrder = 0
-            end
           end
         end
       end
@@ -3096,29 +3088,5 @@ object Form1: TForm1
     OnList = IdIRC1List
     Left = 589
     Top = 363
-  end
-  object JvInspectorBorlandPainter1: TJvInspectorBorlandPainter
-    CategoryFont.Charset = DEFAULT_CHARSET
-    CategoryFont.Color = clBtnText
-    CategoryFont.Height = -13
-    CategoryFont.Name = 'MS Sans Serif'
-    CategoryFont.Style = []
-    NameFont.Charset = DEFAULT_CHARSET
-    NameFont.Color = clWindowText
-    NameFont.Height = -13
-    NameFont.Name = 'MS Sans Serif'
-    NameFont.Style = []
-    ValueFont.Charset = DEFAULT_CHARSET
-    ValueFont.Color = clNavy
-    ValueFont.Height = -13
-    ValueFont.Name = 'MS Sans Serif'
-    ValueFont.Style = []
-    DrawNameEndEllipsis = False
-    Left = 125
-    Top = 383
-  end
-  object JvDesignSurface1: TJvDesignSurface
-    Left = 154
-    Top = 379
   end
 end
