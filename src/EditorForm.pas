@@ -11,8 +11,8 @@ uses
   IdComponent, IdTCPConnection, IdTCPClient, IdIRC, IdBaseComponent,
   IdAntiFreezeBase, IdAntiFreeze, JvExComCtrls, JvComCtrls, JvCheckTreeView,
   JvExCheckLst, JvCheckListBox, JvExButtons, JvBitBtn, JvExStdCtrls,
-  JvButton, JvCtrls, JvComponentBase, Console, Grids, ValEdit, JvInspector,
-  JvCombobox, JvDesignSurface, JvDesignUtils;
+  JvButton, JvCtrls, JvComponentBase, Console, Grids, ValEdit,
+  JvCombobox, JvDesignSurface, JvDesignUtils, JvInspector;
 
 type
   TForm1 = class(TForm)
@@ -216,8 +216,11 @@ type
     Splitter8: TSplitter;
     PageControl11: TPageControl;
     TabSheet27: TTabSheet;
-    ListView1: TListView;
+    DesignerIconListView: TListView;
     ScrollBox4: TScrollBox;
+    ImageList2: TImageList;
+    ImageList3: TImageList;
+    ColorDialog1: TColorDialog;
     procedure PopupMenu_File_NewClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -270,13 +273,24 @@ type
     procedure light1Click(Sender: TObject);
     procedure PageControl9Change(Sender: TObject);
     procedure Console1DblClick(Sender: TObject);
+    procedure SynEdit1DragOver(Sender, Source: TObject; X, Y: Integer;
+      State: TDragState; var Accept: Boolean);
+    procedure SynEdit1DragDrop(Sender, Source: TObject; X, Y: Integer);
+    procedure DesignerIconListViewMouseDown(Sender: TObject;
+      Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure JvInspector1BeforeEdit(Sender: TObject;
+      Item: TJvCustomInspectorItem; Edit: TCustomEdit);
+    procedure JvInspector1ItemValueChanged(Sender: TObject;
+      Item: TJvCustomInspectorItem);
   private
     Cv1: TCanvas;
     ircListLimit: Integer;
+    procedure JvInspector1OnDblClick(Sender: TObject);
   public
     procedure ModifyControl(const AControl: TControl; LS: TStrings);
     procedure ExpandTopLevel;
     procedure JvDesignPanelPaint(Sender: TObject);
+    procedure ItemDblClick(Sender: TObject);
   end;
 
 var
@@ -319,6 +333,11 @@ begin
   end;
 end;
 
+procedure TForm1.JvInspector1OnDblClick(Sender: TObject);
+Begin
+showMessage('xxxer455445');
+end;
+
 procedure TForm1.ExpandTopLevel;
 var
   i: Integer;
@@ -355,6 +374,10 @@ begin
   DFrame.Parent  := ScrollBox4;
   DFrame.Align   := alClient;
   DFrame.Visible := true;
+  DFrame.count   := 1;
+
+  DFrame.JvDesignPanel1.Caption := '';
+  DFrame.JvDesignPanel1Enter(Sender);
 
   SynEdit1.Lines.Clear;
 
@@ -379,6 +402,9 @@ begin
 end;
 
 procedure TForm1.FormShow(Sender: TObject);
+var
+  Butts: TJvImgBtn;
+
   function CurrentUserName: String;
   var
     UserName: array[0..127] of Char;
@@ -399,6 +425,13 @@ begin
 
   LeftPageControl.ActivePage := TabSheet1;
   MainPageControl.ActivePage := TabSheet2;
+
+  Butts := TJvImgBtn.Create(DFrame.JvDesignPanel1);
+  Butts.Parent := DFrame.JvDesignPanel1;
+
+  JvInspector1.Clear;
+  JvInspector1.AddComponent((Butts as TJvImgBtn),'Button',true);
+
 
   SynEdit1.SetFocus;
 end;
@@ -1281,6 +1314,52 @@ begin
   Console1.Boot;
   Console1.Writeln('hallo');
   Console1.Prompt := true;
+end;
+
+procedure TForm1.SynEdit1DragOver(Sender, Source: TObject; X, Y: Integer;
+  State: TDragState; var Accept: Boolean);
+begin
+  Accept := (Source is TListView);
+end;
+
+procedure TForm1.SynEdit1DragDrop(Sender, Source: TObject; X, Y: Integer);
+begin
+  if (Source is TListView) then
+  begin
+    SynEdit1.Lines.Add('xxxxxxxX');
+  end;
+end;
+
+procedure TForm1.DesignerIconListViewMouseDown(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  DesignerIconListView.BeginDrag(true);
+end;
+
+procedure TForm1.JvInspector1BeforeEdit(Sender: TObject;
+  Item: TJvCustomInspectorItem; Edit: TCustomEdit);
+begin
+  TEdit(Edit).OnDblClick := ItemDblClick;
+end;
+
+procedure TForm1.ItemDblClick(Sender: TObject);
+begin
+  if JvInspector1.Selected.DisplayName = 'Color' then
+  begin
+    if ColorDialog1.Execute then
+    begin
+      JvInspector1.Selected.SetDisplayValue(
+      ColorToString(ColorDialog1.Color));
+      JvInspector1.Selected.Apply;
+      DFrame.Button.Color := ColorDialog1.Color;
+    end;
+  end;
+end;
+
+procedure TForm1.JvInspector1ItemValueChanged(Sender: TObject;
+  Item: TJvCustomInspectorItem);
+begin
+  //
 end;
 
 end.
