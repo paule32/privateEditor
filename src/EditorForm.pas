@@ -12,7 +12,9 @@ uses
   IdAntiFreezeBase, IdAntiFreeze, JvExComCtrls, JvComCtrls, JvCheckTreeView,
   JvExCheckLst, JvCheckListBox, JvExButtons, JvBitBtn, JvExStdCtrls,
   JvButton, JvCtrls, JvComponentBase, Console, Grids, ValEdit,
-  JvCombobox, JvDesignSurface, JvDesignUtils, JvInspector;
+  JvCombobox, JvDesignSurface, JvDesignUtils, JvInspector, JvInterpreter,
+  JvExExtCtrls, JvExtComponent, JvPanel, TntExtCtrls, TntStdCtrls,
+  TntComCtrls;
 
 type
   TForm1 = class(TForm)
@@ -194,16 +196,13 @@ type
     TabSheet12: TTabSheet;
     ListBox1: TJvCheckListBox;
     ircConnectButton: TJvImgBtn;
-    SpeedButton1: TJvSpeedButton;
-    SpeedButton2: TJvSpeedButton;
-    NewUserFolder: TJvSpeedButton;
     TabSheet22: TTabSheet;
     DesignPanelPage: TPanel;
     PageControl9: TPageControl;
     TabSheet21: TTabSheet;
     TabSheet23: TTabSheet;
     ScrollBox3: TScrollBox;
-    TabSheet24: TTabSheet;
+    ConsoleTabSheet: TTabSheet;
     ScrollBox5: TScrollBox;
     Console1: TConsole;
     Panel13: TPanel;
@@ -211,7 +210,6 @@ type
     PageControl10: TPageControl;
     TabSheet25: TTabSheet;
     TabSheet26: TTabSheet;
-    JvInspector1: TJvInspector;
     EventMethodeListBox: TValueListEditor;
     Splitter8: TSplitter;
     PageControl11: TPageControl;
@@ -221,6 +219,13 @@ type
     ImageList2: TImageList;
     ImageList3: TImageList;
     ColorDialog1: TColorDialog;
+    Splitter9: TSplitter;
+    Memo1: TMemo;
+    JvInterpreterProgram1: TJvInterpreterProgram;
+    TabSheet24: TTabSheet;
+    ScrollBox6: TScrollBox;
+    C64Screen: TTntRichEdit;
+    C64ScreenTimer: TTimer;
     procedure PopupMenu_File_NewClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -280,17 +285,28 @@ type
       Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure JvInspector1BeforeEdit(Sender: TObject;
       Item: TJvCustomInspectorItem; Edit: TCustomEdit);
-    procedure JvInspector1ItemValueChanged(Sender: TObject;
-      Item: TJvCustomInspectorItem);
+    procedure C64ScreenKeyPress(Sender: TObject; var Key: Char);
+    procedure C64ScreenTimerTimer(Sender: TObject);
   private
     Cv1: TCanvas;
     ircListLimit: Integer;
     procedure JvInspector1OnDblClick(Sender: TObject);
   public
+    JvInspectors: Array of TJvInspector;
+
+    C64ScreenMap: Array [1..25, 1..40] of WideChar;
+    C64ScreenCursor: TPoint;
+    C64ScreenCursorBlink: Integer;
+
     procedure ModifyControl(const AControl: TControl; LS: TStrings);
     procedure ExpandTopLevel;
     procedure JvDesignPanelPaint(Sender: TObject);
     procedure ItemDblClick(Sender: TObject);
+    procedure JvInspector1ItemValueChanged(
+      Sender: TObject;
+      Item: TJvCustomInspectorItem);
+    function WriteToC64Screen(X,Y: Integer; AString: WideString): Integer;
+    function PutToC64Screen  (X,Y: Integer; AChar: Char): Integer;
   end;
 
 var
@@ -365,10 +381,44 @@ procedure TForm1.JvDesignPanelPaint(Sender: TObject);
 begin
 end;
 
+procedure PascalAdapter_WriteLn(var Value: Variant; Args: TJvInterpreterArgs);
+begin
+  Form1.Console1.WriteLn(VarToStr(Args.Values[0]));
+end;
+
 procedure TForm1.FormCreate(Sender: TObject);
+var
+  I         : Integer;
+  InspCat   : TJvInspectorCustomCategoryItem;
+  SomeColor : TColor;
+  xpos, ypos: Integer;
 begin
   ErrorBox := TErrorBox.Create(Form1);
   InfoBox  := TInfoBox.Create(Form1);
+
+  ypos := 0;
+  xpos := 0;
+
+  // fill C64ScreenMap[dx,dy] with #32
+  while (true) do
+  begin
+    if ypos >= 25 then
+    break;
+    inc(ypos);
+    while (true) do
+    begin
+      if xpos >= 40 then
+      begin
+        xpos := 0;
+        inc(ypos);
+      end;
+      if ypos >= 25 then
+      break;
+      inc(xpos);
+      C64ScreenMap[ypos, xpos] := WideChar($E000 + Ord(' '));
+    end;
+  end;
+  C64ScreenCursorBlink := 0;
 
   DFrame := TFrame1.Create(ScrollBox4);
   DFrame.Parent  := ScrollBox4;
@@ -377,7 +427,12 @@ begin
   DFrame.count   := 1;
 
   DFrame.JvDesignPanel1.Caption := '';
-  DFrame.JvDesignPanel1Enter(Sender);
+  DFrame.JvDesignSurface1.Active := true;
+
+  DFrame.JvDesignPanel1.Active    := true;
+  DFrame.JvDesignPanel1.Color     := clBtnFace;
+  DFrame.JvDesignPanel1.DrawRules := false;
+  DFrame.JvDesignPanel1.OnPaint   := DFrame.JvDesignPanel1Paint;
 
   SynEdit1.Lines.Clear;
 
@@ -391,6 +446,22 @@ begin
 
   MainPageControl.Pages[1].TabVisible := false;
 
+  with GlobalJvInterpreterAdapter do
+  begin
+    AddFunction('dummy', 'WriteLn', PascalAdapter_WriteLn, 1, [varString], varString);
+  end;
+
+  SetLength(JvInspectors,2048);
+  for I := 0 to 2048 - 1 do
+  begin
+    JvInspectors[i] := TJvInspector.Create(TabSheet25);
+    JvInspectors[i].Parent  := TabSheet25;
+    JvInspectors[i].Align   := alClient;
+    JvInspectors[i].Visible := false;
+
+    JvInspectors[i].OnItemValueChanged := JvInspector1ItemValueChanged;
+    JvInspectors[i].BeforeEdit := JvInspector1BeforeEdit;
+  end;
 
   EventMethodeListBox.InsertRow('Caption','Text1',true);
   EventMethodeListBox.InsertRow('Height' ,'0'    ,true);
@@ -401,9 +472,27 @@ begin
   EventMethodeListBox.InsertRow('Name'   ,'ObjectName',true);
 end;
 
+procedure TForm1.JvInspector1ItemValueChanged(
+  Sender: TObject;
+  Item: TJvCustomInspectorItem);
+var
+  sValue: String;
+begin
+  if (Item.Data <> nil) then
+  begin
+    sValue := Item.DisplayValue;
+
+    if (CompareText(Item.Data.Name, 'Color') = 0) then
+    begin
+      Item.SetDisplayValue(ColorToString(ColorDialog1.Color));
+    end;
+  end;
+end;
+
 procedure TForm1.FormShow(Sender: TObject);
 var
   Butts: TJvImgBtn;
+  I: Integer;
 
   function CurrentUserName: String;
   var
@@ -429,9 +518,16 @@ begin
   Butts := TJvImgBtn.Create(DFrame.JvDesignPanel1);
   Butts.Parent := DFrame.JvDesignPanel1;
 
-  JvInspector1.Clear;
-  JvInspector1.AddComponent((Butts as TJvImgBtn),'Button',true);
+//  JvInspector1.Clear;
+//  JvInspector1.AddComponent((Butts as TJvImgBtn),'Button',true);
 
+
+  WriteToC64Screen(5,2,'**** COMMODORE 64 BASIC V2 ***');
+  WriteToC64Screen(2,4,'64K RAM SYSTEM  38911 BASIC BYTES FREE');
+  WriteToC64Screen(1,6,'READY.');
+
+  C64ScreenCursor.X := 1;
+  C64ScreenCursor.Y := 7;
 
   SynEdit1.SetFocus;
 end;
@@ -605,7 +701,7 @@ begin
   SynEdit1.Lines.LoadFromFile(OpenDialog1.FileName);
   SynEdit1.Lines.Delete(SynEdit1.Lines.Count - 1);
 
-  TabSheet2.Caption := OpenDialog1.FileName;
+  TabSheet2.Caption := ExtractFileName(OpenDialog1.FileName);
 
   MainPageControl.ActivePage := TabSheet2;
   SynEdit1.SetFocus;
@@ -745,6 +841,16 @@ begin
   JvSpeedButton2Click(Sender);
   buildListBox.Items.Clear;
 
+  MainPageControl.ActivePage := ConsoleTabSheet;
+  Console1DblClick(Sender);
+  Console1.SetFocus;
+
+// TODO: parser (below):
+JvInterpreterProgram1.Pas.Text := String(SynEdit1.Text);
+JvInterpreterProgram1.Run;
+exit;
+
+// TODO: parser:
   DateTimeToString(res,'',now);
   buildListBox.Items.Insert(0,res + ': ' + 'initialize...');
 
@@ -802,23 +908,6 @@ begin
     DateTimeToString(res,'',now);
     buildListBox.Items.Insert(0,res + ': load parsers.dll: FAIL.');
   end;
-
-//    if @callParser <> nil then
-//    begin
-(*
-      if not(callParser(PChar(TabSheet2.Caption))) then
-      ShowMessage('error in function call from parser dll');
-*)
-(*
-      if @callParserGetLines <> nil then
-      begin
-        yylines := callParserGetLines;
-        ShowMessage('Lines: ' + IntToStr(yylines));
-      end;
-*)
-//    end;
-//  end else
-//  ShowMessage('parser.dll error.');
 end;
 
 procedure TForm1.EditorOptions1Click(Sender: TObject);
@@ -977,6 +1066,8 @@ end;
 
 procedure TForm1.MainPageControlChange(Sender: TObject);
 begin
+  C64ScreenTimer.Enabled := false;
+  
   if MainPageControl.ActivePage.Caption = 'Preview' then
   begin
     EditPanel   .Visible := false;
@@ -997,6 +1088,10 @@ begin
     DesignPanelPage.Align   := alClient;
 
     PageControl9.ActivePageIndex := 1;
+  end else
+  if MainPageControl.ActivePage.Caption = 'C-64 Display' then
+  begin
+    C64ScreenTimer.Enabled := true;
   end;
 end;
 
@@ -1125,10 +1220,6 @@ begin
   Panel11.Color := clGray;
   Panel12.Color := clGray;
 
-  SpeedButton1 .Color := clGray;
-  SpeedButton2 .Color := clGray;
-  newUserFolder.Color := clGray;
-
   JvSpeedButton1.Color := clGray;
   JvSpeedButton2.Color := clGray;
   JvSpeedButton4.Color := clGray;
@@ -1239,10 +1330,6 @@ begin
   PageControl7.Color := clBtnFace;
   PageControl8.Color := clBtnFace;
 
-  SpeedButton1 .Color := clBtnFace;
-  SpeedButton2 .Color := clBtnFace;
-  newUserFolder.Color := clBtnFace;
-
   LeftPageControl.Color := clBtnFace;
   ScrollBox1.Color := clBtnFace;
 
@@ -1343,23 +1430,161 @@ begin
 end;
 
 procedure TForm1.ItemDblClick(Sender: TObject);
+var
+  I: Integer;
+  found: Boolean;
 begin
-  if JvInspector1.Selected.DisplayName = 'Color' then
+  found := false;
+  for I := 0 to 2048 - 1 do
+  begin
+    if JvInspectors[i].Visible = true then
+    begin
+      found := true;
+      break;
+    end;
+  end;
+
+  if not(found) then exit;
+  if JvInspectors[I].Selected.DisplayName = 'Color' then
   begin
     if ColorDialog1.Execute then
     begin
-      JvInspector1.Selected.SetDisplayValue(
+      JvInspectors[I].Selected.SetDisplayValue(
       ColorToString(ColorDialog1.Color));
-      JvInspector1.Selected.Apply;
-      DFrame.Button.Color := ColorDialog1.Color;
+
+      if JvInspectors[I].Selected.Parent.DisplayName = 'Font' then
+      DFrame.Button.Font.Color := ColorDialog1.Color else
+      DFrame.Button.Color      := ColorDialog1.Color ;
     end;
   end;
 end;
 
-procedure TForm1.JvInspector1ItemValueChanged(Sender: TObject;
-  Item: TJvCustomInspectorItem);
+function TForm1.PutToC64Screen(X,Y: Integer; AChar: Char): Integer;
 begin
-  //
+  C64ScreenMap[X,Y] := WideChar($E000 + Ord(AChar));
+end;
+
+function TForm1.WriteToC64Screen(X,Y: Integer; AString: WideString): Integer;
+var
+  WStr  : WideString;
+  I     : Integer;
+  ypos, xpos: Integer;
+  finish: Boolean;
+begin
+  xpos := 1;
+  ypos := 0;
+
+  while (true) do
+  begin
+    if ypos+1 > 25 then
+    break;
+    inc(ypos);
+    while (true) do
+    begin
+      if xpos+1 > 40 then
+      begin
+        xpos := 0;
+        inc(ypos);
+        if ypos >= 25 then
+        break;
+      end;
+      inc(xpos);
+      if (Y = ypos) and (X = xpos) then
+      begin
+        for I := 1 to Length(AString) do
+        begin
+          C64ScreenMap[ypos, xpos] := WideChar($E000 + Ord(AString[I]));
+          if xpos >= 40 then
+          begin
+            xpos := 0;
+            inc(ypos);
+          end;
+          if ypos >= 25 then
+          ypos := 1;
+          inc(xpos);
+        end;
+        break;
+      end;
+    end;
+    xpos := 1;
+  end;
+
+  xpos := 0;
+  ypos := 0;
+
+//  C64Screen.Lines.Clear;
+  WStr := '';
+
+  while (true) do
+  begin
+    if ypos >= 25 then
+    break else
+    inc(ypos);
+    while (true) do
+    begin
+      if xpos >= 40 then
+      begin
+        xpos := 0;
+        inc(ypos);
+        if ypos >= 25 then
+        break;
+      end;
+      inc(xpos);
+      WStr := WStr + C64ScreenMap[ypos, xpos];
+    end;
+    xpos := 1;
+  end;
+
+  while (true) do
+  begin
+    if xpos >= 40 then
+    begin
+      xpos := 0;
+      inc(ypos);
+    end;
+    if ypos >= 25 then
+    break;
+    inc(xpos);
+    WStr := WStr + C64ScreenMap[ypos, xpos];
+  end;
+
+  C64Screen.Lines.Text := WStr;
+end;
+
+procedure TGroupBox_Create(var Value: Variant; Args: TJvInterpreterArgs);
+begin
+  Value := O2V(TGroupBox.Create(V2O(Args.Values[0]) as TComponent));
+end;
+
+procedure TForm1.C64ScreenKeyPress(Sender: TObject; var Key: Char);
+begin
+ key := #0;
+end;
+
+procedure TForm1.C64ScreenTimerTimer(Sender: TObject);
+begin
+  if C64ScreenCursorBlink = 0 then
+  begin
+    C64ScreenCursorBlink := 1;
+    C64ScreenTimer.Enabled := false;
+
+    WriteToC64Screen(
+    C64ScreenCursor.X,
+    C64ScreenCursor.Y,WideChar($220));
+
+    C64ScreenTimer.Enabled := true;
+  end else
+  if C64ScreenCursorBlink = 1 then
+  begin
+    C64ScreenCursorBlink := 0;
+    C64ScreenTimer.Enabled := false;
+
+    WriteToC64Screen(
+    C64ScreenCursor.X,
+    C64ScreenCursor.Y,' ');
+
+    C64ScreenTimer.Enabled := true;
+  end;
 end;
 
 end.

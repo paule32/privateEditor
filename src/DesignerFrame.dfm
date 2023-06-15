@@ -21,8 +21,6 @@ object Frame1: TFrame1
       TabOrder = 0
       OnDragDrop = JvDesignPanel1DragDrop
       OnDragOver = JvDesignPanel1DragOver
-      OnEnter = JvDesignPanel1Enter
-      OnMouseUp = JvDesignPanel1MouseUp
       OnPaint = JvDesignPanel1Paint
     end
   end

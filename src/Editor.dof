@@ -94,7 +94,7 @@ OutputDir=..\dcu
 UnitOutputDir=..\dcu
 PackageDLLOutputDir=..\dcu
 PackageDCPOutputDir=..\dcu
-SearchPath=E:\Projekte\jedi\jvcl\jvcl\resources;E:\Projekte\jedi\jvcl\jvcl\lib\d7;E:\Projekte\jedi\jvcl\jvcl\common;E:\Projekte\jedi\jvcl\jvcl\dcu;E:\Projekte\jedi\jcl\jcl\source;E:\Projekte\jedi\jcl\jcl\source\common;E:\Projekte\jedi\jcl\jcl\source\include;E:\Projekte\jedi\jcl\jcl\source\include\jedi;E:\Projekte\jedi\jcl\jcl\source\vcl;E:\Projekte\jedi\jcl\jcl\source\windows;E:\Projekte\jedi\jcl\jcl\source\windows\obj;E:\Projekte\jedi\jcl\jcl\source\windows\obj\bzip2\win32;E:\Projekte\jedi\jcl\jcl\source\windows\obj\pcre\win32;E:\Projekte\jedi\jcl\jcl\source\windows\obj\zlib\win32;E:\Projekte\jedi\jcl\jcl\source\prototypes;E:\Projekte\jedi\jcl\jcl\source\prototypes\containers;E:\Projekte\jedi\jcl\jcl\source\prototypes\supplement;E:\Projekte\jedi\jcl\jcl\source\prototypes\win32api;E:\Projekte\jedi\jcl\jcl\lib\d7;E:\Projekte\jedi\jcl\jcl\packages\d7
+SearchPath=E:\Projekte\jedi\jvcl\jvcl\resources;E:\Projekte\jedi\jvcl\jvcl\lib\d7;E:\Projekte\jedi\jvcl\jvcl\common;E:\Projekte\jedi\jvcl\jvcl\dcu;E:\Projekte\jedi\jcl\jcl\source;E:\Projekte\jedi\jcl\jcl\source\common;E:\Projekte\jedi\jcl\jcl\source\include;E:\Projekte\jedi\jcl\jcl\source\include\jedi;E:\Projekte\jedi\jcl\jcl\source\vcl;E:\Projekte\jedi\jcl\jcl\source\windows;E:\Projekte\jedi\jcl\jcl\source\windows\obj;E:\Projekte\jedi\jcl\jcl\source\windows\obj\bzip2\win32;E:\Projekte\jedi\jcl\jcl\source\windows\obj\pcre\win32;E:\Projekte\jedi\jcl\jcl\source\windows\obj\zlib\win32;E:\Projekte\jedi\jcl\jcl\source\prototypes;E:\Projekte\jedi\jcl\jcl\source\prototypes\containers;E:\Projekte\jedi\jcl\jcl\source\prototypes\supplement;E:\Projekte\jedi\jcl\jcl\source\prototypes\win32api;E:\Projekte\jedi\jcl\jcl\lib\d7;E:\Projekte\jedi\jcl\jcl\packages\d7;E:\DELPHI\TNTCtrls\Source
 Packages=vcl;rtl;vclx;inet;xmlrtl;vclie;inetdbbde;inetdbxpress;dbrtl;dsnap;dsnapcon;vcldb;soaprtl;VclSmp;dbexpress;dbxcds;inetdb;bdertl;vcldbx;webdsnap;websnap;adortl;ibxpress;teeui;teedb;tee;dss;visualclx;visualdbclx;vclactnband;vclshlctrls,kallupDesignDelphi7
 Conditionals=KBMMEMTABLE_PRO_EDITION;madExcept
 DebugSourceDirs=
@@ -144,13 +144,17 @@ Item1=WIN32;CONDITIONALEXPRESSIONS;VER150;RELEASE
 Count=1
 Item0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
 [HistoryLists\hlSearchPath]
-Count=2
-Item0=E:\Projekte\jedi\jvcl\jvcl\resources;E:\Projekte\jedi\jvcl\jvcl\lib\d7;E:\Projekte\jedi\jvcl\jvcl\common;E:\Projekte\jedi\jvcl\jvcl\dcu;E:\Projekte\jedi\jcl\jcl\source;E:\Projekte\jedi\jcl\jcl\source\common;E:\Projekte\jedi\jcl\jcl\source\include;E:\Projekte\jedi\jcl\jcl\source\include\jedi;E:\Projekte\jedi\jcl\jcl\source\vcl;E:\Projekte\jedi\jcl\jcl\source\windows;E:\Projekte\jedi\jcl\jcl\source\windows\obj;E:\Projekte\jedi\jcl\jcl\source\windows\obj\bzip2\win32;E:\Projekte\jedi\jcl\jcl\source\windows\obj\pcre\win32;E:\Projekte\jedi\jcl\jcl\source\windows\obj\zlib\win32;E:\Projekte\jedi\jcl\jcl\source\prototypes;E:\Projekte\jedi\jcl\jcl\source\prototypes\containers;E:\Projekte\jedi\jcl\jcl\source\prototypes\supplement;E:\Projekte\jedi\jcl\jcl\source\prototypes\win32api;E:\Projekte\jedi\jcl\jcl\lib\d7;E:\Projekte\jedi\jcl\jcl\packages\d7
-Item1=.\;E:\Program Files (x86)\Borland\Delphi7\Source\Property Editors;E:\Program Files (x86)\Borland\Delphi7\Source\ToolsAPI
+Count=3
+Item0=E:\Projekte\jedi\jvcl\jvcl\resources;E:\Projekte\jedi\jvcl\jvcl\lib\d7;E:\Projekte\jedi\jvcl\jvcl\common;E:\Projekte\jedi\jvcl\jvcl\dcu;E:\Projekte\jedi\jcl\jcl\source;E:\Projekte\jedi\jcl\jcl\source\common;E:\Projekte\jedi\jcl\jcl\source\include;E:\Projekte\jedi\jcl\jcl\source\include\jedi;E:\Projekte\jedi\jcl\jcl\source\vcl;E:\Projekte\jedi\jcl\jcl\source\windows;E:\Projekte\jedi\jcl\jcl\source\windows\obj;E:\Projekte\jedi\jcl\jcl\source\windows\obj\bzip2\win32;E:\Projekte\jedi\jcl\jcl\source\windows\obj\pcre\win32;E:\Projekte\jedi\jcl\jcl\source\windows\obj\zlib\win32;E:\Projekte\jedi\jcl\jcl\source\prototypes;E:\Projekte\jedi\jcl\jcl\source\prototypes\containers;E:\Projekte\jedi\jcl\jcl\source\prototypes\supplement;E:\Projekte\jedi\jcl\jcl\source\prototypes\win32api;E:\Projekte\jedi\jcl\jcl\lib\d7;E:\Projekte\jedi\jcl\jcl\packages\d7;E:\DELPHI\TNTCtrls\Source
+Item1=E:\Projekte\jedi\jvcl\jvcl\resources;E:\Projekte\jedi\jvcl\jvcl\lib\d7;E:\Projekte\jedi\jvcl\jvcl\common;E:\Projekte\jedi\jvcl\jvcl\dcu;E:\Projekte\jedi\jcl\jcl\source;E:\Projekte\jedi\jcl\jcl\source\common;E:\Projekte\jedi\jcl\jcl\source\include;E:\Projekte\jedi\jcl\jcl\source\include\jedi;E:\Projekte\jedi\jcl\jcl\source\vcl;E:\Projekte\jedi\jcl\jcl\source\windows;E:\Projekte\jedi\jcl\jcl\source\windows\obj;E:\Projekte\jedi\jcl\jcl\source\windows\obj\bzip2\win32;E:\Projekte\jedi\jcl\jcl\source\windows\obj\pcre\win32;E:\Projekte\jedi\jcl\jcl\source\windows\obj\zlib\win32;E:\Projekte\jedi\jcl\jcl\source\prototypes;E:\Projekte\jedi\jcl\jcl\source\prototypes\containers;E:\Projekte\jedi\jcl\jcl\source\prototypes\supplement;E:\Projekte\jedi\jcl\jcl\source\prototypes\win32api;E:\Projekte\jedi\jcl\jcl\lib\d7;E:\Projekte\jedi\jcl\jcl\packages\d7
+Item2=.\;E:\Program Files (x86)\Borland\Delphi7\Source\Property Editors;E:\Program Files (x86)\Borland\Delphi7\Source\ToolsAPI
 [HistoryLists\hlUnitOutputDirectory]
 Count=2
 Item0=..\dcu
 Item1=.\dcu
+[HistoryLists\hlOutputDirectorry]
+Count=1
+Item0=..\dcu
 [HistoryLists\hlBPLOutput]
 Count=2
 Item0=..\dcu

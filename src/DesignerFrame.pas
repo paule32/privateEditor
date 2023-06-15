@@ -14,9 +14,6 @@ type
     JvDesignScrollBox1: TJvDesignScrollBox;
     JvDesignPanel1: TJvDesignPanel;
     procedure JvDesignPanel1Paint(Sender: TObject);
-    procedure JvDesignPanel1Enter(Sender: TObject);
-    procedure JvDesignPanel1MouseUp(Sender: TObject; Button: TMouseButton;
-      Shift: TShiftState; X, Y: Integer);
     procedure JvDesignPanel1DragDrop(Sender, Source: TObject; X,
       Y: Integer);
     procedure JvDesignPanel1DragOver(Sender, Source: TObject; X,
@@ -36,17 +33,31 @@ uses EditorForm,   JvDesignImp;
 
 procedure TFrame1.ButtonOnClick(Sender: TObject);
 var
-  i : Integer;
+  I : Integer;
+  procedure setVisible(V: Integer);
+  var
+    I: Integer;
+  begin
+    for I := 0 to 2048 - 1 do
+       Form1.JvInspectors[I].Visible := false;
+
+    if Form1.JvInspectors[V].VisibleCount < 1 then
+       Form1.JvInspectors[V].AddComponent(
+             (Sender as TJvImgBtn),
+             (Sender as TJvImgBtn).Name,
+             true);
+       Form1.JvInspectors[V].Visible := true;
+  end;
 begin
   if (Sender is TJvImgBtn) then
   begin
-    for i := 0 to Form1.JvInspector1.VisibleCount - 1 do
+    if (Sender as TJvImgBtn).Name = 'Button1' then
     begin
-      if Form1.JvInspector1.VisibleItems[i].DisplayName = 'Color' then
-      begin
-        Form1.JvInspector1.VisibleItems[i].SetDisplayValue(
-        ColorToString((Sender as TJvImgBtn).Color));
-      end;
+      setVisible(0);
+    end else
+    if (Sender as TJvImgBtn).Name = 'Button2' then
+    begin
+      setVisible(1);
     end;
   end;
 end;
@@ -55,24 +66,6 @@ procedure TFrame1.JvDesignPanel1Paint(Sender: TObject);
 begin
   with JvDesignPanel1 do
   DesignPaintGrid(Canvas, ClientRect, Color);
-end;
-
-procedure TFrame1.JvDesignPanel1Enter(Sender: TObject);
-begin
-  JvDesignSurface1.Active := true;
-
-  JvDesignPanel1.Active := true;
-  JvDesignPanel1.Invalidate;
-
-  JvDesignPanel1.Color := clBtnFace;
-  JvDesignPanel1.DrawRules := false;
-  JvDesignPanel1.OnPaint := JvDesignPanel1Paint;
-end;
-
-procedure TFrame1.JvDesignPanel1MouseUp(Sender: TObject;
-  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-begin
-  JvDesignPanel1.Invalidate;
 end;
 
 procedure TFrame1.JvDesignPanel1DragDrop(Sender, Source: TObject; X,
