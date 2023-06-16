@@ -137,12 +137,6 @@ type
     Button6: TJvImgBtn;
     Button7: TJvImgBtn;
     Button8: TJvImgBtn;
-    LeftPageControl: TJvPageControl;
-    TabSheet1: TTabSheet;
-    Splitter2: TSplitter;
-    UserHomeFolder: TTreeView;
-    Panel7: TPanel;
-    TabSheet3: TTabSheet;
     PageControl3: TJvPageControl;
     TabSheet5: TTabSheet;
     Label1: TLabel;
@@ -205,27 +199,36 @@ type
     ConsoleTabSheet: TTabSheet;
     ScrollBox5: TScrollBox;
     Console1: TConsole;
+    ScrollBox4: TScrollBox;
+    ImageList2: TImageList;
+    ImageList3: TImageList;
+    ColorDialog1: TColorDialog;
+    JvInterpreterProgram1: TJvInterpreterProgram;
+    TabSheet24: TTabSheet;
+    ScrollBox6: TScrollBox;
+    C64Screen: TTntRichEdit;
+    C64ScreenTimer: TTimer;
+    LeftPageControl: TJvPageControl;
+    TabSheet1: TTabSheet;
+    Splitter2: TSplitter;
+    Splitter8: TSplitter;
+    UserHomeFolder: TTreeView;
+    Panel7: TPanel;
+    Splitter9: TSplitter;
+    Memo1: TMemo;
     Panel13: TPanel;
     JvComboBox1: TJvComboBox;
     PageControl10: TPageControl;
     TabSheet25: TTabSheet;
     TabSheet26: TTabSheet;
     EventMethodeListBox: TValueListEditor;
-    Splitter8: TSplitter;
     PageControl11: TPageControl;
     TabSheet27: TTabSheet;
     DesignerIconListView: TListView;
-    ScrollBox4: TScrollBox;
-    ImageList2: TImageList;
-    ImageList3: TImageList;
-    ColorDialog1: TColorDialog;
-    Splitter9: TSplitter;
-    Memo1: TMemo;
-    JvInterpreterProgram1: TJvInterpreterProgram;
-    TabSheet24: TTabSheet;
-    ScrollBox6: TScrollBox;
-    C64Screen: TTntRichEdit;
-    C64ScreenTimer: TTimer;
+    TabSheet3: TTabSheet;
+    N13: TMenuItem;
+    C64BASIC1: TMenuItem;
+    JvInspector1: TJvInspector;
     procedure PopupMenu_File_NewClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -281,18 +284,24 @@ type
     procedure SynEdit1DragOver(Sender, Source: TObject; X, Y: Integer;
       State: TDragState; var Accept: Boolean);
     procedure SynEdit1DragDrop(Sender, Source: TObject; X, Y: Integer);
-    procedure DesignerIconListViewMouseDown(Sender: TObject;
-      Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure JvInspector1BeforeEdit(Sender: TObject;
       Item: TJvCustomInspectorItem; Edit: TCustomEdit);
     procedure C64ScreenKeyPress(Sender: TObject; var Key: Char);
     procedure C64ScreenTimerTimer(Sender: TObject);
+    procedure DesignerIconListViewMouseDown(Sender: TObject;
+      Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure JvInspector1BeforeSelection(Sender: TObject;
+      NewItem: TJvCustomInspectorItem; var Allow: Boolean);
+    procedure JvInspector1ItemDoubleClicked(Sender: TObject;
+      Item: TJvCustomInspectorItem);
+    procedure JvInspector1ItemValueChanged(Sender: TObject;
+      Item: TJvCustomInspectorItem);
   private
     Cv1: TCanvas;
     ircListLimit: Integer;
-    procedure JvInspector1OnDblClick(Sender: TObject);
+//    procedure JvInspector1OnDblClick(Sender: TObject);
   public
-    JvInspectors: Array of TJvInspector;
+//    JvInspectors: Array of TJvInspector;
 
     C64ScreenMap: Array [1..25, 1..40] of WideChar;
     C64ScreenCursor: TPoint;
@@ -301,10 +310,11 @@ type
     procedure ModifyControl(const AControl: TControl; LS: TStrings);
     procedure ExpandTopLevel;
     procedure JvDesignPanelPaint(Sender: TObject);
-    procedure ItemDblClick(Sender: TObject);
-    procedure JvInspector1ItemValueChanged(
-      Sender: TObject;
-      Item: TJvCustomInspectorItem);
+    procedure ItemClick(Sender: TObject);
+//    procedure JvInspector1ItemSelected(Sender: TObject);
+//    procedure JvInspector1ItemValueChanged(
+//      Sender: TObject;
+//      Item: TJvCustomInspectorItem);
     function WriteToC64Screen(X,Y: Integer; AString: WideString): Integer;
     function PutToC64Screen  (X,Y: Integer; AChar: Char): Integer;
   end;
@@ -312,6 +322,9 @@ type
 var
   Form1: TForm1;
 
+const
+  sLineBreak = {$IFDEF LINUX} AnsiChar(#10) {$ENDIF}
+               {$IFDEF MSWINDOWS} AnsiString(#13#10) {$ENDIF};
 implementation
 
 {$R *.dfm}
@@ -347,11 +360,6 @@ begin
   finally
     SysUtils.FindClose(sr);
   end;
-end;
-
-procedure TForm1.JvInspector1OnDblClick(Sender: TObject);
-Begin
-showMessage('xxxer455445');
 end;
 
 procedure TForm1.ExpandTopLevel;
@@ -451,18 +459,6 @@ begin
     AddFunction('dummy', 'WriteLn', PascalAdapter_WriteLn, 1, [varString], varString);
   end;
 
-  SetLength(JvInspectors,2048);
-  for I := 0 to 2048 - 1 do
-  begin
-    JvInspectors[i] := TJvInspector.Create(TabSheet25);
-    JvInspectors[i].Parent  := TabSheet25;
-    JvInspectors[i].Align   := alClient;
-    JvInspectors[i].Visible := false;
-
-    JvInspectors[i].OnItemValueChanged := JvInspector1ItemValueChanged;
-    JvInspectors[i].BeforeEdit := JvInspector1BeforeEdit;
-  end;
-
   EventMethodeListBox.InsertRow('Caption','Text1',true);
   EventMethodeListBox.InsertRow('Height' ,'0'    ,true);
   EventMethodeListBox.InsertRow('Left'   ,'0'    ,true);
@@ -472,26 +468,8 @@ begin
   EventMethodeListBox.InsertRow('Name'   ,'ObjectName',true);
 end;
 
-procedure TForm1.JvInspector1ItemValueChanged(
-  Sender: TObject;
-  Item: TJvCustomInspectorItem);
-var
-  sValue: String;
-begin
-  if (Item.Data <> nil) then
-  begin
-    sValue := Item.DisplayValue;
-
-    if (CompareText(Item.Data.Name, 'Color') = 0) then
-    begin
-      Item.SetDisplayValue(ColorToString(ColorDialog1.Color));
-    end;
-  end;
-end;
-
 procedure TForm1.FormShow(Sender: TObject);
 var
-  Butts: TJvImgBtn;
   I: Integer;
 
   function CurrentUserName: String;
@@ -514,12 +492,6 @@ begin
 
   LeftPageControl.ActivePage := TabSheet1;
   MainPageControl.ActivePage := TabSheet2;
-
-  Butts := TJvImgBtn.Create(DFrame.JvDesignPanel1);
-  Butts.Parent := DFrame.JvDesignPanel1;
-
-//  JvInspector1.Clear;
-//  JvInspector1.AddComponent((Butts as TJvImgBtn),'Button',true);
 
 
   WriteToC64Screen(5,2,'**** COMMODORE 64 BASIC V2 ***');
@@ -1410,51 +1382,65 @@ begin
 end;
 
 procedure TForm1.SynEdit1DragDrop(Sender, Source: TObject; X, Y: Integer);
+var
+  txt : WideString;
+  ctxt: String;
 begin
   if (Source is TListView) then
   begin
-    SynEdit1.Lines.Add('xxxxxxxX');
-  end;
-end;
+    ctxt := Trim((Source as TListView).Selected.Caption);
+    if ctxt = 'TEdit' then
+    begin txt :=
+      'Edit = TEdit.Create(Form1);' + sLineBreak +
+      'Edit.Parent  := Form1;'      + sLineBreak +
+      'Edit.Text    := ''Edit1'';'  + sLineBreak +
+      'Edit.Visible := true;'       + sLineBreak ;
+    end else
+    if ctxt = 'TButton' then
+    begin txt :=
+      'Button = TButton.Create(Form1);' + sLineBreak +
+      'Button.Parent  := Form1;'        + sLineBreak +
+      'Button.Caption := ''Button1'';'  + sLineBreak +
+      'Button.Visible := true;'         + sLineBreak ;
+    end else
+    if ctxt = 'TComboBox' then
+    begin txt :=
+      'ComboBox = TComboBox.Create(Form1);' + sLineBreak +
+      'ComboBox.Parent  := Form1;'          + sLineBreak +
+      'ComboBox.Caption := ''ComboBox1'';'  + sLineBreak +
+      'ComboBox.Visible := true;'           + sLineBreak ;
+    end else
+    if ctxt = 'TImage' then
+    begin txt :=
+      'Image = TImage.Create(Form1);' + sLineBreak +
+      'Image.Parent  := Form1;'       + sLineBreak +
+      'Image.Visible := true;'        + sLineBreak ;
+    end;
 
-procedure TForm1.DesignerIconListViewMouseDown(Sender: TObject;
-  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-begin
-  DesignerIconListView.BeginDrag(true);
+    SynEdit1.InsertBlock(
+    SynEdit1.CaretXY,
+    SynEdit1.CaretXY, PWideChar(txt), true);
+    SynEdit1.SetFocus;
+  end;
 end;
 
 procedure TForm1.JvInspector1BeforeEdit(Sender: TObject;
   Item: TJvCustomInspectorItem; Edit: TCustomEdit);
 begin
-  TEdit(Edit).OnDblClick := ItemDblClick;
+  TEdit(Edit).OnClick := ItemClick;
 end;
 
-procedure TForm1.ItemDblClick(Sender: TObject);
+procedure TForm1.ItemClick(Sender: TObject);
 var
   I: Integer;
   found: Boolean;
 begin
-  found := false;
-  for I := 0 to 2048 - 1 do
-  begin
-    if JvInspectors[i].Visible = true then
-    begin
-      found := true;
-      break;
-    end;
-  end;
-
-  if not(found) then exit;
-  if JvInspectors[I].Selected.DisplayName = 'Color' then
+  if JvInspector1.Selected.DisplayName = 'Color' then
   begin
     if ColorDialog1.Execute then
     begin
-      JvInspectors[I].Selected.SetDisplayValue(
+      JvInspector1.Selected.SetDisplayValue(
       ColorToString(ColorDialog1.Color));
-
-      if JvInspectors[I].Selected.Parent.DisplayName = 'Font' then
-      DFrame.Button.Font.Color := ColorDialog1.Color else
-      DFrame.Button.Color      := ColorDialog1.Color ;
     end;
   end;
 end;
@@ -1584,6 +1570,41 @@ begin
     C64ScreenCursor.Y,' ');
 
     C64ScreenTimer.Enabled := true;
+  end;
+end;
+
+procedure TForm1.DesignerIconListViewMouseDown(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  DesignerIconListView.BeginDrag(false);
+end;
+
+procedure TForm1.JvInspector1BeforeSelection(Sender: TObject;
+  NewItem: TJvCustomInspectorItem; var Allow: Boolean);
+begin
+  Allow := true;
+end;
+
+procedure TForm1.JvInspector1ItemDoubleClicked(Sender: TObject;
+  Item: TJvCustomInspectorItem);
+begin
+  showMessage(item.DisplayName);
+end;
+
+procedure TForm1.JvInspector1ItemValueChanged(
+  Sender: TObject;
+  Item  : TJvCustomInspectorItem);
+var
+  sValue: String;
+begin
+  if (Item.Data <> nil) then
+  begin
+    sValue := Item.DisplayValue;
+
+    if (CompareText(Item.Data.Name, 'Color') = 0) then
+    begin
+      Item.SetDisplayValue(ColorToString(ColorDialog1.Color));
+    end;
   end;
 end;
 
