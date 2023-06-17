@@ -161,7 +161,7 @@ begin
     ScrollBar.Left    := X;
     ScrollBar.Top     := Y;
     ScrollBar.Width   := 100;
-    ScrollBar.Height  := 16;
+    ScrollBar.Height  := 21;
     ScrollBar.Name    := 'ScrollBar' + IntToStr(count);
     ScrollBar.Tag     := count;
 

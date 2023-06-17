@@ -14,7 +14,11 @@ uses
   JvButton, JvCtrls, JvComponentBase, Console, Grids, ValEdit,
   JvCombobox, JvDesignSurface, JvDesignUtils, JvInspector, JvInterpreter,
   JvExExtCtrls, JvExtComponent, JvPanel, TntExtCtrls, TntStdCtrls,
-  TntComCtrls;
+  TntComCtrls, DB, DBTables;
+
+type
+  TMyTableListBox = class(TListBox)
+  end;
 
 type
   TForm1 = class(TForm)
@@ -121,7 +125,6 @@ type
     IdIRC1: TIdIRC;
     MainPageControl: TPageControl;
     TabSheet2: TTabSheet;
-    SynEdit1: TSynEdit;
     TabSheet_Options: TTabSheet;
     ScrollBox1: TScrollBox;
     Panel4: TPanel;
@@ -188,18 +191,14 @@ type
     ircChannel: TEdit;
     PageControl5: TJvPageControl;
     TabSheet12: TTabSheet;
-    ListBox1: TJvCheckListBox;
     ircConnectButton: TJvImgBtn;
     TabSheet22: TTabSheet;
     DesignPanelPage: TPanel;
     PageControl9: TPageControl;
     TabSheet21: TTabSheet;
-    TabSheet23: TTabSheet;
-    ScrollBox3: TScrollBox;
     ConsoleTabSheet: TTabSheet;
     ScrollBox5: TScrollBox;
     Console1: TConsole;
-    ScrollBox4: TScrollBox;
     ImageList2: TImageList;
     ImageList3: TImageList;
     ColorDialog1: TColorDialog;
@@ -229,6 +228,29 @@ type
     N13: TMenuItem;
     C64BASIC1: TMenuItem;
     JvInspector1: TJvInspector;
+    TabSheet28: TTabSheet;
+    TabSheet29: TTabSheet;
+    ScrollBox8: TScrollBox;
+    Database1: TDatabase;
+    DatabaseComboBox: TJvComboBox;
+    Session1: TSession;
+    PageControl12: TPageControl;
+    TabSheet30: TTabSheet;
+    SqlScrollBox: TScrollBox;
+    PaintBox1: TPaintBox;
+    PageControl13: TPageControl;
+    TabSheet31: TTabSheet;
+    SynEdit1: TSynEdit;
+    PageControl14: TPageControl;
+    TabSheet32: TTabSheet;
+    ScrollBox3: TScrollBox;
+    PageControl15: TPageControl;
+    TabSheet23: TTabSheet;
+    StringGrid1: TStringGrid;
+    Panel14: TPanel;
+    JvImgBtn1: TJvImgBtn;
+    JvImgBtn2: TJvImgBtn;
+    Splitter10: TSplitter;
     procedure PopupMenu_File_NewClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -296,25 +318,33 @@ type
       Item: TJvCustomInspectorItem);
     procedure JvInspector1ItemValueChanged(Sender: TObject;
       Item: TJvCustomInspectorItem);
+    procedure ListBox1MouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure PaintBox1DragDrop(Sender, Source: TObject; X, Y: Integer);
+    procedure PaintBox1DragOver(Sender, Source: TObject; X, Y: Integer;
+      State: TDragState; var Accept: Boolean);
+    procedure DatabaseComboBoxChange(Sender: TObject);
   private
     Cv1: TCanvas;
     ircListLimit: Integer;
-//    procedure JvInspector1OnDblClick(Sender: TObject);
   public
-//    JvInspectors: Array of TJvInspector;
 
     C64ScreenMap: Array [1..25, 1..40] of WideChar;
     C64ScreenCursor: TPoint;
     C64ScreenCursorBlink: Integer;
 
+    TableListBox: TMyTableListBox;
+    Form: TForm;
+
+    procedure TableListBox_MouseDown(
+      Sender: TObject;
+      Button: TMouseButton;
+      Shift : TShiftState;
+      X,  Y : Integer);
     procedure ModifyControl(const AControl: TControl; LS: TStrings);
     procedure ExpandTopLevel;
     procedure JvDesignPanelPaint(Sender: TObject);
     procedure ItemClick(Sender: TObject);
-//    procedure JvInspector1ItemSelected(Sender: TObject);
-//    procedure JvInspector1ItemValueChanged(
-//      Sender: TObject;
-//      Item: TJvCustomInspectorItem);
     function WriteToC64Screen(X,Y: Integer; AString: WideString): Integer;
     function PutToC64Screen  (X,Y: Integer; AChar: Char): Integer;
   end;
@@ -381,7 +411,7 @@ begin
 end;
 procedure TForm1.PopupMenu_File_NewClick(Sender: TObject);
 begin
-  TabSheet2.Caption := 'Unnamed';
+  TabSheet31.Caption := 'Unnamed';
   SynEdit1.Lines.Clear;
 end;
 
@@ -398,6 +428,7 @@ procedure TForm1.FormCreate(Sender: TObject);
 var
   I         : Integer;
   InspCat   : TJvInspectorCustomCategoryItem;
+  TableList : TStringList;
   SomeColor : TColor;
   xpos, ypos: Integer;
 begin
@@ -428,8 +459,8 @@ begin
   end;
   C64ScreenCursorBlink := 0;
 
-  DFrame := TFrame1.Create(ScrollBox4);
-  DFrame.Parent  := ScrollBox4;
+  DFrame := TFrame1.Create(ScrollBox3);
+  DFrame.Parent  := ScrollBox3;
   DFrame.Align   := alClient;
   DFrame.Visible := true;
   DFrame.count   := 1;
@@ -466,6 +497,18 @@ begin
   EventMethodeListBox.InsertRow('Width'  ,'0'    ,true);
 
   EventMethodeListBox.InsertRow('Name'   ,'ObjectName',true);
+
+  // get alias/tables
+  DataBaseComboBox.Items.Clear;
+
+  Session1.Open;
+  Session1.GetAliasNames(DataBaseComboBox.Items);
+
+  TableListBox := TMyTableListBox.Create(TabSheet12);
+  TableListBox.Parent := TabSheet12;
+  TableListBox.Align  := alClient;
+  TableListBox.Items.Clear;
+  TableListBox.OnMouseDown := TableListBox_MouseDown;
 end;
 
 procedure TForm1.FormShow(Sender: TObject);
@@ -487,14 +530,14 @@ begin
   UserHomeFolder.Items.GetFirstNode.Text := CurrentUserName;
   ExpandTopLevel;
 
-  TabSheet2.Caption := 'Unnamed';
-  TabSheet3.Caption := 'Project';
+  TabSheet31.Caption := 'Unnamed';
+  TabSheet3 .Caption := 'Project';
 
   LeftPageControl.ActivePage := TabSheet1;
   MainPageControl.ActivePage := TabSheet2;
 
 
-  WriteToC64Screen(5,2,'**** COMMODORE 64 BASIC V2 ***');
+  WriteToC64Screen(5,2,'**** COMMODORE 64 BASIC V2 ****');
   WriteToC64Screen(2,4,'64K RAM SYSTEM  38911 BASIC BYTES FREE');
   WriteToC64Screen(1,6,'READY.');
 
@@ -648,6 +691,13 @@ procedure TForm1.FormDestroy(Sender: TObject);
 begin
   Cv1.Free;
   Cv1 := nil;
+
+  Database1.Close;
+  Database1.Free;
+
+  Session1.Close;
+  Session1.Free;
+
   ErrorBox.Free;
   InfoBox.Free;
 end;
@@ -673,7 +723,7 @@ begin
   SynEdit1.Lines.LoadFromFile(OpenDialog1.FileName);
   SynEdit1.Lines.Delete(SynEdit1.Lines.Count - 1);
 
-  TabSheet2.Caption := ExtractFileName(OpenDialog1.FileName);
+  TabSheet31.Caption := ExtractFileName(OpenDialog1.FileName);
 
   MainPageControl.ActivePage := TabSheet2;
   SynEdit1.SetFocus;
@@ -688,8 +738,8 @@ begin
     exit;
   end;
 
-  if TabSheet2.Caption = 'Unnamed' then
-  TabSheet2.Caption := OpenDialog1.FileName;
+  if TabSheet31.Caption = 'Unnamed' then
+  TabSheet31.Caption := OpenDialog1.FileName;
 
   SynEdit1.Lines.SaveToFile(OpenDialog1.FileName);
   SynEdit1.Modified := false;
@@ -702,7 +752,7 @@ var
 begin
   if SynEdit1.Modified then
   begin
-    if TabSheet2.Caption = 'Unnamed' then
+    if TabSheet31.Caption = 'Unnamed' then
     begin
       if not(SaveDialog1.Execute) then
       begin
@@ -721,7 +771,7 @@ begin
         exit;
       end;
 
-      TabSheet2.Caption := S2;
+      TabSheet31.Caption := S2;
 
       sl := TStringList.Create;
       sl.Add(SynEdit1.Lines.Text);
@@ -741,7 +791,7 @@ begin
     S1 := SaveDialog1.FileName;
     S2 := ExtractFileName(s1);
 
-    TabSheet2.Caption := S2;
+    TabSheet31.Caption := S2;
 
     sl := TStringList.Create;
     sl.Add(SynEdit1.Lines.Text);
@@ -761,7 +811,7 @@ begin
   S1 := OpenDialog1.FileName;
   S2 := ExtractFileName(s1);
 
-  TabSheet2.Caption := S2;
+  TabSheet31.Caption := S2;
   SynEdit1.Lines.Clear;
   SynEdit1.Lines.LoadFromFile(S1);
   SynEdit1.Lines.Delete(SynEdit1.Lines.Count - 1);
@@ -781,8 +831,8 @@ begin
     exit;
   end else
   begin
-    if TabSheet2.Caption = 'Unnamed' then
-    TabSheet2.Caption := SaveDialog1.FileName;
+    if TabSheet31.Caption = 'Unnamed' then
+    TabSheet31.Caption := SaveDialog1.FileName;
     S := SynEdit1.Lines.Text;
     sl := TStringList.Create;
     sl.Add(S);
@@ -855,7 +905,7 @@ exit;
     if @callParser <> nil then
     begin
       try
-        callParser(PChar(TabSheet2.Caption));
+        callParser(PChar(TabSheet31.Caption));
         InfoBox.Text('Compile OK' + #13#10 +
         'Lines: ' + IntToStr(callParserGetLines-1));
       except
@@ -1050,17 +1100,6 @@ begin
 
     PreviewPageControl.ActivePageIndex := 0;
   end else
-  if MainPageControl.ActivePage.Caption = 'Designer' then
-  begin
-    EditPanel   .Visible := false;
-    PreviewPanel.Visible := false;
-
-    DesignPanelPage.Parent  := Form1;
-    DesignPanelPage.Visible := true;
-    DesignPanelPage.Align   := alClient;
-
-    PageControl9.ActivePageIndex := 1;
-  end else
   if MainPageControl.ActivePage.Caption = 'C-64 Display' then
   begin
     C64ScreenTimer.Enabled := true;
@@ -1094,7 +1133,7 @@ begin
   try
     ircConnectButton.Enabled := false;
 
-    ListBox1.Items.Clear;
+//    ListBox1.Items.Clear;
     ListBox2.Items.Clear;
 
     idirc1.Host := 'irc.libera.chat';
@@ -1151,12 +1190,14 @@ procedure TForm1.IdIRC1List(
   APosition: Integer;
   ALast    : Boolean);
 begin
+(* chat todo !
   statusProgress.Position := ListBox1.Items.Count;
   if ListBox1.Items.Count >= 50 then
   begin
     exit;
   end;
   ListBox1.Items.AddStrings(AChans);
+*)
 end;
 
 procedure TForm1.IdIRC1Names(
@@ -1208,8 +1249,8 @@ begin
 
   sendChatTextEdit.Color := clYellow;
 
-  ListBox1.Color := clSilver;
-  ListBox1.Font.Color := clBlack;
+//  ListBox1.Color := clSilver;
+//  ListBox1.Font.Color := clBlack;
 
   ListBox2.Color := clSilver;
   ListBox2.Font.Color := clBlack;
@@ -1305,8 +1346,8 @@ begin
   LeftPageControl.Color := clBtnFace;
   ScrollBox1.Color := clBtnFace;
 
-  ListBox1.Color := clWhite;
-  ListBox1.Font.Color := clBlack;
+//  ListBox1.Color := clWhite;
+//  ListBox1.Font.Color := clBlack;
 
   ListBox2.Color := clWhite;
   ListBox2.Font.Color := clBlack;
@@ -1605,6 +1646,82 @@ begin
     begin
       Item.SetDisplayValue(ColorToString(ColorDialog1.Color));
     end;
+  end;
+end;
+
+procedure TForm1.ListBox1MouseDown(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+begin
+  DesignerIconListView.BeginDrag(false);
+end;
+
+procedure TForm1.PaintBox1DragDrop(Sender, Source: TObject; X, Y: Integer);
+var
+  GradientFormCaption: TJvGradientCaption;
+  CheckListBox: TCheckListBox;
+begin
+  if not (Source is TMyTableListBox) then
+  exit;
+
+  Form := TForm.CreateParented(SqlScrollBox.Handle);
+  Form.Parent      := SqlScrollBox;
+  Form.BorderStyle := bsSizeToolWin;
+  Form.Left        := X;
+  Form.Top         := Y;
+  Form.Caption     :=
+       TableListBox.Items.Strings[
+       TableListBox.ItemIndex];
+  Form.Width       := 200;
+
+  GradientFormCaption := TJvGradientCaption.Create(Form);
+  GradientFormCaption.StartColor     := clRed;
+  GradientFormCaption.EndColor       := clYellow;
+  GradientFormCaption.Font.Color     := clBlack;
+  GradientFormCaption.FormCaption    := Form.Caption;
+  GradientFormCaption.GradientSteps  := 100;
+  GradientFormCaption.GradientActive := true;
+  GradientFormCaption.Active         := true;
+
+  CheckListBox := TCheckListBox.Create(Form);
+  CheckListBox.Parent := Form;
+  CheckListBox.Align  := alClient;
+  CheckListBox.Show;
+
+  DataBase1.Directory := 'E:\Program Files (x86)\Common Files\Borland Shared\Data';
+  DataBase1.GetFieldNames(Form.Caption,CheckListBox.Items);
+  Form.Show;
+end;
+
+procedure TForm1.PaintBox1DragOver(Sender, Source: TObject; X, Y: Integer;
+  State: TDragState; var Accept: Boolean);
+begin
+  Accept := (Source is TMyTableListBox);
+end;
+
+procedure TForm1.TableListBox_MouseDown(
+  Sender: TObject;
+  Button: TMouseButton;
+  Shift : TShiftState;
+  X,  Y : Integer);
+begin
+  TableListBox.BeginDrag(false);
+end;
+
+procedure TForm1.DatabaseComboBoxChange(Sender: TObject);
+begin
+  TableListBox.Items.Clear;
+  DataBase1.Close;
+
+  Session1.Close;
+  Session1.Open;
+
+  with DataBase1 do
+  begin
+    DataBaseName := DataBaseComboBox.Text;
+    AliasName := DataBaseComboBox.Text;
+    Open;
+    if Connected then
+    GetTableNames(TableListBox.Items,false) else
   end;
 end;
 

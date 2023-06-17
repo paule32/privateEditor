@@ -14,9 +14,8 @@ object Frame1: TFrame1
     object JvDesignPanel1: TJvDesignPanel
       Left = 0
       Top = 0
-      Width = 477
-      Height = 291
-      Align = alClient
+      Width = 1200
+      Height = 1024
       Caption = 'JvDesignPanel1'
       TabOrder = 0
       OnDragDrop = JvDesignPanel1DragDrop
