@@ -19,5 +19,8 @@ For the DataBase-Development - A SQL-Builder, to shorten the SQL-Query creation:
 IRC-Client for Chating with other Developer's:<br>
 ![alpha ScreenShoot6](img/screen006.png)
 
+Last but not least: Bundle the Project, and redistribute it for other Developers:<br>
+![alpha ScreenShoot7](img/screen007.png)
+
 Have fun at testing...<br>
 paule32
