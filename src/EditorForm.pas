@@ -116,11 +116,6 @@ type
     TreeView2: TTreeView;
     Panel8: TPanel;
     Splitter5: TSplitter;
-    PreviewPanel: TPanel;
-    PreviewPageControl: TPageControl;
-    TabSheet14: TTabSheet;
-    TabSheet15: TTabSheet;
-    WebBrowser1: TWebBrowser;
     IdAntiFreeze1: TIdAntiFreeze;
     IdIRC1: TIdIRC;
     MainPageControl: TPageControl;
@@ -132,7 +127,7 @@ type
     Button4: TJvImgBtn;
     Button5: TJvImgBtn;
     TabSheet13: TTabSheet;
-    TabSheet16: TTabSheet;
+    ChatTabSheet: TTabSheet;
     PageControl1: TJvPageControl;
     TabSheet7: TTabSheet;
     Panel12: TPanel;
@@ -193,9 +188,6 @@ type
     TabSheet12: TTabSheet;
     ircConnectButton: TJvImgBtn;
     TabSheet22: TTabSheet;
-    DesignPanelPage: TPanel;
-    PageControl9: TPageControl;
-    TabSheet21: TTabSheet;
     ConsoleTabSheet: TTabSheet;
     ScrollBox5: TScrollBox;
     Console1: TConsole;
@@ -212,9 +204,6 @@ type
     Splitter2: TSplitter;
     Splitter8: TSplitter;
     UserHomeFolder: TTreeView;
-    Panel7: TPanel;
-    Splitter9: TSplitter;
-    Memo1: TMemo;
     Panel13: TPanel;
     JvComboBox1: TJvComboBox;
     PageControl10: TPageControl;
@@ -251,6 +240,38 @@ type
     JvImgBtn1: TJvImgBtn;
     JvImgBtn2: TJvImgBtn;
     Splitter10: TSplitter;
+    C64BASIC2: TMenuItem;
+    MSDOS1: TMenuItem;
+    MSDOS2: TMenuItem;
+    Windows3111: TMenuItem;
+    WindowsNT32Bit1: TMenuItem;
+    MSDOS3: TMenuItem;
+    WindowsNT32Bit2: TMenuItem;
+    ModeImages: TImageList;
+    MenuBarButton_Window: TCtrlMenuBarButton;
+    PopupMenu_Window: TJvPopupMenu;
+    MenuItem3: TMenuItem;
+    ChatWindow1: TMenuItem;
+    PreviewWindow1: TMenuItem;
+    ScrollBox4: TScrollBox;
+    WebBrowser1: TWebBrowser;
+    Label5: TLabel;
+    ScrollBox7: TScrollBox;
+    PageControl9: TPageControl;
+    TabSheet14: TTabSheet;
+    TabSheet15: TTabSheet;
+    TabSheet16: TTabSheet;
+    TabSheet21: TTabSheet;
+    TabSheet33: TTabSheet;
+    TabSheet34: TTabSheet;
+    TabSheet35: TTabSheet;
+    CheckListBox1: TCheckListBox;
+    TreeView1: TTreeView;
+    TreeView4: TTreeView;
+    TreeView5: TTreeView;
+    TreeView6: TTreeView;
+    ListView1: TListView;
+    InstallScript1: TMenuItem;
     procedure PopupMenu_File_NewClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -286,7 +307,6 @@ type
     procedure UserHomeFolderChange(Sender: TObject; Node: TTreeNode);
     procedure UserHomeFolderClick(Sender: TObject);
     procedure MainPageControlChange(Sender: TObject);
-    procedure PreviewPageControlChange(Sender: TObject);
     procedure Options1Click(Sender: TObject);
     procedure ircConnectButtonClick(Sender: TObject);
     procedure IdIRC1CTCPQuery(Sender: TObject; User: TIdIRCUser;
@@ -301,7 +321,6 @@ type
       AChannel: TIdIRCChannel);
     procedure dark1Click(Sender: TObject);
     procedure light1Click(Sender: TObject);
-    procedure PageControl9Change(Sender: TObject);
     procedure Console1DblClick(Sender: TObject);
     procedure SynEdit1DragOver(Sender, Source: TObject; X, Y: Integer;
       State: TDragState; var Accept: Boolean);
@@ -324,6 +343,15 @@ type
     procedure PaintBox1DragOver(Sender, Source: TObject; X, Y: Integer;
       State: TDragState; var Accept: Boolean);
     procedure DatabaseComboBoxChange(Sender: TObject);
+    procedure MSDOS3Click(Sender: TObject);
+    procedure WindowsNT32Bit2Click(Sender: TObject);
+    procedure MSDOS2Click(Sender: TObject);
+    procedure Windows3111Click(Sender: TObject);
+    procedure WindowsNT32Bit1Click(Sender: TObject);
+    procedure C64BASIC1Click(Sender: TObject);
+    procedure C64BASIC2Click(Sender: TObject);
+    procedure MSDOS1Click(Sender: TObject);
+    procedure ChatWindow2Click(Sender: TObject);
   private
     Cv1: TCanvas;
     ircListLimit: Integer;
@@ -345,6 +373,7 @@ type
     procedure ExpandTopLevel;
     procedure JvDesignPanelPaint(Sender: TObject);
     procedure ItemClick(Sender: TObject);
+    procedure CheckButtonOnClick(Sender: TObject);
     function WriteToC64Screen(X,Y: Integer; AString: WideString): Integer;
     function PutToC64Screen  (X,Y: Integer; AChar: Char): Integer;
   end;
@@ -434,6 +463,9 @@ var
 begin
   ErrorBox := TErrorBox.Create(Form1);
   InfoBox  := TInfoBox.Create(Form1);
+
+  ChatTabSheet.TabVisible := false;
+
 
   ypos := 0;
   xpos := 0;
@@ -698,6 +730,8 @@ begin
   Session1.Close;
   Session1.Free;
 
+  Form.Free;
+  
   ErrorBox.Free;
   InfoBox.Free;
 end;
@@ -1090,30 +1124,9 @@ procedure TForm1.MainPageControlChange(Sender: TObject);
 begin
   C64ScreenTimer.Enabled := false;
   
-  if MainPageControl.ActivePage.Caption = 'Preview' then
-  begin
-    EditPanel   .Visible := false;
-
-    PreviewPanel.Parent  := Form1;
-    PreviewPanel.Visible := true;
-    PreviewPanel.Align := alclient;
-
-    PreviewPageControl.ActivePageIndex := 0;
-  end else
   if MainPageControl.ActivePage.Caption = 'C-64 Display' then
   begin
     C64ScreenTimer.Enabled := true;
-  end;
-end;
-
-procedure TForm1.PreviewPageControlChange(Sender: TObject);
-begin
-  if PreviewPageControl.ActivePage.Caption = 'Editing' then
-  begin
-    PreviewPanel.Visible := false;
-    EditPanel.Visible    := true;
-    MainPageControl.Visible := true;
-    MainPageControl.ActivePageIndex := 0;
   end;
 end;
 
@@ -1227,7 +1240,6 @@ begin
   Panel1 .Color := clGray;
   Panel2 .Color := clGray;
   Panel3 .Color := clGray;
-  Panel7 .Color := clGray;
   Panel8 .Color := clGray;
   Panel10.Color := clGray;
   Panel11.Color := clGray;
@@ -1320,7 +1332,6 @@ begin
   Panel1 .Color := clBtnFace;
   Panel2 .Color := clBtnFace;
   Panel3 .Color := clBtnFace;
-  Panel7 .Color := clBtnFace;
   Panel8 .Color := clBtnFace;
   Panel10.Color := clBtnFace;
   Panel11.Color := clBtnFace;
@@ -1395,17 +1406,6 @@ begin
   Width := width + 4;
   Width := width - 4;
   Form1.Resize;
-end;
-
-procedure TForm1.PageControl9Change(Sender: TObject);
-begin
-  if PageControl9.ActivePage.Caption = 'Editing' then
-  begin
-    DesignPanelPage.Visible := false;
-    PreviewPanel   .Visible := false;
-    EditPanel      .Visible := true;
-    MainPageControl.ActivePageIndex := 0;
-  end;
 end;
 
 procedure TForm1.Console1DblClick(Sender: TObject);
@@ -1659,6 +1659,7 @@ procedure TForm1.PaintBox1DragDrop(Sender, Source: TObject; X, Y: Integer);
 var
   GradientFormCaption: TJvGradientCaption;
   CheckListBox: TCheckListBox;
+  CheckButton : TCheckBox;
 begin
   if not (Source is TMyTableListBox) then
   exit;
@@ -1682,12 +1683,19 @@ begin
   GradientFormCaption.GradientActive := true;
   GradientFormCaption.Active         := true;
 
+  CheckButton  := TCheckBox.Create(Form);
+  CheckButton.Parent  := Form;
+  CheckButton.Align   := alTop;
+  CheckButton.Caption := 'Select All';
+  CheckButton.OnClick := CheckButtonOnClick;
+  CheckButton.Show;
+
   CheckListBox := TCheckListBox.Create(Form);
   CheckListBox.Parent := Form;
   CheckListBox.Align  := alClient;
   CheckListBox.Show;
 
-  DataBase1.Directory := 'E:\Program Files (x86)\Common Files\Borland Shared\Data';
+//  DataBase1.Directory := 'E:\Program Files (x86)\Common Files\Borland Shared\Data';
   DataBase1.GetFieldNames(Form.Caption,CheckListBox.Items);
   Form.Show;
 end;
@@ -1722,6 +1730,105 @@ begin
     Open;
     if Connected then
     GetTableNames(TableListBox.Items,false) else
+  end;
+end;
+
+procedure TForm1.MSDOS3Click(Sender: TObject);
+begin
+  ModeButton.Caption := 'Mode: Pascal - MS-DOS';
+  ModeButton.Tag     := 10;
+
+end;
+
+procedure TForm1.WindowsNT32Bit2Click(Sender: TObject);
+begin
+  ModeButton.Caption := 'Mode: Pascal - Windows';
+  ModeButton.Tag     := 11;
+end;
+
+procedure TForm1.MSDOS2Click(Sender: TObject);
+begin
+  ModeButton.Caption := 'Mode: dBASE - MS-DOS';
+  ModeButton.Tag     := 20;
+end;
+
+procedure TForm1.Windows3111Click(Sender: TObject);
+begin
+  ModeButton.Caption := 'Mode: dBASE - Win 3.11';
+  ModeButton.Tag     := 21;
+end;
+
+procedure TForm1.WindowsNT32Bit1Click(Sender: TObject);
+begin
+  ModeButton.Caption := 'Mode: dBASE - Win32 NT';
+  ModeButton.Tag     := 22
+end;
+
+procedure TForm1.C64BASIC1Click(Sender: TObject);
+begin
+  ModeButton.Caption := 'Mode: BASIC';
+  ModeButton.Tag     := 3;
+end;
+
+procedure TForm1.C64BASIC2Click(Sender: TObject);
+begin
+  ModeButton.Caption := 'Mode: BASIC C-64';
+  ModeButton.Tag     := 30;
+end;
+
+procedure TForm1.MSDOS1Click(Sender: TObject);
+begin
+  ModeButton.Caption := 'Mode: BASIC MS-DOS';
+  ModeButton.Tag     := 31;
+end;
+
+procedure TForm1.ChatWindow2Click(Sender: TObject);
+begin
+  if not(ChatWindow1.Checked) then
+  begin
+    ChatWindow1.Checked := true;
+    ChatTabSheet.TabVisible := true;
+    MainPageControl.ActivePage := ChatTabSheet;
+  end else
+  begin
+    ChatWindow1.Checked := false;
+    ChatTabSheet.TabVisible := false;
+    MainPageControl.ActivePage := TabSheet2;
+    SynEdit1.SetFocus;
+  end;
+end;
+
+procedure TForm1.CheckButtonOnClick(Sender: TObject);
+var
+  I, J: Integer;
+begin
+  if not(Sender is TCheckBox) then
+  exit;
+
+  if (Sender as TCheckBox).Checked then
+  begin
+    for I := 0 to ((Sender as TCheckBox).Parent as TForm).ControlCount - 1 do
+    begin
+      if ((Sender as TCheckBox).Parent as TForm).Controls[I].ClassName = 'TCheckListBox' then
+      begin
+        for J := 0 to
+        (((Sender as TCheckBox).Parent as TForm).Controls[I] as TCheckListBox).Count - 1 do
+        (((Sender as TCheckBox).Parent as TForm).Controls[I] as TCheckListBox).Checked[J] := true;
+        break;
+      end;
+    end;
+  end else
+  begin
+    for I := 0 to ((Sender as TCheckBox).Parent as TForm).ControlCount - 1 do
+    begin
+      if ((Sender as TCheckBox).Parent as TForm).Controls[I].ClassName = 'TCheckListBox' then
+      begin
+        for J := 0 to
+        (((Sender as TCheckBox).Parent as TForm).Controls[I] as TCheckListBox).Count - 1 do
+        (((Sender as TCheckBox).Parent as TForm).Controls[I] as TCheckListBox).Checked[J] := false;
+        break;
+      end;
+    end;
   end;
 end;
 
