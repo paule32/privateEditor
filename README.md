@@ -22,5 +22,8 @@ IRC-Client for Chating with other Developer's:<br>
 Last but not least: Bundle the Project, and redistribute it for other Developers:<br>
 ![alpha ScreenShoot7](img/screen007.png)
 
+Template for IDE/Editor Options (future - todo):<br>
+![alpha ScreenShoot8](img/screen008.png)
+
 Have fun at testing...<br>
 paule32
