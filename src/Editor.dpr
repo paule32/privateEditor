@@ -8,7 +8,10 @@ uses
   InputBox in 'InputBox.pas' {InputBoxWindow},
   ErrorBoxForm in 'ErrorBoxForm.pas' {ErrorBox},
   InfoBoxForm in 'InfoBoxForm.pas' {InfoBox},
-  DesignerFrame in 'DesignerFrame.pas' {Frame1: TFrame};
+  DesignerFrame in 'DesignerFrame.pas' {Frame1: TFrame},
+  TeamServerFrame in 'TeamServerFrame.pas' {Frame2: TFrame},
+  EditFrame in 'EditFrame.pas' {Frame3: TFrame},
+  C64KeyBoard in 'C64KeyBoard.pas' {Frame4: TFrame};
 
 {$R *.res}
 

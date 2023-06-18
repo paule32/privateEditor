@@ -57,3 +57,8 @@ src/Editor.~dpr
 src/DesignerFrame.~pas
 src/DesignerFrame.~dfm
 src/6.dfm
+src/C64KeyBoard.~dfm
+src/C64KeyBoard.~pas
+src/EditFrame.~dfm
+src/EditFrame.~pas
+src/Editor.~dpr

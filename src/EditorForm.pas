@@ -30,7 +30,7 @@ type
     ModeButton: TJvSpeedButton;
     StatusBar1: TStatusBar;
     statusProgress: TProgressBar;
-    Panel3: TPanel;
+    LogPanel: TPanel;
     Splitter1: TSplitter;
     LeftPanel: TPanel;
     LeftSplitter: TSplitter;
@@ -101,20 +101,6 @@ type
     JvSpeedButton4: TJvSpeedButton;
     CtrlMenuBarButton2: TCtrlMenuBarButton;
     ImageList1: TImageList;
-    Splitter3: TSplitter;
-    PageControl2: TJvPageControl;
-    TabSheet4: TTabSheet;
-    TabSheet8: TTabSheet;
-    TabSheet9: TTabSheet;
-    SynEdit3: TSynEdit;
-    SynEdit4: TSynEdit;
-    SynEdit2: TSynEdit;
-    Splitter4: TSplitter;
-    PageControl4: TPageControl;
-    TabSheet10: TTabSheet;
-    TreeView3: TTreeView;
-    TabSheet11: TTabSheet;
-    TreeView2: TTreeView;
     Panel8: TPanel;
     Splitter5: TSplitter;
     IdAntiFreeze1: TIdAntiFreeze;
@@ -217,8 +203,6 @@ type
     C64BASIC1: TMenuItem;
     JvInspector1: TJvInspector;
     TabSheet28: TTabSheet;
-    TabSheet29: TTabSheet;
-    ScrollBox8: TScrollBox;
     Database1: TDatabase;
     DatabaseComboBox: TJvComboBox;
     Session1: TSession;
@@ -232,9 +216,6 @@ type
     PageControl14: TPageControl;
     TabSheet32: TTabSheet;
     ScrollBox3: TScrollBox;
-    PageControl15: TPageControl;
-    TabSheet23: TTabSheet;
-    StringGrid1: TStringGrid;
     Panel14: TPanel;
     JvImgBtn1: TJvImgBtn;
     JvImgBtn2: TJvImgBtn;
@@ -371,7 +352,6 @@ type
     BookMark_Image: TImageList;
     TabSheet54: TTabSheet;
     Panel22: TPanel;
-    JvImgBtn18: TJvImgBtn;
     JvTreeView1: TJvTreeView;
     JvDriveList1: TJvDriveList;
     JvEdit2: TJvEdit;
@@ -389,6 +369,8 @@ type
     IdFTP1: TIdFTP;
     IdHTTP1: TIdHTTP;
     IdTCPClient1: TIdTCPClient;
+    Splitter3: TSplitter;
+    Frame_Panel: TPanel;
     procedure PopupMenu_File_NewClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -551,10 +533,14 @@ implementation
 
 uses
   ErrorBoxForm, InfoBoxForm, AboutBox, InputBox, DesignerFrame,
+  TeamServerFrame, EditFrame, C64KeyBoard,
   JvDesignImp;
 
 var
   DFrame : TFrame1;
+  DFrameTeamServer: TFrame2;
+  DFrameEdit: TFrame3;
+  DFrameC64KeyBoard: TFrame4;
 
 function GetShellFolder(CSIDLFolder : integer) : string;
 begin
@@ -712,6 +698,25 @@ begin
   TableListBox.Align  := alClient;
   TableListBox.Items.Clear;
   TableListBox.OnMouseDown := TableListBox_MouseDown;
+
+  // c64 keyboard
+  DFrameC64KeyBoard := TFrame4.Create(Frame_Panel);
+  DFrameC64KeyBoard.Parent  := Frame_Panel;
+  DFrameC64KeyBoard.Top     := 4;
+  DFrameC64KeyBoard.Left    := 4;
+  DFrameC64KeyBoard.Visible := false;
+
+  // backend
+  DFrameEdit := TFrame3.Create(Frame_panel);
+  DFrameEdit.Parent := Frame_Panel;
+  DFrameEdit.Align := alClient;
+  DFrameEdit.Visible := false;
+
+  // intro
+  DFrameTeamServer := TFrame2.Create(Frame_Panel);
+  DFrameTeamServer.Parent  := Frame_Panel;
+  DFrameTeamServer.Align   := alClient;
+  DFrameTeamServer.Visible := true;
 end;
 
 procedure TForm1.FormShow(Sender: TObject);
@@ -1303,22 +1308,42 @@ end;
 procedure TForm1.MainPageControlChange(Sender: TObject);
 begin
   C64ScreenTimer.Enabled := false;
+  DFrameC64KeyBoard.Visible := false;
+
   if MainPageControl.ActivePage.Caption = 'C-64 Display' then
   begin
     C64ScreenTimer.Enabled := true;
+
+    DFrameTeamServer.Visible := false;
+    DFrameEdit.Visible := false;
+    DFrameEdit.PageControl2.ActivePageIndex := 0;
+
+    DFrameC64KeyBoard.Visible := true;
+    LogPanel.Visible := false;
   end else
   if MainPageControl.ActivePage.Caption = 'SQL-Builder' then
   begin
     LeftPageControl.ActivePageIndex := 0;
-    PageControl2.ActivePageIndex := 3;
+    DFrameTeamServer.Visible := false;
+    DFrameEdit.Visible := true;
+    DFrameEdit.PageControl2.ActivePageIndex := 3;
+    LogPanel.Visible := true;
   end else
   if MainPageControl.ActivePage.Caption = 'Editor' then
   begin
     LeftPageControl.ActivePageIndex := 1;
-    PageControl2.ActivePageIndex := 0;
+    DFrameTeamServer.Visible := false;
+    DFrameEdit.Visible := true;
+    DFrameEdit.PageControl2.ActivePageIndex := 0;
+    LogPanel.Visible := true;
   end else
   if MainPageControl.ActivePage.Caption = 'Designer' then
-  LeftPageControl.ActivePageIndex := 0;
+  begin
+    LeftPageControl.ActivePageIndex := 0;
+    DFrameTeamServer.Visible := false;
+    DFrameEdit.Visible := true;
+    LogPanel.Visible := true;
+  end;
 end;
 
 procedure TForm1.Options1Click(Sender: TObject);
@@ -1428,13 +1453,13 @@ begin
   MenuBarButton_Help .Font.Color := clWhite;
   CtrlMenuBarButton1 .Font.Color := clWhite;
 
-  Panel1 .Color := clGray;
-  Panel2 .Color := clGray;
-  Panel3 .Color := clGray;
-  Panel8 .Color := clGray;
-  Panel10.Color := clGray;
-  Panel11.Color := clGray;
-  Panel12.Color := clGray;
+  Panel1  .Color := clGray;
+  Panel2  .Color := clGray;
+  LogPanel.Color := clGray;
+  Panel8  .Color := clGray;
+  Panel10 .Color := clGray;
+  Panel11 .Color := clGray;
+  Panel12 .Color := clGray;
 
   JvSpeedButton1.Color := clGray;
   JvSpeedButton2.Color := clGray;
@@ -1443,7 +1468,7 @@ begin
   StatusBar1.Color := clGray;
 
   PageControl1.Color := clGray;
-  PageControl2.Color := clGray;
+  DFrameEdit.PageControl2.Color := clGray;
   PageControl3.Color := clGray;
   PageControl5.Color := clGray;
   PageControl6.Color := clGray;
@@ -1492,18 +1517,18 @@ begin
   SynEdit1.Font.Color := clYellow;
   SynEdit1.Gutter.Color := $00FF8000;
 
-  SynEdit2.Color := clBlue;
-  SynEdit2.Font.Color := clYellow;
-  SynEdit2.Gutter.Color := $00FF8000;
+  DFrameEdit.SynEdit2.Color := clBlue;
+  DFrameEdit.SynEdit2.Font.Color := clYellow;
+  DFrameEdit.SynEdit2.Gutter.Color := $00FF8000;
 
-  SynEdit3.Color := clBlue;
-  SynEdit3.Font.Color := clYellow;
-  SynEdit3.Gutter.Color := $00FF8000;
-
-  SynEdit4.Color := clBlue;
-  SynEdit4.Font.Color := clYellow;
-  SynEdit4.Gutter.Color := $00FF8000;
-
+  DFrameEdit.SynEdit3.Color := clBlue;
+  DFrameEdit.SynEdit3.Font.Color := clYellow;
+  DFrameEdit.SynEdit3.Gutter.Color := $00FF8000;
+(*
+  DFrameEdit.SynEdit4.Color := clBlue;
+  DFrameEdit.SynEdit4.Font.Color := clYellow;
+  DFrameEdit.SynEdit4.Gutter.Color := $00FF8000;
+*)
   Width := width + 4;
   Width := width - 4;
   Form1.Resize;
@@ -1520,13 +1545,13 @@ begin
   MenuBarButton_Help .Font.Color := clBlack;
   CtrlMenuBarButton1 .Font.Color := clBlack;
 
-  Panel1 .Color := clBtnFace;
-  Panel2 .Color := clBtnFace;
-  Panel3 .Color := clBtnFace;
-  Panel8 .Color := clBtnFace;
-  Panel10.Color := clBtnFace;
-  Panel11.Color := clBtnFace;
-  Panel12.Color := clBtnFace;
+  Panel1  .Color := clBtnFace;
+  Panel2  .Color := clBtnFace;
+  LogPanel.Color := clBtnFace;
+  Panel8  .Color := clBtnFace;
+  Panel10 .Color := clBtnFace;
+  Panel11 .Color := clBtnFace;
+  Panel12 .Color := clBtnFace;
 
   JvSpeedButton1.Color := clBtnFace;
   JvSpeedButton2.Color := clBtnFace;
@@ -1538,7 +1563,7 @@ begin
   sendChatTextEdit.Color := clWhite;
 
   PageControl1.Color := clBtnFace;
-  PageControl2.Color := clBtnFace;
+  DFrameEdit.PageControl2.Color := clBtnFace;
   PageControl3.Color := clBtnFace;
   PageControl5.Color := clBtnFace;
   PageControl6.Color := clBtnFace;
@@ -1582,18 +1607,19 @@ begin
   SynEdit1.Font.Color := clBlack;
   SynEdit1.Gutter.Color := clBtnFace;
 
-  SynEdit2.Color := clWhite;
-  SynEdit2.Font.Color := clBlack;
-  SynEdit2.Gutter.Color := clBtnFace;
+  DFrameEdit.SynEdit2.Color := clWhite;
+  DFrameEdit.SynEdit2.Font.Color := clBlack;
+  DFrameEdit.SynEdit2.Gutter.Color := clBtnFace;
 
-  SynEdit3.Color := clWhite;
-  SynEdit3.Font.Color := clBlack;
-  SynEdit3.Gutter.Color := clBtnFace;
+  DFrameEdit.SynEdit3.Color := clWhite;
+  DFrameEdit.SynEdit3.Font.Color := clBlack;
+  DFrameEdit.SynEdit3.Gutter.Color := clBtnFace;
 
+  (*
   SynEdit4.Color := clWhite;
   SynEdit4.Font.Color := clBlack;
   SynEdit4.Gutter.Color := clBtnFace;
-
+*)
   Width := width + 4;
   Width := width - 4;
   Form1.Resize;
@@ -2260,14 +2286,20 @@ begin
   if LeftPageControl.ActivePage.Caption = 'Project' then
   begin
     MainPageControl.ActivePageIndex := 0;
+    DFrameTeamServer.Visible := false;
+    DFrameEdit.Visible := true;
   end else
   if LeftPageControl.ActivePage.Caption = 'Design' then
   begin
     MainPageControl.ActivePageIndex := 4;
+    DFrameTeamServer.Visible := false;
+    DFrameEdit.Visible := true;
   end else
   if LeftPageControl.ActivePage.Caption = 'Folder''s' then
   begin
     MainPageControl.ActivePageIndex := 8;
+    DFrameEdit.Visible := false;
+    DFrameTeamServer.Visible := true;
   end;
 end;
 
