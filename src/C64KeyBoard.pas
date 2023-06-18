@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, 
-  Dialogs, ExtCtrls;
+  Dialogs, ExtCtrls, ImgList;
 
 type
   TFrame4 = class(TFrame)
@@ -75,7 +75,12 @@ type
     Image65: TImage;
     Image66: TImage;
     Image67: TImage;
+    ImageList1: TImageList;
     procedure Image2Click(Sender: TObject);
+    procedure Image2MouseMove(Sender: TObject; Shift: TShiftState; X,
+      Y: Integer);
+    procedure Image1MouseMove(Sender: TObject; Shift: TShiftState; X,
+      Y: Integer);
   private
     { Private declarations }
   public
@@ -85,10 +90,39 @@ type
 implementation
 
 {$R *.dfm}
+uses
+  EditorForm;
 
 procedure TFrame4.Image2Click(Sender: TObject);
 begin
   ShowMessage('onclick: ' + IntToStr((Sender as TImage).Tag));
+end;
+
+procedure TFrame4.Image2MouseMove(Sender: TObject; Shift: TShiftState; X,
+  Y: Integer);
+var
+  icon: TIcon;
+begin
+  icon := TIcon.Create;
+  try
+    Form1.C64KeyImage.Left := (Sender as TImage).Left + X + 20;
+    Form1.C64KeyImage.Top  := (Sender as TImage).Top  + Y + 25;
+
+    ImageList1.GetIcon((Sender as TImage).Tag,icon);
+    DrawIconEx(Form1.C64KeyImage.Canvas.Handle,0,0,icon.Handle,
+               Form1.C64KeyImage.Width,
+               Form1.C64KeyImage.Height,0,0,DI_NORMAL);
+
+    Form1.C64KeyImage.Visible := true;
+  finally
+    icon.Free;
+  end;
+end;
+
+procedure TFrame4.Image1MouseMove(Sender: TObject; Shift: TShiftState; X,
+  Y: Integer);
+begin
+  Form1.C64KeyImage.Visible := false;
 end;
 
 end.

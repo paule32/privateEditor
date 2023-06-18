@@ -497,6 +497,7 @@ type
     C64ScreenMap: Array [1..25, 1..40] of WideChar;
     C64ScreenCursor: TPoint;
     C64ScreenCursorBlink: Integer;
+    C64KeyImage: TImage;
 
     TableListBox: TMyTableListBox;
     Form: TForm;
@@ -706,6 +707,14 @@ begin
   DFrameC64KeyBoard.Left    := 4;
   DFrameC64KeyBoard.Visible := false;
 
+  C64KeyImage := TImage.Create(DFrameC64KeyBoard);
+  with C64KeyImage do
+  begin
+    Parent := DFrameC64KeyBoard;
+    Width  := 55;
+    Height := 55;
+  end;
+
   // backend
   DFrameEdit := TFrame3.Create(Frame_panel);
   DFrameEdit.Parent := Frame_Panel;
@@ -897,6 +906,10 @@ end;
 procedure TForm1.FormDestroy(Sender: TObject);
 begin
   SaveIniFile;
+  C64KeyImage.Free;
+  DFrameC64KeyBoard.Free;
+  DFrameEdit.Free;
+  DFrameTeamServer.Free;
 
   Cv1.Free;
   Cv1 := nil;
