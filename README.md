@@ -1,8 +1,11 @@
 # privateEditor
  private -Editor for prolog64 Test
 
+All begins on the zero page:<br>
+![alpha ScreenShoot0](img/screen000.png)
+
 The Editor for the selected DSL:<br>
-![alpha ScreenShoot3](img/screen001.png)
+![alpha ScreenShoot1](img/screen001.png)
 
 The Form-Designer in Action:<br>
 ![alpha ScreenShoot2](img/screen002.png)

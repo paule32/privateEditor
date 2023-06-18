@@ -1,20 +1,6 @@
-(* this is a comment block *)
+program test;
 
-unit main;
-
-interface
-  procedure main;
-implementation
-
-procedure main;
 begin
-  WriteLn('huhu ' + 'xxxx');
-end;
-
+  WriteLn('cccc');
 end.
-
-// this is a C++ one-line comment
-
-{ Option: 2 for a comment block
-  valid on Pascal }
-
+    

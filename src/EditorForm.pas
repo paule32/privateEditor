@@ -11,10 +11,11 @@ uses
   IdComponent, IdTCPConnection, IdTCPClient, IdIRC, IdBaseComponent,
   IdAntiFreezeBase, IdAntiFreeze, JvExComCtrls, JvComCtrls, JvCheckTreeView,
   JvExCheckLst, JvCheckListBox, JvExButtons, JvBitBtn, JvExStdCtrls,
-  JvButton, JvCtrls, JvComponentBase, Console, Grids, ValEdit,
+  JvButton, JvCtrls, JvComponentBase, Console, Grids, ValEdit, IniFiles,
   JvCombobox, JvDesignSurface, JvDesignUtils, JvInspector, JvInterpreter,
   JvExExtCtrls, JvExtComponent, JvPanel, TntExtCtrls, TntStdCtrls,
-  TntComCtrls, DB, DBTables;
+  TntComCtrls, DB, DBTables, JvAppHotKey, JvEdit, JvListBox, JvDriveCtrls,
+  IdHTTP, IdFTP;
 
 type
   TMyTableListBox = class(TListBox)
@@ -201,18 +202,16 @@ type
     C64ScreenTimer: TTimer;
     LeftPageControl: TJvPageControl;
     TabSheet1: TTabSheet;
-    Splitter2: TSplitter;
     Splitter8: TSplitter;
-    UserHomeFolder: TTreeView;
     Panel13: TPanel;
     JvComboBox1: TJvComboBox;
     PageControl10: TPageControl;
     TabSheet25: TTabSheet;
     TabSheet26: TTabSheet;
     EventMethodeListBox: TValueListEditor;
-    PageControl11: TPageControl;
+    DesignerIconListViews: TPageControl;
     TabSheet27: TTabSheet;
-    DesignerIconListView: TListView;
+    DesignerIconListView_Standard: TListView;
     TabSheet3: TTabSheet;
     N13: TMenuItem;
     C64BASIC1: TMenuItem;
@@ -272,6 +271,124 @@ type
     TreeView6: TTreeView;
     ListView1: TListView;
     InstallScript1: TMenuItem;
+    NewModule_TabSheet: TTabSheet;
+    PageControl16: TPageControl;
+    TabSheet36: TTabSheet;
+    TabSheet37: TTabSheet;
+    TabSheet38: TTabSheet;
+    TabSheet39: TTabSheet;
+    TabSheet40: TTabSheet;
+    TabSheet41: TTabSheet;
+    TabSheet42: TTabSheet;
+    NewApplication_ListView: TListView;
+    ListView3: TListView;
+    ListView4: TListView;
+    ListView5: TListView;
+    ListView6: TListView;
+    ListView7: TListView;
+    ListView8: TListView;
+    NewProject_ImageList: TImageList;
+    Splitter9: TSplitter;
+    ScrollBox9: TScrollBox;
+    PageControl17: TPageControl;
+    TabSheet43: TTabSheet;
+    TreeView7: TTreeView;
+    TabSheet44: TTabSheet;
+    UserHomeFolder: TTreeView;
+    Splitter2: TSplitter;
+    Panel7: TPanel;
+    JvImgBtn3: TJvImgBtn;
+    JvImgBtn4: TJvImgBtn;
+    Splitter11: TSplitter;
+    Panel15: TPanel;
+    JvImgBtn5: TJvImgBtn;
+    JvImgBtn6: TJvImgBtn;
+    Panel16: TPanel;
+    JvImgBtn7: TJvImgBtn;
+    JvImgBtn8: TJvImgBtn;
+    Panel17: TPanel;
+    JvImgBtn9: TJvImgBtn;
+    JvImgBtn10: TJvImgBtn;
+    Panel18: TPanel;
+    JvImgBtn11: TJvImgBtn;
+    JvImgBtn12: TJvImgBtn;
+    Panel19: TPanel;
+    JvImgBtn13: TJvImgBtn;
+    JvImgBtn14: TJvImgBtn;
+    Panel20: TPanel;
+    JvImgBtn15: TJvImgBtn;
+    JvImgBtn16: TJvImgBtn;
+    Splitter12: TSplitter;
+    Splitter13: TSplitter;
+    Splitter14: TSplitter;
+    Splitter15: TSplitter;
+    Splitter16: TSplitter;
+    Splitter17: TSplitter;
+    TabSheet45: TTabSheet;
+    TabSheet46: TTabSheet;
+    TabSheet47: TTabSheet;
+    DesignerIconListView_Box: TListView;
+    DesignerIconListView_List: TListView;
+    DesignerIconListView_Edit: TListView;
+    TabSheet48: TTabSheet;
+    DesignerIconListView_Button: TListView;
+    TabSheet49: TTabSheet;
+    DesignerIconListView_Grid: TListView;
+    TabSheet50: TTabSheet;
+    DesignerIconListView_DataBase: TListView;
+    TabSheet51: TTabSheet;
+    DesignerIconListView_Image: TListView;
+    TabSheet52: TTabSheet;
+    TabSheet53: TTabSheet;
+    DesignerIconListView_CS: TListView;
+    DesignerIconListView_Scroll: TListView;
+    MenuBarButton_DataBase: TCtrlMenuBarButton;
+    PopupMenu_DataBase: TJvPopupMenu;
+    SQLExplorer1: TMenuItem;
+    SQLMonitor1: TMenuItem;
+    FormWizard1: TMenuItem;
+    N14: TMenuItem;
+    ImageEditor1: TMenuItem;
+    Panel21: TPanel;
+    Splitter18: TSplitter;
+    JvEdit1: TJvEdit;
+    JvImgBtn17: TJvImgBtn;
+    Editor_PopupMenu: TJvPopupMenu;
+    MenuItem5: TMenuItem;
+    Translate_MenuItem: TMenuItem;
+    Run_MenuItem: TMenuItem;
+    Compile_FPC_MenuItem: TMenuItem;
+    Translate_TO_gnuCPP: TMenuItem;
+    Internal_FPC_Interpreter_MenuItem: TMenuItem;
+    N15: TMenuItem;
+    Cut1: TMenuItem;
+    Copy1: TMenuItem;
+    Paste1: TMenuItem;
+    Delete1: TMenuItem;
+    N16: TMenuItem;
+    N17: TMenuItem;
+    Help1: TMenuItem;
+    BookMark_Image: TImageList;
+    TabSheet54: TTabSheet;
+    Panel22: TPanel;
+    JvImgBtn18: TJvImgBtn;
+    JvTreeView1: TJvTreeView;
+    JvDriveList1: TJvDriveList;
+    JvEdit2: TJvEdit;
+    Splitter19: TSplitter;
+    CtrlMenuBarButton3: TCtrlMenuBarButton;
+    JvPopupMenu1: TJvPopupMenu;
+    MenuItem2: TMenuItem;
+    MenuItem4: TMenuItem;
+    MenuItem6: TMenuItem;
+    Label6: TLabel;
+    Label7: TLabel;
+    Splitter20: TSplitter;
+    TreeView8: TTreeView;
+    TabSheet55: TTabSheet;
+    IdFTP1: TIdFTP;
+    IdHTTP1: TIdHTTP;
+    IdTCPClient1: TIdTCPClient;
     procedure PopupMenu_File_NewClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -329,7 +446,7 @@ type
       Item: TJvCustomInspectorItem; Edit: TCustomEdit);
     procedure C64ScreenKeyPress(Sender: TObject; var Key: Char);
     procedure C64ScreenTimerTimer(Sender: TObject);
-    procedure DesignerIconListViewMouseDown(Sender: TObject;
+    procedure DesignerIconListView_StandardMouseDown(Sender: TObject;
       Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure JvInspector1BeforeSelection(Sender: TObject;
       NewItem: TJvCustomInspectorItem; var Allow: Boolean);
@@ -337,8 +454,6 @@ type
       Item: TJvCustomInspectorItem);
     procedure JvInspector1ItemValueChanged(Sender: TObject;
       Item: TJvCustomInspectorItem);
-    procedure ListBox1MouseDown(Sender: TObject; Button: TMouseButton;
-      Shift: TShiftState; X, Y: Integer);
     procedure PaintBox1DragDrop(Sender, Source: TObject; X, Y: Integer);
     procedure PaintBox1DragOver(Sender, Source: TObject; X, Y: Integer;
       State: TDragState; var Accept: Boolean);
@@ -352,9 +467,49 @@ type
     procedure C64BASIC2Click(Sender: TObject);
     procedure MSDOS1Click(Sender: TObject);
     procedure ChatWindow2Click(Sender: TObject);
+    procedure PopupMenu_File_New_OtherClick(Sender: TObject);
+    procedure SQLExplorer1Click(Sender: TObject);
+    procedure SQLMonitor1Click(Sender: TObject);
+    procedure ImageEditor1Click(Sender: TObject);
+    procedure DesignerIconListView_BoxMouseDown(Sender: TObject;
+      Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure DesignerIconListView_ListMouseDown(Sender: TObject;
+      Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure DesignerIconListView_ButtonMouseDown(Sender: TObject;
+      Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure DesignerIconListView_GridMouseDown(Sender: TObject;
+      Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure DesignerIconListView_DataBaseMouseDown(Sender: TObject;
+      Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure DesignerIconListView_ImageMouseDown(Sender: TObject;
+      Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure DesignerIconListView_ScrollMouseDown(Sender: TObject;
+      Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure DesignerIconListView_CSMouseDown(Sender: TObject;
+      Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure DesignerIconListView_EditMouseDown(Sender: TObject;
+      Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure JvApplicationHotKey1HotKey(Sender: TObject);
+    procedure FormShortCut(var Msg: TWMKey; var Handled: Boolean);
+    procedure NewApplication_ListViewDblClick(Sender: TObject);
+    procedure Compile_FPC_MenuItemClick(Sender: TObject);
+    procedure Internal_FPC_Interpreter_MenuItemClick(Sender: TObject);
+    procedure Help1Click(Sender: TObject);
+    procedure Translate_TO_gnuCPPClick(Sender: TObject);
+    procedure Run_MenuItemClick(Sender: TObject);
+    procedure LeftPageControlChange(Sender: TObject);
   private
     Cv1: TCanvas;
     ircListLimit: Integer;
+
+    has_errors: Boolean;
+
+    IniFile_SQL_Explorer: String;
+    IniFile_SQL_Monitor : String;
+
+    IniFile_IDE_Language: String;
+
+    IniFile_Image_Edit  : String;
   public
 
     C64ScreenMap: Array [1..25, 1..40] of WideChar;
@@ -369,6 +524,12 @@ type
       Button: TMouseButton;
       Shift : TShiftState;
       X,  Y : Integer);
+
+    procedure LoadIniFile;
+    procedure SaveIniFile;
+
+    procedure uncheck_run_menues;
+
     procedure ModifyControl(const AControl: TControl; LS: TStrings);
     procedure ExpandTopLevel;
     procedure JvDesignPanelPaint(Sender: TObject);
@@ -461,11 +622,20 @@ var
   SomeColor : TColor;
   xpos, ypos: Integer;
 begin
+  has_errors := false;
+
   ErrorBox := TErrorBox.Create(Form1);
   InfoBox  := TInfoBox.Create(Form1);
 
   ChatTabSheet.TabVisible := false;
 
+  // default IDE values
+  IniFile_SQL_Explorer := 'E:\Program Files (x86)\Borland\Delphi7\Bin\dbexplor.exe';
+  IniFile_SQL_Monitor  := 'E:\Program Files (x86)\Borland\Delphi7\Bin\sqlmon.exe';
+  IniFile_Image_Edit   := 'E:\Program Files (x86)\Borland\Delphi7\Bin\imagedit.exe';
+
+  IniFile_IDE_Language := 'ENG';
+  LoadIniFile;
 
   ypos := 0;
   xpos := 0;
@@ -516,6 +686,7 @@ begin
   Cv1.Font.Color := clRed;
 
   MainPageControl.Pages[1].TabVisible := false;
+  MainPageControl.Pages[8].TabVisible := false;
 
   with GlobalJvInterpreterAdapter do
   begin
@@ -565,10 +736,6 @@ begin
   TabSheet31.Caption := 'Unnamed';
   TabSheet3 .Caption := 'Project';
 
-  LeftPageControl.ActivePage := TabSheet1;
-  MainPageControl.ActivePage := TabSheet2;
-
-
   WriteToC64Screen(5,2,'**** COMMODORE 64 BASIC V2 ****');
   WriteToC64Screen(2,4,'64K RAM SYSTEM  38911 BASIC BYTES FREE');
   WriteToC64Screen(1,6,'READY.');
@@ -576,7 +743,10 @@ begin
   C64ScreenCursor.X := 1;
   C64ScreenCursor.Y := 7;
 
-  SynEdit1.SetFocus;
+  LeftPageControl.ActivePageIndex := 2;
+  MainPageControl.ActivePageIndex := 8;
+
+  JvEdit1.SetFocus;
 end;
 
 procedure TForm1.PopupMenu_File_ExitClick(Sender: TObject);
@@ -721,6 +891,8 @@ end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
 begin
+  SaveIniFile;
+
   Cv1.Free;
   Cv1 := nil;
 
@@ -731,7 +903,7 @@ begin
   Session1.Free;
 
   Form.Free;
-  
+
   ErrorBox.Free;
   InfoBox.Free;
 end;
@@ -751,6 +923,7 @@ begin
   if not(OpenDialog1.Execute) then
   begin
     ErrorBox.Text('something goes wrong at open file.');
+    has_errors := true;
     exit
   end;
   SynEdit1.Lines.Clear;
@@ -769,6 +942,7 @@ begin
   begin
     ErrorBox.Text('something went wrong at open file:' + #13 +
     OpenDialog1.FileName);
+    has_errors := true;
     exit;
   end;
 
@@ -784,6 +958,9 @@ var
   S1,S2: String;
   SL: TStringList;
 begin
+  if Length(Trim(SynEdit1.Lines.Text)) < 1 then
+  SynEdit1.Modified := false;
+
   if SynEdit1.Modified then
   begin
     if TabSheet31.Caption = 'Unnamed' then
@@ -846,10 +1023,16 @@ begin
   S2 := ExtractFileName(s1);
 
   TabSheet31.Caption := S2;
+
   SynEdit1.Lines.Clear;
   SynEdit1.Lines.LoadFromFile(S1);
   SynEdit1.Lines.Delete(SynEdit1.Lines.Count - 1);
+
   SynEdit1.Modified := false;
+
+  MainPageControl.ActivePageIndex := 0;
+  SynEdit1.SetFocus;
+
 end;
 
 procedure TForm1.JvSpeedButton2Click(Sender: TObject);
@@ -862,6 +1045,7 @@ begin
   begin
     ErrorBox.Text('something went wrong at open file:' + #13 +
     SaveDialog1.FileName);
+    has_errors := true;
     exit;
   end else
   begin
@@ -896,6 +1080,12 @@ var
 begin
   JvSpeedButton2Click(Sender);
   buildListBox.Items.Clear;
+
+  if has_errors then
+  begin
+    has_errors := true;
+    exit;
+  end;
 
   MainPageControl.ActivePage := ConsoleTabSheet;
   Console1DblClick(Sender);
@@ -968,21 +1158,11 @@ end;
 
 procedure TForm1.EditorOptions1Click(Sender: TObject);
 begin
-(*
-  MainPageControl.Pages[0].TabVisible := false;
-  MainPageControl.Pages[1].TabVisible := true;
-  MainPageControl.Pages[0].TabVisible := true;
-*)
   TabSheet_Options.Visible := true;
   TabSheet_Options.Enabled := true;
   TabSheet_Options.SetFocus;
 
   MainPageControl.ActivePage := TabSheet_Options;
-
-//  PageControl3.Pages[0].TabVisible := true;
-//  TabSheet5.Visible := true;
-//  TabSheet5.Enabled := true;
-//  TabSheet5.SetFocus;
 end;
 
 procedure TForm1.SynEdit1KeyDown(Sender: TObject; var Key: Word;
@@ -1123,11 +1303,22 @@ end;
 procedure TForm1.MainPageControlChange(Sender: TObject);
 begin
   C64ScreenTimer.Enabled := false;
-  
   if MainPageControl.ActivePage.Caption = 'C-64 Display' then
   begin
     C64ScreenTimer.Enabled := true;
-  end;
+  end else
+  if MainPageControl.ActivePage.Caption = 'SQL-Builder' then
+  begin
+    LeftPageControl.ActivePageIndex := 0;
+    PageControl2.ActivePageIndex := 3;
+  end else
+  if MainPageControl.ActivePage.Caption = 'Editor' then
+  begin
+    LeftPageControl.ActivePageIndex := 1;
+    PageControl2.ActivePageIndex := 0;
+  end else
+  if MainPageControl.ActivePage.Caption = 'Designer' then
+  LeftPageControl.ActivePageIndex := 0;
 end;
 
 procedure TForm1.Options1Click(Sender: TObject);
@@ -1614,10 +1805,10 @@ begin
   end;
 end;
 
-procedure TForm1.DesignerIconListViewMouseDown(Sender: TObject;
+procedure TForm1.DesignerIconListView_StandardMouseDown(Sender: TObject;
   Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
-  DesignerIconListView.BeginDrag(false);
+  DesignerIconListView_Standard.BeginDrag(false);
 end;
 
 procedure TForm1.JvInspector1BeforeSelection(Sender: TObject;
@@ -1647,12 +1838,6 @@ begin
       Item.SetDisplayValue(ColorToString(ColorDialog1.Color));
     end;
   end;
-end;
-
-procedure TForm1.ListBox1MouseDown(Sender: TObject; Button: TMouseButton;
-  Shift: TShiftState; X, Y: Integer);
-begin
-  DesignerIconListView.BeginDrag(false);
 end;
 
 procedure TForm1.PaintBox1DragDrop(Sender, Source: TObject; X, Y: Integer);
@@ -1832,4 +2017,259 @@ begin
   end;
 end;
 
+procedure TForm1.PopupMenu_File_New_OtherClick(Sender: TObject);
+begin
+  NewModule_TabSheet.Visible := true;
+  NewModule_TabSheet.Enabled := true;
+  NewModule_TabSheet.SetFocus;
+
+  MainPageControl.ActivePage := NewModule_TabSheet;
+
+  LeftPageControl.ActivePageIndex := 1;
+end;
+
+// todo: setup !
+procedure TForm1.SQLExplorer1Click(Sender: TObject);
+begin
+  ShellExecute(Handle,'open',PAnsiChar(IniFile_SQL_Explorer),
+  nil,nil,SW_SHOWNORMAL);
+end;
+
+procedure TForm1.SQLMonitor1Click(Sender: TObject);
+begin
+  ShellExecute(Handle,'open',PAnsiChar(IniFile_SQL_Monitor),
+  nil,nil,SW_SHOWNORMAL);
+end;
+
+procedure TForm1.ImageEditor1Click(Sender: TObject);
+begin
+  ShellExecute(Handle,'open',PAnsiChar(IniFile_Image_Edit),
+  nil,nil,SW_SHOWNORMAL);
+end;
+
+procedure TForm1.LoadIniFile;
+var
+  ini: TIniFile;
+Begin
+  try
+    ini := TIniFile.Create(ChangeFileExt(Application.ExeName,'.ini'));
+    try
+      IniFile_SQL_Explorer := ini.ReadString('common','sqlExplorer',iniFile_SQL_Explorer);
+      IniFile_SQL_Monitor  := ini.ReadString('common','sqlMonitor' ,iniFile_SQL_Monitor );
+      IniFile_Image_Edit   := ini.ReadString('common','imageEdit'  ,iniFile_Image_Edit  );
+
+      IniFile_IDE_Language := ini.ReadString('common','language'   ,iniFile_IDE_Language);
+    finally
+      ini.Free;
+    end;
+  except
+    on E: Exception do
+    begin
+      ErrorBox.Text(
+      'could not open ini file.' + #10 +
+      'Error: ' + E.Message);
+      ErrorBox.Show;
+    end;
+  end;
+end;
+
+procedure TForm1.SaveIniFile;
+var
+  ini: TIniFile;
+begin
+  try
+    ini := TIniFile.Create(ChangeFileExt(Application.ExeName,'.ini'));
+    try
+      ini.WriteString('common','sqlExplorer',IniFile_SQL_Explorer);
+      ini.WriteString('common','sqlMonitor' ,IniFile_SQL_Monitor);
+      ini.WriteString('common','imageEdit'  ,IniFile_Image_Edit);
+
+      ini.WriteString('common','language'   ,IniFile_IDE_Language);
+    finally
+      ini.Free;
+    end;
+  except
+    on E: Exception do
+    begin
+      ErrorBox.Text(
+      'could not save program values to ini file.' + #10 +
+      'Error: ' + E.Message);
+      ErrorBox.Show;
+    end;
+  end;
+end;
+
+procedure TForm1.DesignerIconListView_BoxMouseDown(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  DesignerIconListView_Box.BeginDrag(false);
+end;
+
+procedure TForm1.DesignerIconListView_ListMouseDown(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  DesignerIconListView_List.BeginDrag(false);
+end;
+
+procedure TForm1.DesignerIconListView_ButtonMouseDown(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  DesignerIconListView_Button.BeginDrag(false);
+end;
+
+procedure TForm1.DesignerIconListView_GridMouseDown(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  DesignerIconListView_Grid.BeginDrag(false);
+end;
+
+procedure TForm1.DesignerIconListView_DataBaseMouseDown(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  DesignerIconListView_DataBase.BeginDrag(false);
+end;
+
+procedure TForm1.DesignerIconListView_ImageMouseDown(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  DesignerIconListView_Image.BeginDrag(false);
+end;
+
+procedure TForm1.DesignerIconListView_ScrollMouseDown(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  DesignerIconListView_Scroll.BeginDrag(false);
+end;
+
+procedure TForm1.DesignerIconListView_CSMouseDown(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  DesignerIconListView_CS.BeginDrag(false);
+end;
+
+procedure TForm1.DesignerIconListView_EditMouseDown(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  DesignerIconListView_Edit.BeginDrag(false);
+end;
+
+procedure TForm1.JvApplicationHotKey1HotKey(Sender: TObject);
+begin
+  ShellExecute(Handle,'open',
+  PChar(ExtractFilePath(Application.ExeName) + 'Editor.chm'),
+  nil, nil, SW_SHOW);
+end;
+
+procedure TForm1.FormShortCut(var Msg: TWMKey; var Handled: Boolean);
+begin
+  if msg.CharCode = VK_F1 then
+  begin
+    ShellExecute(Handle,'open',
+    PChar(ExtractFilePath(Application.ExeName) + 'Editor.chm'),
+    nil, nil, SW_SHOW);
+    Handled := true;
+  end else
+  if msg.CharCode = VK_F2 then
+  begin
+    if SynEdit1.Focused then
+    StartCompileClick(self);
+    Handled := true;
+  end;
+end;
+
+procedure TForm1.NewApplication_ListViewDblClick(Sender: TObject);
+begin
+  if NewApplication_ListView.Selected = nil then
+  exit;
+
+  ShowMessage(NewApplication_ListView.Selected.Caption);
+end;
+
+procedure TForm1.Compile_FPC_MenuItemClick(Sender: TObject);
+begin
+  uncheck_run_menues;
+  Run_MenuItem.Caption := 'Run Compiler (FPC)';
+  Run_MenuItem.Tag     := 1;
+  Compile_FPC_MenuItem.Checked := true;
+end;
+
+procedure TForm1.Internal_FPC_Interpreter_MenuItemClick(Sender: TObject);
+begin
+  uncheck_run_menues;
+  Run_MenuItem.Caption := 'Run Interpreter';
+  Run_MenuItem.Tag     := 0;
+  Internal_FPC_Interpreter_MenuItem.Checked := true;
+end;
+
+procedure TForm1.Help1Click(Sender: TObject);
+begin
+  ShellExecute(Handle,'open',
+  PChar(ExtractFilePath(Application.ExeName) + 'Editor.chm'),
+  nil, nil, SW_SHOW);
+end;
+
+procedure TForm1.Translate_TO_gnuCPPClick(Sender: TObject);
+begin
+   uncheck_run_menues;
+
+   Run_MenuItem.Caption := 'Run Translate (GNU C++)';
+   Run_MenuItem.Tag     := 2;
+
+   Translate_to_gnuCpp.Checked := true;
+   Translate_MenuItem.Checked  := true;
+end;
+
+procedure TForm1.uncheck_run_menues;
+begin
+  Translate_MenuItem.Checked := false;
+  Translate_to_gnuCpp.Checked := false;
+  Internal_FPC_Interpreter_MenuItem.Checked := false;
+  Compile_FPC_MenuItem.Checked := false;
+end;
+
+procedure TForm1.Run_MenuItemClick(Sender: TObject);
+begin
+  case Run_MenuItem.Tag of
+    0:
+    begin
+      if (Length(Trim(SynEdit1.Lines.Text)) < 1) then
+      begin
+        ErrorBox.Text(
+        'Warning:' + #10 + 'no source code data.');
+        ErrorBox.Show;
+        exit;
+      end else
+      StartCompileClick(Sender);
+    end;
+    1:
+    begin
+      ShowMessage('Compile FPC');
+    end;
+    2:
+    begin
+      ShowMessage('translate g++');
+    end;
+    else begin
+      ShowMessage('not implemented');
+    end;
+  end;
+end;
+
+procedure TForm1.LeftPageControlChange(Sender: TObject);
+begin
+  if LeftPageControl.ActivePage.Caption = 'Project' then
+  begin
+    MainPageControl.ActivePageIndex := 0;
+  end else
+  if LeftPageControl.ActivePage.Caption = 'Design' then
+  begin
+    MainPageControl.ActivePageIndex := 4;
+  end else
+  if LeftPageControl.ActivePage.Caption = 'Folder''s' then
+  begin
+    MainPageControl.ActivePageIndex := 8;
+  end;
+end;
+
 end.
+
