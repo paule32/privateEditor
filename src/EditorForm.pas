@@ -21,6 +21,11 @@ type
   TMyTableListBox = class(TListBox)
   end;
 
+var
+  C64KeyMapValue : Array[0..9] of String = (
+  'code1','code2','code3','code4','code5','code6','code7','code8','code9','code10'
+  );
+
 type
   TForm1 = class(TForm)
     CoolBar1: TCoolBar;
@@ -171,8 +176,6 @@ type
     ircUserName: TEdit;
     ircUserPass: TEdit;
     ircChannel: TEdit;
-    PageControl5: TJvPageControl;
-    TabSheet12: TTabSheet;
     ircConnectButton: TJvImgBtn;
     TabSheet22: TTabSheet;
     ConsoleTabSheet: TTabSheet;
@@ -204,7 +207,6 @@ type
     JvInspector1: TJvInspector;
     TabSheet28: TTabSheet;
     Database1: TDatabase;
-    DatabaseComboBox: TJvComboBox;
     Session1: TSession;
     PageControl12: TPageControl;
     TabSheet30: TTabSheet;
@@ -216,10 +218,6 @@ type
     PageControl14: TPageControl;
     TabSheet32: TTabSheet;
     ScrollBox3: TScrollBox;
-    Panel14: TPanel;
-    JvImgBtn1: TJvImgBtn;
-    JvImgBtn2: TJvImgBtn;
-    Splitter10: TSplitter;
     C64BASIC2: TMenuItem;
     MSDOS1: TMenuItem;
     MSDOS2: TMenuItem;
@@ -235,7 +233,6 @@ type
     PreviewWindow1: TMenuItem;
     ScrollBox4: TScrollBox;
     WebBrowser1: TWebBrowser;
-    Label5: TLabel;
     ScrollBox7: TScrollBox;
     PageControl9: TPageControl;
     TabSheet14: TTabSheet;
@@ -350,12 +347,7 @@ type
     N17: TMenuItem;
     Help1: TMenuItem;
     BookMark_Image: TImageList;
-    TabSheet54: TTabSheet;
-    Panel22: TPanel;
-    JvTreeView1: TJvTreeView;
     JvDriveList1: TJvDriveList;
-    JvEdit2: TJvEdit;
-    Splitter19: TSplitter;
     CtrlMenuBarButton3: TCtrlMenuBarButton;
     JvPopupMenu1: TJvPopupMenu;
     MenuItem2: TMenuItem;
@@ -371,6 +363,7 @@ type
     IdTCPClient1: TIdTCPClient;
     Splitter3: TSplitter;
     Frame_Panel: TPanel;
+    C64ConfigTabSheet: TTabSheet;
     procedure PopupMenu_File_NewClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -499,6 +492,8 @@ type
     C64ScreenCursorBlink: Integer;
     C64KeyImage: TImage;
 
+    dropList  : TStrings;
+
     TableListBox: TMyTableListBox;
     Form: TForm;
 
@@ -534,14 +529,18 @@ implementation
 
 uses
   ErrorBoxForm, InfoBoxForm, AboutBox, InputBox, DesignerFrame,
-  TeamServerFrame, EditFrame, C64KeyBoard,
-  JvDesignImp;
+  TeamServerFrame, EditFrame, C64KeyBoard, C64ConfigFrame, MembersFrame,
+  C64DrivesFrame, JvDesignImp;
 
 var
-  DFrame : TFrame1;
-  DFrameTeamServer: TFrame2;
-  DFrameEdit: TFrame3;
+  DFrame           : TFrame1;
+  DFrameTeamServer : TFrame2;
+  DFrameEdit       : TFrame3;
+  DFrameMembers    : TFrame6;
+
   DFrameC64KeyBoard: TFrame4;
+  DFrameC64Config  : TFrame5;
+  DFrameC64Drives  : TFrame7;
 
 function GetShellFolder(CSIDLFolder : integer) : string;
 begin
@@ -603,16 +602,22 @@ end;
 
 procedure TForm1.FormCreate(Sender: TObject);
 var
-  I         : Integer;
+  I,J       : Integer;
   InspCat   : TJvInspectorCustomCategoryItem;
   TableList : TStringList;
   SomeColor : TColor;
   xpos, ypos: Integer;
+
 begin
   has_errors := false;
 
   ErrorBox := TErrorBox.Create(Form1);
   InfoBox  := TInfoBox.Create(Form1);
+
+  // todo: !
+  dropList := TStringList.Create;
+  for I := 0 to 60 do
+  dropList.Add('code' + IntToStr(I));
 
   ChatTabSheet.TabVisible := false;
 
@@ -620,6 +625,26 @@ begin
   IniFile_SQL_Explorer := 'E:\Program Files (x86)\Borland\Delphi7\Bin\dbexplor.exe';
   IniFile_SQL_Monitor  := 'E:\Program Files (x86)\Borland\Delphi7\Bin\sqlmon.exe';
   IniFile_Image_Edit   := 'E:\Program Files (x86)\Borland\Delphi7\Bin\imagedit.exe';
+
+  // config: c64 keyboard
+  DFrameC64Config := TFrame5.Create(C64ConfigTabSheet);
+  DFrameC64Config.Parent  := C64ConfigTabSheet;
+  DFrameC64Config.Align   := alClient;
+  DFrameC64Config.Visible := false;
+
+  // c64 drives
+  DFrameC64Drives         := TFrame7.Create(Panel8);
+  DFrameC64Drives.Parent  := Panel8;
+  DFrameC64Drives.Align   := alClient;
+  DFrameC64Drives.Visible := false;
+
+//  DFrameC64Config.ValueListEditor1.InsertRow('kkk','0000',true);
+//  DFrameC64Config.ValueListEditor1.ItemProps['kkk'].EditStyle := esSimple;
+
+  DFrameMembers := TFrame6.Create(Panel8);
+  DFrameMembers.Parent  := Panel8;
+  DFrameMembers.Align   := alClient;
+  DFrameMembers.Visible := false;
 
   IniFile_IDE_Language := 'ENG';
   LoadIniFile;
@@ -664,6 +689,8 @@ begin
 
   SynEdit1.Lines.Clear;
 
+  LeftPageControl.Pages[3].TabVisible := false;
+
   // canvas for TextWidth:
   Cv1 := TCanvas.Create;
   Cv1.Handle := GetDC(Handle);
@@ -689,13 +716,13 @@ begin
   EventMethodeListBox.InsertRow('Name'   ,'ObjectName',true);
 
   // get alias/tables
-  DataBaseComboBox.Items.Clear;
+  DFrameMembers.DataBaseComboBox.Items.Clear;
 
   Session1.Open;
-  Session1.GetAliasNames(DataBaseComboBox.Items);
+  Session1.GetAliasNames(DFrameMembers.DataBaseComboBox.Items);
 
-  TableListBox := TMyTableListBox.Create(TabSheet12);
-  TableListBox.Parent := TabSheet12;
+  TableListBox := TMyTableListBox.Create(DFrameMembers.TabSheet1);
+  TableListBox.Parent := DFrameMembers.TabSheet1;
   TableListBox.Align  := alClient;
   TableListBox.Items.Clear;
   TableListBox.OnMouseDown := TableListBox_MouseDown;
@@ -907,9 +934,18 @@ procedure TForm1.FormDestroy(Sender: TObject);
 begin
   SaveIniFile;
   C64KeyImage.Free;
-  DFrameC64KeyBoard.Free;
-  DFrameEdit.Free;
+
+  DFrame.Free;
   DFrameTeamServer.Free;
+  DFrameEdit.Free;
+  DFrameMembers.Free;
+
+  DFrameC64KeyBoard.Free;
+  DFrameC64Config.Free;
+  DFrameC64Drives.Free;
+
+  dropList.Clear;
+  dropList.Free;
 
   Cv1.Free;
   Cv1 := nil;
@@ -1322,6 +1358,22 @@ procedure TForm1.MainPageControlChange(Sender: TObject);
 begin
   C64ScreenTimer.Enabled := false;
   DFrameC64KeyBoard.Visible := false;
+  DFrameEdit.Visible := false;
+  DFrameTeamServer.Visible := false;
+
+  LeftPageControl.Pages[0].TabVisible := true;
+  LeftPageControl.Pages[1].TabVisible := true;
+  LeftPageControl.Pages[2].TabVisible := true;
+  LeftPageControl.Pages[3].TabVisible := false;
+
+  Splitter5.Visible := true;
+
+  DFrameMembers.Visible := true;
+  DFrameMembers.PageControl5.Visible := true;
+  DFrameMembers.PageControl5.Pages[0].Visible := true;
+  DFrameMembers.PageControl5.Pages[1].Visible := true;
+
+  DFrameC64Drives.Visible := false;
 
   if MainPageControl.ActivePage.Caption = 'C-64 Display' then
   begin
@@ -1333,29 +1385,49 @@ begin
 
     DFrameC64KeyBoard.Visible := true;
     LogPanel.Visible := false;
+
+    LeftPageControl.Pages[0].TabVisible := false;
+    LeftPageControl.Pages[1].TabVisible := false;
+    LeftPageControl.Pages[2].TabVisible := false;
+    LeftPageControl.Pages[3].TabVisible := true;
+
+    DFrameMembers.PageControl5.Visible := false;
+    DFrameMembers.Visible := false;
+
+    DFrameC64Config.Visible := true;
+    DFrameC64Drives.Visible := true;
+
   end else
   if MainPageControl.ActivePage.Caption = 'SQL-Builder' then
   begin
     LeftPageControl.ActivePageIndex := 0;
-    DFrameTeamServer.Visible := false;
+
     DFrameEdit.Visible := true;
     DFrameEdit.PageControl2.ActivePageIndex := 3;
+
     LogPanel.Visible := true;
   end else
   if MainPageControl.ActivePage.Caption = 'Editor' then
   begin
     LeftPageControl.ActivePageIndex := 1;
-    DFrameTeamServer.Visible := false;
+
     DFrameEdit.Visible := true;
     DFrameEdit.PageControl2.ActivePageIndex := 0;
+
     LogPanel.Visible := true;
   end else
   if MainPageControl.ActivePage.Caption = 'Designer' then
   begin
     LeftPageControl.ActivePageIndex := 0;
-    DFrameTeamServer.Visible := false;
+
     DFrameEdit.Visible := true;
     LogPanel.Visible := true;
+  end else
+  if MainPageControl.ActivePage.Caption = 'Console' then
+  begin
+    LeftPageControl.Pages[2].TabVisible := true;
+    LeftPageControl.Visible := true;
+    LeftPageControl.ActivePageIndex := 2;
   end;
 end;
 
@@ -1483,7 +1555,7 @@ begin
   PageControl1.Color := clGray;
   DFrameEdit.PageControl2.Color := clGray;
   PageControl3.Color := clGray;
-  PageControl5.Color := clGray;
+  DFrameMembers.PageControl5.Color := clGray;
   PageControl6.Color := clGray;
   PageControl7.Color := clGray;
   PageControl8.Color := clGray;
@@ -1578,7 +1650,7 @@ begin
   PageControl1.Color := clBtnFace;
   DFrameEdit.PageControl2.Color := clBtnFace;
   PageControl3.Color := clBtnFace;
-  PageControl5.Color := clBtnFace;
+  DFrameMembers.PageControl5.Color := clBtnFace;
   PageControl6.Color := clBtnFace;
   PageControl7.Color := clBtnFace;
   PageControl8.Color := clBtnFace;
@@ -1949,8 +2021,8 @@ begin
 
   with DataBase1 do
   begin
-    DataBaseName := DataBaseComboBox.Text;
-    AliasName := DataBaseComboBox.Text;
+    DataBaseName := DFrameMembers.DataBaseComboBox.Text;
+    AliasName    := DFrameMembers.DataBaseComboBox.Text;
     Open;
     if Connected then
     GetTableNames(TableListBox.Items,false) else
@@ -2089,6 +2161,21 @@ end;
 procedure TForm1.LoadIniFile;
 var
   ini: TIniFile;
+  I: Integer;
+  S: String;
+
+  procedure C64AddKeyMap(
+    AKeyString    : String;
+    AStringList   : TStrings;
+    ADefaultString: String);
+  begin
+    with DFrameC64Config.ValueListEditor1 do
+    begin
+      InsertRow(AKeyString,ADefaultString,true);
+      ItemProps[AKeyString].EditStyle := esPickList;
+      ItemProps[AKeyString].PickList.Assign(AStringList);
+    end;
+  end;
 Begin
   try
     ini := TIniFile.Create(ChangeFileExt(Application.ExeName,'.ini'));
@@ -2096,8 +2183,13 @@ Begin
       IniFile_SQL_Explorer := ini.ReadString('common','sqlExplorer',iniFile_SQL_Explorer);
       IniFile_SQL_Monitor  := ini.ReadString('common','sqlMonitor' ,iniFile_SQL_Monitor );
       IniFile_Image_Edit   := ini.ReadString('common','imageEdit'  ,iniFile_Image_Edit  );
-
       IniFile_IDE_Language := ini.ReadString('common','language'   ,iniFile_IDE_Language);
+
+      for I := 0 to 60 do
+      begin
+        S := ini.ReadString('keyboard','key' + IntToStr(I),'default');
+        C64AddKeyMap('key' + IntToStr(I), dropList,S);
+      end;
     finally
       ini.Free;
     end;
@@ -2115,6 +2207,7 @@ end;
 procedure TForm1.SaveIniFile;
 var
   ini: TIniFile;
+  I: Integer;
 begin
   try
     ini := TIniFile.Create(ChangeFileExt(Application.ExeName,'.ini'));
@@ -2122,8 +2215,13 @@ begin
       ini.WriteString('common','sqlExplorer',IniFile_SQL_Explorer);
       ini.WriteString('common','sqlMonitor' ,IniFile_SQL_Monitor);
       ini.WriteString('common','imageEdit'  ,IniFile_Image_Edit);
-
       ini.WriteString('common','language'   ,IniFile_IDE_Language);
+
+      for I := 0 to 60 do
+      begin
+        ini.WriteString('keyboard','key' + IntToStr(I),
+        DFrameC64Config.ValueListEditor1.Values['key' + IntToStr(i)]);
+      end;
     finally
       ini.Free;
     end;
