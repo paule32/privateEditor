@@ -2321,7 +2321,7 @@ object Form1: TForm1
         Top = 1
         Width = 648
         Height = 406
-        ActivePage = TabSheet24
+        ActivePage = TabSheet2
         Align = alLeft
         Anchors = [akLeft, akTop, akRight, akBottom]
         Font.Charset = DEFAULT_CHARSET
@@ -2348,8 +2348,8 @@ object Form1: TForm1
               object SynEdit1: TSynEdit
                 Left = 0
                 Top = 0
-                Width = 625
-                Height = 337
+                Width = 632
+                Height = 340
                 Align = alClient
                 Font.Charset = DEFAULT_CHARSET
                 Font.Color = clWindowText
@@ -2879,8 +2879,8 @@ object Form1: TForm1
               object ScrollBox3: TScrollBox
                 Left = 0
                 Top = 0
-                Width = 625
-                Height = 337
+                Width = 632
+                Height = 340
                 Align = alClient
                 TabOrder = 0
               end
@@ -2893,15 +2893,15 @@ object Form1: TForm1
           object ScrollBox5: TScrollBox
             Left = 0
             Top = 0
-            Width = 633
-            Height = 369
+            Width = 640
+            Height = 372
             Align = alClient
             TabOrder = 0
             object Console1: TConsole
               Left = 0
               Top = 0
-              Width = 629
-              Height = 365
+              Width = 636
+              Height = 368
               AutoUseInsertMode = True
               InsertMode = True
               InsertCaret = ctHorizontalLine

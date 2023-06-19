@@ -15,7 +15,7 @@ uses
   JvCombobox, JvDesignSurface, JvDesignUtils, JvInspector, JvInterpreter,
   JvExExtCtrls, JvExtComponent, JvPanel, TntExtCtrls, TntStdCtrls,
   TntComCtrls, DB, DBTables, JvAppHotKey, JvEdit, JvListBox, JvDriveCtrls,
-  IdHTTP, IdFTP;
+  IdHTTP, IdFTP, JvTipOfDay;
 
 type
   TMyTableListBox = class(TListBox)
@@ -758,6 +758,7 @@ end;
 procedure TForm1.FormShow(Sender: TObject);
 var
   I: Integer;
+  tipday: TJvTipOfDay;
 
   function CurrentUserName: String;
   var
@@ -787,6 +788,11 @@ begin
   LeftPageControl.ActivePageIndex := 2;
   MainPageControl.ActivePageIndex := 8;
 
+
+  tipday := TJvTipOfDay.Create(Form1);
+  tipday.Execute;
+  tipday.Free;
+   
   JvEdit1.SetFocus;
 end;
 

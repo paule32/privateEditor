@@ -62,3 +62,6 @@ src/C64KeyBoard.~pas
 src/EditFrame.~dfm
 src/EditFrame.~pas
 src/Editor.~dpr
+dcu/pack/Editor.ini
+dcu/pack/Editor.UPX.exe
+dcu/pack/Editor.UPX.exe
