@@ -65,3 +65,12 @@ src/Editor.~dpr
 dcu/pack/Editor.ini
 dcu/pack/Editor.UPX.exe
 dcu/pack/Editor.UPX.exe
+src/C64DrivesFrame.~dfm
+src/NewProjectFrame.~pas
+src/NewProjectFrame.~dfm
+src/TeamServerFrame.~dfm
+src/TeamServerFrame.~pas
+src/FoldersRemote.~dfm
+src/FoldersRemote.~pas
+src/FoldersLocal.~pas
+src/FoldersLocal.~dfm

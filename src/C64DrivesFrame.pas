@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, 
-  Dialogs, JvExControls, JvArrowButton, Menus, JvMenus, ImgList;
+  Dialogs, JvExControls, JvArrowButton, Menus, JvMenus, ImgList, StdCtrls;
 
 type
   TFrame7 = class(TFrame)
@@ -14,6 +14,15 @@ type
     PopupMenu_Floppy: TJvPopupMenu;
     JvArrowButton1: TJvArrowButton;
     JvArrowButton2: TJvArrowButton;
+    GameA1: TMenuItem;
+    GameB1: TMenuItem;
+    GameC1: TMenuItem;
+    PopupMenu_C64Floppy: TMenuItem;
+    ProgramB1: TMenuItem;
+    ProgramC1: TMenuItem;
+    ImageList2: TImageList;
+    Edit1: TEdit;
+    Edit2: TEdit;
   private
     { Private declarations }
   public

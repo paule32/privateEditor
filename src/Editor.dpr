@@ -14,7 +14,10 @@ uses
   C64KeyBoard in 'C64KeyBoard.pas' {Frame4: TFrame},
   C64ConfigFrame in 'C64ConfigFrame.pas' {Frame5: TFrame},
   MembersFrame in 'MembersFrame.pas' {Frame6: TFrame},
-  C64DrivesFrame in 'C64DrivesFrame.pas' {Frame7: TFrame};
+  C64DrivesFrame in 'C64DrivesFrame.pas' {Frame7: TFrame},
+  NewProjectFrame in 'NewProjectFrame.pas' {Frame8: TFrame},
+  FoldersLocal in 'FoldersLocal.pas' {Frame9: TFrame},
+  FoldersRemote in 'FoldersRemote.pas' {Frame10: TFrame};
 
 {$R *.res}
 

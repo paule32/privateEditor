@@ -54,6 +54,13 @@ object Frame2: TFrame2
         Height = 19
         Caption = 'Password:'
       end
+      object Label5: TLabel
+        Left = 472
+        Top = 8
+        Width = 63
+        Height = 19
+        Caption = 'Server:'
+      end
       object JvEdit1: TJvEdit
         Left = 8
         Top = 32
@@ -64,6 +71,8 @@ object Frame2: TFrame2
         AutoSize = False
         MaxLength = 255
         TabOrder = 0
+        OnEnter = JvEdit1Enter
+        OnExit = JvEdit1Exit
         TextHint = 'IP or Hostname'
       end
       object JvEdit2: TJvEdit
@@ -76,6 +85,8 @@ object Frame2: TFrame2
         AutoSize = False
         MaxLength = 255
         TabOrder = 1
+        OnEnter = JvEdit2Enter
+        OnExit = JvEdit2Exit
         TextHint = 'Number'
       end
       object JvEdit3: TJvEdit
@@ -88,6 +99,8 @@ object Frame2: TFrame2
         AutoSize = False
         MaxLength = 255
         TabOrder = 2
+        OnEnter = JvEdit3Enter
+        OnExit = JvEdit3Exit
         TextHint = 'Your Nickname'
       end
       object JvEdit4: TJvEdit
@@ -100,6 +113,8 @@ object Frame2: TFrame2
         AutoSize = False
         MaxLength = 255
         TabOrder = 3
+        OnEnter = JvEdit4Enter
+        OnExit = JvEdit4Exit
         TextHint = 'Your Password'
       end
       object JvImgBtn1: TJvImgBtn
@@ -110,6 +125,22 @@ object Frame2: TFrame2
         Caption = 'Connect'
         TabOrder = 4
         Color = clSilver
+      end
+      object CheckListBox1: TCheckListBox
+        Left = 472
+        Top = 32
+        Width = 273
+        Height = 121
+        ItemHeight = 19
+        TabOrder = 5
+      end
+      object CheckBox1: TCheckBox
+        Left = 472
+        Top = 160
+        Width = 273
+        Height = 17
+        Caption = 'Round Robbin'
+        TabOrder = 6
       end
     end
   end

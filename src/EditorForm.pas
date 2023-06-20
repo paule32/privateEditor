@@ -15,7 +15,7 @@ uses
   JvCombobox, JvDesignSurface, JvDesignUtils, JvInspector, JvInterpreter,
   JvExExtCtrls, JvExtComponent, JvPanel, TntExtCtrls, TntStdCtrls,
   TntComCtrls, DB, DBTables, JvAppHotKey, JvEdit, JvListBox, JvDriveCtrls,
-  IdHTTP, IdFTP, JvTipOfDay;
+  IdHTTP, IdFTP, JvTipOfDay, JvCreateProcess, JvDataEmbedded;
 
 type
   TMyTableListBox = class(TListBox)
@@ -105,7 +105,6 @@ type
     JvSpeedButton2: TJvSpeedButton;
     JvSpeedButton4: TJvSpeedButton;
     CtrlMenuBarButton2: TCtrlMenuBarButton;
-    ImageList1: TImageList;
     Panel8: TPanel;
     Splitter5: TSplitter;
     IdAntiFreeze1: TIdAntiFreeze;
@@ -114,10 +113,6 @@ type
     TabSheet2: TTabSheet;
     TabSheet_Options: TTabSheet;
     ScrollBox1: TScrollBox;
-    Panel4: TPanel;
-    Button3: TJvImgBtn;
-    Button4: TJvImgBtn;
-    Button5: TJvImgBtn;
     TabSheet13: TTabSheet;
     ChatTabSheet: TTabSheet;
     PageControl1: TJvPageControl;
@@ -250,7 +245,7 @@ type
     ListView1: TListView;
     InstallScript1: TMenuItem;
     NewModule_TabSheet: TTabSheet;
-    PageControl16: TPageControl;
+    NewProjectPageControl: TPageControl;
     TabSheet36: TTabSheet;
     TabSheet37: TTabSheet;
     TabSheet38: TTabSheet;
@@ -258,22 +253,17 @@ type
     TabSheet40: TTabSheet;
     TabSheet41: TTabSheet;
     TabSheet42: TTabSheet;
-    NewApplication_ListView: TListView;
     ListView3: TListView;
     ListView4: TListView;
     ListView5: TListView;
     ListView6: TListView;
     ListView7: TListView;
     ListView8: TListView;
-    NewProject_ImageList: TImageList;
     Splitter9: TSplitter;
     ScrollBox9: TScrollBox;
     PageControl17: TPageControl;
     TabSheet43: TTabSheet;
     TreeView7: TTreeView;
-    TabSheet44: TTabSheet;
-    UserHomeFolder: TTreeView;
-    Splitter2: TSplitter;
     Panel7: TPanel;
     JvImgBtn3: TJvImgBtn;
     JvImgBtn4: TJvImgBtn;
@@ -347,16 +337,11 @@ type
     N17: TMenuItem;
     Help1: TMenuItem;
     BookMark_Image: TImageList;
-    JvDriveList1: TJvDriveList;
     CtrlMenuBarButton3: TCtrlMenuBarButton;
     JvPopupMenu1: TJvPopupMenu;
     MenuItem2: TMenuItem;
     MenuItem4: TMenuItem;
     MenuItem6: TMenuItem;
-    Label6: TLabel;
-    Label7: TLabel;
-    Splitter20: TSplitter;
-    TreeView8: TTreeView;
     TabSheet55: TTabSheet;
     IdFTP1: TIdFTP;
     IdHTTP1: TIdHTTP;
@@ -364,6 +349,38 @@ type
     Splitter3: TSplitter;
     Frame_Panel: TPanel;
     C64ConfigTabSheet: TTabSheet;
+    Splitter4: TSplitter;
+    Panel3: TPanel;
+    Button3: TJvImgBtn;
+    Button4: TJvImgBtn;
+    Button5: TJvImgBtn;
+    NewProjectScrollBox: TScrollBox;
+    PageControl2: TPageControl;
+    LocalTabSheet: TTabSheet;
+    RemoteTabSheet: TTabSheet;
+    LocalFoldersScrollBox: TScrollBox;
+    RemoteFoldersScrollBox: TScrollBox;
+    Panel4: TPanel;
+    Splitter2: TSplitter;
+    JvImgBtn1: TJvImgBtn;
+    JvImgBtn2: TJvImgBtn;
+    JvImgBtn18: TJvImgBtn;
+    JvImgBtn19: TJvImgBtn;
+    JvImgBtn20: TJvImgBtn;
+    Panel14: TPanel;
+    JvImgBtn21: TJvImgBtn;
+    JvImgBtn22: TJvImgBtn;
+    JvImgBtn23: TJvImgBtn;
+    JvImgBtn24: TJvImgBtn;
+    JvImgBtn25: TJvImgBtn;
+    Splitter10: TSplitter;
+    JvDataEmbedded1: TJvDataEmbedded;
+    JvDataEmbedded2: TJvDataEmbedded;
+    JvCreateProcess1: TJvCreateProcess;
+    InternalCompiler1: TMenuItem;
+    JvDataEmbedded3: TJvDataEmbedded;
+    JvDataEmbedded4: TJvDataEmbedded;
+    JvDataEmbedded5: TJvDataEmbedded;
     procedure PopupMenu_File_NewClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -466,13 +483,15 @@ type
       Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure JvApplicationHotKey1HotKey(Sender: TObject);
     procedure FormShortCut(var Msg: TWMKey; var Handled: Boolean);
-    procedure NewApplication_ListViewDblClick(Sender: TObject);
     procedure Compile_FPC_MenuItemClick(Sender: TObject);
     procedure Internal_FPC_Interpreter_MenuItemClick(Sender: TObject);
     procedure Help1Click(Sender: TObject);
     procedure Translate_TO_gnuCPPClick(Sender: TObject);
     procedure Run_MenuItemClick(Sender: TObject);
     procedure LeftPageControlChange(Sender: TObject);
+    procedure FormResize(Sender: TObject);
+    procedure NewProjectPageControlChange(Sender: TObject);
+    procedure InternalCompiler1Click(Sender: TObject);
   private
     Cv1: TCanvas;
     ircListLimit: Integer;
@@ -530,12 +549,18 @@ implementation
 uses
   ErrorBoxForm, InfoBoxForm, AboutBox, InputBox, DesignerFrame,
   TeamServerFrame, EditFrame, C64KeyBoard, C64ConfigFrame, MembersFrame,
-  C64DrivesFrame, JvDesignImp;
+  C64DrivesFrame, NewProjectFrame, FoldersLocal, FoldersRemote,
+  JvDesignImp, JclSysInfo;
 
 var
   DFrame           : TFrame1;
-  DFrameTeamServer : TFrame2;
   DFrameEdit       : TFrame3;
+  DFrameNewProject : TFrame8;
+
+  DFrameFoldersLocal  : TFrame9;
+  DFrameFoldersRemote : TFrame10;
+
+  DFrameTeamServer : TFrame2;
   DFrameMembers    : TFrame6;
 
   DFrameC64KeyBoard: TFrame4;
@@ -573,7 +598,7 @@ var
   i: Integer;
   node: TTreeNode;
 begin
-  with UserHomeFolder.Items do
+  with DFrameFoldersLocal.UserHomeFolder.Items do
   begin
     BeginUpdate;
       node := GetFirstNode;
@@ -646,6 +671,21 @@ begin
   DFrameMembers.Align   := alClient;
   DFrameMembers.Visible := false;
 
+  DFrameNewProject := TFrame8.Create(NewProjectScrollBox);
+  DFrameNewProject.Parent  := NewProjectScrollBox;
+  DFrameNewProject.Align   := alClient;
+  DFrameNewProject.Visible := true;
+
+  DFrameFoldersLocal := TFrame9.Create(LocalFoldersScrollBox);
+  DFrameFoldersLocal.Parent  := LocalFoldersScrollBox;
+  DFrameFoldersLocal.Align   := alClient;
+  DFrameFoldersLocal.Visible := true;
+
+  DFrameFoldersRemote := TFrame10.Create(RemoteFoldersScrollBox);
+  DFrameFoldersRemote.Parent  := RemoteFoldersScrollBox;
+  DFrameFoldersRemote.Align   := alClient;
+  DFrameFoldersRemote.Visible := true;
+
   IniFile_IDE_Language := 'ENG';
   LoadIniFile;
 
@@ -689,7 +729,7 @@ begin
 
   SynEdit1.Lines.Clear;
 
-  LeftPageControl.Pages[3].TabVisible := false;
+  LeftPageControl.Pages[2].TabVisible := true;
 
   // canvas for TextWidth:
   Cv1 := TCanvas.Create;
@@ -758,7 +798,6 @@ end;
 procedure TForm1.FormShow(Sender: TObject);
 var
   I: Integer;
-  tipday: TJvTipOfDay;
 
   function CurrentUserName: String;
   var
@@ -772,7 +811,7 @@ var
 begin
   JvGradientCaption1.Active := true;
 
-  UserHomeFolder.Items.GetFirstNode.Text := CurrentUserName;
+  DFrameFoldersLocal.UserHomeFolder.Items.GetFirstNode.Text := CurrentUserName;
   ExpandTopLevel;
 
   TabSheet31.Caption := 'Unnamed';
@@ -785,14 +824,12 @@ begin
   C64ScreenCursor.X := 1;
   C64ScreenCursor.Y := 7;
 
+  NewProjectPageControl.ActivePageIndex := 1;
+  NewProjectPageControl.ActivePageIndex := 0;
+
   LeftPageControl.ActivePageIndex := 2;
   MainPageControl.ActivePageIndex := 8;
 
-
-  tipday := TJvTipOfDay.Create(Form1);
-  tipday.Execute;
-  tipday.Free;
-   
   JvEdit1.SetFocus;
 end;
 
@@ -949,6 +986,9 @@ begin
   DFrameC64KeyBoard.Free;
   DFrameC64Config.Free;
   DFrameC64Drives.Free;
+
+  DFrameFoldersLocal.Free;
+  DFrameFoldersRemote.Free;
 
   dropList.Clear;
   dropList.Free;
@@ -1305,7 +1345,7 @@ var
 begin
   sl := TStringList.Create;
   try
-    S1 := UserHomeFolder.Selected.Text;
+    S1 := DFrameFoldersLocal.UserHomeFolder.Selected.Text;
     ShowMessage(S1);
     GetSubDirectories(GetShellFolder(CSIDL_PERSONAL),sl);
     ErrorBox.Text(sl.Text);
@@ -1367,10 +1407,12 @@ begin
   DFrameEdit.Visible := false;
   DFrameTeamServer.Visible := false;
 
+  DFrameFoldersLocal.Visible := true;
+  DFrameFoldersRemote.Visible := true;
+
   LeftPageControl.Pages[0].TabVisible := true;
   LeftPageControl.Pages[1].TabVisible := true;
   LeftPageControl.Pages[2].TabVisible := true;
-  LeftPageControl.Pages[3].TabVisible := false;
 
   Splitter5.Visible := true;
 
@@ -1387,15 +1429,13 @@ begin
 
     DFrameTeamServer.Visible := false;
     DFrameEdit.Visible := false;
-    DFrameEdit.PageControl2.ActivePageIndex := 0;
 
     DFrameC64KeyBoard.Visible := true;
     LogPanel.Visible := false;
 
     LeftPageControl.Pages[0].TabVisible := false;
     LeftPageControl.Pages[1].TabVisible := false;
-    LeftPageControl.Pages[2].TabVisible := false;
-    LeftPageControl.Pages[3].TabVisible := true;
+    LeftPageControl.Pages[2].TabVisible := true;
 
     DFrameMembers.PageControl5.Visible := false;
     DFrameMembers.Visible := false;
@@ -1408,14 +1448,32 @@ begin
   begin
     LeftPageControl.ActivePageIndex := 0;
 
+    DFrameC64Config.Visible := false;
+    DFrameC64Drives.Visible := false;
+
+    DFrameFoldersLocal.Visible := true;
+    DFrameFoldersRemote.Visible := true;
+
     DFrameEdit.Visible := true;
+    DFrameEdit.PageControl2.Visible := true;
     DFrameEdit.PageControl2.ActivePageIndex := 3;
+
+    DFrameMembers.PageControl5.Visible := true;
+    DFrameMembers.PageControl5.ActivePageIndex := 1;
+    DFrameMembers.PageControl5.ActivePageIndex := 0;
+    DFrameMembers.Visible := true;
 
     LogPanel.Visible := true;
   end else
   if MainPageControl.ActivePage.Caption = 'Editor' then
   begin
     LeftPageControl.ActivePageIndex := 1;
+
+    DFrameC64Config.Visible := false;
+    DFrameC64Drives.Visible := false;
+
+    DFrameFoldersLocal.Visible := true;
+    DFrameFoldersRemote.Visible := true;
 
     DFrameEdit.Visible := true;
     DFrameEdit.PageControl2.ActivePageIndex := 0;
@@ -1426,11 +1484,23 @@ begin
   begin
     LeftPageControl.ActivePageIndex := 0;
 
+    DFrameC64Config.Visible := false;
+    DFrameC64Drives.Visible := false;
+
+    DFrameFoldersLocal.Visible := true;
+    DFrameFoldersRemote.Visible := true;
+
     DFrameEdit.Visible := true;
     LogPanel.Visible := true;
   end else
   if MainPageControl.ActivePage.Caption = 'Console' then
   begin
+    DFrameC64Config.Visible := false;
+    DFrameC64Drives.Visible := false;
+
+    DFrameFoldersLocal.Visible := true;
+    DFrameFoldersRemote.Visible := true;
+
     LeftPageControl.Pages[2].TabVisible := true;
     LeftPageControl.Visible := true;
     LeftPageControl.ActivePageIndex := 2;
@@ -1577,8 +1647,11 @@ begin
   BuildListBox.Color := clSilver;
   BuildListBox.Font.Color := clBlack;
 
-  UserHomeFolder.Color := clSilver;
-  UserHomeFolder.Font.Color := clBlack;
+  if DFrameFoldersLocal <> nil then
+  begin
+    DFrameFoldersLocal.UserHomeFolder.Color := clSilver;
+    DFrameFoldersLocal.UserHomeFolder.Font.Color := clBlack;
+  end;
 
 //  TreeView1.Color := clSilver;
 //  TreeView1.Font.Color := clBlack;
@@ -1673,8 +1746,8 @@ begin
   BuildListBox.Color := clWhite;
   BuildListBox.Font.Color := clBlack;
 
-  UserHomeFolder.Color := clWhite;
-  UserHomeFolder.Font.Color := clBlack;
+  DFrameFoldersLocal.UserHomeFolder.Color := clWhite;
+  DFrameFoldersLocal.UserHomeFolder.Font.Color := clBlack;
 
 //  TreeView1.Color := clWhite;
 //  TreeView1.Font.Color := clBlack;
@@ -2320,14 +2393,6 @@ begin
   end;
 end;
 
-procedure TForm1.NewApplication_ListViewDblClick(Sender: TObject);
-begin
-  if NewApplication_ListView.Selected = nil then
-  exit;
-
-  ShowMessage(NewApplication_ListView.Selected.Caption);
-end;
-
 procedure TForm1.Compile_FPC_MenuItemClick(Sender: TObject);
 begin
   uncheck_run_menues;
@@ -2371,7 +2436,12 @@ begin
 end;
 
 procedure TForm1.Run_MenuItemClick(Sender: TObject);
+var
+  S: String;
+  CommandLine: String;
 begin
+Run_MenuItem.Tag := 90; // todo !
+
   case Run_MenuItem.Tag of
     0:
     begin
@@ -2392,7 +2462,37 @@ begin
     begin
       ShowMessage('translate g++');
     end;
-    else begin
+    90:
+    begin
+      S := ExtractFilePath(Application.ExeName);
+
+      if not(DirectoryExists(S + 'dev')) then
+      CreateDir(S + 'dev');
+      if not(DirectoryExists(S + 'dev\asm')) then
+      CreateDir(S + 'dev\asm');
+      if not(DirectoryExists(S + 'dev\tmp')) then
+      CreateDir(S + 'dev\tmp');
+
+      JvDataEmbedded1.DataSaveToFile(S + 'dev\asm\head.inc');
+      JvDataEmbedded2.DataSaveToFile(S + 'dev\asm\impdll.inc');
+      //
+      JvDataEmbedded3.DataSaveToFile(S + 'dev\tmp\code.asm');
+      JvDataEmbedded4.DataSaveToFile(S + 'dev\tmp\data.asm');
+      JvDataEmbedded5.DataSaveToFile(S + 'dev\tmp\pe32.asm');
+
+      if not JclSysInfo.GetEnvironmentVar('COMSPEC', CommandLine)
+      or (Length(CommandLine) = 0) then
+      CommandLine := 'COMMAND.EXE';
+
+      JvCreateProcess1.CurrentDirectory := S + 'dev\tmp';
+      JvCreateProcess1.CommandLine := CommandLine + ' command.bat';
+      (*
+      'E:\nasm\yasm.exe ' +
+      S + 'dev\tmp\pe32.asm' + ' ' +
+      S + 'dev\tmp\pe32.exe' ;*)
+      JvCreateProcess1.Run;
+
+    end else begin
       ShowMessage('not implemented');
     end;
   end;
@@ -2418,6 +2518,44 @@ begin
     DFrameEdit.Visible := false;
     DFrameTeamServer.Visible := true;
   end;
+end;
+
+procedure TForm1.FormResize(Sender: TObject);
+var
+  tipday: TJvTipOfDay;
+begin
+  tipday := TJvTipOfDay.Create(Form1);
+
+  tipday.TipFont.Name := 'Consolas';
+  tipday.TipFont.Size := 10;
+
+  tipday.Tips.Add('The Free Pascal Compiler (FPC) can create Applications for multiple platforms ?');
+  tipday.Tips.Add('Pascal is not dead.');
+  tipday.Tips.Add('Pascal is a very good beginner Language (beside BASIc).');
+  tipday.Execute;
+  tipday.Free;
+end;
+
+procedure TForm1.NewProjectPageControlChange(Sender: TObject);
+var
+  S: String;
+begin
+  DFrameNewProject.Visible := false;
+
+  S := NewProjectPageControl.ActivePage.Caption;
+  if S = 'Application' then
+  begin
+    DFrameNewProject.Visible := true;
+    DFrameNewProject.NewApplication_ListView.Visible := true;
+  end;
+end;
+
+procedure TForm1.InternalCompiler1Click(Sender: TObject);
+begin
+  uncheck_run_menues;
+  Run_MenuItem.Caption := 'Run Internal Compiler';
+  Run_MenuItem.Tag     := 90;
+  InternalCompiler1.Checked := true;
 end;
 
 end.

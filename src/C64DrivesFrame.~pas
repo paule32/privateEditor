@@ -4,10 +4,22 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, 
-  Dialogs;
+  Dialogs, JvExControls, JvArrowButton, Menus, JvMenus, ImgList;
 
 type
   TFrame7 = class(TFrame)
+    ScrollBox1: TScrollBox;
+    ImageList1: TImageList;
+    PopupMenu_Datasette: TJvPopupMenu;
+    PopupMenu_Floppy: TJvPopupMenu;
+    JvArrowButton1: TJvArrowButton;
+    JvArrowButton2: TJvArrowButton;
+    GameA1: TMenuItem;
+    GameB1: TMenuItem;
+    GameC1: TMenuItem;
+    PopupMenu_C64Floppy: TMenuItem;
+    ProgramB1: TMenuItem;
+    ProgramC1: TMenuItem;
   private
     { Private declarations }
   public
