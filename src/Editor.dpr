@@ -17,7 +17,12 @@ uses
   C64DrivesFrame in 'C64DrivesFrame.pas' {Frame7: TFrame},
   NewProjectFrame in 'NewProjectFrame.pas' {Frame8: TFrame},
   FoldersLocal in 'FoldersLocal.pas' {Frame9: TFrame},
-  FoldersRemote in 'FoldersRemote.pas' {Frame10: TFrame};
+  FoldersRemote in 'FoldersRemote.pas' {Frame10: TFrame},
+  HelpAuthorFrame in 'HelpAuthorFrame.pas' {Frame11: TFrame},
+  FontStyleFrame in 'FontStyleFrame.pas' {Frame12: TFrame},
+  FontColorFrame in 'FontColorFrame.pas' {Frame13: TFrame},
+  FontFaceFrame in 'FontFaceFrame.pas' {Frame14: TFrame},
+  HelpTopicFrame in 'HelpTopicFrame.pas' {Frame15: TFrame};
 
 {$R *.res}
 

@@ -15,7 +15,13 @@ uses
   JvCombobox, JvDesignSurface, JvDesignUtils, JvInspector, JvInterpreter,
   JvExExtCtrls, JvExtComponent, JvPanel, TntExtCtrls, TntStdCtrls,
   TntComCtrls, DB, DBTables, JvAppHotKey, JvEdit, JvListBox, JvDriveCtrls,
-  IdHTTP, IdFTP, JvTipOfDay, JvCreateProcess, JvDataEmbedded;
+  IdHTTP, IdFTP, JvTipOfDay, JvCreateProcess, JvDataEmbedded, JvArrowButton,
+  ErrorBoxForm, InfoBoxForm, AboutBox, InputBox, DesignerFrame,
+  TeamServerFrame, EditFrame, C64KeyBoard, C64ConfigFrame, MembersFrame,
+  C64DrivesFrame, NewProjectFrame, FoldersLocal, FoldersRemote, HelpTopicFrame,
+  HelpAuthorFrame, FontStyleFrame, FontFaceFrame, FontColorFrame,
+  JvDesignImp, JclSysInfo,
+  JvColorCombo;
 
 type
   TMyTableListBox = class(TListBox)
@@ -105,7 +111,6 @@ type
     JvSpeedButton2: TJvSpeedButton;
     JvSpeedButton4: TJvSpeedButton;
     CtrlMenuBarButton2: TCtrlMenuBarButton;
-    Panel8: TPanel;
     Splitter5: TSplitter;
     IdAntiFreeze1: TIdAntiFreeze;
     IdIRC1: TIdIRC;
@@ -226,8 +231,6 @@ type
     MenuItem3: TMenuItem;
     ChatWindow1: TMenuItem;
     PreviewWindow1: TMenuItem;
-    ScrollBox4: TScrollBox;
-    WebBrowser1: TWebBrowser;
     ScrollBox7: TScrollBox;
     PageControl9: TPageControl;
     TabSheet14: TTabSheet;
@@ -381,6 +384,9 @@ type
     JvDataEmbedded3: TJvDataEmbedded;
     JvDataEmbedded4: TJvDataEmbedded;
     JvDataEmbedded5: TJvDataEmbedded;
+    ImageList1: TImageList;
+//    ItalicFontSize22: TPanel;
+    Panel8: TPanel;
     procedure PopupMenu_File_NewClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -492,6 +498,7 @@ type
     procedure FormResize(Sender: TObject);
     procedure NewProjectPageControlChange(Sender: TObject);
     procedure InternalCompiler1Click(Sender: TObject);
+    procedure JvSpeedButton3Click(Sender: TObject);
   private
     Cv1: TCanvas;
     ircListLimit: Integer;
@@ -515,6 +522,27 @@ type
 
     TableListBox: TMyTableListBox;
     Form: TForm;
+
+    DFrame           : TFrame1;
+    DFrameEdit       : TFrame3;
+    DFrameNewProject : TFrame8;
+
+    DFrameHelpAuthor    : TFrame11;
+    DFrameFontStyle     : TFrame12;
+    DFrameFontColor     : TFrame13;
+    DFrameFontFace      : TFrame14;
+
+    DFrameHelpTopic     : TFrame15;
+
+    DFrameFoldersLocal  : TFrame9;
+    DFrameFoldersRemote : TFrame10;
+
+    DFrameTeamServer : TFrame2;
+    DFrameMembers    : TFrame6;
+
+    DFrameC64KeyBoard: TFrame4;
+    DFrameC64Config  : TFrame5;
+    DFrameC64Drives  : TFrame7;
 
     procedure TableListBox_MouseDown(
       Sender: TObject;
@@ -545,27 +573,6 @@ const
 implementation
 
 {$R *.dfm}
-
-uses
-  ErrorBoxForm, InfoBoxForm, AboutBox, InputBox, DesignerFrame,
-  TeamServerFrame, EditFrame, C64KeyBoard, C64ConfigFrame, MembersFrame,
-  C64DrivesFrame, NewProjectFrame, FoldersLocal, FoldersRemote,
-  JvDesignImp, JclSysInfo;
-
-var
-  DFrame           : TFrame1;
-  DFrameEdit       : TFrame3;
-  DFrameNewProject : TFrame8;
-
-  DFrameFoldersLocal  : TFrame9;
-  DFrameFoldersRemote : TFrame10;
-
-  DFrameTeamServer : TFrame2;
-  DFrameMembers    : TFrame6;
-
-  DFrameC64KeyBoard: TFrame4;
-  DFrameC64Config  : TFrame5;
-  DFrameC64Drives  : TFrame7;
 
 function GetShellFolder(CSIDLFolder : integer) : string;
 begin
@@ -685,6 +692,34 @@ begin
   DFrameFoldersRemote.Parent  := RemoteFoldersScrollBox;
   DFrameFoldersRemote.Align   := alClient;
   DFrameFoldersRemote.Visible := true;
+
+  // help authoring:
+  DFrameHelpAuthor := TFrame11.Create(Form1);
+  DFrameHelpAuthor.Parent  := Form1;
+  DFrameHelpAuthor.Top     := 100;
+  DFrameHelpAuthor.Left    := 264;
+  DFrameHelpAuthor.Align   := alClient;
+  DFrameHelpAuthor.Visible := false;
+  //
+  DFrameFontStyle := TFrame12.Create(Panel2);
+  DFrameFontStyle.Parent  := Panel2;
+  DFrameFontStyle.Align   := alClient;
+  DFrameFontStyle.Visible := false;
+
+  DFrameFontColor := TFrame13.Create(Panel2);
+  DFrameFontColor.Parent  := Panel2;
+  DFrameFontColor.Align   := alClient;
+  DFrameFontColor.Visible := false;
+
+  DFrameFontFace := TFrame14.Create(Panel2);
+  DFrameFontFace.Parent  := Panel2;
+  DFrameFontFace.Align   := alClient;
+  DFrameFontFace.Visible := false;
+
+  DFrameHelpTopic := TFrame15.Create(LeftPanel);
+  DFrameHelpTopic.Parent  := LeftPanel;
+  DFrameHelpTopic.Align   := alClient;
+  DFrameHelpTopic.Visible := false;
 
   IniFile_IDE_Language := 'ENG';
   LoadIniFile;
@@ -1404,6 +1439,7 @@ procedure TForm1.MainPageControlChange(Sender: TObject);
 begin
   C64ScreenTimer.Enabled := false;
   DFrameC64KeyBoard.Visible := false;
+
   DFrameEdit.Visible := false;
   DFrameTeamServer.Visible := false;
 
@@ -1415,6 +1451,9 @@ begin
   LeftPageControl.Pages[2].TabVisible := true;
 
   Splitter5.Visible := true;
+  ModeButton.Visible := false;
+
+  DFrameFontStyle.Visible := false;
 
   DFrameMembers.Visible := true;
   DFrameMembers.PageControl5.Visible := true;
@@ -1422,6 +1461,9 @@ begin
   DFrameMembers.PageControl5.Pages[1].Visible := true;
 
   DFrameC64Drives.Visible := false;
+
+  LeftPageControl.Visible := true;
+  DFrameHelpTopic.Visible := false;
 
   if MainPageControl.ActivePage.Caption = 'C-64 Display' then
   begin
@@ -1443,6 +1485,8 @@ begin
     DFrameC64Config.Visible := true;
     DFrameC64Drives.Visible := true;
 
+    ModeButton.Visible := false;
+
   end else
   if MainPageControl.ActivePage.Caption = 'SQL-Builder' then
   begin
@@ -1463,6 +1507,7 @@ begin
     DFrameMembers.PageControl5.ActivePageIndex := 0;
     DFrameMembers.Visible := true;
 
+    ModeButton.Visible := false;
     LogPanel.Visible := true;
   end else
   if MainPageControl.ActivePage.Caption = 'Editor' then
@@ -1478,6 +1523,7 @@ begin
     DFrameEdit.Visible := true;
     DFrameEdit.PageControl2.ActivePageIndex := 0;
 
+    ModeButton.Visible := true;
     LogPanel.Visible := true;
   end else
   if MainPageControl.ActivePage.Caption = 'Designer' then
@@ -1491,6 +1537,8 @@ begin
     DFrameFoldersRemote.Visible := true;
 
     DFrameEdit.Visible := true;
+
+    ModeButton.Visible := true;
     LogPanel.Visible := true;
   end else
   if MainPageControl.ActivePage.Caption = 'Console' then
@@ -1504,6 +1552,18 @@ begin
     LeftPageControl.Pages[2].TabVisible := true;
     LeftPageControl.Visible := true;
     LeftPageControl.ActivePageIndex := 2;
+  end else
+  if MainPageControl.ActivePage.Caption = 'Help Authoring' then
+  begin
+    EditPanel.Visible := false;
+    LogPanel .Visible := false;
+
+    DFrameHelpAuthor.Visible := true;
+    DFrameFontStyle .Visible := true;
+
+    ModeButton.Visible := false;
+    LeftPageControl.Visible := false;
+    DFrameHelpTopic.Visible := true;
   end;
 end;
 
@@ -2485,7 +2545,7 @@ Run_MenuItem.Tag := 90; // todo !
       CommandLine := 'COMMAND.EXE';
 
       JvCreateProcess1.CurrentDirectory := S + 'dev\tmp';
-      JvCreateProcess1.CommandLine := CommandLine + ' command.bat';
+      JvCreateProcess1.CommandLine := S + 'dev\tmp\command.bat';
       (*
       'E:\nasm\yasm.exe ' +
       S + 'dev\tmp\pe32.asm' + ' ' +
@@ -2556,6 +2616,25 @@ begin
   Run_MenuItem.Caption := 'Run Internal Compiler';
   Run_MenuItem.Tag     := 90;
   InternalCompiler1.Checked := true;
+end;
+
+procedure TForm1.JvSpeedButton3Click(Sender: TObject);
+begin
+  if not(DFrameHelpAuthor.FontBold) then
+  begin
+    DFrameHelpAuthor.CurrText.Style :=
+    DFrameHelpAuthor.CurrText.Style + [fsBold];
+    DFrameHelpAuthor.CurrText.Color := clYellow;
+//    DFrameHelpAuthor.FontColor;
+    DFrameHelpAuthor.FontBold := true;
+  end else
+  begin
+    DFrameHelpAuthor.CurrText.Style :=
+    DFrameHelpAuthor.CurrText.Style - [fsBold];
+    DFrameHelpAuthor.CurrText.Color := clBlack;
+//    DFrameHelpAuthor.FontColor;
+    DFrameHelpAuthor.FontBold := false;
+  end;
 end;
 
 end.

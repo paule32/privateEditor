@@ -17,7 +17,7 @@ object Frame3: TFrame3
     Top = 0
     Width = 522
     Height = 240
-    ActivePage = TabSheet4
+    ActivePage = TabSheet1
     Align = alLeft
     Anchors = [akLeft, akTop, akRight]
     Font.Charset = DEFAULT_CHARSET

@@ -74,3 +74,14 @@ src/FoldersRemote.~dfm
 src/FoldersRemote.~pas
 src/FoldersLocal.~pas
 src/FoldersLocal.~dfm
+src/HelpAuthorFrame.~ddp
+src/HelpAuthorFrame.~dfm
+src/HelpAuthorFrame.~pas
+src/HelpTopicFrame.~dfm
+src/HelpTopicFrame.~pas
+src/FontStyleFrame.~dfm
+src/FontFaceFrame.~dfm
+src/FontFaceFrame.~pas
+src/FontColorFrame.~pas
+src/FontColorFrame.~dfm
+src/Editor.~dpr
