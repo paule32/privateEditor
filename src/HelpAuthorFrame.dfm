@@ -27,8 +27,8 @@ object Frame11: TFrame11
     Align = alClient
     TabOrder = 0
     object TabSheet1: TTabSheet
-      Caption = 'File 1'
-      object PageControl2: TPageControl
+      Caption = 'Index Page'
+      object PageControl1111: TPageControl
         Left = 0
         Top = 0
         Width = 667

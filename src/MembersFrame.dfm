@@ -73,6 +73,15 @@ object Frame6: TFrame6
           Color = clSilver
         end
       end
+      object ListBox1: TListBox
+        Left = 0
+        Top = 46
+        Width = 226
+        Height = 280
+        Align = alClient
+        ItemHeight = 19
+        TabOrder = 2
+      end
     end
     object TabSheet2: TTabSheet
       Caption = 'Team Server'

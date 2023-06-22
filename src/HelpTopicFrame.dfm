@@ -48,14 +48,36 @@ object Frame15: TFrame15
         Left = 0
         Top = 0
         Width = 302
-        Height = 215
+        Height = 184
         Align = alClient
         Indent = 21
         PopupMenu = JvPopupMenu1
+        RowSelect = True
         TabOrder = 0
+        OnKeyDown = TreeView1KeyDown
+        OnKeyPress = TreeView1KeyPress
         Items.Data = {
           01000000210000000000000000000000FFFFFFFFFFFFFFFF0000000000000000
           0850726F6A6563743A}
+      end
+      object Panel1: TPanel
+        Left = 0
+        Top = 184
+        Width = 302
+        Height = 31
+        Align = alBottom
+        TabOrder = 1
+        object JvEdit1: TJvEdit
+          Left = 1
+          Top = 1
+          Width = 300
+          Height = 29
+          Align = alClient
+          TabOrder = 0
+          OnEnter = JvEdit1Enter
+          OnExit = JvEdit1Exit
+          TextHint = 'Search Topic'
+        end
       end
     end
   end
@@ -73,10 +95,29 @@ object Frame15: TFrame15
         Left = 0
         Top = 0
         Width = 302
-        Height = 215
+        Height = 184
         Align = alClient
         Indent = 21
         TabOrder = 0
+      end
+      object Panel3: TPanel
+        Left = 0
+        Top = 184
+        Width = 302
+        Height = 31
+        Align = alBottom
+        TabOrder = 1
+        object JvEdit3: TJvEdit
+          Left = 1
+          Top = 1
+          Width = 300
+          Height = 29
+          Align = alClient
+          TabOrder = 0
+          OnEnter = JvEdit3Enter
+          OnExit = JvEdit3Exit
+          TextHint = 'Search Keyword'
+        end
       end
     end
   end
@@ -94,7 +135,7 @@ object Frame15: TFrame15
         Left = 0
         Top = 0
         Width = 302
-        Height = 163
+        Height = 132
         Align = alClient
         Indent = 21
         TabOrder = 0
@@ -103,6 +144,25 @@ object Frame15: TFrame15
           0448544D4C200000000000000000000000FFFFFFFFFFFFFFFF00000000000000
           000750696374757265240000000000000000000000FFFFFFFFFFFFFFFF000000
           00000000000B506C616365686F6C646572}
+      end
+      object Panel2: TPanel
+        Left = 0
+        Top = 132
+        Width = 302
+        Height = 31
+        Align = alBottom
+        TabOrder = 1
+        object JvEdit2: TJvEdit
+          Left = 1
+          Top = 1
+          Width = 300
+          Height = 29
+          Align = alClient
+          TabOrder = 0
+          OnEnter = JvEdit2Enter
+          OnExit = JvEdit2Exit
+          TextHint = 'Search Item'
+        end
       end
     end
   end
@@ -134,8 +194,13 @@ object Frame15: TFrame15
         Caption = 'Delete'
       end
     end
+    object AddSubtopic1: TMenuItem
+      Caption = 'Add Subtopic'
+      OnClick = AddSubtopic1Click
+    end
     object AddTopic1: TMenuItem
-      Caption = 'Add Topic'
+      Caption = 'Add Normsl Topic'
+      OnClick = AddTopic1Click
     end
     object RenameTopic1: TMenuItem
       Caption = 'Rename Topic'

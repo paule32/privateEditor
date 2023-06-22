@@ -460,7 +460,6 @@ type
     procedure PaintBox1DragDrop(Sender, Source: TObject; X, Y: Integer);
     procedure PaintBox1DragOver(Sender, Source: TObject; X, Y: Integer;
       State: TDragState; var Accept: Boolean);
-    procedure DatabaseComboBoxChange(Sender: TObject);
     procedure MSDOS3Click(Sender: TObject);
     procedure WindowsNT32Bit2Click(Sender: TObject);
     procedure MSDOS2Click(Sender: TObject);
@@ -1532,6 +1531,7 @@ begin
     DFrameMembers.PageControl5.ActivePageIndex := 1;
     DFrameMembers.PageControl5.ActivePageIndex := 0;
     DFrameMembers.Visible := true;
+    DFrameMembers.ListBox1.Visible := true;
 
     ModeButton.Visible := false;
     LogPanel.Visible := true;
@@ -2136,8 +2136,8 @@ var
   CheckListBox: TCheckListBox;
   CheckButton : TCheckBox;
 begin
-  if not (Source is TMyTableListBox) then
-  exit;
+//  if not (Source is TMyTableListBox) then
+//  exit;
 
   Form := TForm.CreateParented(SqlScrollBox.Handle);
   Form.Parent      := SqlScrollBox;
@@ -2145,8 +2145,8 @@ begin
   Form.Left        := X;
   Form.Top         := Y;
   Form.Caption     :=
-       TableListBox.Items.Strings[
-       TableListBox.ItemIndex];
+       DFrameMembers.ListBox1.Items.Strings[
+       DFrameMembers.ListBox1.ItemIndex];
   Form.Width       := 200;
 
   GradientFormCaption := TJvGradientCaption.Create(Form);
@@ -2178,7 +2178,7 @@ end;
 procedure TForm1.PaintBox1DragOver(Sender, Source: TObject; X, Y: Integer;
   State: TDragState; var Accept: Boolean);
 begin
-  Accept := (Source is TMyTableListBox);
+  Accept := (Source is TListBox);
 end;
 
 procedure TForm1.TableListBox_MouseDown(
@@ -2188,24 +2188,6 @@ procedure TForm1.TableListBox_MouseDown(
   X,  Y : Integer);
 begin
   TableListBox.BeginDrag(false);
-end;
-
-procedure TForm1.DatabaseComboBoxChange(Sender: TObject);
-begin
-  TableListBox.Items.Clear;
-  DataBase1.Close;
-
-  Session1.Close;
-  Session1.Open;
-
-  with DataBase1 do
-  begin
-    DataBaseName := DFrameMembers.DataBaseComboBox.Text;
-    AliasName    := DFrameMembers.DataBaseComboBox.Text;
-    Open;
-    if Connected then
-    GetTableNames(TableListBox.Items,false) else
-  end;
 end;
 
 procedure TForm1.MSDOS3Click(Sender: TObject);
@@ -2490,6 +2472,52 @@ end;
 
 procedure TForm1.FormShortCut(var Msg: TWMKey; var Handled: Boolean);
 begin
+  if (Msg.CharCode = Ord('N')) then
+  begin
+    // add normal topic
+    if Windows.GetKeyState(VK_CONTROL) < 0 then
+    begin
+      if DFrameHelpTopic.TreeView1.Focused then
+      begin
+        DFrameHelpTopic.TreeView1.Items.Add(
+        DFrameHelpTopic.TreeView1.Selected,'New Topic');
+        Handled := true;
+      end;
+    end else
+    // add sub-topic
+    if Windows.GetKeyState(VK_SHIFT) < 0 then
+    begin
+      if DFrameHelpTopic.TreeView1.Focused then
+      begin
+        DFrameHelpTopic.TreeView1.Items.AddChild(
+        DFrameHelpTopic.TreeView1.Selected,'New Topic');
+        Handled := true;
+      end;
+    end;
+  end else
+  if (msg.CharCode = Ord('F')) or (msg.CharCode = Ord('f')) then
+  begin
+    if Windows.GetKeyState(VK_CONTROL) < 0 then
+    begin
+      if DFrameHelpTopic.TreeView1.Focused then
+      begin
+        DFrameHelpTopic.JvEdit1.SetFocus;
+        Handled := true;
+      end else
+      if DFrameHelpTopic.JvEdit1.Focused then
+      begin
+        Handled := true;
+      end;
+    end;
+  end else
+  if msg.CharCode = VK_DELETE then
+  begin
+    if DFrameHelpTopic.TreeView1.Focused then
+    begin
+      DFrameHelpTopic.TreeView1.Selected.Delete;
+      Handled := true;
+    end;
+  end else
   if msg.CharCode = VK_F1 then
   begin
     ShellExecute(Handle,'open',
@@ -2500,7 +2528,14 @@ begin
   if msg.CharCode = VK_F2 then
   begin
     if SynEdit1.Focused then
-    StartCompileClick(self);
+    begin
+      StartCompileClick(self);
+    end else
+    if DFrameHelpTopic.TreeView1.Focused then
+    begin
+      DFrameHelpTopic.TreeView1.ReadOnly := false;
+      DFrameHelpTopic.TreeView1.Selected.EditText;
+    end;
     Handled := true;
   end;
 end;

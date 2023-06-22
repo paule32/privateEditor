@@ -13,7 +13,7 @@ type
     TabSheet1: TTabSheet;
     Panel1: TPanel;
     Splitter1: TSplitter;
-    PageControl2: TPageControl;
+    PageControl1111: TPageControl;
     TabSheet2: TTabSheet;
     TabSheet3: TTabSheet;
     TabSheet4: TTabSheet;

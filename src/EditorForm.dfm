@@ -1202,7 +1202,7 @@ object Form1: TForm1
       Top = 1
       Width = 255
       Height = 605
-      ActivePage = C64ConfigTabSheet
+      ActivePage = TabSheet1
       Align = alClient
       Font.Charset = ANSI_CHARSET
       Font.Color = clBlack
@@ -2258,7 +2258,7 @@ object Form1: TForm1
         Top = 1
         Width = 648
         Height = 406
-        ActivePage = ConsoleTabSheet
+        ActivePage = TabSheet13
         Align = alLeft
         Anchors = [akLeft, akTop, akRight, akBottom]
         Font.Charset = DEFAULT_CHARSET
@@ -2587,10 +2587,6 @@ object Form1: TForm1
               end
             end
           end
-        end
-        object TabSheet13: TTabSheet
-          Caption = 'Help Authoring'
-          ImageIndex = 2
         end
         object ChatTabSheet: TTabSheet
           Caption = 'Chat #fpc'
@@ -3047,6 +3043,10 @@ object Form1: TForm1
               end
             end
           end
+        end
+        object TabSheet13: TTabSheet
+          Caption = 'Help Authoring'
+          ImageIndex = 2
         end
         object NewModule_TabSheet: TTabSheet
           Caption = 'New Module ...'
@@ -4084,8 +4084,8 @@ object Form1: TForm1
     end
   end
   object IdAntiFreeze1: TIdAntiFreeze
-    Left = 597
-    Top = 331
+    Left = 869
+    Top = 547
   end
   object IdIRC1: TIdIRC
     MaxLineAction = maException
