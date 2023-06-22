@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, 
-  Dialogs, ComCtrls, ExtCtrls;
+  Dialogs, ComCtrls, ExtCtrls, Menus, JvMenus;
 
 type
   TFrame15 = class(TFrame)
@@ -20,6 +20,15 @@ type
     TabSheet3: TTabSheet;
     TreeView3: TTreeView;
     Splitter3: TSplitter;
+    JvPopupMenu1: TJvPopupMenu;
+    AddTopic1: TMenuItem;
+    RenameTopic1: TMenuItem;
+    EditOperations1: TMenuItem;
+    Cut1: TMenuItem;
+    Copy1: TMenuItem;
+    Paste1: TMenuItem;
+    N2: TMenuItem;
+    Delete1: TMenuItem;
   private
     { Private declarations }
   public

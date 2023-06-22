@@ -22,7 +22,8 @@ uses
   FontStyleFrame in 'FontStyleFrame.pas' {Frame12: TFrame},
   FontColorFrame in 'FontColorFrame.pas' {Frame13: TFrame},
   FontFaceFrame in 'FontFaceFrame.pas' {Frame14: TFrame},
-  HelpTopicFrame in 'HelpTopicFrame.pas' {Frame15: TFrame};
+  HelpTopicFrame in 'HelpTopicFrame.pas' {Frame15: TFrame},
+  ComputerFrame in 'ComputerFrame.pas' {Frame16: TFrame};
 
 {$R *.res}
 

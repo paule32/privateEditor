@@ -21,7 +21,8 @@ uses
   HelpAuthorFrame in 'HelpAuthorFrame.pas' {Frame11: TFrame},
   FontStyleFrame in 'FontStyleFrame.pas' {Frame12: TFrame},
   FontColorFrame in 'FontColorFrame.pas' {Frame13: TFrame},
-  FontFaceFrame in 'FontFaceFrame.pas' {Frame14: TFrame};
+  FontFaceFrame in 'FontFaceFrame.pas' {Frame14: TFrame},
+  HelpTopicFrame in 'HelpTopicFrame.pas' {Frame15: TFrame};
 
 {$R *.res}
 

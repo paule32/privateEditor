@@ -114,7 +114,9 @@ object Frame11: TFrame11
             Align = alClient
             Lines.Strings = (
               'RichEdit1')
+            ScrollBars = ssBoth
             TabOrder = 0
+            WordWrap = False
             OnSelectionChange = RichEdit1SelectionChange
           end
         end

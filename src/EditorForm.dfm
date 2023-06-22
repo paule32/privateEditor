@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 165
-  Top = 119
+  Left = 240
+  Top = 114
   Width = 1162
   Height = 886
   Color = clBtnFace
@@ -2258,7 +2258,7 @@ object Form1: TForm1
         Top = 1
         Width = 648
         Height = 406
-        ActivePage = TabSheet2
+        ActivePage = ConsoleTabSheet
         Align = alLeft
         Anchors = [akLeft, akTop, akRight, akBottom]
         Font.Charset = DEFAULT_CHARSET
@@ -2956,10 +2956,11 @@ object Form1: TForm1
               Height = 368
               AutoUseInsertMode = True
               InsertMode = True
-              InsertCaret = ctHorizontalLine
+              InsertCaret = ctBlock
               OverwriteCaret = ctHalfBlock
               BorderSize = 3
               ExtraLineSpacing = 0
+              OnCommandExecute = Console1CommandExecute
               Align = alClient
               Color = clBlack
               Font.Charset = DEFAULT_CHARSET
@@ -3430,6 +3431,21 @@ object Form1: TForm1
       OnClick = PopupMenu_File_NewClick
       object PopupMenu_File_New_Application: TMenuItem
         Caption = 'Application'
+        object Windows32Bit1: TMenuItem
+          Caption = 'Windows 32-Bit'
+          OnClick = Windows32Bit1Click
+        end
+        object Windows64Bit1: TMenuItem
+          Caption = 'Windows 64-Bit'
+          OnClick = Windows64Bit1Click
+        end
+        object N18: TMenuItem
+          Caption = '-'
+        end
+        object MSDOS32Bit1: TMenuItem
+          Caption = 'MS-DOS 32-Bit'
+          OnClick = MSDOS32Bit1Click
+        end
       end
       object PopupMenu_File_New_Library: TMenuItem
         Caption = 'Library'
@@ -3438,7 +3454,7 @@ object Form1: TForm1
         Caption = '-'
       end
       object PopupMenu_File_New_Other: TMenuItem
-        Caption = 'other ...'
+        Caption = 'Other ...'
         OnClick = PopupMenu_File_New_OtherClick
       end
     end
@@ -6362,11 +6378,6 @@ object Form1: TForm1
     Top = 395
   end
   object JvInterpreterProgram1: TJvInterpreterProgram
-    Pas.Strings = (
-      'program test;'
-      'begin'
-      ' WriteLn('#39'xxx'#39');'
-      'end.')
     Left = 134
     Top = 395
   end
@@ -8712,21 +8723,24 @@ object Form1: TForm1
     end
     object Cut1: TMenuItem
       Caption = 'Cut to Clipboard'
+      OnClick = Cut1Click
     end
     object Copy1: TMenuItem
-      Caption = 'Copy to/from Clipboard'
+      Caption = 'Copy to Clipboard'
       ShortCut = 16451
+      OnClick = Copy1Click
     end
     object Paste1: TMenuItem
       Caption = 'Paste to View'
       ShortCut = 16470
+      OnClick = Paste1Click
     end
     object N15: TMenuItem
       Caption = '-'
     end
     object Delete1: TMenuItem
       Caption = 'Delete'
-      ShortCut = 46
+      OnClick = Delete1Click
     end
     object N16: TMenuItem
       Caption = '-'
@@ -8740,11 +8754,11 @@ object Form1: TForm1
     end
     object Internal_FPC_Interpreter_MenuItem: TMenuItem
       Caption = 'Internal Interpreter'
+      Checked = True
       OnClick = Internal_FPC_Interpreter_MenuItemClick
     end
     object InternalCompiler1: TMenuItem
       Caption = 'Internal Compiler'
-      Checked = True
       OnClick = InternalCompiler1Click
     end
     object Compile_FPC_MenuItem: TMenuItem

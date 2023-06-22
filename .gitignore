@@ -85,3 +85,6 @@ src/FontFaceFrame.~pas
 src/FontColorFrame.~pas
 src/FontColorFrame.~dfm
 src/Editor.~dpr
+src/ComputerFrame.~pas
+src/ComputerFrame.~dfm
+src/Editor.~dpr

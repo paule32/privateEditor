@@ -18,8 +18,9 @@ uses
   IdHTTP, IdFTP, JvTipOfDay, JvCreateProcess, JvDataEmbedded, JvArrowButton,
   ErrorBoxForm, InfoBoxForm, AboutBox, InputBox, DesignerFrame,
   TeamServerFrame, EditFrame, C64KeyBoard, C64ConfigFrame, MembersFrame,
-  C64DrivesFrame, NewProjectFrame, FoldersLocal, FoldersRemote, HelpTopicFrame,
-  HelpAuthorFrame, FontStyleFrame, FontFaceFrame, FontColorFrame,
+  C64DrivesFrame, NewProjectFrame, FoldersLocal, FoldersRemote,
+  HelpTopicFrame, HelpAuthorFrame, FontStyleFrame, FontFaceFrame,
+  FontColorFrame, ComputerFrame,
   JvDesignImp, JclSysInfo,
   JvColorCombo;
 
@@ -387,6 +388,10 @@ type
     ImageList1: TImageList;
 //    ItalicFontSize22: TPanel;
     Panel8: TPanel;
+    Windows32Bit1: TMenuItem;
+    Windows64Bit1: TMenuItem;
+    N18: TMenuItem;
+    MSDOS32Bit1: TMenuItem;
     procedure PopupMenu_File_NewClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -499,6 +504,15 @@ type
     procedure NewProjectPageControlChange(Sender: TObject);
     procedure InternalCompiler1Click(Sender: TObject);
     procedure JvSpeedButton3Click(Sender: TObject);
+    procedure Windows32Bit1Click(Sender: TObject);
+    procedure Windows64Bit1Click(Sender: TObject);
+    procedure MSDOS32Bit1Click(Sender: TObject);
+    procedure Cut1Click(Sender: TObject);
+    procedure Copy1Click(Sender: TObject);
+    procedure Paste1Click(Sender: TObject);
+    procedure Delete1Click(Sender: TObject);
+    procedure Console1CommandExecute(Sender: TCustomConsole;
+      ACommand: String; var ACommandFinished: Boolean);
   private
     Cv1: TCanvas;
     ircListLimit: Integer;
@@ -532,6 +546,7 @@ type
     DFrameFontColor     : TFrame13;
     DFrameFontFace      : TFrame14;
 
+    DFrameComputerOS    : TFrame16;
     DFrameHelpTopic     : TFrame15;
 
     DFrameFoldersLocal  : TFrame9;
@@ -557,6 +572,7 @@ type
 
     procedure ModifyControl(const AControl: TControl; LS: TStrings);
     procedure ExpandTopLevel;
+    procedure CreateSimpleProgram;
     procedure JvDesignPanelPaint(Sender: TObject);
     procedure ItemClick(Sender: TObject);
     procedure CheckButtonOnClick(Sender: TObject);
@@ -716,6 +732,11 @@ begin
   DFrameFontFace.Align   := alClient;
   DFrameFontFace.Visible := false;
 
+  DFrameComputerOS := TFrame16.Create(Panel8);
+  DFrameComputerOS.Parent  := Panel8;
+  DFrameComputerOS.Align   := alClient;
+  DFrameComputerOS.Visible := false;
+
   DFrameHelpTopic := TFrame15.Create(LeftPanel);
   DFrameHelpTopic.Parent  := LeftPanel;
   DFrameHelpTopic.Align   := alClient;
@@ -848,6 +869,8 @@ begin
 
   DFrameFoldersLocal.UserHomeFolder.Items.GetFirstNode.Text := CurrentUserName;
   ExpandTopLevel;
+
+  DFrameComputerOS.Visible := true;
 
   TabSheet31.Caption := 'Unnamed';
   TabSheet3 .Caption := 'Project';
@@ -1465,6 +1488,8 @@ begin
   LeftPageControl.Visible := true;
   DFrameHelpTopic.Visible := false;
 
+  DFrameComputerOS.Visible := true;
+
   if MainPageControl.ActivePage.Caption = 'C-64 Display' then
   begin
     C64ScreenTimer.Enabled := true;
@@ -1486,6 +1511,7 @@ begin
     DFrameC64Drives.Visible := true;
 
     ModeButton.Visible := false;
+    DFrameComputerOS.Visible := false;
 
   end else
   if MainPageControl.ActivePage.Caption = 'SQL-Builder' then
@@ -1509,6 +1535,8 @@ begin
 
     ModeButton.Visible := false;
     LogPanel.Visible := true;
+
+    DFrameComputerOS.Visible := false;
   end else
   if MainPageControl.ActivePage.Caption = 'Editor' then
   begin
@@ -1525,6 +1553,10 @@ begin
 
     ModeButton.Visible := true;
     LogPanel.Visible := true;
+
+    DFrameComputerOS.Visible := false;
+
+    SynEdit1.SetFocus;
   end else
   if MainPageControl.ActivePage.Caption = 'Designer' then
   begin
@@ -1540,6 +1572,8 @@ begin
 
     ModeButton.Visible := true;
     LogPanel.Visible := true;
+
+    DFrameComputerOS.Visible := false;
   end else
   if MainPageControl.ActivePage.Caption = 'Console' then
   begin
@@ -1552,6 +1586,11 @@ begin
     LeftPageControl.Pages[2].TabVisible := true;
     LeftPageControl.Visible := true;
     LeftPageControl.ActivePageIndex := 2;
+
+    DFrameComputerOS.Visible := false;
+
+    Console1DblClick(Console1);
+    Console1.SetFocus;
   end else
   if MainPageControl.ActivePage.Caption = 'Help Authoring' then
   begin
@@ -1564,6 +1603,8 @@ begin
     ModeButton.Visible := false;
     LeftPageControl.Visible := false;
     DFrameHelpTopic.Visible := true;
+
+    DFrameComputerOS.Visible := false;
   end;
 end;
 
@@ -1853,7 +1894,6 @@ procedure TForm1.Console1DblClick(Sender: TObject);
 begin
   Console1.Active := true;
   Console1.Boot;
-  Console1.Writeln('hallo');
   Console1.Prompt := true;
 end;
 
@@ -2269,13 +2309,25 @@ end;
 
 procedure TForm1.PopupMenu_File_New_OtherClick(Sender: TObject);
 begin
+  DFrameHelpAuthor.Visible := false;
+
+  EditPanel.Visible := true;
+
+  DFrameEdit.Visible := false;
+  DFrameTeamServer.Visible := true;
+
   NewModule_TabSheet.Visible := true;
   NewModule_TabSheet.Enabled := true;
   NewModule_TabSheet.SetFocus;
 
   MainPageControl.ActivePage := NewModule_TabSheet;
 
-  LeftPageControl.ActivePageIndex := 1;
+  DFrameHelpTopic.Visible := false;
+  LeftPageControl.Visible := true;
+  LeftPageControl.ActivePageIndex := 2;
+
+  Panel8.Visible := true;
+  DFrameComputerOS.Visible := true;
 end;
 
 // todo: setup !
@@ -2464,7 +2516,7 @@ end;
 procedure TForm1.Internal_FPC_Interpreter_MenuItemClick(Sender: TObject);
 begin
   uncheck_run_menues;
-  Run_MenuItem.Caption := 'Run Interpreter';
+  Run_MenuItem.Caption := 'Run with Interpreter';
   Run_MenuItem.Tag     := 0;
   Internal_FPC_Interpreter_MenuItem.Checked := true;
 end;
@@ -2489,10 +2541,11 @@ end;
 
 procedure TForm1.uncheck_run_menues;
 begin
-  Translate_MenuItem.Checked := false;
-  Translate_to_gnuCpp.Checked := false;
+  Translate_MenuItem.Checked                := false;
+  Translate_to_gnuCpp.Checked               := false;
   Internal_FPC_Interpreter_MenuItem.Checked := false;
-  Compile_FPC_MenuItem.Checked := false;
+  Compile_FPC_MenuItem.Checked              := false;
+  InternalCompiler1.Checked                 := false;
 end;
 
 procedure TForm1.Run_MenuItemClick(Sender: TObject);
@@ -2500,8 +2553,6 @@ var
   S: String;
   CommandLine: String;
 begin
-Run_MenuItem.Tag := 90; // todo !
-
   case Run_MenuItem.Tag of
     0:
     begin
@@ -2512,7 +2563,19 @@ Run_MenuItem.Tag := 90; // todo !
         ErrorBox.Show;
         exit;
       end else
-      StartCompileClick(Sender);
+      begin
+        try
+          StartCompileClick(Sender);
+        except
+          on E: Exception do
+          begin
+            MainPageControl.ActivePageIndex := 0;
+            ErrorBox.Text(E.Message);
+            ErrorBox.Show;
+            SynEdit1.SetFocus;
+          end;
+        end;
+      end;
     end;
     1:
     begin
@@ -2635,6 +2698,87 @@ begin
 //    DFrameHelpAuthor.FontColor;
     DFrameHelpAuthor.FontBold := false;
   end;
+end;
+
+procedure TForm1.CreateSimpleProgram;
+begin
+  EditPanel.Visible := true;
+  SynEdit1.Text :=
+  '// This File was created automatically' + sLineBreak +
+  '// Press F2-key to execute it.'         + sLineBreak +
+  'unit main;'                             + sLineBreak +
+  ''                                       + sLineBreak +
+  'procedure main;'                        + sLineBreak +
+  'begin'                                  + sLineBreak +
+  '  WriteLn(''Hello World !'');'          + sLineBreak +
+  'end;'                                   + sLineBreak +
+  ''                                       + sLineBreak +
+  'end.'                                   + sLineBreak ;
+
+  DFrameTeamServer.Visible := false;
+  DFrameHelpAuthor.Visible := false;
+  DFrameHelpTopic .Visible := false;
+
+  DFrameEdit.Visible := true;
+
+  LeftPageControl.Visible := true;
+  MainPageControl.ActivePageIndex := 0;
+  SynEdit1.SetFocus;
+end;
+
+procedure TForm1.Windows64Bit1Click(Sender: TObject);
+begin
+  CreateSimpleProgram;
+end;
+
+procedure TForm1.Windows32Bit1Click(Sender: TObject);
+begin
+  CreateSimpleProgram;
+end;
+
+procedure TForm1.MSDOS32Bit1Click(Sender: TObject);
+begin
+  CreateSimpleProgram;
+end;
+
+procedure TForm1.Cut1Click(Sender: TObject);
+begin
+  SynEdit1.CutToClipboard;
+end;
+
+procedure TForm1.Copy1Click(Sender: TObject);
+begin
+  SynEdit1.CopyToClipboard;
+end;
+
+procedure TForm1.Paste1Click(Sender: TObject);
+begin
+  SynEdit1.PasteFromClipboard;
+end;
+
+procedure TForm1.Delete1Click(Sender: TObject);
+begin
+  SynEdit1.SelText := '';
+end;
+
+procedure TForm1.Console1CommandExecute(
+  Sender              : TCustomConsole;
+  ACommand            : String;
+  var ACommandFinished: Boolean);
+  var
+  S: String;
+begin
+  S := UpperCase(Trim(ACommand));
+  if S = 'CLS' then
+  begin
+    Console1.Clear;
+  end else
+  if S = 'DIR' then
+  begin
+    Console1.Writeln('listing of directory:');
+  end;
+
+  ACommandFinished := true;
 end;
 
 end.

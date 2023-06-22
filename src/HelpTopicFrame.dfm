@@ -51,6 +51,7 @@ object Frame15: TFrame15
         Height = 215
         Align = alClient
         Indent = 21
+        PopupMenu = JvPopupMenu1
         TabOrder = 0
         Items.Data = {
           01000000210000000000000000000000FFFFFFFFFFFFFFFF0000000000000000
@@ -103,6 +104,41 @@ object Frame15: TFrame15
           000750696374757265240000000000000000000000FFFFFFFFFFFFFFFF000000
           00000000000B506C616365686F6C646572}
       end
+    end
+  end
+  object JvPopupMenu1: TJvPopupMenu
+    Style = msOffice
+    ImageMargin.Left = 0
+    ImageMargin.Top = 0
+    ImageMargin.Right = 0
+    ImageMargin.Bottom = 0
+    ImageSize.Height = 0
+    ImageSize.Width = 0
+    Left = 40
+    Top = 88
+    object EditOperations1: TMenuItem
+      Caption = 'Edit Operations'
+      object Cut1: TMenuItem
+        Caption = 'Cut'
+      end
+      object Copy1: TMenuItem
+        Caption = 'Copy'
+      end
+      object Paste1: TMenuItem
+        Caption = 'Paste'
+      end
+      object N2: TMenuItem
+        Caption = '-'
+      end
+      object Delete1: TMenuItem
+        Caption = 'Delete'
+      end
+    end
+    object AddTopic1: TMenuItem
+      Caption = 'Add Topic'
+    end
+    object RenameTopic1: TMenuItem
+      Caption = 'Rename Topic'
     end
   end
 end
