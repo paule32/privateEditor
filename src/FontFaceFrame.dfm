@@ -41,17 +41,32 @@ object Frame14: TFrame14
       Height = 16
       Caption = 'Name:'
     end
+    object Label1: TLabel
+      Left = 424
+      Top = 16
+      Width = 153
+      Height = 20
+      AutoSize = False
+      Caption = 'Text Sample Test'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -16
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+    end
     object JvFontComboBox1: TJvFontComboBox
       Left = 192
       Top = 16
-      Width = 201
+      Width = 209
       Height = 23
-      DroppedDownWidth = 201
+      DroppedDownWidth = 209
       MaxMRUCount = 0
       FontName = 'MS Sans Serif'
       ItemIndex = 9
       Sorted = False
       TabOrder = 0
+      OnChange = JvFontComboBox1Change
     end
   end
   object ImageList1: TImageList

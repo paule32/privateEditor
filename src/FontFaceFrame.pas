@@ -20,9 +20,11 @@ type
     N1: TMenuItem;
     Background1: TMenuItem;
     JvFontComboBox1: TJvFontComboBox;
+    Label1: TLabel;
     procedure FontColor1Click(Sender: TObject);
     procedure FontStyle1Click(Sender: TObject);
     procedure MenuItem1Click(Sender: TObject);
+    procedure JvFontComboBox1Change(Sender: TObject);
   private
     { Private declarations }
   public
@@ -57,6 +59,11 @@ begin
   Form1.DFrameFontStyle.Visible := false;
   Form1.DFrameFontFace .Visible := true;
   JvArrowButton1.Caption := 'Font Face';
+end;
+
+procedure TFrame14.JvFontComboBox1Change(Sender: TObject);
+begin
+  Label1.Font.Name := JvFontCombobox1.Text;
 end;
 
 end.

@@ -590,6 +590,8 @@ const
 implementation
 
 {$R *.dfm}
+uses
+  InterpreterClasses;
 
 function GetShellFolder(CSIDLFolder : integer) : string;
 begin
@@ -743,6 +745,9 @@ begin
   DFrameHelpTopic.Align   := alClient;
   DFrameHelpTopic.CreateNewTab('Index Page');
   DFrameHelpTopic.Visible := false;
+
+  // interpreter
+  initInterpreter;
 
   IniFile_IDE_Language := 'ENG';
   LoadIniFile;

@@ -23,7 +23,8 @@ uses
   FontColorFrame in 'FontColorFrame.pas' {Frame13: TFrame},
   FontFaceFrame in 'FontFaceFrame.pas' {Frame14: TFrame},
   HelpTopicFrame in 'HelpTopicFrame.pas' {Frame15: TFrame},
-  ComputerFrame in 'ComputerFrame.pas' {Frame16: TFrame};
+  ComputerFrame in 'ComputerFrame.pas' {Frame16: TFrame},
+  InterpreterClasses in 'InterpreterClasses.pas';
 
 {$R *.res}
 

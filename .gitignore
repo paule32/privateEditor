@@ -92,3 +92,5 @@ src/FontColorFrame.~ddp
 src/MembersFrame.~ddp
 src/MembersFrame.~dfm
 src/MembersFrame.~pas
+src/InterpreterClasses.~pas
+src/Editor.~dpr
