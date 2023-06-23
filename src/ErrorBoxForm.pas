@@ -24,6 +24,7 @@ type
     { Private declarations }
   public
     procedure Text(txt: String);
+    procedure Show;
   end;
 
 var
@@ -37,7 +38,11 @@ procedure TErrorBox.Text(txt: String);
 begin
   memo1.Lines.clear;
   memo1.Lines.Text := txt;
-  ShowModal
+end;
+
+procedure TErrorBox.Show;
+begin
+  inherited ShowModal;
 end;
 
 procedure TErrorBox.FormShow(Sender: TObject);

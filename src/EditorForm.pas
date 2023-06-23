@@ -22,7 +22,7 @@ uses
   HelpTopicFrame, HelpAuthorFrame, FontStyleFrame, FontFaceFrame,
   FontColorFrame, ComputerFrame,
   JvDesignImp, JclSysInfo,
-  JvColorCombo;
+  JvColorCombo, JvInterpreterFm;
 
 type
   TMyTableListBox = class(TListBox)
@@ -323,8 +323,8 @@ type
     ImageEditor1: TMenuItem;
     Panel21: TPanel;
     Splitter18: TSplitter;
-    JvEdit1: TJvEdit;
-    JvImgBtn17: TJvImgBtn;
+    ProjectNameEdit: TJvEdit;
+    CreateNewButton: TJvImgBtn;
     Editor_PopupMenu: TJvPopupMenu;
     MenuItem5: TMenuItem;
     Translate_MenuItem: TMenuItem;
@@ -392,6 +392,7 @@ type
     Windows64Bit1: TMenuItem;
     N18: TMenuItem;
     MSDOS32Bit1: TMenuItem;
+    JvInterpreterFm1: TJvInterpreterFm;
     procedure PopupMenu_File_NewClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -512,6 +513,7 @@ type
     procedure Delete1Click(Sender: TObject);
     procedure Console1CommandExecute(Sender: TCustomConsole;
       ACommand: String; var ACommandFinished: Boolean);
+    procedure CreateNewButtonClick(Sender: TObject);
   private
     Cv1: TCanvas;
     ircListLimit: Integer;
@@ -559,6 +561,7 @@ type
     DFrameC64Drives  : TFrame7;
 
     topicCount: Integer;
+    msdosapp  : Boolean;
 
     procedure TableListBox_MouseDown(
       Sender: TObject;
@@ -573,7 +576,10 @@ type
 
     procedure ModifyControl(const AControl: TControl; LS: TStrings);
     procedure ExpandTopLevel;
-    procedure CreateSimpleProgram;
+
+    procedure CreateSimpleMSDOSProgram;
+    procedure CreateSimpleWin32Program;
+
     procedure JvDesignPanelPaint(Sender: TObject);
     procedure ItemClick(Sender: TObject);
     procedure CheckButtonOnClick(Sender: TObject);
@@ -895,7 +901,7 @@ begin
   LeftPageControl.ActivePageIndex := 2;
   MainPageControl.ActivePageIndex := 8;
 
-  JvEdit1.SetFocus;
+  ProjectNameEdit.SetFocus;
 end;
 
 procedure TForm1.PopupMenu_File_ExitClick(Sender: TObject);
@@ -925,6 +931,8 @@ begin
   if not(SaveDialog1.Execute) then
   begin
     ErrorBox.Text('something went wrong on saving file.');
+    ErrorBox.BringToFront;
+    ErrorBox.Show;
     exit;
   end;
 
@@ -932,6 +940,8 @@ begin
   or (Length(SaveDialog1.FileName) > 255) then
   begin
     ErrorBox.Text('file name to short, or to long.');
+    ErrorBox.BringToFront;
+    ErrorBox.Show;
     exit;
   end;
 
@@ -941,6 +951,8 @@ begin
     if not(ExtractFileExt(SaveDialog1.FileName) = 'pas') then
     begin
       ErrorBox.Text('only .pas files allowed.');
+      ErrorBox.BringToFront;
+      ErrorBox.Show;
       exit;
     end;
   end;
@@ -1088,6 +1100,8 @@ begin
   if not(OpenDialog1.Execute) then
   begin
     ErrorBox.Text('something goes wrong at open file.');
+    ErrorBox.BringToFront;
+    ErrorBox.Show;
     has_errors := true;
     exit
   end;
@@ -1105,8 +1119,9 @@ procedure TForm1.JvSpeedButton2Click2(Sender: TObject);
 begin
   if not(OpenDialog1.Execute) then
   begin
-    ErrorBox.Text('something went wrong at open file:' + #13 +
-    OpenDialog1.FileName);
+    ErrorBox.Text('something went wrong at open file:' + #13 + OpenDialog1.FileName);
+    ErrorBox.BringToFront;
+    ErrorBox.Show;
     has_errors := true;
     exit;
   end;
@@ -1133,6 +1148,8 @@ begin
       if not(SaveDialog1.Execute) then
       begin
         ErrorBox.Text('something went wrong on save file.');
+        ErrorBox.BringToFront;
+        ErrorBox.Show;
         exit;
       end;
 
@@ -1161,6 +1178,8 @@ begin
     if not(SaveDialog1.Execute) then
     begin
       ErrorBox.Text('something went wrong on save file.');
+      ErrorBox.BringToFront;
+      ErrorBox.Show;
       exit;
     end;
 
@@ -1181,6 +1200,8 @@ begin
   if not(OpenDialog1.Execute) then
   begin
     ErrorBox.Text('something went wrong on open file.');
+    ErrorBox.BringToFront;
+    ErrorBox.Show;
     exit;
   end;
 
@@ -1208,8 +1229,10 @@ begin
   if not(SynEdit1.Modified) then exit;
   if not(SaveDialog1.Execute) then
   begin
-    ErrorBox.Text('something went wrong at open file:' + #13 +
-    SaveDialog1.FileName);
+    ErrorBox.Text('something went wrong at open file:' + #13 + SaveDialog1.FileName);
+    ErrorBox.BringToFront;
+    ErrorBox.Show;
+    
     has_errors := true;
     exit;
   end else
@@ -1257,8 +1280,17 @@ begin
   Console1.SetFocus;
 
 // TODO: parser (below):
-JvInterpreterProgram1.Pas.Text := String(SynEdit1.Text);
-JvInterpreterProgram1.Run;
+if msdosapp then
+begin
+  JvInterpreterProgram1.Pas.Text := String(SynEdit1.Text);
+  JvInterpreterProgram1.Compile;
+  JvInterpreterProgram1.Run;
+end else
+begin
+  JvInterpreterFm1.Pas.Text := String(SynEdit1.Text);
+  JvInterpreterFm1.Compile;
+  JvInterpreterFm1.Run;
+end;
 exit;
 
 // TODO: parser:
@@ -1301,8 +1333,9 @@ exit;
         on E: Exception do
         begin
           callParserCloseFile;
-          ErrorBox.Text('Exception:' + #13 +
-          E.Message);
+          ErrorBox.Text('Exception:' + #13 + E.Message);
+          ErrorBox.BringToFront;
+          ErrorBox.Show;
         end;
       end;
     end;
@@ -1414,6 +1447,9 @@ begin
     ShowMessage(S1);
     GetSubDirectories(GetShellFolder(CSIDL_PERSONAL),sl);
     ErrorBox.Text(sl.Text);
+    ErrorBox.BringToFront;
+    ErrorBox.Show;
+    
     ExpandTopLevel;
   finally
     sl.Clear;
@@ -1432,6 +1468,8 @@ begin
     if Length(Trim(InputBoxWindow.InputLineText)) < 1 then
     begin
       ErrorBox.Text('File name is empty');
+      ErrorBox.BringToFront;
+      ErrorBox.Show;
     end else
     begin
       dirS1 := GetShellFolder(CSIDL_PERSONAL) +
@@ -1447,6 +1485,8 @@ begin
           'File System Error:'         + #13 +
           InputBoxWindow.InputLineText + #13 +
           'could not be created.');
+          ErrorBox.BringToFront;
+          ErrorBox.Show;
         end;
       end;
     end;
@@ -1655,6 +1695,8 @@ begin
     idirc1.SendCmd('NAMES ' + ircChannel.Text,ares);
   except
     ErrorBox.Text('connect error');
+    ErrorBox.BringToFront;
+    ErrorBox.Show;
     ircConnectButton.Enabled := true;
   end;
 end;
@@ -2385,6 +2427,7 @@ Begin
       ErrorBox.Text(
       'could not open ini file.' + #10 +
       'Error: ' + E.Message);
+      ErrorBox.BringToFront;
       ErrorBox.Show;
     end;
   end;
@@ -2417,6 +2460,7 @@ begin
       ErrorBox.Text(
       'could not save program values to ini file.' + #10 +
       'Error: ' + E.Message);
+      ErrorBox.BringToFront;
       ErrorBox.Show;
     end;
   end;
@@ -2648,9 +2692,10 @@ begin
     begin
       if (Length(Trim(SynEdit1.Lines.Text)) < 1) then
       begin
-        ErrorBox.Text(
-        'Warning:' + #10 + 'no source code data.');
+        ErrorBox.Text('Warning:' + #10 + 'no source code data.');
+        ErrorBox.BringToFront;
         ErrorBox.Show;
+
         exit;
       end else
       begin
@@ -2660,8 +2705,11 @@ begin
           on E: Exception do
           begin
             MainPageControl.ActivePageIndex := 0;
+
             ErrorBox.Text(E.Message);
+            ErrorBox.BringToFront;
             ErrorBox.Show;
+            
             SynEdit1.SetFocus;
           end;
         end;
@@ -2791,7 +2839,7 @@ begin
   end;*)
 end;
 
-procedure TForm1.CreateSimpleProgram;
+procedure TForm1.CreateSimpleMSDOSProgram;
 begin
   EditPanel.Visible := true;
   SynEdit1.Text :=
@@ -2817,19 +2865,62 @@ begin
   SynEdit1.SetFocus;
 end;
 
+procedure TForm1.CreateSimpleWin32Program;
+begin
+  EditPanel.Visible := true;
+  SynEdit1.Text :=
+  '// This File was created automatically' + sLineBreak +
+  '// Press F2-key to execute it.'         + sLineBreak +
+  'unit main;'                             + sLineBreak +
+  'interface'                              + sLineBreak +
+  'uses'                                   + sLineBreak +
+  '  Forms, Dialogs;'                      + sLineBreak +
+  'type'                                   + sLineBreak +
+  '  TDemo = class(TForm)'                 + sLineBreak +
+  '  private'                              + sLineBreak +
+  '  public'                               + sLineBreak +
+  '  end;'                                 + sLineBreak +
+  'var'                                    + sLineBreak +
+  '  Form1: TDemo;'                        + sLineBreak +
+  'implementation'                         + sLineBreak +
+  ''                                       + sLineBreak +
+  'procedure main;'                        + sLineBreak +
+  'begin'                                  + sLineBreak +
+  '  Form1 := TForm.Create(Application);'  + sLineBreak +
+  '  Form1.Caption := ExtractFileName(Application.ExeName);' + sLineBreak +
+  '  Form1.Left   := 100;'                 + sLineBreak +
+  '  Form1.Top    := 100;'                 + sLineBreak +
+  '  Form1.Width  := 300;'                 + sLineBreak +
+  '  Form1.Height := 200;'                 + sLineBreak +
+  '  Form1.ShowModal;'                     + sLineBreak +
+  'end;'                                   + sLineBreak +
+  ''                                       + sLineBreak +
+  'end.'                                   + sLineBreak ;
+
+  DFrameTeamServer.Visible := false;
+  DFrameHelpAuthor.Visible := false;
+  DFrameHelpTopic .Visible := false;
+
+  DFrameEdit.Visible := true;
+
+  LeftPageControl.Visible := true;
+  MainPageControl.ActivePageIndex := 0;
+  SynEdit1.SetFocus;
+end;
+
 procedure TForm1.Windows64Bit1Click(Sender: TObject);
 begin
-  CreateSimpleProgram;
+  CreateSimpleMSDOSProgram;
 end;
 
 procedure TForm1.Windows32Bit1Click(Sender: TObject);
 begin
-  CreateSimpleProgram;
+  CreateSimpleMSDOSProgram;
 end;
 
 procedure TForm1.MSDOS32Bit1Click(Sender: TObject);
 begin
-  CreateSimpleProgram;
+  CreateSimpleMSDOSProgram;
 end;
 
 procedure TForm1.Cut1Click(Sender: TObject);
@@ -2870,6 +2961,21 @@ begin
   end;
 
   ACommandFinished := true;
+end;
+
+procedure TForm1.CreateNewButtonClick(Sender: TObject);
+begin
+  if Length(Trim(ProjectNameEdit.Text)) < 1 then
+  begin
+    ProjectNameEdit.Color := clRed;
+    ProjectNameEdit.Font.Color := clYellow;
+
+    ErrorBox.Text('Error: No projectname given.');
+    ErrorBox.BringToFront;
+    ErrorBox.Show;
+
+    exit;
+  end;
 end;
 
 end.

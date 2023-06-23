@@ -20,6 +20,8 @@ type
 implementation
 
 {$R *.dfm}
+uses
+  EditorForm, ErrorBoxForm;
 
 procedure TFrame8.NewApplication_ListViewDblClick(Sender: TObject);
 var
@@ -28,11 +30,29 @@ begin
   if NewApplication_ListView.Selected = nil then
   exit;
 
+  if Length(Trim(Form1.ProjectNameEdit.Text)) < 1 then
+  begin
+    Form1.ProjectNameEdit.Color := clRed;
+    Form1.ProjectNameEdit.Font.Color := clYellow;
+
+    ErrorBox.Text('Error: No projectname given.');
+    ErrorBox.BringToFront;
+    ErrorBox.Show;
+  end;
+
   S := NewApplication_ListView.Selected.Caption;
+  if (S = 'Windows 32-Bit App')
+  or (S = 'Windows 64-Bit App') then
+  begin
+    // template code
+    Form1.msdosapp := false;
+    Form1.CreateSimpleWin32Program;
+  end else
   if S = 'MS-DOS 32-Bit App' then
   begin
     // template code
-    ShowMessage('xxx');
+    Form1.msdosapp := true;
+    Form1.CreateSimpleMSDOSProgram;
   end;
 end;
 

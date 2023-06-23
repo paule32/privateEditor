@@ -2258,7 +2258,7 @@ object Form1: TForm1
         Top = 1
         Width = 648
         Height = 406
-        ActivePage = TabSheet13
+        ActivePage = NewModule_TabSheet
         Align = alLeft
         Anchors = [akLeft, akTop, akRight, akBottom]
         Font.Charset = DEFAULT_CHARSET
@@ -3081,7 +3081,7 @@ object Form1: TForm1
                 Height = 30
                 Align = alBottom
                 TabOrder = 0
-                object JvEdit1: TJvEdit
+                object ProjectNameEdit: TJvEdit
                   Left = 1
                   Top = 1
                   Width = 512
@@ -3095,13 +3095,14 @@ object Form1: TForm1
                   TabOrder = 0
                   TextHint = 'Type in the Project Path, and Name'
                 end
-                object JvImgBtn17: TJvImgBtn
+                object CreateNewButton: TJvImgBtn
                   Left = 531
                   Top = 3
                   Width = 75
                   Height = 25
                   Caption = 'Create'
                   TabOrder = 1
+                  OnClick = CreateNewButtonClick
                   Color = clSilver
                 end
               end
@@ -6378,8 +6379,8 @@ object Form1: TForm1
     Top = 395
   end
   object JvInterpreterProgram1: TJvInterpreterProgram
-    Left = 134
-    Top = 395
+    Left = 382
+    Top = 259
   end
   object C64ScreenTimer: TTimer
     Enabled = False
@@ -11392,5 +11393,9 @@ object Form1: TForm1
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000}
+  end
+  object JvInterpreterFm1: TJvInterpreterFm
+    Left = 353
+    Top = 258
   end
 end

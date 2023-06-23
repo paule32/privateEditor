@@ -11,15 +11,24 @@ uses
 var
   InterArgs: TJvInterpreterArgs;
 
+  procedure RegisterJvInterpreterAdapter(JvInterpreterAdapter: TJvInterpreterAdapter);
   procedure initInterpreter;
 implementation
 
 uses JvJCLUtils, JvConsts,
   JvJVCLUtils, JvInterpreter_JvUtils,
-  JvInterpreter_System, JvInterpreter_Windows, JvInterpreter_SysUtils,
-  JvInterpreter_Graphics, JvInterpreter_Classes, JvInterpreter_Controls,
-  JvInterpreter_StdCtrls, JvInterpreter_ComCtrls, JvInterpreter_ExtCtrls, JvInterpreter_Forms,
-  JvInterpreter_Menus, JvInterpreter_Dialogs,
+  JvInterpreter_System,
+  JvInterpreter_Windows,
+  JvInterpreter_SysUtils,
+  JvInterpreter_Graphics,
+  JvInterpreter_Classes,
+  JvInterpreter_Controls,
+  JvInterpreter_StdCtrls,
+  JvInterpreter_ComCtrls,
+  JvInterpreter_ExtCtrls,
+  JvInterpreter_Forms,
+  JvInterpreter_Menus,
+  JvInterpreter_Dialogs,
   JvInterpreterFm,
   JvInterpreter_JvEditor;
 
@@ -45,6 +54,23 @@ begin
 
   JvInterpreter_JvEditor.RegisterJvInterpreterAdapter(GlobalJvInterpreterAdapter);
   JvInterpreter_JvUtils.RegisterJvInterpreterAdapter(GlobalJvInterpreterAdapter);
+end;
+
+procedure TForm_Create(var Value: Variant; Args: TJvInterpreterArgs);
+begin
+  Value := O2V(TForm.Create(V2O(Args.Values[0]) as TComponent));
+end;
+
+procedure RegisterJvInterpreterAdapter(JvInterpreterAdapter: TJvInterpreterAdapter);
+const
+  cForms = 'Forms';
+begin
+  with JvInterpreterAdapter do
+  begin
+    AddClass(cForms,TForm,'TForm');
+    AddGet(TForm,'Create',TForm_Create,1,[varEmpty], varEmpty);
+  end;
+  RegisterClasses([TForm]);
 end;
 
 end.
