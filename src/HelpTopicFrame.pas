@@ -3,9 +3,9 @@ unit HelpTopicFrame;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, 
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ComCtrls, ExtCtrls, Menus, JvMenus, StdCtrls, JvExStdCtrls,
-  JvEdit;
+  JvEdit, JvRichEdit;
 
 type
   TFrame15 = class(TFrame)
@@ -48,22 +48,34 @@ type
     procedure JvEdit2Exit(Sender: TObject);
     procedure JvEdit3Enter(Sender: TObject);
     procedure JvEdit3Exit(Sender: TObject);
+    procedure TreeView1Enter(Sender: TObject);
+    procedure TreeView1Exit(Sender: TObject);
+    procedure TreeView3Enter(Sender: TObject);
+    procedure TreeView3Exit(Sender: TObject);
+    procedure TreeView2Enter(Sender: TObject);
+    procedure TreeView2Exit(Sender: TObject);
+    procedure RenameTopic1Click(Sender: TObject);
   private
-    procedure CreateNewTab;
     procedure RichEdit1SelectionChange(Sender: TObject);
+    procedure SwitchBoard(Sender: TObject);
   public
-    { Public declarations }
+    PageControl0  : TPageControl;
+    CurrentEditor : TRichEdit;
+    CurrentPage   : TTabSheet;
+
+    procedure CreateNewTab(AString: String);
+    procedure PageControlOnChange(Sender: TObject);
   end;
 
 implementation
 
 {$R *.dfm}
 uses
-  EditorForm, SHDocVw, SynEdit, JvRuler;
+  EditorForm, SHDocVw, SynEdit, JvRuler, JvButton, JvCtrls;
 
-procedure TFrame15.CreateNewTab;
+procedure TFrame15.CreateNewTab(AString: String);
 var
-  PageControl2 : TPageControl;
+  PageControl2  : TPageControl;
 
   TabSheet11    : TTabSheet;
   TabSheet21    : TTabSheet;
@@ -75,13 +87,30 @@ var
   ScrollBox11   : TScrollBox;
   WebBrowser11  : TWebBrowser;
 
+  EditPanel     : TPanel;
+  SwitchButton  : TJvImgBtn;
+  SaveButton    : TJvImgBtn;
+  CutButton     : TJvImgBtn;
+  CopyButton    : TJvImgBtn;
+  PasteButton   : TJvImgBtn;
+
   JvRuler11     : TJvRuler;
   RichEdit11    : TRichEdit;
 begin
-  TabSheet11               := TTabSheet.Create(Form1.DFrameHelpAuthor.PageControl1);
-  TabSheet11.PageControl   := Form1.DFrameHelpAuthor.PageControl1;
+  if PageControl0 = nil then
+  begin
+    PageControl0 := TPageControl.Create(Form1.DFrameHelpAuthor);
+    PageControl0.Parent    := Form1.DFrameHelpAuthor;
+    PageControl0.Align     := alClient;
+    PageControl0.PopupMenu := Form1.DFrameHelpAuthor.JvPopupMenu1;
+    PageControl0.OnChange  := PageControlOnChange;
+    PageControl0.Show;
+  end;
+
+  TabSheet11               := TTabSheet.Create(PageControl0);
+  TabSheet11.PageControl   := PageControl0;
   TabSheet11.Align         := alClient;
-  TabSheet11.Caption       := 'File 2';
+  TabSheet11.Caption       := AString;
   TabSheet11.TabVisible    := true;
 
   PageControl2             := TPageControl.Create(TabSheet11);
@@ -95,6 +124,11 @@ begin
   TabSheet21.Align         := alClient;
   TabSheet21.Caption       := 'Source';
   TabSheet21.TabVisible    := true;
+
+  SynEdit11             := TSynEdit.Create(TabSheet21);
+  SynEdit11.Parent      := TabSheet21;
+  SynEdit11.Align       := alClient;
+  SynEdit11.Show;
 
   TabSheet31               := TTabSheet.Create(PageControl2);
   TabSheet31.PageControl   := PageControl2;
@@ -123,15 +157,58 @@ begin
   TabSheet41.Caption       := 'Design';
   TabSheet41.TabVisible    := true;
 
-  SynEdit11             := TSynEdit.Create(TabSheet21);
-  SynEdit11.Parent      := TabSheet21;
-  SynEdit11.Align       := alClient;
-  SynEdit11.Show;
+  EditPanel := TPanel.Create(TabSheet41);
+  EditPanel.Parent  := TabSheet41;
+  EditPanel.Align   := alTop;
+  EditPanel.Height  := 40;
+  EditPanel.Caption := '';
+  EditPanel.Show;
 
+  SwitchButton := TJvImgBtn.Create(EditPanel);
+  SwitchButton.Parent  := EditPanel;
+  SwitchButton.Color   := clSilver;
+  SwitchButton.Caption := 'Switch';
+  SwitchButton.Left    := 5;
+  SwitchButton.Top     := 2;
+  SwitchButton.OnClick := SwitchBoard;
+  SwitchButton.Show;
 
-  JvRuler11             := TJvRuler.Create(TabSheet41);
-  JvRuler11.Parent      := TabSheet41;
-  JvRuler11.Align       := alTop;
+  SaveButton := TJvImgBtn.Create(EditPanel);
+  SaveButton.Parent  := EditPanel;
+  SaveButton.Color   := clSilver;
+  SaveButton.Caption := 'Save';
+  SaveButton.Left    := SwitchButton.Left + SwitchButton.Width + 24;;
+  SaveButton.Top     := 2;
+  SaveButton.Show;
+
+  CutButton   := TJvImgBtn.Create(EditPanel);
+  CutButton.Parent  := EditPanel;
+  CutButton.Color   := clSilver;
+  CutButton.Caption := 'Cut';
+  CutButton.Left    := SaveButton.Left + SaveButton.Width + 7;
+  CutButton.Top     := 2;
+  CutButton.Show;
+
+  CopyButton  := TJvImgBtn.Create(EditPanel);
+  CopyButton.Parent   := EditPanel;
+  CopyButton.Color    := clSilver;
+  CopyButton.Caption  := 'Copy';
+  CopyButton.Left     := CutButton.Left + CutButton.Width + 7;
+  CopyButton.Top      := 2;
+  CopyButton.Show;
+
+  PasteButton := TJvImgBtn.Create(EditPanel);
+  PasteButton.Parent  := EditPanel;
+  PasteButton.Color   := clSilver;
+  PasteButton.Caption := 'Paste';
+  PasteButton.Left    := CopyButton.Left + CopyButton.Width + 7;
+  PasteButton.Top     := 2;
+  PasteButton.Show;
+
+  JvRuler11           := TJvRuler.Create(TabSheet41);
+  JvRuler11.Parent    := TabSheet41;
+  JvRuler11.Top       := 90;
+  JvRuler11.Align     := alTop;
   JvRuler11.Show;
 
   RichEdit11                   := TRichEdit.Create(TabSheet41);
@@ -140,7 +217,14 @@ begin
   RichEdit11.OnSelectionChange := RichEdit1SelectionChange;
   RichEdit11.Show;
 
+  CurrentEditor := RichEdit11;
+
   PageControl2.ActivePageIndex := 2;
+end;
+
+procedure TFrame15.PageControlOnChange(Sender: TObject);
+begin
+  CurrentPage := (Sender as TPageControl).ActivePage;
 end;
 
 procedure TFrame15.RichEdit1SelectionChange(Sender: TObject);
@@ -148,23 +232,43 @@ begin
 end;
 
 procedure TFrame15.AddTopic1Click(Sender: TObject);
+var
+  sl: TStrings;
 begin
   if TreeView1.Selected = nil then
   exit;
 
-  TreeView1.Items.Add(TreeView1.Selected,'New Topic');
+  sl := TStringList.Create;
+  sl.Add('New Topic ' + IntToStr(Form1.topicCount));
+  sl.Add(IntToStr(Form1.topicCount));
+  inc(Form1.topicCount);
+
+  TreeView1.Items.AddChildObject(
+  TreeView1.Selected,sl.Strings[0],sl);
+  TreeView1.Tag := Form1.topicCount;
   TreeView1.FullExpand;
-  CreateNewTab;
+
+  CreateNewTab(sl.Strings[0]);
 end;
 
 procedure TFrame15.AddSubtopic1Click(Sender: TObject);
+var
+  sl: TStrings;
 begin
   if TreeView1.Selected = nil then
   exit;
 
-  TreeView1.Items.AddChild(TreeView1.Selected,'New Topic');
+  sl := TStringList.Create;
+  sl.Add('New Topic ' + IntToStr(Form1.topicCount));
+  sl.Add(IntToStr(Form1.topicCount));
+  inc(Form1.topicCount);
+
+  TreeView1.Items.AddChildObject(
+  TreeView1.Selected,sl.Strings[0],sl);
+  TreeView1.Tag := Form1.topicCount;
   TreeView1.FullExpand;
-  CreateNewTab;
+
+  CreateNewTab(sl.Strings[0]);
 end;
 
 // TODO: move topic's: !!!
@@ -217,6 +321,28 @@ begin
   end;
 end;
 
+procedure TFrame15.SwitchBoard(Sender: TObject);
+begin
+  Visible := false;
+
+  Form1.DFrameFontStyle.Visible := false;
+  Form1.DFrameFontColor.Visible := false;
+  Form1.DFrameFontFace .Visible := false;
+
+  Form1.EditPanel .Visible := true;
+  Form1.LogPanel  .Visible := true;
+  Form1.ModeButton.Visible := true;
+
+  Form1.DFrameHelpTopic.Visible := false;
+  Form1.LeftPageControl.Visible := true;
+
+  Form1.DFrameHelpAuthor.Visible := false;
+
+  Form1.MainPageControl.ActivePageIndex := 0;
+  Form1.DFrameEdit.Visible := true;
+  Form1.SynEdit1.SetFocus;
+end;
+
 procedure TFrame15.JvEdit1Enter(Sender: TObject);
 begin
   (Sender as TJvEdit).Color := clYellow;
@@ -245,6 +371,42 @@ end;
 procedure TFrame15.JvEdit3Exit(Sender: TObject);
 begin
   (Sender as TJvEdit).Color := clWhite;
+end;
+
+procedure TFrame15.TreeView1Enter(Sender: TObject);
+begin
+  TreeView1.Color := clYellow;
+end;
+
+procedure TFrame15.TreeView1Exit(Sender: TObject);
+begin
+  TreeView1.Color := clWhite;
+end;
+
+procedure TFrame15.TreeView3Enter(Sender: TObject);
+begin
+  TreeView3.Color := clYellow;
+end;
+
+procedure TFrame15.TreeView3Exit(Sender: TObject);
+begin
+  TreeView3.Color := clWhite;
+end;
+
+procedure TFrame15.TreeView2Enter(Sender: TObject);
+begin
+  TreeView2.Color := clYellow;
+end;
+
+procedure TFrame15.TreeView2Exit(Sender: TObject);
+begin
+  TreeView2.Color := clWhite;
+end;
+
+procedure TFrame15.RenameTopic1Click(Sender: TObject);
+begin
+  TreeView1.ReadOnly := false;
+  TreeView1.Selected.EditText;
 end;
 
 end.

@@ -49,11 +49,32 @@ object Frame13: TFrame13
       Caption = 'BG:'
     end
     object Label3: TLabel
-      Left = 360
+      Left = 384
       Top = 0
       Width = 44
       Height = 16
       Caption = 'Border:'
+    end
+    object SpeedButton1: TSpeedButton
+      Left = 352
+      Top = 0
+      Width = 19
+      Height = 18
+      OnClick = SpeedButton1Click
+    end
+    object SpeedButton2: TSpeedButton
+      Left = 352
+      Top = 19
+      Width = 19
+      Height = 18
+      OnClick = SpeedButton2Click
+    end
+    object SpeedButton3: TSpeedButton
+      Left = 520
+      Top = 19
+      Width = 19
+      Height = 18
+      OnClick = SpeedButton3Click
     end
     object JvColorComboBox1: TJvColorComboBox
       Left = 216
@@ -70,6 +91,7 @@ object Frame13: TFrame13
       Font.Style = []
       ParentFont = False
       TabOrder = 0
+      OnClick = JvColorComboBox1Click
     end
     object JvColorComboBox2: TJvColorComboBox
       Left = 216
@@ -88,7 +110,7 @@ object Frame13: TFrame13
       TabOrder = 1
     end
     object JvColorComboBox3: TJvColorComboBox
-      Left = 360
+      Left = 384
       Top = 18
       Width = 129
       Height = 20
@@ -110,7 +132,7 @@ object Frame13: TFrame13
     Left = 80
     Top = 64
     Bitmap = {
-      494C010101000400040020002000FFFFFFFFFF00FFFFFFFFFFFFFFFF424D3600
+      494C010101000400040020002000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000800000002000000001002000000000000040
       000000000000000000000000000000000000FFFFFFFFFFFFFFFFFFFFFFFFFFFF
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
@@ -642,7 +664,8 @@ object Frame13: TFrame13
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
-      00000000000000000000000000000000}
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000}
   end
   object TextStylePopupMenu: TJvPopupMenu
     Images = ImageList1
@@ -676,5 +699,9 @@ object Frame13: TFrame13
     object Background1: TMenuItem
       Caption = 'Background'
     end
+  end
+  object ColorDialog1: TColorDialog
+    Left = 168
+    Top = 64
   end
 end

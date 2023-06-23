@@ -46,6 +46,7 @@ object Frame6: TFrame6
         Align = alTop
         Style = csDropDownList
         TabOrder = 0
+        OnChange = DatabaseComboBoxChange
       end
       object Panel1: TPanel
         Left = 0
@@ -81,6 +82,7 @@ object Frame6: TFrame6
         Align = alClient
         ItemHeight = 19
         TabOrder = 2
+        OnMouseDown = ListBox1MouseDown
       end
     end
     object TabSheet2: TTabSheet

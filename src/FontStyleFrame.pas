@@ -172,12 +172,20 @@ begin
     (Sender as TMenuItem).Checked    := false;
     (Sender as TMenuItem).ImageIndex := 0;
     FontImageList.GetBitmap(0,JvSpeedButton3.Glyph);
+
+    Form1.DFrameHelpTopic.CurrentEditor.SelAttributes.Style :=
+    Form1.DFrameHelpTopic.CurrentEditor.SelAttributes.Style - [fsBold];
+    Form1.DFrameHelpTopic.CurrentEditor.SelAttributes.Size  := (Sender as TMenuItem).Tag;
   end else
   begin
     uncheckMenuBold;
     (Sender as TMenuItem).Checked := true;
     (Sender as TMenuItem).ImageIndex := 3;
     FontImageList.GetBitmap(3,JvSpeedButton3.Glyph);
+
+    Form1.DFrameHelpTopic.CurrentEditor.SelAttributes.Style :=
+    Form1.DFrameHelpTopic.CurrentEditor.SelAttributes.Style + [fsBold];
+    Form1.DFrameHelpTopic.CurrentEditor.SelAttributes.Size  := (Sender as TMenuItem).Tag;
   end;
 end;
 
@@ -189,12 +197,20 @@ begin
     (Sender as TMenuItem).Checked    := false;
     (Sender as TMenuItem).ImageIndex := 2;
     FontImageList.GetBitmap(2,JvArrowButton1.Glyph);
+
+    Form1.DFrameHelpTopic.CurrentEditor.SelAttributes.Style :=
+    Form1.DFrameHelpTopic.CurrentEditor.SelAttributes.Style - [fsBold];
+    Form1.DFrameHelpTopic.CurrentEditor.SelAttributes.Size  := (Sender as TMenuItem).Tag;
   end else
   begin
     uncheckMenuItalic;
     (Sender as TMenuItem).Checked := true;
     (Sender as TMenuItem).ImageIndex := 4;
     FontImageList.GetBitmap(4,JvArrowButton1.Glyph);
+
+    Form1.DFrameHelpTopic.CurrentEditor.SelAttributes.Style :=
+    Form1.DFrameHelpTopic.CurrentEditor.SelAttributes.Style + [fsItalic];
+    Form1.DFrameHelpTopic.CurrentEditor.SelAttributes.Size  := (Sender as TMenuItem).Tag;
   end;
 end;
 
@@ -206,12 +222,20 @@ begin
     (Sender as TMenuItem).Checked    := false;
     (Sender as TMenuItem).ImageIndex := 1;
     FontImageList.GetBitmap(1,JvArrowButton2.Glyph);
+
+    Form1.DFrameHelpTopic.CurrentEditor.SelAttributes.Style :=
+    Form1.DFrameHelpTopic.CurrentEditor.SelAttributes.Style - [fsUnderline];
+    Form1.DFrameHelpTopic.CurrentEditor.SelAttributes.Size  := (Sender as TMenuItem).Tag;
   end else
   begin
     uncheckMenuUnderLine;
     (Sender as TMenuItem).Checked := true;
     (Sender as TMenuItem).ImageIndex := 5;
     FontImageList.GetBitmap(5,JvArrowButton2.Glyph);
+
+    Form1.DFrameHelpTopic.CurrentEditor.SelAttributes.Style :=
+    Form1.DFrameHelpTopic.CurrentEditor.SelAttributes.Style + [fsUnderline];
+    Form1.DFrameHelpTopic.CurrentEditor.SelAttributes.Size  := (Sender as TMenuItem).Tag;
   end;
 end;
 

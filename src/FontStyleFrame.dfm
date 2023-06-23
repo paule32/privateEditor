@@ -512,71 +512,85 @@ object Frame12: TFrame12
     Left = 29
     Top = 48
     object BoldFontSize8: TMenuItem
+      Tag = 8
       Caption = 'Size: 8'
       ImageIndex = 0
       OnClick = BoldFontSize8Click
     end
     object BoldFontSize9: TMenuItem
+      Tag = 9
       Caption = 'Size: 9'
       ImageIndex = 0
       OnClick = BoldFontSize8Click
     end
     object BoldFontSize10: TMenuItem
+      Tag = 10
       Caption = 'Size: 10'
       ImageIndex = 0
       OnClick = BoldFontSize8Click
     end
     object BoldFontSize12: TMenuItem
+      Tag = 12
       Caption = 'Size: 12'
       ImageIndex = 0
       OnClick = BoldFontSize8Click
     end
     object BoldFontSize14: TMenuItem
+      Tag = 14
       Caption = 'Size: 14'
       ImageIndex = 0
       OnClick = BoldFontSize8Click
     end
     object BoldFontSize16: TMenuItem
+      Tag = 16
       Caption = 'Size: 16'
       ImageIndex = 0
       OnClick = BoldFontSize8Click
     end
     object BoldFontSize18: TMenuItem
+      Tag = 18
       Caption = 'Size: 18'
       ImageIndex = 0
       OnClick = BoldFontSize8Click
     end
     object BoldFontSize20: TMenuItem
+      Tag = 20
       Caption = 'Size: 20'
       ImageIndex = 0
       OnClick = BoldFontSize8Click
     end
     object BoldFontSize22: TMenuItem
+      Tag = 22
       Caption = 'Size: 22'
       ImageIndex = 0
       OnClick = BoldFontSize8Click
     end
     object BoldFontSize24: TMenuItem
+      Tag = 24
       Caption = 'Size: 24'
       ImageIndex = 0
       OnClick = BoldFontSize8Click
     end
     object BoldFontSize26: TMenuItem
+      Tag = 26
       Caption = 'Size: 26'
       ImageIndex = 0
       OnClick = BoldFontSize8Click
     end
     object BoldFontSize28: TMenuItem
+      Tag = 28
       Caption = 'Size: 28'
       ImageIndex = 0
       OnClick = BoldFontSize8Click
     end
     object BoldFontSize32: TMenuItem
+      Tag = 32
       Caption = 'Size: 32'
       ImageIndex = 0
       OnClick = BoldFontSize8Click
     end
     object BoldFontSize40: TMenuItem
+      Tag = 40
       Caption = 'Size: 40'
       ImageIndex = 0
       OnClick = BoldFontSize8Click
@@ -594,71 +608,85 @@ object Frame12: TFrame12
     Left = 61
     Top = 48
     object ItalicFontSize8: TMenuItem
+      Tag = 8
       Caption = 'Size: 8'
       ImageIndex = 2
       OnClick = ItalicFontSize8Click
     end
     object ItalicFontSize9: TMenuItem
+      Tag = 9
       Caption = 'Size: 9'
       ImageIndex = 2
       OnClick = ItalicFontSize8Click
     end
     object ItalicFontSize10: TMenuItem
+      Tag = 10
       Caption = 'Size: 10'
       ImageIndex = 2
       OnClick = ItalicFontSize8Click
     end
     object ItalicFontSize12: TMenuItem
+      Tag = 12
       Caption = 'Size: 12'
       ImageIndex = 2
       OnClick = ItalicFontSize8Click
     end
     object ItalicFontSize14: TMenuItem
+      Tag = 14
       Caption = 'Size: 14'
       ImageIndex = 2
       OnClick = ItalicFontSize8Click
     end
     object ItalicFontSize16: TMenuItem
+      Tag = 16
       Caption = 'Size: 16'
       ImageIndex = 2
       OnClick = ItalicFontSize8Click
     end
     object ItalicFontSize18: TMenuItem
+      Tag = 18
       Caption = 'Size: 18'
       ImageIndex = 2
       OnClick = ItalicFontSize8Click
     end
     object ItalicFontSize20: TMenuItem
+      Tag = 20
       Caption = 'Size: 20'
       ImageIndex = 2
       OnClick = ItalicFontSize8Click
     end
     object ItalicFontSize22: TMenuItem
+      Tag = 22
       Caption = 'Size: 22'
       ImageIndex = 2
       OnClick = ItalicFontSize8Click
     end
     object ItalicFontSize24: TMenuItem
+      Tag = 24
       Caption = 'Size: 24'
       ImageIndex = 2
       OnClick = ItalicFontSize8Click
     end
     object ItalicFontSize26: TMenuItem
+      Tag = 26
       Caption = 'Size: 26'
       ImageIndex = 2
       OnClick = ItalicFontSize8Click
     end
     object ItalicFontSize28: TMenuItem
+      Tag = 28
       Caption = 'Size: 28'
       ImageIndex = 2
       OnClick = ItalicFontSize8Click
     end
     object ItalicFontSize32: TMenuItem
+      Tag = 32
       Caption = 'Size: 32'
       ImageIndex = 2
       OnClick = ItalicFontSize8Click
     end
     object ItalicFontSize40: TMenuItem
+      Tag = 40
       Caption = 'Size: 40'
       ImageIndex = 2
       OnClick = ItalicFontSize8Click
@@ -676,71 +704,85 @@ object Frame12: TFrame12
     Left = 93
     Top = 48
     object UnderLineFontSize8: TMenuItem
+      Tag = 8
       Caption = 'Size: 8'
       ImageIndex = 1
       OnClick = UnderLineFontSize8Click
     end
     object UnderLineFontSize9: TMenuItem
+      Tag = 9
       Caption = 'Size: 9'
       ImageIndex = 1
       OnClick = UnderLineFontSize8Click
     end
     object UnderLineFontSize10: TMenuItem
+      Tag = 10
       Caption = 'Size: 10'
       ImageIndex = 1
       OnClick = UnderLineFontSize8Click
     end
     object UnderLineFontSize12: TMenuItem
+      Tag = 12
       Caption = 'Size: 12'
       ImageIndex = 1
       OnClick = UnderLineFontSize8Click
     end
     object UnderLineFontSize14: TMenuItem
+      Tag = 14
       Caption = 'Size: 14'
       ImageIndex = 1
       OnClick = UnderLineFontSize8Click
     end
     object UnderLineFontSize16: TMenuItem
+      Tag = 16
       Caption = 'Size: 16'
       ImageIndex = 1
       OnClick = UnderLineFontSize8Click
     end
     object UnderLineFontSize18: TMenuItem
+      Tag = 18
       Caption = 'Size: 18'
       ImageIndex = 1
       OnClick = UnderLineFontSize8Click
     end
     object UnderLineFontSize20: TMenuItem
+      Tag = 20
       Caption = 'Size: 20'
       ImageIndex = 1
       OnClick = UnderLineFontSize8Click
     end
     object UnderLineFontSize22: TMenuItem
+      Tag = 22
       Caption = 'Size: 22'
       ImageIndex = 1
       OnClick = UnderLineFontSize8Click
     end
     object UnderLineFontSize24: TMenuItem
+      Tag = 24
       Caption = 'Size: 24'
       ImageIndex = 1
       OnClick = UnderLineFontSize8Click
     end
     object UnderLineFontSize26: TMenuItem
+      Tag = 26
       Caption = 'Size: 26'
       ImageIndex = 1
       OnClick = UnderLineFontSize8Click
     end
     object UnderLineFontSize28: TMenuItem
+      Tag = 28
       Caption = 'Size: 28'
       ImageIndex = 1
       OnClick = UnderLineFontSize8Click
     end
     object UnderLineFontSize32: TMenuItem
+      Tag = 32
       Caption = 'Size: 32'
       ImageIndex = 1
       OnClick = UnderLineFontSize8Click
     end
     object UnderLineFontSize40: TMenuItem
+      Tag = 40
       Caption = 'Size: 40'
       ImageIndex = 1
       OnClick = UnderLineFontSize8Click
@@ -752,7 +794,7 @@ object Frame12: TFrame12
     Left = 29
     Top = 83
     Bitmap = {
-      494C010107000900040020002000FFFFFFFFFF00FFFFFFFFFFFFFFFF424D3600
+      494C010107000900040020002000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       00000000000036000000280000008000000060000000010020000000000000C0
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -2340,7 +2382,8 @@ object Frame12: TFrame12
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
-      00000000000000000000000000000000}
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000}
   end
   object TextStylePopupMenu: TJvPopupMenu
     Images = FontImageList

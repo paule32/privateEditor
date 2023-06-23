@@ -76,6 +76,20 @@ type
     Delete1: TMenuItem;
     Insert1: TMenuItem;
     N3: TMenuItem;
+    N4: TMenuItem;
+    Image1: TMenuItem;
+    N5: TMenuItem;
+    Paragraph2: TMenuItem;
+    LeftJustify1: TMenuItem;
+    RightJustify1: TMenuItem;
+    CenterMiddleJustify1: TMenuItem;
+    EditOper1: TMenuItem;
+    N6: TMenuItem;
+    Cut1: TMenuItem;
+    Copy1: TMenuItem;
+    Paste1: TMenuItem;
+    N7: TMenuItem;
+    Delete2: TMenuItem;
     procedure BoldFontSize8Click(Sender: TObject);
     procedure ItalicFontSize8Click(Sender: TObject);
     procedure UnderLineFontSize8Click(Sender: TObject);
@@ -158,12 +172,20 @@ begin
     (Sender as TMenuItem).Checked    := false;
     (Sender as TMenuItem).ImageIndex := 0;
     FontImageList.GetBitmap(0,JvSpeedButton3.Glyph);
+
+    Form1.DFrameHelpAuthor.RichEdit1.SelAttributes.Style :=
+    Form1.DFrameHelpAuthor.RichEdit1.SelAttributes.Style - [fsBold];
+    Form1.DFrameHelpAuthor.RichEdit1.SelAttributes.Size  := (Sender as TMenuItem).Tag;
   end else
   begin
     uncheckMenuBold;
     (Sender as TMenuItem).Checked := true;
     (Sender as TMenuItem).ImageIndex := 3;
     FontImageList.GetBitmap(3,JvSpeedButton3.Glyph);
+
+    Form1.DFrameHelpAuthor.RichEdit1.SelAttributes.Style :=
+    Form1.DFrameHelpAuthor.RichEdit1.SelAttributes.Style + [fsBold];
+    Form1.DFrameHelpAuthor.RichEdit1.SelAttributes.Size  := (Sender as TMenuItem).Tag;
   end;
 end;
 
@@ -175,12 +197,20 @@ begin
     (Sender as TMenuItem).Checked    := false;
     (Sender as TMenuItem).ImageIndex := 2;
     FontImageList.GetBitmap(2,JvArrowButton1.Glyph);
+
+    Form1.DFrameHelpAuthor.RichEdit1.SelAttributes.Style :=
+    Form1.DFrameHelpAuthor.RichEdit1.SelAttributes.Style - [fsBold];
+    Form1.DFrameHelpAuthor.RichEdit1.SelAttributes.Size  := (Sender as TMenuItem).Tag;
   end else
   begin
     uncheckMenuItalic;
     (Sender as TMenuItem).Checked := true;
     (Sender as TMenuItem).ImageIndex := 4;
     FontImageList.GetBitmap(4,JvArrowButton1.Glyph);
+
+    Form1.DFrameHelpAuthor.RichEdit1.SelAttributes.Style :=
+    Form1.DFrameHelpAuthor.RichEdit1.SelAttributes.Style + [fsItalic];
+    Form1.DFrameHelpAuthor.RichEdit1.SelAttributes.Size  := (Sender as TMenuItem).Tag;
   end;
 end;
 
@@ -192,12 +222,20 @@ begin
     (Sender as TMenuItem).Checked    := false;
     (Sender as TMenuItem).ImageIndex := 1;
     FontImageList.GetBitmap(1,JvArrowButton2.Glyph);
+
+    Form1.DFrameHelpAuthor.RichEdit1.SelAttributes.Style :=
+    Form1.DFrameHelpAuthor.RichEdit1.SelAttributes.Style - [fsUnderline];
+    Form1.DFrameHelpAuthor.RichEdit1.SelAttributes.Size  := (Sender as TMenuItem).Tag;
   end else
   begin
     uncheckMenuUnderLine;
     (Sender as TMenuItem).Checked := true;
     (Sender as TMenuItem).ImageIndex := 5;
     FontImageList.GetBitmap(5,JvArrowButton2.Glyph);
+
+    Form1.DFrameHelpAuthor.RichEdit1.SelAttributes.Style :=
+    Form1.DFrameHelpAuthor.RichEdit1.SelAttributes.Style + [fsUnderline];
+    Form1.DFrameHelpAuthor.RichEdit1.SelAttributes.Size  := (Sender as TMenuItem).Tag;
   end;
 end;
 

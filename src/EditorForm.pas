@@ -558,6 +558,8 @@ type
     DFrameC64Config  : TFrame5;
     DFrameC64Drives  : TFrame7;
 
+    topicCount: Integer;
+
     procedure TableListBox_MouseDown(
       Sender: TObject;
       Button: TMouseButton;
@@ -739,6 +741,7 @@ begin
   DFrameHelpTopic := TFrame15.Create(LeftPanel);
   DFrameHelpTopic.Parent  := LeftPanel;
   DFrameHelpTopic.Align   := alClient;
+  DFrameHelpTopic.CreateNewTab('Index Page');
   DFrameHelpTopic.Visible := false;
 
   IniFile_IDE_Language := 'ENG';
@@ -2305,6 +2308,11 @@ begin
   MainPageControl.ActivePage := NewModule_TabSheet;
 
   DFrameHelpTopic.Visible := false;
+
+  DFrameFontFace .Visible := false;
+  DFrameFontColor.Visible := false;
+  DFrameFontStyle.Visible := false;
+
   LeftPageControl.Visible := true;
   LeftPageControl.ActivePageIndex := 2;
 
@@ -2471,6 +2479,12 @@ begin
 end;
 
 procedure TForm1.FormShortCut(var Msg: TWMKey; var Handled: Boolean);
+var
+  sl: TStrings;
+  Node, Child: TTreeNode;
+  sheet: TTabSheet;
+  I, J, K, num: Integer;
+  S: String;
 begin
   if (Msg.CharCode = Ord('N')) then
   begin
@@ -2479,8 +2493,16 @@ begin
     begin
       if DFrameHelpTopic.TreeView1.Focused then
       begin
-        DFrameHelpTopic.TreeView1.Items.Add(
-        DFrameHelpTopic.TreeView1.Selected,'New Topic');
+        sl := TStringList.Create;
+        sl.Add('New Topic ' + IntToStr(topicCount));
+        sl.Add(IntToStr(topicCount));
+        inc(topicCount);
+
+        DFrameHelpTopic.TreeView1.Items.AddObject(
+        DFrameHelpTopic.TreeView1.Selected,sl.Strings[0],sl);
+        DFrameHelpTopic.TreeView1.Tag := topicCount;
+
+        DFrameHelpTopic.CreateNewTab(sl.Strings[0]);
         Handled := true;
       end;
     end else
@@ -2489,12 +2511,21 @@ begin
     begin
       if DFrameHelpTopic.TreeView1.Focused then
       begin
-        DFrameHelpTopic.TreeView1.Items.AddChild(
-        DFrameHelpTopic.TreeView1.Selected,'New Topic');
+        sl := TStringList.Create;
+        sl.Add('New Topic ' + IntToStr(topicCount));
+        sl.Add(IntToStr(topicCount));
+        inc(topicCount);
+
+        DFrameHelpTopic.TreeView1.Items.AddChildObject(
+        DFrameHelpTopic.TreeView1.Selected,sl.Strings[0],sl);
+        DFrameHelpTopic.TreeView1.Tag := topicCount;
+
+        DFrameHelpTopic.CreateNewTab(sl.Strings[0]);
         Handled := true;
       end;
     end;
   end else
+  // find/search
   if (msg.CharCode = Ord('F')) or (msg.CharCode = Ord('f')) then
   begin
     if Windows.GetKeyState(VK_CONTROL) < 0 then
@@ -2514,7 +2545,26 @@ begin
   begin
     if DFrameHelpTopic.TreeView1.Focused then
     begin
-      DFrameHelpTopic.TreeView1.Selected.Delete;
+      if DFrameHelpTopic.TreeView1.Items.Count = 1 then
+      exit;
+
+      Node := DFrameHelpTopic.TreeView1.Selected;
+      num  := Node.Count;
+      if num < 1 then
+      (DFrameHelpAuthor.Controls[2] as TPageControl).Pages[1].Free
+      else
+      for J := 0 to DFrameHelpAuthor.ControlCount - 1 do
+      begin
+        if (DFrameHelpAuthor.Controls[J] is TPageControl) then
+        begin
+          for K := 0 to (DFrameHelpAuthor.Controls[J] as TPageControl).PageCount - 2 do
+          begin
+            if (DFrameHelpAuthor.Controls[J] as TPageControl).Pages[K].Caption = Node.Text then
+               (DFrameHelpAuthor.Controls[J] as TPageControl).Pages[K].Free;
+          end;
+        end;
+      end;
+      Node.Delete;
       Handled := true;
     end;
   end else
@@ -2718,6 +2768,7 @@ end;
 
 procedure TForm1.JvSpeedButton3Click(Sender: TObject);
 begin
+(*
   if not(DFrameHelpAuthor.FontBold) then
   begin
     DFrameHelpAuthor.CurrText.Style :=
@@ -2732,7 +2783,7 @@ begin
     DFrameHelpAuthor.CurrText.Color := clBlack;
 //    DFrameHelpAuthor.FontColor;
     DFrameHelpAuthor.FontBold := false;
-  end;
+  end;*)
 end;
 
 procedure TForm1.CreateSimpleProgram;

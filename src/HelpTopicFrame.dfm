@@ -54,6 +54,8 @@ object Frame15: TFrame15
         PopupMenu = JvPopupMenu1
         RowSelect = True
         TabOrder = 0
+        OnEnter = TreeView1Enter
+        OnExit = TreeView1Exit
         OnKeyDown = TreeView1KeyDown
         OnKeyPress = TreeView1KeyPress
         Items.Data = {
@@ -99,6 +101,8 @@ object Frame15: TFrame15
         Align = alClient
         Indent = 21
         TabOrder = 0
+        OnEnter = TreeView2Enter
+        OnExit = TreeView2Exit
       end
       object Panel3: TPanel
         Left = 0
@@ -139,6 +143,8 @@ object Frame15: TFrame15
         Align = alClient
         Indent = 21
         TabOrder = 0
+        OnEnter = TreeView3Enter
+        OnExit = TreeView3Exit
         Items.Data = {
           030000001D0000000000000000000000FFFFFFFFFFFFFFFF0000000000000000
           0448544D4C200000000000000000000000FFFFFFFFFFFFFFFF00000000000000
@@ -204,6 +210,7 @@ object Frame15: TFrame15
     end
     object RenameTopic1: TMenuItem
       Caption = 'Rename Topic'
+      OnClick = RenameTopic1Click
     end
   end
 end

@@ -88,3 +88,7 @@ src/Editor.~dpr
 src/ComputerFrame.~pas
 src/ComputerFrame.~dfm
 src/Editor.~dpr
+src/FontColorFrame.~ddp
+src/MembersFrame.~ddp
+src/MembersFrame.~dfm
+src/MembersFrame.~pas

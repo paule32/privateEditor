@@ -22,14 +22,20 @@ type
     Panel2: TPanel;
     JvTreeView1: TJvTreeView;
     JvEdit1: TJvEdit;
+    ListBox1: TListBox;
   private
     { Private declarations }
   public
-    { Public declarations }
+    function getTableList: TListBox;
   end;
 
 implementation
 
 {$R *.dfm}
+
+function TFrame6.getTableList: TListBox;
+begin
+  result := ListBox1;
+end;
 
 end.

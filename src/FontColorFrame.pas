@@ -3,10 +3,10 @@ unit FontColorFrame;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, 
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, JvFullColorSpaces, StdCtrls, JvExStdCtrls, JvCombobox,
   JvFullColorCtrls, Menus, JvMenus, ImgList, JvExControls, JvArrowButton,
-  ExtCtrls, JvColorCombo;
+  ExtCtrls, JvColorCombo, Buttons, RichEdit;
 
 type
   TFrame13 = class(TFrame)
@@ -25,9 +25,17 @@ type
     Label3: TLabel;
     N1: TMenuItem;
     Background1: TMenuItem;
+    ColorDialog1: TColorDialog;
+    SpeedButton1: TSpeedButton;
+    SpeedButton2: TSpeedButton;
+    SpeedButton3: TSpeedButton;
     procedure MenuItem1Click(Sender: TObject);
     procedure FontColor1Click(Sender: TObject);
     procedure FontStyle1Click(Sender: TObject);
+    procedure SpeedButton1Click(Sender: TObject);
+    procedure SpeedButton2Click(Sender: TObject);
+    procedure SpeedButton3Click(Sender: TObject);
+    procedure JvColorComboBox1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -63,6 +71,54 @@ begin
   Form1.DFrameFontStyle.Visible := true;
   Form1.DFrameFontFace.Visible  := false;
   JvArrowButton3.Caption := 'Font Style';
+end;
+
+procedure TFrame13.SpeedButton1Click(Sender: TObject);
+begin
+  if not(ColorDialog1.Execute) then
+  exit;
+  JvColorComboBox2.ColorValue := ColorDialog1.Color;
+
+  Form1.DFrameHelpTopic.CurrentEditor.SelAttributes.Color := ColorDialog1.Color;
+end;
+
+procedure TFrame13.SpeedButton2Click(Sender: TObject);
+var
+  EditFormat: CharFormat2;
+begin
+  if not(ColorDialog1.Execute) then
+  exit;
+
+  JvColorComboBox1.ColorValue := ColorDialog1.Color;
+
+  FillChar(EditFormat, sizeOf(EditFormat), 0);
+  EditFormat.cbSize := sizeOf(EditFormat);
+
+  EditFormat.dwMask      := CFM_BACKCOLOR;
+  EditFormat.crBackColor := ColorDialog1.Color;
+
+  Form1.DFrameHelpTopic.CurrentEditor.Perform(EM_SETCHARFORMAT,SCF_SELECTION,LongInt(@EditFormat));
+end;
+
+procedure TFrame13.SpeedButton3Click(Sender: TObject);
+begin
+  if not(ColorDialog1.Execute) then
+  exit;
+  JvColorComboBox3.ColorValue := ColorDialog1.Color;
+end;
+
+procedure TFrame13.JvColorComboBox1Click(Sender: TObject);
+var
+  EditFormat: CharFormat2;
+begin
+  FillChar(EditFormat, sizeOf(EditFormat), 0);
+  EditFormat.cbSize := sizeOf(EditFormat);
+
+  EditFormat.dwMask      := CFM_BACKCOLOR;
+  EditFormat.crBackColor := JvColorComboBox1.ColorValue;
+
+  Form1.DFrameHelpTopic.CurrentEditor.Perform(EM_SETCHARFORMAT,SCF_SELECTION,LongInt(@EditFormat));
+
 end;
 
 end.
