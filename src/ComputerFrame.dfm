@@ -41,7 +41,7 @@ object Frame16: TFrame16
     object JvCheckBox1: TJvCheckBox
       Left = 8
       Top = 24
-      Width = 77
+      Width = 209
       Height = 26
       Caption = 'Pascal'
       Font.Charset = DEFAULT_CHARSET
@@ -52,11 +52,12 @@ object Frame16: TFrame16
       ParentFont = False
       TabOrder = 0
       LinkedControls = <>
+      AutoSize = False
     end
     object JvCheckBox2: TJvCheckBox
       Left = 8
       Top = 56
-      Width = 82
+      Width = 209
       Height = 26
       Caption = 'BASIC'
       Font.Charset = DEFAULT_CHARSET
@@ -67,11 +68,12 @@ object Frame16: TFrame16
       ParentFont = False
       TabOrder = 1
       LinkedControls = <>
+      AutoSize = False
     end
     object JvCheckBox3: TJvCheckBox
       Left = 8
       Top = 88
-      Width = 84
+      Width = 209
       Height = 26
       Caption = 'dBASE'
       Font.Charset = DEFAULT_CHARSET
@@ -82,6 +84,7 @@ object Frame16: TFrame16
       ParentFont = False
       TabOrder = 2
       LinkedControls = <>
+      AutoSize = False
     end
   end
   object GroupBox2: TGroupBox
@@ -101,7 +104,7 @@ object Frame16: TFrame16
     object JvCheckBox4: TJvCheckBox
       Left = 8
       Top = 24
-      Width = 126
+      Width = 201
       Height = 26
       Caption = 'All Systems'
       Font.Charset = DEFAULT_CHARSET
@@ -112,11 +115,12 @@ object Frame16: TFrame16
       ParentFont = False
       TabOrder = 0
       LinkedControls = <>
+      AutoSize = False
     end
     object JvCheckBox5: TJvCheckBox
       Left = 8
       Top = 56
-      Width = 100
+      Width = 201
       Height = 26
       Caption = 'Windows'
       Font.Charset = DEFAULT_CHARSET
@@ -127,11 +131,12 @@ object Frame16: TFrame16
       ParentFont = False
       TabOrder = 1
       LinkedControls = <>
+      AutoSize = False
     end
     object JvCheckBox6: TJvCheckBox
       Left = 8
       Top = 88
-      Width = 115
+      Width = 201
       Height = 26
       Caption = 'MS - DOS'
       Font.Charset = DEFAULT_CHARSET
@@ -142,11 +147,12 @@ object Frame16: TFrame16
       ParentFont = False
       TabOrder = 2
       LinkedControls = <>
+      AutoSize = False
     end
     object JvCheckBox7: TJvCheckBox
       Left = 8
       Top = 120
-      Width = 68
+      Width = 201
       Height = 26
       Caption = 'Linux'
       Font.Charset = DEFAULT_CHARSET
@@ -157,11 +163,12 @@ object Frame16: TFrame16
       ParentFont = False
       TabOrder = 3
       LinkedControls = <>
+      AutoSize = False
     end
     object JvCheckBox8: TJvCheckBox
       Left = 8
       Top = 152
-      Width = 75
+      Width = 201
       Height = 26
       Caption = 'Amiga'
       Font.Charset = DEFAULT_CHARSET
@@ -172,6 +179,7 @@ object Frame16: TFrame16
       ParentFont = False
       TabOrder = 4
       LinkedControls = <>
+      AutoSize = False
     end
   end
 end

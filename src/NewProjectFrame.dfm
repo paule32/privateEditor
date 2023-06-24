@@ -36,6 +36,7 @@ object Frame8: TFrame8
     ParentFont = False
     SmallImages = NewProject_ImageList
     TabOrder = 0
+    OnClick = NewApplication_ListViewClick
     OnDblClick = NewApplication_ListViewDblClick
   end
   object NewProject_ImageList: TImageList

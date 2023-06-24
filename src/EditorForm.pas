@@ -514,6 +514,9 @@ type
     procedure Console1CommandExecute(Sender: TCustomConsole;
       ACommand: String; var ACommandFinished: Boolean);
     procedure CreateNewButtonClick(Sender: TObject);
+    procedure ProjectNameEditEnter(Sender: TObject);
+    procedure ProjectNameEditExit(Sender: TObject);
+    procedure ProjectNameEditDblClick(Sender: TObject);
   private
     Cv1: TCanvas;
     ircListLimit: Integer;
@@ -573,12 +576,15 @@ type
     procedure SaveIniFile;
 
     procedure uncheck_run_menues;
+    procedure SetEditMisc;
 
     procedure ModifyControl(const AControl: TControl; LS: TStrings);
     procedure ExpandTopLevel;
 
     procedure CreateSimpleMSDOSProgram;
     procedure CreateSimpleWin32Program;
+    procedure CreateSimpleMSDOSdBaseProgram;
+    procedure CreateSimpleWin32dBaseProgram;
 
     procedure JvDesignPanelPaint(Sender: TObject);
     procedure ItemClick(Sender: TObject);
@@ -2590,13 +2596,13 @@ begin
       end;
     end;
   end else
+  // delete items
   if msg.CharCode = VK_DELETE then
   begin
     if DFrameHelpTopic.TreeView1.Focused then
     begin
       if DFrameHelpTopic.TreeView1.Items.Count = 1 then
       exit;
-
       Node := DFrameHelpTopic.TreeView1.Selected;
       num  := Node.Count;
       if num < 1 then
@@ -2865,6 +2871,19 @@ begin
   SynEdit1.SetFocus;
 end;
 
+procedure TForm1.SetEditMisc;
+begin
+  DFrameTeamServer.Visible := false;
+  DFrameHelpAuthor.Visible := false;
+  DFrameHelpTopic .Visible := false;
+
+  DFrameEdit.Visible := true;
+
+  LeftPageControl.Visible := true;
+  MainPageControl.ActivePageIndex := 0;
+  SynEdit1.SetFocus;
+end;
+
 procedure TForm1.CreateSimpleWin32Program;
 begin
   EditPanel.Visible := true;
@@ -2897,15 +2916,28 @@ begin
   ''                                       + sLineBreak +
   'end.'                                   + sLineBreak ;
 
-  DFrameTeamServer.Visible := false;
-  DFrameHelpAuthor.Visible := false;
-  DFrameHelpTopic .Visible := false;
+  SetEditMisc;
+end;
 
-  DFrameEdit.Visible := true;
+procedure TForm1.CreateSimpleWin32dBaseProgram;
+begin
+  EditPanel.Visible := true;
+  SynEdit1.Text :=
+  '// This File was created automatically' + sLineBreak +
+  '// Press F2-key to execute it.'         + sLineBreak +
+  '** End of Header';
 
-  LeftPageControl.Visible := true;
-  MainPageControl.ActivePageIndex := 0;
-  SynEdit1.SetFocus;
+  SetEditMisc;
+end;
+
+procedure TForm1.CreateSimpleMSDOSdBaseProgram;
+begin
+  EditPanel.Visible := true;
+  SynEdit1.Text :=
+  '// This File was created automatically' + sLineBreak +
+  '// Press F2-key to execute it.'         + sLineBreak ;
+
+  SetEditMisc;
 end;
 
 procedure TForm1.Windows64Bit1Click(Sender: TObject);
@@ -2976,6 +3008,73 @@ begin
 
     exit;
   end;
+
+  if Form1.DFrameComputerOS.JvCheckBox5.Checked then
+  begin
+    // Pascal
+    if Form1.DFrameComputerOS.JvCheckBox1.Checked then
+    begin
+      CreateSimpleWin32Program;
+      exit;
+    end else
+    // BASIC
+    if Form1.DFrameComputerOS.JvCheckBox2.Checked then
+    begin
+      exit;
+    end else
+    // dBase
+    if Form1.DFrameComputerOS.JvCheckBox3.Checked then
+    begin
+      CreateSimpleWin32dBaseProgram;
+      exit;
+    end;
+  end else
+  if Form1.DFrameComputerOS.JvCheckBox6.Checked then
+  begin
+    // Pascal
+    if Form1.DFrameComputerOS.JvCheckBox1.Checked then
+    begin
+      CreateSimpleMSDOSProgram;
+      exit;
+    end else
+    // BASIC
+    if Form1.DFrameComputerOS.JvCheckBox2.Checked then
+    begin
+      exit;
+    end else
+    // dBase
+    if Form1.DFrameComputerOS.JvCheckBox3.Checked then
+    begin
+      CreateSimpleMSDOSdBaseProgram;
+      exit;
+    end;
+  end else
+  begin
+    ErrorBox.Text('Information: not yet implemented.');
+    ErrorBox.BringToFront;
+    ErrorBox.Show;
+
+    exit;
+  end;
+end;
+
+procedure TForm1.ProjectNameEditEnter(Sender: TObject);
+begin
+  ProjectNameEdit.Color := clYellow;
+end;
+
+procedure TForm1.ProjectNameEditExit(Sender: TObject);
+begin
+  ProjectNameEdit.Color := clWhite;
+end;
+
+// TODO: !!!
+procedure TForm1.ProjectNameEditDblClick(Sender: TObject);
+begin
+  if not(OpenDialog1.Execute) then
+  exit;
+
+  ProjectNameEdit.Text := 'C:\temp\test.pro';
 end;
 
 end.

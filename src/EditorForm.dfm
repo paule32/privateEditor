@@ -3093,6 +3093,9 @@ object Form1: TForm1
                   AutoSize = False
                   MaxLength = 255
                   TabOrder = 0
+                  OnDblClick = ProjectNameEditDblClick
+                  OnEnter = ProjectNameEditEnter
+                  OnExit = ProjectNameEditExit
                   TextHint = 'Type in the Project Path, and Name'
                 end
                 object CreateNewButton: TJvImgBtn
