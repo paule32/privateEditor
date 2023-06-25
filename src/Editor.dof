@@ -105,10 +105,38 @@ HostApplication=G:\AMIGA-500\paule32\test1\src\windows\start.exe
 Launcher=
 UseLauncher=0
 DebugCWD=
+[Resource DLL Projects]
+Item0=Deutsch (Deutschland)*$00000407*DEU*DEU
+[Misc Files]
+Item0=EditorForm.dfmForms
+[RDP Source Files]
+Item0=EditorForm.dfm
+Item1=AboutBox.dfm
+Item2=InputBox.dfm
+Item3=ErrorBoxForm.dfm
+Item4=InfoBoxForm.dfm
+Item5=DesignerFrame.dfm
+Item6=TeamServerFrame.dfm
+Item7=EditFrame.dfm
+Item8=C64KeyBoard.dfm
+Item9=C64ConfigFrame.dfm
+Item10=MembersFrame.dfm
+Item11=C64DrivesFrame.dfm
+Item12=NewProjectFrame.dfm
+Item13=FoldersLocal.dfm
+Item14=FoldersRemote.dfm
+Item15=HelpAuthorFrame.dfm
+Item16=FontStyleFrame.dfm
+Item17=FontColorFrame.dfm
+Item18=FontFaceFrame.dfm
+Item19=HelpTopicFrame.dfm
+Item20=ComputerFrame.dfm
+Item21=FormatLayoutFrame.dfm
+Item22=Editor.drc
 [Language]
 ActiveLang=
-ProjectLang=
-RootDir=E:\Program Files (x86)\Borland\Delphi7\Bin\
+ProjectLang=$00000409
+RootDir=
 [Version Info]
 IncludeVerInfo=1
 AutoIncBuild=0
