@@ -42,23 +42,13 @@ begin
     exit;
   end;
 
-  if (Form1.DFrameComputerOS.JvCheckBox1.Checked = false)
-  or (Form1.DFrameComputerOS.JvCheckBox2.Checked = false)
-  or (Form1.DFrameComputerOS.JvCheckBox3.Checked = false) then
-  begin
-    ErrorBox.Text('Error: No programming Language given.');
-    ErrorBox.BringToFront;
-    ErrorBox.Show;
-    exit;
-  end;
-
   S := NewApplication_ListView.Selected.Caption;
   if (S = 'Windows 32-Bit App')
   or (S = 'Windows 64-Bit App') then
   begin
     // template code
     Form1.msdosapp := false;
-    if Form1.DFrameComputerOS.JvCheckBox3.Checked then
+    if Form1.DFrameComputerOS.JvCheckBox3.Checked = true then
        Form1.CreateSimpleWin32dBaseProgram else
        Form1.CreateSimpleWin32Program;
   end else
@@ -66,7 +56,10 @@ begin
   begin
     // template code
     Form1.msdosapp := true;
-    Form1.CreateSimpleMSDOSProgram;
+
+    if Form1.DFrameComputerOS.JvCheckBox3.Checked = true then
+       Form1.CreateSimpleMSDOSdBaseProgram else
+       Form1.CreateSimpleMSDOSProgram;
   end;
 end;
 

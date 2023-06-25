@@ -24,7 +24,8 @@ uses
   FontFaceFrame in 'FontFaceFrame.pas' {Frame14: TFrame},
   HelpTopicFrame in 'HelpTopicFrame.pas' {Frame15: TFrame},
   ComputerFrame in 'ComputerFrame.pas' {Frame16: TFrame},
-  InterpreterClasses in 'InterpreterClasses.pas';
+  InterpreterClasses in 'InterpreterClasses.pas',
+  FormatLayoutFrame in 'FormatLayoutFrame.pas' {Frame17: TFrame};
 
 {$R *.res}
 

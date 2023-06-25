@@ -5,22 +5,28 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, 
   Dialogs, ExtCtrls, ImgList, ComCtrls, JvExComCtrls, JvComCtrls, StdCtrls,
-  JvExStdCtrls, JvCheckBox;
+  JvExStdCtrls, JvCheckBox, JvRadioButton;
 
 type
   TFrame16 = class(TFrame)
+    ScrollBox1: TScrollBox;
     Splitter1: TSplitter;
     Splitter2: TSplitter;
     GroupBox1: TGroupBox;
-    JvCheckBox1: TJvCheckBox;
-    JvCheckBox2: TJvCheckBox;
-    JvCheckBox3: TJvCheckBox;
+    JvCheckBox1: TJvRadioButton;
+    JvCheckBox2: TJvRadioButton;
+    JvCheckBox3: TJvRadioButton;
     GroupBox2: TGroupBox;
     JvCheckBox4: TJvCheckBox;
-    JvCheckBox5: TJvCheckBox;
-    JvCheckBox6: TJvCheckBox;
-    JvCheckBox7: TJvCheckBox;
-    JvCheckBox8: TJvCheckBox;
+    JvCheckBox5: TJvRadioButton;
+    JvCheckBox6: TJvRadioButton;
+    JvCheckBox7: TJvRadioButton;
+    JvCheckBox8: TJvRadioButton;
+    GroupBox3: TGroupBox;
+    Splitter3: TSplitter;
+    RadioButton1: TRadioButton;
+    RadioButton2: TRadioButton;
+    RadioButton3: TRadioButton;
   private
     { Private declarations }
   public

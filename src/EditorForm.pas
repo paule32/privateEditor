@@ -20,7 +20,7 @@ uses
   TeamServerFrame, EditFrame, C64KeyBoard, C64ConfigFrame, MembersFrame,
   C64DrivesFrame, NewProjectFrame, FoldersLocal, FoldersRemote,
   HelpTopicFrame, HelpAuthorFrame, FontStyleFrame, FontFaceFrame,
-  FontColorFrame, ComputerFrame,
+  FontColorFrame, ComputerFrame, FormatLayoutFrame,
   JvDesignImp, JclSysInfo,
   JvColorCombo, JvInterpreterFm;
 
@@ -393,6 +393,9 @@ type
     N18: TMenuItem;
     MSDOS32Bit1: TMenuItem;
     JvInterpreterFm1: TJvInterpreterFm;
+    Panel22: TPanel;
+    Splitter19: TSplitter;
+    ScrollBox4: TScrollBox;
     procedure PopupMenu_File_NewClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -551,6 +554,8 @@ type
     DFrameFontFace      : TFrame14;
 
     DFrameComputerOS    : TFrame16;
+    DFrameFormatLayout  : TFrame17;
+
     DFrameHelpTopic     : TFrame15;
 
     DFrameFoldersLocal  : TFrame9;
@@ -565,6 +570,8 @@ type
 
     topicCount: Integer;
     msdosapp  : Boolean;
+
+    tipday: TJvTipOfDay;
 
     procedure TableListBox_MouseDown(
       Sender: TObject;
@@ -752,6 +759,11 @@ begin
   DFrameComputerOS.Align   := alClient;
   DFrameComputerOS.Visible := false;
 
+  DFrameFormatLayout := TFrame17.Create(ScrollBox4);
+  DFrameFormatLayout.Parent  := ScrollBox4;
+  DFrameFormatLayout.Align   := alClient;
+  DFrameFormatLayout.Visible := false;
+
   DFrameHelpTopic := TFrame15.Create(LeftPanel);
   DFrameHelpTopic.Parent  := LeftPanel;
   DFrameHelpTopic.Align   := alClient;
@@ -868,6 +880,8 @@ begin
   DFrameTeamServer.Parent  := Frame_Panel;
   DFrameTeamServer.Align   := alClient;
   DFrameTeamServer.Visible := true;
+
+  tipday := nil;
 end;
 
 procedure TForm1.FormShow(Sender: TObject);
@@ -907,6 +921,7 @@ begin
   LeftPageControl.ActivePageIndex := 2;
   MainPageControl.ActivePageIndex := 8;
 
+  DFrameFormatLayout.Visible := true;
   ProjectNameEdit.SetFocus;
 end;
 
@@ -2788,9 +2803,10 @@ begin
 end;
 
 procedure TForm1.FormResize(Sender: TObject);
-var
-  tipday: TJvTipOfDay;
 begin
+  if tipday <> nil then
+  exit;
+
   tipday := TJvTipOfDay.Create(Form1);
 
   tipday.TipFont.Name := 'Consolas';
@@ -2800,7 +2816,6 @@ begin
   tipday.Tips.Add('Pascal is not dead.');
   tipday.Tips.Add('Pascal is a very good beginner Language (beside BASIc).');
   tipday.Execute;
-  tipday.Free;
 end;
 
 procedure TForm1.NewProjectPageControlChange(Sender: TObject);

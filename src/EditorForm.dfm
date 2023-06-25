@@ -3216,6 +3216,31 @@ object Form1: TForm1
       Cursor = crVSplit
       Align = alClient
       TabOrder = 1
+      object Splitter19: TSplitter
+        Left = 651
+        Top = 1
+        Width = 5
+        Height = 188
+        Align = alRight
+        Color = clSilver
+        ParentColor = False
+      end
+      object Panel22: TPanel
+        Left = 656
+        Top = 1
+        Width = 222
+        Height = 188
+        Align = alRight
+        TabOrder = 0
+        object ScrollBox4: TScrollBox
+          Left = 1
+          Top = 1
+          Width = 220
+          Height = 186
+          Align = alClient
+          TabOrder = 0
+        end
+      end
     end
   end
   object JvGradientCaption1: TJvGradientCaption
@@ -10097,7 +10122,7 @@ object Form1: TForm1
     Left = 593
     Top = 148
     Bitmap = {
-      494C010101000400040032003200FFFFFFFFFF00FFFFFFFFFFFFFFFF424D3600
+      494C010101000400040032003200FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000C8000000320000000100200000000000409C
       000000000000000000000000000000000000FFFFFFFFFFFFFFFFFFFFFFFFFFFF
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
@@ -11395,7 +11420,7 @@ object Form1: TForm1
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000}
+      000000000000000000000000000000000000000000000000000000000000}
   end
   object JvInterpreterFm1: TJvInterpreterFm
     Left = 353
