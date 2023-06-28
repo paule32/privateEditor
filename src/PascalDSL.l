@@ -90,7 +90,8 @@ Z [z|Z]
 {F}{U}{N}{C}{T}{I}{O}{N}      { yy_pascal_count(); return TOK_PAS_FUNCTION; }
 {G}{O}{T}{O}                  { yy_pascal_count(); return TOK_PAS_GOTO; }
 {I}{F}                        { yy_pascal_count(); return TOK_PAS_IF; }
-{I}{M}{P}{L}{E}{M}{E}{N}{T}{A}{T}{I}{O}{N}   { yy_pascal_count(); return TOK_PAS_IMPLEMENTATION; }
+{I}{M}{P}{L}{E}{M}{E}{N}{T}{A}{T}{I}{O}{N}   {
+                                yy_pascal_count(); return TOK_PAS_IMPLEMENTATION; }
 {I}{N}                        { yy_pascal_count(); return TOK_PAS_IN; }
 {I}{N}{T}{E}{R}{F}{A}{C}{E}   { yy_pascal_count(); return TOK_PAS_INTERFACE; }
 {L}{A}{B}{E}{L}               { yy_pascal_count(); return TOK_PAS_LABEL; }

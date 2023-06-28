@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 240
-  Top = 114
+  Left = 192
+  Top = 101
   Width = 1162
   Height = 886
   Color = clBtnFace
@@ -12,6 +12,7 @@ object Form1: TForm1
   KeyPreview = True
   OldCreateOrder = False
   Position = poDesktopCenter
+  OnClose = FormClose
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnResize = FormResize
@@ -2258,7 +2259,7 @@ object Form1: TForm1
         Top = 1
         Width = 648
         Height = 406
-        ActivePage = NewModule_TabSheet
+        ActivePage = C64TabSheet
         Align = alLeft
         Anchors = [akLeft, akTop, akRight, akBottom]
         Font.Charset = DEFAULT_CHARSET
@@ -2971,7 +2972,7 @@ object Form1: TForm1
             end
           end
         end
-        object TabSheet24: TTabSheet
+        object C64TabSheet: TTabSheet
           Caption = 'C-64 Display'
           ImageIndex = 6
           object ScrollBox6: TScrollBox
@@ -2988,24 +2989,34 @@ object Form1: TForm1
             ParentColor = False
             ParentFont = False
             TabOrder = 0
-            object C64Screen: TTntRichEdit
+            object C64Screen: TSynEdit
               Left = 33
               Top = 31
               Width = 562
               Height = 337
-              BevelInner = bvNone
-              BevelOuter = bvNone
-              BorderStyle = bsNone
+              Cursor = crDefault
               Color = 16744448
               Font.Charset = ANSI_CHARSET
               Font.Color = clWhite
               Font.Height = -14
               Font.Name = 'C64 Elite Mono'
               Font.Style = []
-              ParentFont = False
-              ReadOnly = True
               TabOrder = 0
               OnKeyPress = C64ScreenKeyPress
+              BorderStyle = bsNone
+              Gutter.Font.Charset = DEFAULT_CHARSET
+              Gutter.Font.Color = clWindowText
+              Gutter.Font.Height = -13
+              Gutter.Font.Name = 'Courier New'
+              Gutter.Font.Style = []
+              Gutter.Visible = False
+              Gutter.Width = 0
+              HideSelection = True
+              Lines.UnicodeStrings = 'C64Screen'
+              ReadOnly = True
+              ScrollBars = ssNone
+              WordWrap = True
+              FontSmoothing = fsmNone
             end
           end
         end
@@ -3198,6 +3209,10 @@ object Form1: TForm1
             end
           end
         end
+        object SpreadTabSheet: TTabSheet
+          Caption = 'Spread'
+          ImageIndex = 9
+        end
       end
       object Panel8: TPanel
         Left = 655
@@ -3242,6 +3257,14 @@ object Form1: TForm1
         end
       end
     end
+  end
+  object PanelResizer: TPanel
+    Left = 295
+    Top = 288
+    Width = 146
+    Height = 121
+    Caption = 'PanelResizer'
+    TabOrder = 6
   end
   object JvGradientCaption1: TJvGradientCaption
     Active = False
@@ -6412,6 +6435,7 @@ object Form1: TForm1
   end
   object C64ScreenTimer: TTimer
     Enabled = False
+    Interval = 500
     OnTimer = C64ScreenTimerTimer
     Left = 522
     Top = 283
@@ -11425,5 +11449,10 @@ object Form1: TForm1
   object JvInterpreterFm1: TJvInterpreterFm
     Left = 353
     Top = 258
+  end
+  object Timer1: TTimer
+    OnTimer = Timer1Timer
+    Left = 521
+    Top = 319
   end
 end

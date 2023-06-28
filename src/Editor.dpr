@@ -25,12 +25,14 @@ uses
   HelpTopicFrame in 'HelpTopicFrame.pas' {Frame15: TFrame},
   ComputerFrame in 'ComputerFrame.pas' {Frame16: TFrame},
   InterpreterClasses in 'InterpreterClasses.pas',
-  FormatLayoutFrame in 'FormatLayoutFrame.pas' {Frame17: TFrame};
+  FormatLayoutFrame in 'FormatLayoutFrame.pas' {Frame17: TFrame},
+  SpreadFrame in 'SpreadFrame.pas' {Frame18: TFrame},
+  SplashScreen in 'SplashScreen.pas' {SplashForm};
 
 {$R *.res}
 
 begin
   Application.Initialize;
-  Application.CreateForm(TForm1, Form1);
+  Application.CreateForm(TSplashForm, SplashForm);
   Application.Run;
 end.

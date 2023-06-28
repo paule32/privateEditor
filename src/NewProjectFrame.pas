@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, 
-  Dialogs, ComCtrls, ImgList;
+  Dialogs, ComCtrls, ImgList, ExtCtrls;
 
 type
   TFrame8 = class(TFrame)

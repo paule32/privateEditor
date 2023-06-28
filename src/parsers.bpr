@@ -4,7 +4,8 @@
   <MACROS>
     <VERSION value="BCB.06.00"/>
     <PROJECT value="..\dcu\parsers.dll"/>
-    <OBJFILES value="..\dcu\dllmain.obj ..\dcu\lex.pascal.obj ..\dcu\PascalDSL.tab.obj"/>
+    <OBJFILES value="..\dcu\dllmain.obj ..\dcu\lex.pascal.obj ..\dcu\PascalDSL.tab.obj 
+      ..\dcu\lex.basic.obj"/>
     <RESFILES value="parsers.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -71,6 +72,7 @@
       <FILE FILENAME="common.h" FORMNAME="" UNITNAME="common.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="lex.pascal.c" FORMNAME="" UNITNAME="lex.pascal" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="PascalDSL.tab.c" FORMNAME="" UNITNAME="PascalDSL.tab" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="lex.basic.c" FORMNAME="" UNITNAME="lex.basic" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

@@ -9,12 +9,18 @@ MAKE = $(ROOT)\bin\make.exe -$(MAKEFLAGS) -f$**
 DCC = $(ROOT)\bin\dcc32.exe $**
 BRCC = $(ROOT)\bin\brcc32.exe $**
 #------------------------------------------------------------------------------
-PROJECTS = Editor.exe
+PROJECTS = Editor.exe Editor.ENU Editor.DEU
 #------------------------------------------------------------------------------
 default: $(PROJECTS)
 #------------------------------------------------------------------------------
 
 Editor.exe: Editor.dpr
+  $(DCC)
+
+Editor.ENU: ENU\Editor.dpr
+  $(DCC)
+
+Editor.DEU: DEU\Editor.dpr
   $(DCC)
 
 

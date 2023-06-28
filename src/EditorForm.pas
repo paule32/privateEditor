@@ -18,7 +18,7 @@ uses
   IdHTTP, IdFTP, JvTipOfDay, JvCreateProcess, JvDataEmbedded, JvArrowButton,
   ErrorBoxForm, InfoBoxForm, AboutBox, InputBox, DesignerFrame,
   TeamServerFrame, EditFrame, C64KeyBoard, C64ConfigFrame, MembersFrame,
-  C64DrivesFrame, NewProjectFrame, FoldersLocal, FoldersRemote,
+  C64DrivesFrame, NewProjectFrame, FoldersLocal, FoldersRemote, SpreadFrame,
   HelpTopicFrame, HelpAuthorFrame, FontStyleFrame, FontFaceFrame,
   FontColorFrame, ComputerFrame, FormatLayoutFrame,
   JvDesignImp, JclSysInfo,
@@ -27,6 +27,7 @@ uses
 type
   TMyTableListBox = class(TListBox)
   end;
+  TWideStringArray = array of WideString;
 
 var
   C64KeyMapValue : Array[0..9] of String = (
@@ -186,9 +187,8 @@ type
     ImageList3: TImageList;
     ColorDialog1: TColorDialog;
     JvInterpreterProgram1: TJvInterpreterProgram;
-    TabSheet24: TTabSheet;
+    C64TabSheet: TTabSheet;
     ScrollBox6: TScrollBox;
-    C64Screen: TTntRichEdit;
     C64ScreenTimer: TTimer;
     LeftPageControl: TJvPageControl;
     TabSheet1: TTabSheet;
@@ -396,6 +396,10 @@ type
     Panel22: TPanel;
     Splitter19: TSplitter;
     ScrollBox4: TScrollBox;
+    Timer1: TTimer;
+    PanelResizer: TPanel;
+    SpreadTabSheet: TTabSheet;
+    C64Screen: TSynEdit;
     procedure PopupMenu_File_NewClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -451,7 +455,6 @@ type
     procedure SynEdit1DragDrop(Sender, Source: TObject; X, Y: Integer);
     procedure JvInspector1BeforeEdit(Sender: TObject;
       Item: TJvCustomInspectorItem; Edit: TCustomEdit);
-    procedure C64ScreenKeyPress(Sender: TObject; var Key: Char);
     procedure C64ScreenTimerTimer(Sender: TObject);
     procedure DesignerIconListView_StandardMouseDown(Sender: TObject;
       Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
@@ -520,6 +523,9 @@ type
     procedure ProjectNameEditEnter(Sender: TObject);
     procedure ProjectNameEditExit(Sender: TObject);
     procedure ProjectNameEditDblClick(Sender: TObject);
+    procedure Timer1Timer(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure C64ScreenKeyPress(Sender: TObject; var Key: WideChar);
   private
     Cv1: TCanvas;
     ircListLimit: Integer;
@@ -535,8 +541,14 @@ type
   public
 
     C64ScreenMap: Array [1..25, 1..40] of WideChar;
+    C64ScreenMaxCols: Word;
+    C64ScreenMaxRows: Word;
+
+    C64ScreenText: WideString;
+
     C64ScreenCursor: TPoint;
     C64ScreenCursorBlink: Integer;
+
     C64KeyImage: TImage;
 
     dropList  : TStrings;
@@ -556,6 +568,7 @@ type
     DFrameComputerOS    : TFrame16;
     DFrameFormatLayout  : TFrame17;
 
+    DFrameSpread        : TFrame18;
     DFrameHelpTopic     : TFrame15;
 
     DFrameFoldersLocal  : TFrame9;
@@ -610,7 +623,7 @@ implementation
 
 {$R *.dfm}
 uses
-  InterpreterClasses;
+  InterpreterClasses, SplashScreen;
 
 function GetShellFolder(CSIDLFolder : integer) : string;
 begin
@@ -677,8 +690,12 @@ var
   TableList : TStringList;
   SomeColor : TColor;
   xpos, ypos: Integer;
-
+  row, col  : Integer;
+  letter1, letter2: Char;
 begin
+  SplashForm.ProgressBar1.Position := 10;
+
+  Form1.DoubleBuffered := True;
   has_errors := false;
 
   ErrorBox := TErrorBox.Create(Form1);
@@ -707,6 +724,9 @@ begin
   DFrameC64Drives.Parent  := Panel8;
   DFrameC64Drives.Align   := alClient;
   DFrameC64Drives.Visible := false;
+
+  SplashForm.ProgressBar1.Position := 20;
+
 
 //  DFrameC64Config.ValueListEditor1.InsertRow('kkk','0000',true);
 //  DFrameC64Config.ValueListEditor1.ItemProps['kkk'].EditStyle := esSimple;
@@ -770,6 +790,8 @@ begin
   DFrameHelpTopic.CreateNewTab('Index Page');
   DFrameHelpTopic.Visible := false;
 
+  SplashForm.ProgressBar1.Position := 30;
+
   // interpreter
   initInterpreter;
 
@@ -778,6 +800,10 @@ begin
 
   ypos := 0;
   xpos := 0;
+
+  C64ScreenMaxCols     := 40;
+  C64ScreenMaxRows     := 25;
+  C64ScreenCursorBlink := 0;
 
   // fill C64ScreenMap[dx,dy] with #32
   while (true) do
@@ -798,7 +824,7 @@ begin
       C64ScreenMap[ypos, xpos] := WideChar($E000 + Ord(' '));
     end;
   end;
-  C64ScreenCursorBlink := 0;
+
 
   DFrame := TFrame1.Create(ScrollBox3);
   DFrame.Parent  := ScrollBox3;
@@ -833,6 +859,8 @@ begin
   begin
     AddFunction('dummy', 'WriteLn', PascalAdapter_WriteLn, 1, [varString], varString);
   end;
+
+  SplashForm.ProgressBar1.Position := 40;
 
   EventMethodeListBox.InsertRow('Caption','Text1',true);
   EventMethodeListBox.InsertRow('Height' ,'0'    ,true);
@@ -881,7 +909,39 @@ begin
   DFrameTeamServer.Align   := alClient;
   DFrameTeamServer.Visible := true;
 
+  SplashForm.ProgressBar1.Position := 75;
+
+  // spread sheet
+  DFrameSpread := TFrame18.Create(SpreadTabSheet);
+  DFrameSpread.Parent  := SpreadTabSheet;
+  DFrameSpread.Align   := alClient;
+
+  DFrameSpread.AdvStringGrid1.BeginUpdate;
+  DFrameSpread.AdvStringGrid1.ColumnHeaders.Add(''); // left-top corner
+  DFrameSpread.AdvStringGrid1.RowHeaders   .Add(''); // left-top corner
+  for I := 1 to 26 do
+  begin
+    letter1 := Chr(Ord('A') + i - 1);
+    DFrameSpread.AdvStringGrid1.ColumnHeaders.Add(letter1);
+  end;
+  for I := 1 to 26 do
+  begin
+    letter1 := Chr(Ord('A') + (I - 1) div 26);
+    letter2 := Chr(Ord('A') + (I - 1) mod 26);
+    DFrameSpread.AdvStringGrid1.ColumnHeaders.Add(letter1 + letter2);
+  end;
+
+  SplashForm.ProgressBar1.Position := 80;
+
+  for I := 1 to 2048 do
+  DFrameSpread.AdvStringGrid1.RowHeaders.Add(IntToStr(I));
+  DFrameSpread.AdvStringGrid1.EndUpdate;
+  DFrameSpread.Visible := true;
+
+  PanelResizer.Visible := true;
   tipday := nil;
+
+  SplashForm.ProgressBar1.Position := 90;
 end;
 
 procedure TForm1.FormShow(Sender: TObject);
@@ -920,6 +980,9 @@ begin
 
   LeftPageControl.ActivePageIndex := 2;
   MainPageControl.ActivePageIndex := 8;
+
+  SplashForm.ProgressBar1.Position := 100;
+  SplashForm.Hide;
 
   DFrameFormatLayout.Visible := true;
   ProjectNameEdit.SetFocus;
@@ -1073,6 +1136,9 @@ end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
 begin
+  Timer1.Enabled := false;
+  C64ScreenTimer.Enabled := false;
+  
   SaveIniFile;
   C64KeyImage.Free;
 
@@ -1084,6 +1150,8 @@ begin
   DFrameC64KeyBoard.Free;
   DFrameC64Config.Free;
   DFrameC64Drives.Free;
+
+  SplashForm.ProgressBar1.Position := 30;
 
   DFrameFoldersLocal.Free;
   DFrameFoldersRemote.Free;
@@ -1100,10 +1168,13 @@ begin
   Session1.Close;
   Session1.Free;
 
-  Form.Free;
+  SplashForm.ProgressBar1.Position := 50;
 
   ErrorBox.Free;
   InfoBox.Free;
+
+  SplashForm.ProgressBar1.Position := 70;
+  SplashForm.Free;
 end;
 
 procedure TForm1.PopupMenu_Help_AboutClick(Sender: TObject);
@@ -2045,14 +2116,17 @@ end;
 
 function TForm1.WriteToC64Screen(X,Y: Integer; AString: WideString): Integer;
 var
-  WStr  : WideString;
-  I     : Integer;
-  ypos, xpos: Integer;
+  wstr: WideString;
+  I,J   : Integer;
+  xpos,ypos : Integer;
+  row, col: Integer;
   finish: Boolean;
+  text: WideString;
 begin
   xpos := 1;
   ypos := 0;
 
+  try
   while (true) do
   begin
     if ypos+1 > 25 then
@@ -2096,38 +2170,33 @@ begin
 
   while (true) do
   begin
-    if ypos >= 25 then
+    if (xpos+1 > 40) and (ypos+1 > 25) then
+    break;
+  
+    if ypos+1 > 25 then
     break else
     inc(ypos);
     while (true) do
     begin
-      if xpos >= 40 then
+    if (xpos+1 > 40) and (ypos+1 > 25) then
+    break;
+      if xpos+1 > 40 then
       begin
         xpos := 0;
         inc(ypos);
-        if ypos >= 25 then
-        break;
       end;
+      if ypos+1 > 25 then
+      break;
       inc(xpos);
       WStr := WStr + C64ScreenMap[ypos, xpos];
     end;
-    xpos := 1;
-  end;
-
-  while (true) do
-  begin
-    if xpos >= 40 then
-    begin
-      xpos := 0;
-      inc(ypos);
-    end;
-    if ypos >= 25 then
-    break;
-    inc(xpos);
-    WStr := WStr + C64ScreenMap[ypos, xpos];
   end;
 
   C64Screen.Lines.Text := WStr;
+  except
+    xpos := 0;
+    ypos := 0;
+  end
 end;
 
 procedure TGroupBox_Create(var Value: Variant; Args: TJvInterpreterArgs);
@@ -2135,34 +2204,18 @@ begin
   Value := O2V(TGroupBox.Create(V2O(Args.Values[0]) as TComponent));
 end;
 
-procedure TForm1.C64ScreenKeyPress(Sender: TObject; var Key: Char);
-begin
- key := #0;
-end;
-
 procedure TForm1.C64ScreenTimerTimer(Sender: TObject);
+var
+  xpos: Integer;
 begin
   if C64ScreenCursorBlink = 0 then
   begin
     C64ScreenCursorBlink := 1;
-    C64ScreenTimer.Enabled := false;
-
-    WriteToC64Screen(
-    C64ScreenCursor.X,
-    C64ScreenCursor.Y,WideChar($220));
-
-    C64ScreenTimer.Enabled := true;
+    WriteToC64Screen(xpos,C64ScreenCursor.Y,WideChar($220));
   end else
-  if C64ScreenCursorBlink = 1 then
   begin
     C64ScreenCursorBlink := 0;
-    C64ScreenTimer.Enabled := false;
-
-    WriteToC64Screen(
-    C64ScreenCursor.X,
-    C64ScreenCursor.Y,' ');
-
-    C64ScreenTimer.Enabled := true;
+    WriteToC64Screen(xpos,C64ScreenCursor.Y,' ');
   end;
 end;
 
@@ -2554,8 +2607,64 @@ var
   Node, Child: TTreeNode;
   sheet: TTabSheet;
   I, J, K, num: Integer;
+  image: TImage;
+  key : Char;
   S: String;
 begin
+  if MainPageControl.ActivePage = C64TabSheet then
+  begin
+    image := TImage.Create(nil);
+    try
+      key := Chr(Ord(msg.CharCode));
+      case key of
+        '1': image.Tag := 1;
+        '2': image.Tag := 2;
+        '3': image.Tag := 3;
+        '4': image.Tag := 4;
+        '5': image.Tag := 5;
+        '6': image.Tag := 6;
+        '7': image.Tag := 7;
+        '8': image.Tag := 8;
+        '9': image.Tag := 9;
+        '0': image.Tag := 10;
+
+        'Q','q': image.Tag := 17;
+        'W','w': image.Tag := 18;
+        'E','e': image.Tag := 19;
+        'R','r': image.Tag := 20;
+        'T','t': image.Tag := 21;
+        'Z','z': image.Tag := 22;
+        'U','u': image.Tag := 23;
+        'I','i': image.Tag := 24;
+        'O','o': image.Tag := 25;
+        'P','p': image.Tag := 26;
+
+        'A','a': image.Tag := 33;
+        'S','s': image.Tag := 34;
+        'D','d': image.Tag := 35;
+        'F','f': image.Tag := 36;
+        'G','g': image.Tag := 37;
+        'H','h': image.Tag := 38;
+        'J','j': image.Tag := 39;
+        'K','k': image.Tag := 40;
+        'L','l': image.Tag := 41;
+
+        'Y','y': image.Tag := 48;
+        'X','x': image.Tag := 49;
+        'C','c': image.Tag := 50;
+        'V','v': image.Tag := 51;
+        'B','b': image.Tag := 52;
+        'N','n': image.Tag := 53;
+        'M','m': image.Tag := 54;
+
+        ';':  image.Tag := 55;
+        ':':  image.Tag := 56;
+      end;
+      DFrameC64KeyBoard.Image2Click(image);
+    finally
+      image.Free;
+    end;
+  end else
   if (Msg.CharCode = Ord('N')) then
   begin
     // add normal topic
@@ -2805,7 +2914,16 @@ end;
 procedure TForm1.FormResize(Sender: TObject);
 begin
   if tipday <> nil then
-  exit;
+  begin
+    Timer1.Enabled := true;
+    PanelResizer.BringToFront;
+    PanelResizer.Align := alClient;
+    PanelResizer.Visible := true;
+    exit;
+  end;
+
+  PanelResizer.BringToFront;
+  PanelResizer.Visible := true;
 
   tipday := TJvTipOfDay.Create(Form1);
 
@@ -3090,6 +3208,32 @@ begin
   exit;
 
   ProjectNameEdit.Text := 'C:\temp\test.pro';
+end;
+
+procedure TForm1.Timer1Timer(Sender: TObject);
+begin
+  PanelResizer.Visible := false;
+end;
+
+procedure TForm1.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  Hide;
+
+  SplashForm.BringToFront;
+  SplashForm.ProgressBar1.Position := 20;
+  SplashForm.Caption := 'Free Memory ...';
+  SplashForm.Show;
+
+  Application.ProcessMessages;
+  Sleep(2500);
+
+  Action := caFree;
+  Application.Terminate;
+end;
+
+procedure TForm1.C64ScreenKeyPress(Sender: TObject; var Key: WideChar);
+begin
+  key := #0
 end;
 
 end.

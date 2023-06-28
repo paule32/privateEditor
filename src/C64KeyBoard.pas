@@ -93,9 +93,45 @@ implementation
 uses
   EditorForm;
 
+var
+  C64KeyCharMap: Array[0..61] of Char = (
+    ' ','1','2','3','4','5','6','7','8','9','0',' ',' ' ,' ',' ',' ',
+    ' ','Q','W','E','R','T','Y','U','I','O','P','@','''',' ',' ',
+    ' ',' ','A','S','D','F','G','H','J','K','L',' ',' ' ,' ',' ',
+    ' ',' ','Z','X','C','V','B','N','M','<','>','?',' ' ,' ',' ',
+    ' '
+  );
+
 procedure TFrame4.Image2Click(Sender: TObject);
+var
+  I, key: Integer;
+  xpos, ypos: Word;
 begin
-  ShowMessage('onclick: ' + IntToStr((Sender as TImage).Tag));
+  key := (Sender as TImage).Tag;
+
+  xpos := Form1.C64ScreenCursor.X;
+  ypos := Form1.C64ScreenCursor.Y;
+
+  for I := 1 to 62 do
+  begin
+    if key = i then
+    begin
+      Form1.WriteToC64Screen(xpos,ypos,
+      C64KeyCharMap[i]);
+
+      inc(xpos);
+      if xpos > 40 then
+      begin
+        inc(ypos);
+        xpos := 1;
+      end;
+
+      break;
+    end;
+  end;
+
+  Form1.C64ScreenCursor.X := xpos;
+  Form1.C64ScreenCursor.Y := ypos;
 end;
 
 procedure TFrame4.Image2MouseMove(Sender: TObject; Shift: TShiftState; X,
