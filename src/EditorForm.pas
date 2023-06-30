@@ -688,7 +688,7 @@ var
   I,J       : Integer;
   InspCat   : TJvInspectorCustomCategoryItem;
   TableList : TStringList;
-  SomeColor : TColor;
+  text      : WideString;
   xpos, ypos: Integer;
   row, col  : Integer;
   letter1, letter2: Char;
@@ -717,6 +717,12 @@ begin
   DFrameC64Config := TFrame5.Create(C64ConfigTabSheet);
   DFrameC64Config.Parent  := C64ConfigTabSheet;
   DFrameC64Config.Align   := alClient;
+
+  DFrameC64Config.ListBox2.Items.BeginUpdate;
+  for I := 0 to 127 do
+  DFrameC64Config.ListBox2.Items.Add(IntToStr(I));
+  DFrameC64Config.ListBox2.Items.EndUpdate;
+
   DFrameC64Config.Visible := false;
 
   // c64 drives
@@ -798,32 +804,28 @@ begin
   IniFile_IDE_Language := 'ENG';
   LoadIniFile;
 
-  ypos := 0;
-  xpos := 0;
+  ypos := 1;
+  xpos := 1;
 
   C64ScreenMaxCols     := 40;
   C64ScreenMaxRows     := 25;
+
+  C64ScreenCursor.X    := xpos;
+  C64ScreenCursor.Y    := ypos;
+
   C64ScreenCursorBlink := 0;
 
   // fill C64ScreenMap[dx,dy] with #32
-  while (true) do
+  text := '';
+  for row := 1 to 25 do
   begin
-    if ypos >= 25 then
-    break;
-    inc(ypos);
-    while (true) do
+    for col := 1 to 40 do
     begin
-      if xpos >= 40 then
-      begin
-        xpos := 0;
-        inc(ypos);
-      end;
-      if ypos >= 25 then
-      break;
-      inc(xpos);
-      C64ScreenMap[ypos, xpos] := WideChar($E000 + Ord(' '));
+      C64ScreenMap[row,col] := WideChar($E000 + Ord(' '));
+      text := text + C64ScreenMap[row,col];
     end;
   end;
+  C64Screen.Lines.Text := text;
 
 
   DFrame := TFrame1.Create(ScrollBox3);
@@ -2116,87 +2118,76 @@ end;
 
 function TForm1.WriteToC64Screen(X,Y: Integer; AString: WideString): Integer;
 var
-  wstr: WideString;
+  text: WideString;
+  neu : WideString;
   I,J   : Integer;
   xpos,ypos : Integer;
   row, col: Integer;
-  finish: Boolean;
-  text: WideString;
+
+  procedure helper(row,col:Integer);
+  begin
+    if ypos >= 25 then
+    begin
+    (*
+      text := '';
+      neu  := '';
+
+      for row := 2 to 25 do
+      text    := text + C64Screen.Lines.Strings[row-2];
+      for col := 1 to 40 do
+      begin
+        C64ScreenMap[25,col] := WideChar($E000 + Ord(' '));
+        neu := neu + WideChar($E000 + Ord(' '));
+      end;
+      text := text + neu;
+
+      C64Screen.Lines.Text := text;
+      xpos := 1;
+      ypos := 25;
+*)
+      C64ScreenCursor.X := 1;
+      C64ScreenCursor.Y := 1;
+    end;
+  end;
 begin
-  xpos := 1;
-  ypos := 0;
+  C64ScreenCursor.X := X;
+  C64ScreenCursor.Y := Y;
 
-  try
-  while (true) do
+  xpos := X;
+  ypos := Y;
+
+  for I := 1 to Length(AString) do
   begin
-    if ypos+1 > 25 then
-    break;
-    inc(ypos);
-    while (true) do
+    C64ScreenMap[ypos,xpos] := WideChar($E000 + Ord(AString[I]));
+    xpos := xpos + 1;
+    DFrameC64Config.Label3.Caption := 'xpos: ' + IntToStr(xpos);
+    DFrameC64Config.Label4.Caption := 'ypos: ' + IntToStr(ypos);
+    if xpos >= 40 then
     begin
-      if xpos+1 > 40 then
+      xpos := 1;
+      ypos := ypos + 1;
+      if ypos > 24 then
       begin
-        xpos := 0;
-        inc(ypos);
-        if ypos >= 25 then
-        break;
+        ypos := 1;
+        C64ScreenCursor.X := xpos;
+        C64ScreenCursor.Y := ypos;
       end;
-      inc(xpos);
-      if (Y = ypos) and (X = xpos) then
-      begin
-        for I := 1 to Length(AString) do
-        begin
-          C64ScreenMap[ypos, xpos] := WideChar($E000 + Ord(AString[I]));
-          if xpos >= 40 then
-          begin
-            xpos := 0;
-            inc(ypos);
-          end;
-          if ypos >= 25 then
-          ypos := 1;
-          inc(xpos);
-        end;
-        break;
-      end;
-    end;
-    xpos := 1;
-  end;
-
-  xpos := 0;
-  ypos := 0;
-
-//  C64Screen.Lines.Clear;
-  WStr := '';
-
-  while (true) do
-  begin
-    if (xpos+1 > 40) and (ypos+1 > 25) then
-    break;
-  
-    if ypos+1 > 25 then
-    break else
-    inc(ypos);
-    while (true) do
-    begin
-    if (xpos+1 > 40) and (ypos+1 > 25) then
-    break;
-      if xpos+1 > 40 then
-      begin
-        xpos := 0;
-        inc(ypos);
-      end;
-      if ypos+1 > 25 then
-      break;
-      inc(xpos);
-      WStr := WStr + C64ScreenMap[ypos, xpos];
     end;
   end;
 
-  C64Screen.Lines.Text := WStr;
-  except
-    xpos := 0;
-    ypos := 0;
-  end
+  text := '';
+  for row := 1 to 25 do
+  begin
+    for col := 1 to 40 do
+    begin
+      text := text + C64ScreenMap[row, col];
+    end;
+  end;
+
+  C64Screen.Lines.Text := text;
+
+//  C64ScreenCursor.X := xpos;
+//  C64ScreenCursor.Y := ypos;
 end;
 
 procedure TGroupBox_Create(var Value: Variant; Args: TJvInterpreterArgs);
@@ -2205,17 +2196,19 @@ begin
 end;
 
 procedure TForm1.C64ScreenTimerTimer(Sender: TObject);
-var
-  xpos: Integer;
 begin
   if C64ScreenCursorBlink = 0 then
   begin
     C64ScreenCursorBlink := 1;
-    WriteToC64Screen(xpos,C64ScreenCursor.Y,WideChar($220));
+    WriteToC64Screen(
+    C64ScreenCursor.X,
+    C64ScreenCursor.Y,WideChar($220));
   end else
   begin
     C64ScreenCursorBlink := 0;
-    WriteToC64Screen(xpos,C64ScreenCursor.Y,' ');
+    WriteToC64Screen(
+    C64ScreenCursor.X,
+    C64ScreenCursor.Y,' ');
   end;
 end;
 
@@ -2611,6 +2604,7 @@ var
   key : Char;
   S: String;
 begin
+  // C64 input:
   if MainPageControl.ActivePage = C64TabSheet then
   begin
     image := TImage.Create(nil);
@@ -2659,6 +2653,14 @@ begin
 
         ';':  image.Tag := 55;
         ':':  image.Tag := 56;
+
+        #32: image.Tag := 61;
+        #13: image.Tag := 45;
+
+        Chr(VK_UP   ): image.Tag := 59;
+        Chr(VK_DOWN ): image.Tag := 59;
+        Chr(VK_LEFT ): image.Tag := 60;
+        Chr(VK_RIGHT): image.Tag := 60;
       end;
       DFrameC64KeyBoard.Image2Click(image);
     finally
