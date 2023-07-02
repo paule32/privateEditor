@@ -190,4 +190,3 @@ int  __declspec(dllexport) yy_pascal_lex_get_line(void);
 int  __declspec(dllexport) yy_pascal_lex_getlines(void);
 
 BOOL __declspec(dllexport) yy_pascal_lex_main(char* filename);
-

@@ -3,17 +3,16 @@
 <PROJECT>
   <MACROS>
     <VERSION value="BCB.06.00"/>
-    <PROJECT value="E:\Projekte\SWIPL\SWIPEL_ZWAP\src\lang\dcu\parsers.dll"/>
-    <OBJFILES value="..\dcu\dllmain.obj ..\dcu\dBaseDSL.tab.obj ..\dcu\lex.basic.obj 
-      ..\dcu\lex.dbase.obj ..\dcu\lex.pascal.obj ..\dcu\PascalDSL.tab.obj"/>
-    <RESFILES value="parsers.res"/>
+    <PROJECT value="E:\Projekte\SWIPL\SWIPEL_ZWAP\src\lang\dcu\PascalDSL.dll"/>
+    <OBJFILES value="..\dcu\dllmainPascal.obj ..\dcu\PascalDSL.tab.obj"/>
+    <RESFILES value="PascalDSL.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
     <DEFFILE value=""/>
     <RESDEPEN value="$(RESFILES)"/>
     <LIBFILES value=""/>
-    <LIBRARIES value=""/>
-    <SPARELIBS value=""/>
+    <LIBRARIES value="rtl.lib"/>
+    <SPARELIBS value="rtl.lib"/>
     <PACKAGES value="vcl.bpi rtl.bpi dbrtl.bpi adortl.bpi vcldb.bpi vclx.bpi bdertl.bpi 
       vcldbx.bpi ibxpress.bpi dsnap.bpi cds.bpi bdecds.bpi qrpt.bpi teeui.bpi 
       teedb.bpi tee.bpi dss.bpi teeqr.bpi visualclx.bpi visualdbclx.bpi 
@@ -29,8 +28,8 @@
     <RELEASELIBPATH value="$(BCB)\lib\release"/>
     <LINKER value="ilink32"/>
     <USERDEFINES value=""/>
-    <SYSDEFINES value="NO_STRICT;_NO_VCL;_RTLDLL;USEPACKAGES"/>
-    <MAINSOURCE value="parsers.bpf"/>
+    <SYSDEFINES value="NO_STRICT;_RTLDLL"/>
+    <MAINSOURCE value="PascalDSL.bpf"/>
     <INCLUDEPATH value="E:\Projekte\SWIPL\SWIPEL_ZWAP\src\lang\src;&quot;E:\Program Files (x86)\Borland\CBuilder6\Include&quot;;&quot;E:\Program Files (x86)\Borland\CBuilder6\Include\Vcl&quot;;&quot;E:\Program Files (x86)\Borland\CBuilder6\Projects&quot;;&quot;E:\Program Files (x86)\Borland\CBuilder6\Projects\Lib&quot;;E:\Projekte\jedi\jcl\jcl\lib\c6;E:\Projekte\jedi\jcl\jcl\packages\c6;E:\Projekte\jedi\jcl\jcl\source;E:\Projekte\jedi\jcl\jcl\source\common;E:\Projekte\jedi\jcl\jcl\source\include;E:\Projekte\jedi\jcl\jcl\source\include\jedi;E:\Projekte\jedi\jcl\jcl\source\vcl;E:\Projekte\jedi\jcl\jcl\source\windows;E:\Projekte\jedi\jcl\jcl\packages;E:\Projekte\jedi\jvcl\jvcl\common;E:\Projekte\jedi\jvcl\jvcl\packages\c6;E:\Projekte\jedi\jvcl\jvcl\resources;E:\Projekte\jedi\jvcl\jvcl\include"/>
     <LIBPATH value="E:\Projekte\SWIPL\SWIPEL_ZWAP\src\lang\src;&quot;E:\Program Files (x86)\Borland\CBuilder6\Lib\Obj&quot;;&quot;E:\Program Files (x86)\Borland\CBuilder6\Lib&quot;;&quot;E:\Program Files (x86)\Borland\CBuilder6\Projects\Lib&quot;;&quot;E:\Program Files (x86)\Borland\CBuilder6\Projects\Bpl&quot;"/>
     <WARNINGS value="-w-par"/>
@@ -52,7 +51,7 @@
       -IE:\Projekte\jedi\jvcl\jvcl\packages\c6 
       -IE:\Projekte\jedi\jvcl\jvcl\resources 
       -IE:\Projekte\jedi\jvcl\jvcl\include -src_suffix cpp -boa"/>
-    <CFLAG1 value="-WD -O2 -Vx -Ve -RT- -VF -C -fp -ff -X- -a8 -6 -b- -k- -vi -tWD -tWM- -c"/>
+    <CFLAG1 value="-WD -O2 -Vx -Ve -VF -C -fp -ff -X- -a8 -6 -b- -k- -vi -tWD -tWM -c"/>
     <PFLAGS value="-N2E:\Projekte\SWIPL\SWIPEL_ZWAP\src\lang\dcu 
       -N0E:\Projekte\SWIPL\SWIPEL_ZWAP\src\lang\dcu -$Y- -$U -$Q -$L- -$D- -$C- 
       -$A8 -v -JPHNE -M"/>
@@ -63,22 +62,16 @@
     <OTHERFILES value=""/>
   </OPTIONS>
   <LINKER>
-    <ALLOBJ value="c0d32.obj $(PACKAGES) $(OBJFILES)"/>
+    <ALLOBJ value="c0d32.obj Memmgr.Lib sysinit.obj $(OBJFILES)"/>
     <ALLRES value="$(RESFILES)"/>
-    <ALLLIB value="$(LIBFILES) $(LIBRARIES) import32.lib cw32i.lib"/>
+    <ALLLIB value="$(LIBFILES) $(LIBRARIES) import32.lib cp32mti.lib"/>
     <OTHERFILES value=""/>
   </LINKER>
   <FILELIST>
-      <FILE FILENAME="parsers.res" FORMNAME="" UNITNAME="parsers.res" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="parsers.bpf" FORMNAME="" UNITNAME="parsers" CONTAINERID="BPF" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="dllmain.cpp" FORMNAME="" UNITNAME="dllmain" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="dBaseDSL.tab.c" FORMNAME="" UNITNAME="dBaseDSL.tab.c" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="dllmain.cpp" FORMNAME="" UNITNAME="dllmain.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="lex.basic.c" FORMNAME="" UNITNAME="lex.basic.c" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="lex.dbase.c" FORMNAME="" UNITNAME="lex.dbase.c" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="lex.pascal.c" FORMNAME="" UNITNAME="lex.pascal.c" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="PascalDSL.tab.c" FORMNAME="" UNITNAME="PascalDSL.tab.c" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="common.h" FORMNAME="" UNITNAME="common.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="PascalDSL.res" FORMNAME="" UNITNAME="PascalDSL.res" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="PascalDSL.bpf" FORMNAME="" UNITNAME="PascalDSL" CONTAINERID="BPF" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="dllmainPascal.cpp" FORMNAME="" UNITNAME="dllmainPascal" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="PascalDSL.tab.c" FORMNAME="" UNITNAME="PascalDSL.tab" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

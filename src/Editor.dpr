@@ -27,7 +27,12 @@ uses
   InterpreterClasses in 'InterpreterClasses.pas',
   FormatLayoutFrame in 'FormatLayoutFrame.pas' {Frame17: TFrame},
   SpreadFrame in 'SpreadFrame.pas' {Frame18: TFrame},
-  SplashScreen in 'SplashScreen.pas' {SplashForm};
+  SplashScreen in 'SplashScreen.pas' {SplashForm},
+  EditorFrame in 'EditorFrame.pas' {Frame19: TFrame},
+  ChatFrame in 'ChatFrame.pas' {Frame20: TFrame},
+  OptionsFrame in 'OptionsFrame.pas' {Frame21: TFrame},
+  EnvironmentFrame in 'EnvironmentFrame.pas' {Frame22: TFrame},
+  LeftPanelFrame in 'LeftPanelFrame.pas' {Frame23: TFrame};
 
 {$R *.res}
 

@@ -1,9 +1,9 @@
-E:\msys64\usr\bin\flex.exe     -Pbasic  BasicDSL.l
+flex     -Pbasic  BasicDSL.l
 
-E:\msys64\usr\bin\bison.exe -d -ppascal PascalDSL.y
-E:\msys64\usr\bin\flex.exe     -Ppascal PascalDSL.l
+bison -d -ppascal PascalDSL.y
+flex     -Ppascal PascalDSL.l
 
-E:\msys64\usr\bin\bison.exe -d -pdbase  dBaseDSL.y
-E:\msys64\usr\bin\flex.exe     -Pdbase  dBaseDSL.l
+bison -d -pdbase  dBaseDSL.y
+flex     -Pdbase  dBaseDSL.l
 
 pause

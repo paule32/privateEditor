@@ -81,7 +81,7 @@ begin
     Edit.Show;
     inc(count);
 
-    Form1.JvInspector1.AddComponent(Edit,Edit.Name,false);
+    Form1.DFrameLeftPanel.JvInspector1.AddComponent(Edit,Edit.Name,false);
     JvDesignPanel1.Surface.Select(Edit);
   end else
   if ctxt = 'TButton' then
@@ -99,7 +99,7 @@ begin
     Button.Show;
     inc(count);
 
-    Form1.JvInspector1.AddComponent(Button,Button.Name,false);
+    Form1.DFrameLeftPanel.JvInspector1.AddComponent(Button,Button.Name,false);
     JvDesignPanel1.Surface.Select(Button);
   end else
   if ctxt = 'TComboBox' then
@@ -117,7 +117,7 @@ begin
     ComboBox.Show;
     inc(count);
 
-    Form1.JvInspector1.AddComponent(ComboBox,ComboBox.Name,false);
+    Form1.DFrameLeftPanel.JvInspector1.AddComponent(ComboBox,ComboBox.Name,false);
     JvDesignPanel1.Surface.Select(ComboBox);
   end else
   if ctxt = 'TImage' then
@@ -134,7 +134,7 @@ begin
     Image.Show;
     inc(count);
 
-    Form1.JvInspector1.AddComponent(Image,Image.Name,false);
+    Form1.DFrameLeftPanel.JvInspector1.AddComponent(Image,Image.Name,false);
     JvDesignPanel1.Surface.Select(Image);
   end else
   if ctxt = 'TListBox' then
@@ -151,7 +151,7 @@ begin
     ListBox.Show;
     inc(count);
 
-    Form1.JvInspector1.AddComponent(ListBox,ListBox.Name,false);
+    Form1.DFrameLeftPanel.JvInspector1.AddComponent(ListBox,ListBox.Name,false);
     JvDesignPanel1.Surface.Select(ListBox);
   end else
   if ctxt = 'TScrollBar' then
@@ -168,7 +168,7 @@ begin
     ScrollBar.Show;
     inc(count);
 
-    Form1.JvInspector1.AddComponent(ScrollBar,ScrollBar.Name,false);
+    Form1.DFrameLeftPanel.JvInspector1.AddComponent(ScrollBar,ScrollBar.Name,false);
     JvDesignPanel1.Surface.Select(ScrollBar);
   end else
   if ctxt = 'TScrollBox' then
@@ -185,7 +185,7 @@ begin
     ScrollBox.Show;
     inc(count);
 
-    Form1.JvInspector1.AddComponent(ScrollBox,ScrollBox.Name,false);
+    Form1.DFrameLeftPanel.JvInspector1.AddComponent(ScrollBox,ScrollBox.Name,false);
     JvDesignPanel1.Surface.Select(ScrollBox);
   end else
   if ctxt = 'TMemo' then
@@ -202,7 +202,7 @@ begin
     Memo.Show;
     inc(count);
 
-    Form1.JvInspector1.AddComponent(Memo,Memo.Name,false);
+    Form1.DFrameLeftPanel.JvInspector1.AddComponent(Memo,Memo.Name,false);
     JvDesignPanel1.Surface.Select(Memo);
   end else
   if ctxt = 'TSynEdit' then
@@ -219,7 +219,7 @@ begin
     SynEdit.Show;
     inc(count);
 
-    Form1.JvInspector1.AddComponent(SynEdit,SynEdit.Name,false);
+    Form1.DFrameLeftPanel.JvInspector1.AddComponent(SynEdit,SynEdit.Name,false);
     JvDesignPanel1.Surface.Select(SynEdit);
   end else
   if ctxt = 'TCheckBox' then
@@ -237,7 +237,7 @@ begin
     CheckBox.Show;
     inc(count);
 
-    Form1.JvInspector1.AddComponent(CheckBox,CheckBox.Name,false);
+    Form1.DFrameLeftPanel.JvInspector1.AddComponent(CheckBox,CheckBox.Name,false);
     JvDesignPanel1.Surface.Select(CheckBox);
   end else
   if ctxt = 'TRadioButton' then
@@ -255,7 +255,7 @@ begin
     RadioButton.Show;
     inc(count);
 
-    Form1.JvInspector1.AddComponent(RadioButton,RadioButton.Name,false);
+    Form1.DFrameLeftPanel.JvInspector1.AddComponent(RadioButton,RadioButton.Name,false);
     JvDesignPanel1.Surface.Select(RadioButton);
   end else
   if ctxt = 'TRadioGroup' then
@@ -272,7 +272,7 @@ begin
     RadioGroup.Show;
     inc(count);
 
-    Form1.JvInspector1.AddComponent(RadioGroup,RadioGroup.Name,false);
+    Form1.DFrameLeftPanel.JvInspector1.AddComponent(RadioGroup,RadioGroup.Name,false);
     JvDesignPanel1.Surface.Select(RadioGroup);
   end else
   if ctxt = 'TStringGrid' then
@@ -289,7 +289,7 @@ begin
     StringGrid.Show;
     inc(count);
 
-    Form1.JvInspector1.AddComponent(StringGrid,StringGrid.Name,false);
+    Form1.DFrameLeftPanel.JvInspector1.AddComponent(StringGrid,StringGrid.Name,false);
     JvDesignPanel1.Surface.Select(StringGrid);
   end else
   if ctxt = 'TPanel' then
@@ -307,7 +307,7 @@ begin
     Panel.Show;
     inc(count);
 
-    Form1.JvInspector1.AddComponent(Panel,Panel.Name,false);
+    Form1.DFrameLeftPanel.JvInspector1.AddComponent(Panel,Panel.Name,false);
     JvDesignPanel1.Surface.Select(Panel);
   end else
   if ctxt = 'TMainMenu' then
@@ -318,7 +318,7 @@ begin
 
     inc(count);
 
-    Form1.JvInspector1.AddComponent(MainMenu,MainMenu.Name,false);
+    Form1.DFrameLeftPanel.JvInspector1.AddComponent(MainMenu,MainMenu.Name,false);
     JvDesignPanel1.Surface.Select(TControl(MainMenu));
   end;
 end;
@@ -330,8 +330,8 @@ begin
 end;
 
 procedure TFrame1.JvDesignPanel1SelectionChange(Sender: TObject);
-var
-  ctrl: TComponent;
+//var
+//  ctrl: TComponent;
 begin
 //ctrl := Form1.JvInspector1.SelectedItem;
 //showmessage(ctrl.ClassName);

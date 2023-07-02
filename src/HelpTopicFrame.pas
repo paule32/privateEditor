@@ -334,13 +334,13 @@ begin
   Form1.ModeButton.Visible := true;
 
   Form1.DFrameHelpTopic.Visible := false;
-  Form1.LeftPageControl.Visible := true;
+  Form1.DFrameLeftPanel.LeftPageControl.Visible := true;
 
   Form1.DFrameHelpAuthor.Visible := false;
 
   Form1.MainPageControl.ActivePageIndex := 0;
   Form1.DFrameEdit.Visible := true;
-  Form1.SynEdit1.SetFocus;
+  Form1.DFrameEditor.SynEdit1.SetFocus;
 end;
 
 procedure TFrame15.JvEdit1Enter(Sender: TObject);

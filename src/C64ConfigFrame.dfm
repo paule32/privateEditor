@@ -80,7 +80,7 @@ object Frame5: TFrame5
     Align = alTop
     TabOrder = 1
     object Splitter2: TSplitter
-      Left = 121
+      Left = 137
       Top = 1
       Width = 5
       Height = 183
@@ -88,14 +88,14 @@ object Frame5: TFrame5
     object Panel2: TPanel
       Left = 1
       Top = 1
-      Width = 120
+      Width = 136
       Height = 183
       Align = alLeft
       TabOrder = 0
       object ListBox2: TTntListBox
         Left = 1
         Top = 1
-        Width = 118
+        Width = 134
         Height = 181
         Style = lbOwnerDrawVariable
         Align = alClient
@@ -106,26 +106,16 @@ object Frame5: TFrame5
       end
     end
     object ValueListEditor1: TValueListEditor
-      Left = 126
+      Left = 142
       Top = 1
-      Width = 151
+      Width = 135
       Height = 183
       Align = alClient
       TabOrder = 1
       ColWidths = (
-        81
-        64)
+        55
+        74)
     end
-  end
-  object JvListBox1: TJvListBox
-    Left = 8
-    Top = 328
-    Width = 145
-    Height = 97
-    ItemHeight = 19
-    Background.FillMode = bfmTile
-    Background.Visible = False
-    TabOrder = 2
   end
   object ImageList1: TImageList
     Height = 27
@@ -133,7 +123,7 @@ object Frame5: TFrame5
     Left = 72
     Top = 384
     Bitmap = {
-      494C01010400090004001B001B00FFFFFFFFFF00FFFFFFFFFFFFFFFF424D3600
+      494C01010400090004001B001B00FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       00000000000036000000280000006C000000510000000100200000000000B088
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -1271,6 +1261,7 @@ object Frame5: TFrame5
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
-      00000000000000000000000000000000}
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000}
   end
 end

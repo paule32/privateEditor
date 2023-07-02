@@ -20,7 +20,6 @@ type
     Splitter2: TSplitter;
     ValueListEditor1: TValueListEditor;
     ImageList1: TImageList;
-    JvListBox1: TJvListBox;
     ListBox2: TTntListBox;
     procedure ListBox1ClickCheck(Sender: TObject);
     procedure ListBox1Click(Sender: TObject);
@@ -29,7 +28,7 @@ type
     procedure ListBox2DrawItem(Control: TWinControl; Index: Integer;
       Rect: TRect; State: TOwnerDrawState);
   private
-    { Private declarations }
+    MemBitmap: TBitmap;
   public
     { Public declarations }
   end;
@@ -66,37 +65,49 @@ procedure TFrame5.ListBox2DrawItem(
   Rect   : TRect;
   State  : TOwnerDrawState);
   var
-  I : integer;
+  I,J : Word;
   lb: TtntListBox;
-  ws: PWideChar;
+  b1,b2: Byte;
+  wn: Word;
+  ws: WideString;
 begin
   lb := (Control as TtntListBox);
 
+  lb.Canvas.Font.Name  := 'C64 Elite Mono';
+  lb.Canvas.Font.Size  := 14;
+  lb.Canvas.Font.Color := clBlack;
+
+  lb.Canvas.Brush.Color := clWhite;
+  lb.Canvas.FillRect(rect);
   lb.Canvas.Brush.Color := clYellow;
-  lb.Canvas.Font.Name   := 'C64 Elite Mono';
-  lb.Canvas.Font.Color  := clBlack;
-  lb.Canvas.Font.Size   := 12;
 
-  rect.Left  := rect.Left +  2;
-  rect.Right := rect.Left + 32;
-
-  for I := 0 to 10 do
+  //if (I >= 992) and (I <= 3351) then for J := 3351 downto 992 do DFrameC64Config.ListBox2.Items.Delete(J);
+  //if (I >= 864) and (I <=  895) then for J :=  895 downto 864 do DFrameC64Config.ListBox2.Items.Delete(J);
+  //if (I >= 736) and (I <=  767) then for J :=  767 downto 736 do DFrameC64Config.ListBox2.Items.Delete(J);
+  //if (I >= 608) and (I <=  639) then for J :=  639 downto 608 do DFrameC64Config.ListBox2.Items.Delete(J);
+  //if (I >= 480) and (I <=  511) then for J :=  511 downto 480 do DFrameC64Config.ListBox2.Items.Delete(J);
+  //if (I >= 352) and (I <=  383) then for J :=  383 downto 352 do DFrameC64Config.ListBox2.Items.Delete(J);
+  //if (I >= 224) and (I <=  255) then for J :=  255 downto 224 do DFrameC64Config.ListBox2.Items.Delete(J);
+  if (Index >=  96) and (Index <=  127) then
   begin
-//    ws := PWideChar(Word(#$E000) + I);
-    lb.Canvas.FillRect(rect);
-    DrawText(
-      lb.Canvas.Handle,
-      PChar(#$E041),
-      Length(#$E041),
-      rect,
-      DT_LEFT or DT_WORDBREAK or DT_NOPREFIX);
-
-(*
-    Windows.TextOutW(
-    lb.Canvas.Handle,
-    rect.Left,
-    rect.Top , ws, Length(ws));*)
+    for J := 96 to 127 do
+    ListBox2.Items.Delete(J);
+    exit;
   end;
+
+  ws := WideChar(Word($E020 + Index));
+        Windows.TextOutW(
+        lb.Canvas.Handle,
+        rect.Left + 2,
+        rect.Top  + 5,
+        PWideChar(ws),
+        Length(ws));
+
+  lb.Canvas.Brush.Color := clWhite;
+  lb.Canvas.TextOut(
+        rect.Left + 40,
+        rect.Top  + 2,
+        'key ' + IntToStr(Index));
 end;
 
 end.

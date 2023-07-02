@@ -2,20 +2,37 @@
 # include "common.h"
 # include "dBaseDSL.tab.h"
 
-extern char buffer[];
+// ----------------------------------------------------------------------------
+// parser variables and constants:
+// ----------------------------------------------------------------------------
+char* data_code;
+char* data_text;
+char* data_data;
+
 typedef void (*addParserErrorText)(char* message);
 static addParserErrorText m_addParserErrorText;
 
 int count(void);
 void* addTextPtr;
 
-int yy_dbase_count(void) { return yylineno; }
-int yy_dbase_lex_get_line(void) { return yy_pascal_count(); }
-int yy_dbase_lex_getlines(void) { return yy_pascal_count(); }
+int yy_col = 1;
+int yy_row = 1;
+
+int yy_dbase_count(void) { return yy_row; }
+int yy_dbase_lex_get_line(void) { return yy_dbase_count(); }
+int yy_dbase_lex_getlines(void) { return yy_dbase_count(); }
+
 %}
 
-DIGIT    [0-9]
-ID       [a-zA-Z][a-zA-Z0-9]*
+DIGIT       [0-9]
+LETTER      [a-zA-Z]
+HEXALETTER  [a-fA-F]
+HEXANUMBER  [0][x](({DIGIT}|{HEXALETTER})+)
+NUM         {DIGIT}+
+ID          [a-z_]+[a-zA-Z0-9_]*
+FILE1       [ a-zA-Z0-9\_\.\\]*
+FILENAME    \"(({LETTER}\:\\{FILE1})|({LETTER}\:{FILE1})|({FILE1})*)\"
+STRING      ("([^"]|"")*")
 
 A [a|A]
 B [b|B]
@@ -44,46 +61,37 @@ X [x|X]
 Y [y|Y]
 Z [z|Z]
 
-%x Comment1 Comment2 Comment3
+%x Comment1
+
 %%
 
-"//".*                  { yy_dbase_count(); /* DO NOTHING */ }
-"//".*\n                { yy_dbase_count(); /* DO NOTHING */ ++yylineno; }
+"//".*                  { /* DO NOTHING */ ++yy_row; yy_col = 1; }
+"//".*\n                { /* DO NOTHING */ ++yy_row; yy_col = 1; }
 
-"&&".*                  { yy_dbase_count(); /* DO NOTHING */ }
-"&&".*\n                { yy_dbase_count(); /* DO NOTHING */ ++yylineno; }
+"&&".*                  { /* DO NOTHING */           }
+"&&".*\n                { /* DO NOTHING */ ++yy_row; yy_col = 1; }
 
-"**".*                  { yy_dbase_count(); /* DO NOTHING */ }
-"**".*\n                { yy_dbase_count(); /* DO NOTHING */ ++yylineno; }
+"**".*                  { /* DO NOTHING */           }
+"**".*\n                { /* DO NOTHING */ ++yy_row; yy_col = 1; }
 
-"/*"                    { yy_dbase_count(); BEGIN(Comment1); }
-<Comment1>\n*           { yy_dbase_count(); ++yylineno;      }
-<Comment1>"*"+"/"       { yy_dbase_count(); BEGIN(INITIAL);  }
-
-"(*"                    { yy_dbase_count(); BEGIN(Comment2); }
-<Comment2>\n            { yy_dbase_count(); ++yylineno;      }
-<Comment2>"*)"          { yy_dbase_count(); BEGIN(INITIAL);  }
-
-\{                      { yy_dbase_count(); BEGIN(Comment3); }
-<Comment3>\n            { yy_dbase_count(); ++yylineno;      }
-<Comment3>\}            { yy_dbase_count(); BEGIN(INITIAL);  }
+"/*"                    { BEGIN(Comment1); }
+<Comment1>\n*           { yy_row += 1; yy_col = 1;    }
+<Comment1>"*"+"/"       { BEGIN(INITIAL);  }
 
 [ \t]*                  { /* empty */ }
-[\n|\r\n]               { yy_dbase_count(); ++yylineno; }
+[\n|\r\n]               { yy_row += 1; yy_col = 1;    }
 
-{DIGIT}+".."+{DIGIT}+ { return TOK_PAS_RANGE; }
+{ID}                    { return TOK_DBASE_ID;  }
 
-{W}{I}{T}{H}                  { yy_dbase_count(); return TOK_DBASE_WITH; }
+[0-9]+|[0-9]+\.[0-9]+  {
+  dbaselval.floatValue = strtod(yytext,NULL);
+  return TOK_DBASE_NUMBER;
+  }
 
-{ID}                          { return TOK_DBASE_ID;  }
-
-{DIGIT}+           { return TOK_DBASE_NUMBER; }
-{DIGIT}+\.{DIGIT}+ { return TOK_DBASE_FLOAT;  }
-
-";"  { return ';'; }
+\;   { return ';'; }
 \:   { return ':'; }
-\.   { return '.'; }
 \,   { return ','; }
+\\.  { return '.'; }
 \=   { return '='; }
 \(   { return '('; }
 \)   { return ')'; }
@@ -95,10 +103,11 @@ Z [z|Z]
 \*   { return '*'; }
 \/   { return '/'; }
 
-.                 {
+. {
+  char buffer[200];
   sprintf( buffer, "Unrecognized character: %s\n", yytext );
   dbaseerror(buffer);
-}
+  }
 
 %%
 
@@ -112,24 +121,130 @@ void dbaseerror(char* m)
 {
   char bu[320];
   sprintf(bu,"error: %d: %s",
-  yylineno, m);
+  yy_row, m);
   m_addParserErrorText(bu);
 }
 
-BOOL yy_dbase_lex_main(char* filename)
+BOOL yy_dbase_lex_main(
+  char* filename,
+  char* tempDir )
 {
-  BOOL result;
+  BOOL  result;
+  char* buffer;
+  FILE* yy_out;
+  
+  int   length;
+  int   bytesWritten;
+  
+  if (strlen(tempDir) < 1) {
+    buffer = (char*) malloc(100);
+	
+	sprintf(buffer,"no temp directory given.");
+	m_addParserErrorText(buffer);
+	
+	free(buffer);
+	return false;
+  }
+  
   yyin = fopen(filename,"r");
   if (!yyin) {
+    buffer = (char*) malloc(100);
+	
     sprintf(buffer, "could not open file: %s", filename);
     m_addParserErrorText(buffer);
+	
+	free(buffer);
     return false;
   }
 
-  //yylex();
+  yy_row = 1;
+  yy_col = 1;
+  
+  data_code = (char*) malloc(2048);
+  data_text = (char*) malloc(2048);
+  data_data = (char*) malloc(2048);
+  
+  strcpy(data_code,"section .code\n");
+  strcpy(data_text,"section .text\n");
+  strcpy(data_data,"section .data\n");
+  
+  strcat(data_code,"global _start\n");
+  strcat(data_code,"_start:\n");
+  strcat(data_code,"  finit  ; init FPU stack\n");
+  
+  // ------------------------------------------
+  // start the race run ...
+  // ------------------------------------------
   result = dbaseparse();
   fclose(yyin);
 
+  // re-alloc memory
+  data_code = (char*) realloc(
+  data_code,strlen(
+  data_code)+10);
+  
+  strcat(data_code,"  ret\n");
+
+  // ------------------------------------------
+  // output assembler:
+  // ------------------------------------------
+  if (strlen(tempDir) > 1)
+    buffer = (char*) malloc( strlen(
+    tempDir) + 32);
+  else
+    buffer = (char*) malloc( strlen(
+    dBaseDLLdirectory) + 32);
+
+  if (strlen(tempDir) > 1)
+    strcpy(buffer,tempDir); else
+    strcpy(buffer,dBaseDLLdirectory);
+    strcat(buffer,"\\temp.$asm");
+
+  yy_out = fopen(buffer,"w");
+  if (!yy_out)
+  {
+    free(data_code);
+    free(data_text);
+    free(data_data);
+
+    m_addParserErrorText("temp.$asm could not be created.");
+    return false;
+  }
+
+  free(buffer);
+       buffer = (char*) malloc(
+  + strlen(data_code)+1
+  + strlen(data_data)+1
+  + strlen(data_text)+2048);
+
+  sprintf(buffer,"%s",
+  "; ---------------------------------------\n"
+  "; (c) 2023 by Jens Kallup - paule32      \n"
+  "; all rights reserved.                   \n"
+  "; ---------------------------------------\n"
+  "; yasm.exe -f bin input.asm -o output.exe\n"
+  "; ---------------------------------------\n");
+  strcat(buffer ,data_code);
+  strcat(buffer ,data_text);
+  strcat(buffer ,data_data);
+ 
+  length       = strlen( buffer );
+  bytesWritten = fwrite(
+    buffer,
+	sizeof(char),
+	length,
+	yy_out);
+  
+  if (bytesWritten != length)
+  dbaseerror("can not write data.");
+  
+  fclose( yy_out );
+  free  ( buffer );
+  
+  free(data_code);
+  free(data_text);
+  free(data_data);
+  
   return result;
 }
 
@@ -143,4 +258,4 @@ void __declspec(dllexport) yy_dbase_lex_close(void);
 int  __declspec(dllexport) yy_dbase_lex_get_line(void);
 int  __declspec(dllexport) yy_dbase_lex_getlines(void);
 
-BOOL __declspec(dllexport) yy_dbase_lex_main(char* filename);
+BOOL __declspec(dllexport) yy_dbase_lex_main(char*, char*);

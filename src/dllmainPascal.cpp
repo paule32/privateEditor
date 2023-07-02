@@ -1,9 +1,10 @@
 //---------------------------------------------------------------------------
 
+#include <vcl.h>
 #include <windows.h>
-
+#pragma hdrstop
 #pragma argsused
-int WINAPI DllEntryPoint(HINSTANCE hinst, unsigned long reason, void* lpReserved)
+BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fwdreason, LPVOID lpvReserved)
 {
         return 1;
 }

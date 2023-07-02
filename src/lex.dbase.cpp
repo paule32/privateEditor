@@ -610,8 +610,8 @@ static void yynoreturn yy_fatal_error ( const char* msg  );
 	(yy_hold_char) = *yy_cp; \
 	*yy_cp = '\0'; \
 	(yy_c_buf_p) = yy_cp;
-#define YY_NUM_RULES 28
-#define YY_END_OF_BUFFER 29
+#define YY_NUM_RULES 37
+#define YY_END_OF_BUFFER 38
 /* This struct is not used in this scanner,
    but its presence is necessary. */
 struct yy_trans_info
@@ -619,13 +619,15 @@ struct yy_trans_info
 	flex_int32_t yy_verify;
 	flex_int32_t yy_nxt;
 	};
-static const flex_int16_t yy_accept[50] =
+static const flex_int16_t yy_accept[63] =
     {   0,
-       10,   10,    8,    8,   29,   27,   10,   11,   11,   27,
-       19,   20,   25,   23,   16,   24,   26,   13,   15,   14,
-       18,   21,   27,   22,   12,   28,    8,   28,   10,    3,
-        5,    7,    1,    0,   13,   17,   12,   12,    8,    0,
-        9,    3,    4,    5,    6,    1,    2,   13,    0
+       16,   16,    8,    8,    0,    0,    0,    0,   38,   36,
+       16,   17,   17,   31,   36,   27,   28,   34,   32,   25,
+       33,   24,   35,   20,   23,   22,   26,   19,   29,   30,
+       13,   37,    8,   37,   11,   37,   14,   15,   16,    3,
+       10,    5,    7,    1,    0,   20,   19,    8,    0,    9,
+       12,    3,    4,    5,    6,    1,    2,    0,   21,    0,
+       18,    0
     } ;
 
 static const YY_CHAR yy_ec[256] =
@@ -633,17 +635,17 @@ static const YY_CHAR yy_ec[256] =
         1,    1,    1,    1,    1,    1,    1,    1,    2,    3,
         1,    1,    4,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    2,    1,    1,    1,    1,    1,    5,    1,    6,
-        7,    8,    9,   10,   11,   12,   13,   14,   14,   14,
-       14,   14,   14,   14,   14,   14,   14,   15,   16,    1,
-       17,    1,    1,    1,   18,   18,   18,   18,   18,   18,
-       18,   18,   18,   18,   18,   18,   18,   18,   18,   18,
-       18,   18,   18,   18,   18,   18,   18,   18,   18,   18,
-       19,   20,   21,    1,   22,    1,   22,   22,   22,   22,
+        1,    2,    1,    1,    1,    1,    5,    6,    1,    7,
+        8,    9,   10,   11,   12,   13,   14,   15,   15,   15,
+       15,   15,   15,   15,   15,   15,   15,   16,   17,    1,
+       18,    1,    1,    1,   19,   19,   19,   19,   19,   19,
+       19,   19,   19,   19,   19,   19,   19,   19,   19,   19,
+       19,   19,   19,   19,   19,   19,   19,   19,   19,   19,
+       20,    1,   21,    1,    1,    1,   19,   19,   19,   19,
 
-       22,   22,   22,   22,   22,   22,   22,   22,   22,   22,
-       22,   22,   22,   22,   22,   22,   22,   22,   22,   22,
-       22,   22,    1,    4,    1,    1,    1,    1,    1,    1,
+       19,   19,   19,   19,   19,   19,   19,   19,   19,   19,
+       19,   19,   19,   19,   19,   19,   19,   19,   19,   19,
+       19,   19,   22,    4,   23,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
@@ -660,60 +662,62 @@ static const YY_CHAR yy_ec[256] =
         1,    1,    1,    1,    1
     } ;
 
-static const YY_CHAR yy_meta[23] =
-    {   0,
-        1,    1,    2,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1
-    } ;
-
-static const flex_int16_t yy_base[55] =
-    {   0,
-        0,    0,   20,   21,   69,   70,   66,   70,   70,   62,
-       70,   70,   58,   70,   70,   70,   17,   19,   70,   70,
-       70,   70,    0,   70,   18,   70,   62,   26,   62,   60,
-       59,   70,   58,   46,   23,   70,   24,   27,   56,   35,
-       70,   55,   70,   44,   70,   41,   70,   13,   70,   49,
-       25,   51,   53,   55
-    } ;
-
-static const flex_int16_t yy_def[55] =
-    {   0,
-       49,    1,   50,   50,   49,   49,   49,   49,   49,   49,
-       49,   49,   49,   49,   49,   49,   49,   49,   49,   49,
-       49,   49,   51,   49,   49,   49,   49,   49,   49,   52,
-       53,   49,   54,   49,   49,   49,   49,   49,   49,   49,
-       49,   52,   49,   53,   49,   54,   49,   49,    0,   49,
-       49,   49,   49,   49
-    } ;
-
-static const flex_int16_t yy_nxt[93] =
-    {   0,
-        6,    7,    8,    9,   10,   11,   12,   13,   14,   15,
-       16,    6,   17,   18,   19,   20,   21,    6,   22,   23,
-       24,   25,   27,   27,   32,   36,   48,   28,   28,   33,
-       34,   37,   35,   40,   34,   37,   35,   37,   41,   38,
-       37,   37,   40,   47,   37,   37,   45,   41,   38,   26,
-       26,   42,   42,   44,   44,   46,   46,   43,   39,   48,
-       47,   45,   43,   29,   39,   31,   30,   29,   49,    5,
-       49,   49,   49,   49,   49,   49,   49,   49,   49,   49,
-       49,   49,   49,   49,   49,   49,   49,   49,   49,   49,
-       49,   49
-
-    } ;
-
-static const flex_int16_t yy_chk[93] =
+static const YY_CHAR yy_meta[24] =
     {   0,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    3,    4,   17,   51,   48,    3,    4,   17,
-       18,   25,   18,   28,   35,   25,   35,   37,   28,   25,
-       38,   37,   40,   46,   38,   37,   44,   40,   38,   50,
-       50,   52,   52,   53,   53,   54,   54,   42,   39,   34,
-       33,   31,   30,   29,   27,   13,   10,    7,    5,   49,
-       49,   49,   49,   49,   49,   49,   49,   49,   49,   49,
-       49,   49,   49,   49,   49,   49,   49,   49,   49,   49,
-       49,   49
+        1,    1,    1
+    } ;
+
+static const flex_int16_t yy_base[67] =
+    {   0,
+        0,    0,   21,   22,   23,   24,   25,   26,   75,   76,
+       72,   76,   76,   76,   67,   63,   76,   62,   76,   76,
+       76,   76,   25,   22,   76,   76,   76,   21,   76,   76,
+       76,   76,   67,   29,   76,   61,   76,   76,   66,   64,
+       76,   63,   76,   62,   29,   32,   31,   61,   42,   76,
+       76,   60,   76,   59,   76,   58,   76,   39,   45,   46,
+       43,   76,   56,   54,   52,   40
+    } ;
+
+static const flex_int16_t yy_def[67] =
+    {   0,
+       62,    1,   63,   63,   63,   63,   63,   63,   62,   62,
+       62,   62,   62,   62,   62,   62,   62,   62,   62,   62,
+       62,   62,   62,   62,   62,   62,   62,   62,   62,   62,
+       62,   62,   62,   62,   62,   62,   62,   62,   62,   64,
+       62,   65,   62,   66,   62,   62,   62,   62,   62,   62,
+       62,   64,   62,   65,   62,   66,   62,   62,   62,   62,
+       62,    0,   62,   62,   62,   62
+    } ;
+
+static const flex_int16_t yy_nxt[100] =
+    {   0,
+       10,   11,   12,   13,   14,   15,   16,   17,   18,   19,
+       20,   21,   22,   23,   24,   25,   26,   27,   28,   29,
+       30,   31,   10,   33,   33,   35,   35,   37,   37,   34,
+       34,   36,   36,   43,   45,   47,   46,   49,   44,   47,
+       56,   58,   50,   59,   45,   47,   46,   38,   38,   47,
+       49,   60,   54,   61,   52,   50,   32,   61,   58,   59,
+       57,   55,   53,   48,   57,   55,   53,   39,   51,   48,
+       42,   41,   40,   39,   62,    9,   62,   62,   62,   62,
+       62,   62,   62,   62,   62,   62,   62,   62,   62,   62,
+       62,   62,   62,   62,   62,   62,   62,   62,   62
+
+    } ;
+
+static const flex_int16_t yy_chk[100] =
+    {   0,
+        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+        1,    1,    1,    3,    4,    5,    6,    7,    8,    3,
+        4,    5,    6,   23,   24,   28,   24,   34,   23,   28,
+       66,   45,   34,   45,   46,   47,   46,    7,    8,   47,
+       49,   58,   65,   58,   64,   49,   63,   61,   60,   59,
+       56,   54,   52,   48,   44,   42,   40,   39,   36,   33,
+       18,   16,   15,   11,    9,   62,   62,   62,   62,   62,
+       62,   62,   62,   62,   62,   62,   62,   62,   62,   62,
+       62,   62,   62,   62,   62,   62,   62,   62,   62
 
     } ;
 
@@ -733,35 +737,69 @@ int yy_flex_debug = 0;
 char *yytext;
 #line 1 "dBaseDSL.l"
 #line 2 "dBaseDSL.l"
+// ----------------------------------------------------------------------------
+// File   : dBaseDSL.l
+// Author : Jens Kallup (c) 2023-07.01
+// License: all rights reserved.
+// ----------------------------------------------------------------------------
 # include "common.h"
 # include "dBaseDSL.tab.h"
 
 // ----------------------------------------------------------------------------
-// parser variables and constants:
+// Standard i/o header proto type stuff:
 // ----------------------------------------------------------------------------
-char* data_code;
-char* data_text;
-char* data_data;
+# include <stdio.h>
+# include <stdlib.h>
+# include <string.h>
 
+// ----------------------------------------------------------------------------
+// C++ header stuff:
+// ----------------------------------------------------------------------------
+# include <iostream>
+
+// ----------------------------------------------------------------------------
+// Struktur für einen Knoten im Parse-Baum
+// ----------------------------------------------------------------------------
+typedef struct Node {
+    char* value;            // Wert des Knotens
+    struct Node* left;      // Verweis auf linkes Kind
+    struct Node* right;     // Verweis auf rechtes Kind
+} Node;
+
+extern char buffer[];
 typedef void (*addParserErrorText)(char* message);
 static addParserErrorText m_addParserErrorText;
 
-int count(void);
-void* addTextPtr;
+extern int count(void);
+extern void* addTextPtr;
 
-int yy_col = 1;
-int yy_row = 1;
-
-int yy_dbase_count(void) { return yy_row; }
+int yy_dbase_count(void) { return yylineno; }
 int yy_dbase_lex_get_line(void) { return yy_dbase_count(); }
 int yy_dbase_lex_getlines(void) { return yy_dbase_count(); }
 
-#line 759 "lex.dbase.c"
+char *yylval;
 
-#line 761 "lex.dbase.c"
+// ----------------------------------------------------------------------------
+// Funktion zum Erstellen eines neuen Knotens
+// ----------------------------------------------------------------------------
+Node* createNode(char* value) {
+    Node* node = (Node*)malloc(sizeof(Node));
+
+    node->value = value;
+    node->left = NULL;
+    node->right = NULL;
+    return node;
+}
+
+
+#line 795 "lex.dbase.c"
+
+#line 797 "lex.dbase.c"
 
 #define INITIAL 0
 #define Comment1 1
+#define Comment2 2
+#define Comment3 3
 
 #ifndef YY_NO_UNISTD_H
 /* Special case for "unistd.h", since it is non-ANSI. We include it way
@@ -976,10 +1014,10 @@ YY_DECL
 		}
 
 	{
-#line 66 "dBaseDSL.l"
+#line 90 "dBaseDSL.l"
 
 
-#line 982 "lex.dbase.c"
+#line 1020 "lex.dbase.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -1006,13 +1044,13 @@ yy_match:
 			while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 				{
 				yy_current_state = (int) yy_def[yy_current_state];
-				if ( yy_current_state >= 50 )
+				if ( yy_current_state >= 63 )
 					yy_c = yy_meta[yy_c];
 				}
 			yy_current_state = yy_nxt[yy_base[yy_current_state] + yy_c];
 			++yy_cp;
 			}
-		while ( yy_base[yy_current_state] != 70 );
+		while ( yy_base[yy_current_state] != 76 );
 
 yy_find_action:
 		yy_act = yy_accept[yy_current_state];
@@ -1038,159 +1076,215 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 68 "dBaseDSL.l"
-{ /* DO NOTHING */ ++yy_row; yy_col = 1; }
+#line 92 "dBaseDSL.l"
+{ yy_dbase_count(); /* DO NOTHING */ }
 	YY_BREAK
 case 2:
 /* rule 2 can match eol */
 YY_RULE_SETUP
-#line 69 "dBaseDSL.l"
-{ /* DO NOTHING */ ++yy_row; yy_col = 1; }
+#line 93 "dBaseDSL.l"
+{ yy_dbase_count(); /* DO NOTHING */ ++yylineno; }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 71 "dBaseDSL.l"
-{ /* DO NOTHING */           }
+#line 95 "dBaseDSL.l"
+{ yy_dbase_count(); /* DO NOTHING */ }
 	YY_BREAK
 case 4:
 /* rule 4 can match eol */
 YY_RULE_SETUP
-#line 72 "dBaseDSL.l"
-{ /* DO NOTHING */ ++yy_row; yy_col = 1; }
+#line 96 "dBaseDSL.l"
+{ yy_dbase_count(); /* DO NOTHING */ ++yylineno; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 74 "dBaseDSL.l"
-{ /* DO NOTHING */           }
+#line 98 "dBaseDSL.l"
+{ yy_dbase_count(); /* DO NOTHING */ }
 	YY_BREAK
 case 6:
 /* rule 6 can match eol */
 YY_RULE_SETUP
-#line 75 "dBaseDSL.l"
-{ /* DO NOTHING */ ++yy_row; yy_col = 1; }
+#line 99 "dBaseDSL.l"
+{ yy_dbase_count(); /* DO NOTHING */ ++yylineno; }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 77 "dBaseDSL.l"
-{ BEGIN(Comment1); }
+#line 101 "dBaseDSL.l"
+{ yy_dbase_count(); BEGIN(Comment1); }
 	YY_BREAK
 case 8:
 /* rule 8 can match eol */
 YY_RULE_SETUP
-#line 78 "dBaseDSL.l"
-{ yy_row += 1; yy_col = 1;    }
+#line 102 "dBaseDSL.l"
+{ yy_dbase_count(); ++yylineno;      }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 79 "dBaseDSL.l"
-{ BEGIN(INITIAL);  }
+#line 103 "dBaseDSL.l"
+{ yy_dbase_count(); BEGIN(INITIAL);  }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 81 "dBaseDSL.l"
-{ /* empty */ }
+#line 105 "dBaseDSL.l"
+{ yy_dbase_count(); BEGIN(Comment2); }
 	YY_BREAK
 case 11:
 /* rule 11 can match eol */
 YY_RULE_SETUP
-#line 82 "dBaseDSL.l"
-{ yy_row += 1; yy_col = 1;    }
+#line 106 "dBaseDSL.l"
+{ yy_dbase_count(); ++yylineno;      }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 84 "dBaseDSL.l"
-{ return TOK_DBASE_ID;  }
+#line 107 "dBaseDSL.l"
+{ yy_dbase_count(); BEGIN(INITIAL);  }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 86 "dBaseDSL.l"
-{
-  dbaselval.floatValue = strtod(yytext,NULL);
-  return TOK_DBASE_NUMBER;
-  }
+#line 109 "dBaseDSL.l"
+{ yy_dbase_count(); BEGIN(Comment3); }
 	YY_BREAK
 case 14:
+/* rule 14 can match eol */
 YY_RULE_SETUP
-#line 91 "dBaseDSL.l"
-{ return ';'; }
+#line 110 "dBaseDSL.l"
+{ yy_dbase_count(); ++yylineno;      }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 92 "dBaseDSL.l"
-{ return ':'; }
+#line 111 "dBaseDSL.l"
+{ yy_dbase_count(); BEGIN(INITIAL);  }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 93 "dBaseDSL.l"
-{ return ','; }
+#line 113 "dBaseDSL.l"
+{ /* empty */ }
 	YY_BREAK
 case 17:
+/* rule 17 can match eol */
 YY_RULE_SETUP
-#line 94 "dBaseDSL.l"
-{ return '.'; }
+#line 114 "dBaseDSL.l"
+{ yy_dbase_count(); ++yylineno; }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 95 "dBaseDSL.l"
-{ return '='; }
+#line 116 "dBaseDSL.l"
+{ return TOK_DBASE_RANGE; }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 96 "dBaseDSL.l"
-{ return '('; }
+#line 118 "dBaseDSL.l"
+{ return TOK_DBASE_ID;  }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 97 "dBaseDSL.l"
-{ return ')'; }
+#line 120 "dBaseDSL.l"
+{
+  yy_text = (char*) malloc(255);
+  strcpy(yy_text,yytext);
+    
+  return TOK_DBASE_NUMBER;
+}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 98 "dBaseDSL.l"
-{ return '['; }
+#line 127 "dBaseDSL.l"
+{
+  int len = strlen(yytext);
+  yylval  = malloc(sizeof(char) * (len));
+  
+  strcpy(yylval,yytext);
+  return TOK_DBASE_FLOAT;
+}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 99 "dBaseDSL.l"
-{ return ']'; }
+#line 135 "dBaseDSL.l"
+{ return ';'; }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 101 "dBaseDSL.l"
-{ return '+'; }
+#line 136 "dBaseDSL.l"
+{ return ':'; }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 102 "dBaseDSL.l"
-{ return '-'; }
+#line 137 "dBaseDSL.l"
+{ return '.'; }
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 103 "dBaseDSL.l"
-{ return '*'; }
+#line 138 "dBaseDSL.l"
+{ return ','; }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 104 "dBaseDSL.l"
-{ return '/'; }
+#line 139 "dBaseDSL.l"
+{ return '='; }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 106 "dBaseDSL.l"
-{
-  char buffer[200];
-  sprintf( buffer, "Unrecognized character: %s\n", yytext );
-  dbaseerror(buffer);
-  }
+#line 140 "dBaseDSL.l"
+{ return '('; }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 112 "dBaseDSL.l"
+#line 141 "dBaseDSL.l"
+{ return ')'; }
+	YY_BREAK
+case 29:
+YY_RULE_SETUP
+#line 142 "dBaseDSL.l"
+{ return '['; }
+	YY_BREAK
+case 30:
+YY_RULE_SETUP
+#line 143 "dBaseDSL.l"
+{ return ']'; }
+	YY_BREAK
+case 31:
+YY_RULE_SETUP
+#line 144 "dBaseDSL.l"
+{ return '%'; }
+	YY_BREAK
+case 32:
+YY_RULE_SETUP
+#line 146 "dBaseDSL.l"
+{ return '+'; }
+	YY_BREAK
+case 33:
+YY_RULE_SETUP
+#line 147 "dBaseDSL.l"
+{ return '-'; }
+	YY_BREAK
+case 34:
+YY_RULE_SETUP
+#line 148 "dBaseDSL.l"
+{ return '*'; }
+	YY_BREAK
+case 35:
+YY_RULE_SETUP
+#line 149 "dBaseDSL.l"
+{ return '/'; }
+	YY_BREAK
+case 36:
+YY_RULE_SETUP
+#line 151 "dBaseDSL.l"
+{
+  sprintf( buffer, "Unrecognized character: %s\n", yytext );
+  dbaseerror(buffer);
+}
+	YY_BREAK
+case 37:
+YY_RULE_SETUP
+#line 156 "dBaseDSL.l"
 ECHO;
 	YY_BREAK
-#line 1191 "lex.dbase.c"
+#line 1283 "lex.dbase.c"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(Comment1):
+case YY_STATE_EOF(Comment2):
+case YY_STATE_EOF(Comment3):
 	yyterminate();
 
 	case YY_END_OF_BUFFER:
@@ -1486,7 +1580,7 @@ static int yy_get_next_buffer (void)
 		while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 			{
 			yy_current_state = (int) yy_def[yy_current_state];
-			if ( yy_current_state >= 50 )
+			if ( yy_current_state >= 63 )
 				yy_c = yy_meta[yy_c];
 			}
 		yy_current_state = yy_nxt[yy_base[yy_current_state] + yy_c];
@@ -1514,11 +1608,11 @@ static int yy_get_next_buffer (void)
 	while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 		{
 		yy_current_state = (int) yy_def[yy_current_state];
-		if ( yy_current_state >= 50 )
+		if ( yy_current_state >= 63 )
 			yy_c = yy_meta[yy_c];
 		}
 	yy_current_state = yy_nxt[yy_base[yy_current_state] + yy_c];
-	yy_is_jam = (yy_current_state == 49);
+	yy_is_jam = (yy_current_state == 62);
 
 		return yy_is_jam ? 0 : yy_current_state;
 }
@@ -2194,7 +2288,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 112 "dBaseDSL.l"
+#line 156 "dBaseDSL.l"
 
 
 void yy_dbase_lex_parser_error(void (*func)(char*)) {
@@ -2207,130 +2301,24 @@ void dbaseerror(char* m)
 {
   char bu[320];
   sprintf(bu,"error: %d: %s",
-  yy_row, m);
+  yylineno, m);
   m_addParserErrorText(bu);
 }
 
-BOOL yy_dbase_lex_main(
-  char* filename,
-  char* tempDir )
+BOOL yy_dbase_lex_main(char* filename)
 {
-  BOOL  result;
-  char* buffer;
-  FILE* yy_out;
-  
-  int   length;
-  int   bytesWritten;
-  
-  if (strlen(tempDir) < 1) {
-    buffer = (char*) malloc(100);
-	
-	sprintf(buffer,"no temp directory given.");
-	m_addParserErrorText(buffer);
-	
-	free(buffer);
-	return false;
-  }
-  
+  BOOL result;
   yyin = fopen(filename,"r");
   if (!yyin) {
-    buffer = (char*) malloc(100);
-	
     sprintf(buffer, "could not open file: %s", filename);
     m_addParserErrorText(buffer);
-	
-	free(buffer);
     return false;
   }
 
-  yy_row = 1;
-  yy_col = 1;
-  
-  data_code = (char*) malloc(2048);
-  data_text = (char*) malloc(2048);
-  data_data = (char*) malloc(2048);
-  
-  strcpy(data_code,"section .code\n");
-  strcpy(data_text,"section .text\n");
-  strcpy(data_data,"section .data\n");
-  
-  strcat(data_code,"global _start\n");
-  strcat(data_code,"_start:\n");
-  strcat(data_code,"  finit  ; init FPU stack\n");
-  
-  // ------------------------------------------
-  // start the race run ...
-  // ------------------------------------------
+  //yylex();
   result = dbaseparse();
   fclose(yyin);
 
-  // re-alloc memory
-  data_code = (char*) realloc(
-  data_code,strlen(
-  data_code)+10);
-  
-  strcat(data_code,"  ret\n");
-
-  // ------------------------------------------
-  // output assembler:
-  // ------------------------------------------
-  if (strlen(tempDir) > 1)
-    buffer = (char*) malloc( strlen(
-    tempDir) + 32);
-  else
-    buffer = (char*) malloc( strlen(
-    dBaseDLLdirectory) + 32);
-
-  if (strlen(tempDir) > 1)
-    strcpy(buffer,tempDir); else
-    strcpy(buffer,dBaseDLLdirectory);
-    strcat(buffer,"\\temp.$asm");
-
-  yy_out = fopen(buffer,"w");
-  if (!yy_out)
-  {
-    free(data_code);
-    free(data_text);
-    free(data_data);
-
-    m_addParserErrorText("temp.$asm could not be created.");
-    return false;
-  }
-
-  free(buffer);
-       buffer = (char*) malloc(
-  + strlen(data_code)+1
-  + strlen(data_data)+1
-  + strlen(data_text)+2048);
-
-  sprintf(buffer,"%s",
-  "; ---------------------------------------\n"
-  "; (c) 2023 by Jens Kallup - paule32      \n"
-  "; all rights reserved.                   \n"
-  "; ---------------------------------------\n"
-  "; yasm.exe -f bin input.asm -o output.exe\n"
-  "; ---------------------------------------\n");
-  strcat(buffer ,data_code);
-  strcat(buffer ,data_text);
-  strcat(buffer ,data_data);
- 
-  length       = strlen( buffer );
-  bytesWritten = fwrite(
-    buffer,
-	sizeof(char),
-	length,
-	yy_out);
-  
-  if (bytesWritten != length)
-  dbaseerror("can not write data.");
-  
-  fclose( yy_out );
-  free  ( buffer );
-  
-  free(data_code);
-  free(data_text);
-  free(data_data);
-  
   return result;
 }
 
@@ -2344,5 +2332,5 @@ void __declspec(dllexport) yy_dbase_lex_close(void);
 int  __declspec(dllexport) yy_dbase_lex_get_line(void);
 int  __declspec(dllexport) yy_dbase_lex_getlines(void);
 
-BOOL __declspec(dllexport) yy_dbase_lex_main(char*, char*);
+BOOL __declspec(dllexport) yy_dbase_lex_main(char* filename);
 

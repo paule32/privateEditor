@@ -114,6 +114,20 @@ begin
 
   for I := 1 to 62 do
   begin
+    if key = 61 then
+    begin
+      Form1.WriteToC64Screen(xpos,ypos,
+      C64KeyCharMap[i]);
+    end else
+    if key = 45 then
+    begin
+      xpos := 1;
+      ypos := ypos + 1;
+      if ypos > 25 then
+      begin
+        ypos := 1;
+      end;
+    end;
     if key = i then
     begin
       Form1.WriteToC64Screen(xpos,ypos,
@@ -122,7 +136,12 @@ begin
       inc(xpos);
       if xpos > 40 then
       begin
-        inc(ypos);
+        ypos := ypos + 1;
+        xpos := 1;
+      end;
+      if ypos > 24 then
+      begin
+        ypos := 1;
         xpos := 1;
       end;
 

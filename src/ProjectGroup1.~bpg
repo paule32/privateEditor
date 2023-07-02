@@ -9,18 +9,17 @@ MAKE = $(ROOT)\bin\make.exe -$(MAKEFLAGS) -f$**
 DCC = $(ROOT)\bin\dcc32.exe $**
 BRCC = $(ROOT)\bin\brcc32.exe $**
 #------------------------------------------------------------------------------
-PROJECTS = Editor.exe Editor.ENU Editor.DEU
+PROJECTS = dBaseDSL.dll PascalDSL.dll
 #------------------------------------------------------------------------------
 default: $(PROJECTS)
 #------------------------------------------------------------------------------
 
-Editor.exe: Editor.dpr
-  $(DCC)
+dBaseDSL.dll: dBaseDSL.bpr
+  $(ROOT)\bin\bpr2mak $**
+  $(ROOT)\bin\make -$(MAKEFLAGS) -f$*.mak
 
-Editor.ENU: ENU\Editor.dpr
-  $(DCC)
-
-Editor.DEU: DEU\Editor.dpr
-  $(DCC)
+PascalDSL.dll: PascalDSL.bpr
+  $(ROOT)\bin\bpr2mak $**
+  $(ROOT)\bin\make -$(MAKEFLAGS) -f$*.mak
 
 

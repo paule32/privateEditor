@@ -13,15 +13,15 @@ uses
   JvExCheckLst, JvCheckListBox, JvExButtons, JvBitBtn, JvExStdCtrls,
   JvButton, JvCtrls, JvComponentBase, Console, Grids, ValEdit, IniFiles,
   JvCombobox, JvDesignSurface, JvDesignUtils, JvInspector, JvInterpreter,
-  JvExExtCtrls, JvExtComponent, JvPanel, TntExtCtrls, TntStdCtrls,
+  JvExExtCtrls, JvExtComponent, JvPanel, TntExtCtrls, TntStdCtrls, ChatFrame,
   TntComCtrls, DB, DBTables, JvAppHotKey, JvEdit, JvListBox, JvDriveCtrls,
   IdHTTP, IdFTP, JvTipOfDay, JvCreateProcess, JvDataEmbedded, JvArrowButton,
-  ErrorBoxForm, InfoBoxForm, AboutBox, InputBox, DesignerFrame,
+  ErrorBoxForm, InfoBoxForm, AboutBox, InputBox, DesignerFrame, EditorFrame,
   TeamServerFrame, EditFrame, C64KeyBoard, C64ConfigFrame, MembersFrame,
   C64DrivesFrame, NewProjectFrame, FoldersLocal, FoldersRemote, SpreadFrame,
   HelpTopicFrame, HelpAuthorFrame, FontStyleFrame, FontFaceFrame,
-  FontColorFrame, ComputerFrame, FormatLayoutFrame,
-  JvDesignImp, JclSysInfo,
+  FontColorFrame, ComputerFrame, FormatLayoutFrame, OptionsFrame,
+  JvDesignImp, JclSysInfo, EnvironmentFrame, LeftPanelFrame,
   JvColorCombo, JvInterpreterFm;
 
 type
@@ -119,7 +119,6 @@ type
     MainPageControl: TPageControl;
     TabSheet2: TTabSheet;
     TabSheet_Options: TTabSheet;
-    ScrollBox1: TScrollBox;
     TabSheet13: TTabSheet;
     ChatTabSheet: TTabSheet;
     PageControl1: TJvPageControl;
@@ -129,83 +128,21 @@ type
     Button6: TJvImgBtn;
     Button7: TJvImgBtn;
     Button8: TJvImgBtn;
-    PageControl3: TJvPageControl;
-    TabSheet5: TTabSheet;
-    Label1: TLabel;
-    GroupBox1: TGroupBox;
-    CheckBox1: TCheckBox;
-    CheckBox2: TCheckBox;
-    CheckBox3: TCheckBox;
-    JvSpinEdit1: TJvSpinEdit;
-    TabSheet6: TTabSheet;
-    Label2: TLabel;
-    ComboBox1: TComboBox;
-    Button1: TJvImgBtn;
-    Button2: TJvImgBtn;
-    GroupBox2: TGroupBox;
-    Label3: TLabel;
-    Label4: TLabel;
-    ComboBox2: TComboBox;
-    Edit1: TEdit;
     heme1: TMenuItem;
     light1: TMenuItem;
     dark1: TMenuItem;
-    PageControl6: TJvPageControl;
-    TabSheet17: TTabSheet;
-    Splitter6: TSplitter;
-    Panel5: TPanel;
-    sendChatTextEdit: TEdit;
-    Button9: TJvImgBtn;
-    Panel6: TPanel;
-    Panel9: TPanel;
-    ircTopicEdit: TEdit;
-    PageControl7: TJvPageControl;
-    TabSheet19: TTabSheet;
-    ircRichEdit: TRichEdit;
-    ListBox2: TListBox;
-    TabSheet18: TTabSheet;
-    Splitter7: TSplitter;
-    Panel10: TPanel;
-    ircChannelEdit: TEdit;
-    Panel11: TPanel;
-    ircListBox: TListBox;
-    PageControl8: TJvPageControl;
-    TabSheet20: TTabSheet;
-    ScrollBox2: TScrollBox;
-    ircLabelNick: TLabel;
-    ircLabelPassword: TLabel;
-    ircLabelChannel: TLabel;
-    ircUserName: TEdit;
-    ircUserPass: TEdit;
-    ircChannel: TEdit;
-    ircConnectButton: TJvImgBtn;
     TabSheet22: TTabSheet;
     ConsoleTabSheet: TTabSheet;
     ScrollBox5: TScrollBox;
     Console1: TConsole;
     ImageList2: TImageList;
-    ImageList3: TImageList;
     ColorDialog1: TColorDialog;
     JvInterpreterProgram1: TJvInterpreterProgram;
     C64TabSheet: TTabSheet;
     ScrollBox6: TScrollBox;
     C64ScreenTimer: TTimer;
-    LeftPageControl: TJvPageControl;
-    TabSheet1: TTabSheet;
-    Splitter8: TSplitter;
-    Panel13: TPanel;
-    JvComboBox1: TJvComboBox;
-    PageControl10: TPageControl;
-    TabSheet25: TTabSheet;
-    TabSheet26: TTabSheet;
-    EventMethodeListBox: TValueListEditor;
-    DesignerIconListViews: TPageControl;
-    TabSheet27: TTabSheet;
-    DesignerIconListView_Standard: TListView;
-    TabSheet3: TTabSheet;
     N13: TMenuItem;
     C64BASIC1: TMenuItem;
-    JvInspector1: TJvInspector;
     TabSheet28: TTabSheet;
     Database1: TDatabase;
     Session1: TSession;
@@ -213,9 +150,6 @@ type
     TabSheet30: TTabSheet;
     SqlScrollBox: TScrollBox;
     PaintBox1: TPaintBox;
-    PageControl13: TPageControl;
-    TabSheet31: TTabSheet;
-    SynEdit1: TSynEdit;
     PageControl14: TPageControl;
     TabSheet32: TTabSheet;
     ScrollBox3: TScrollBox;
@@ -232,21 +166,6 @@ type
     MenuItem3: TMenuItem;
     ChatWindow1: TMenuItem;
     PreviewWindow1: TMenuItem;
-    ScrollBox7: TScrollBox;
-    PageControl9: TPageControl;
-    TabSheet14: TTabSheet;
-    TabSheet15: TTabSheet;
-    TabSheet16: TTabSheet;
-    TabSheet21: TTabSheet;
-    TabSheet33: TTabSheet;
-    TabSheet34: TTabSheet;
-    TabSheet35: TTabSheet;
-    CheckListBox1: TCheckListBox;
-    TreeView1: TTreeView;
-    TreeView4: TTreeView;
-    TreeView5: TTreeView;
-    TreeView6: TTreeView;
-    ListView1: TListView;
     InstallScript1: TMenuItem;
     NewModule_TabSheet: TTabSheet;
     NewProjectPageControl: TPageControl;
@@ -263,57 +182,6 @@ type
     ListView6: TListView;
     ListView7: TListView;
     ListView8: TListView;
-    Splitter9: TSplitter;
-    ScrollBox9: TScrollBox;
-    PageControl17: TPageControl;
-    TabSheet43: TTabSheet;
-    TreeView7: TTreeView;
-    Panel7: TPanel;
-    JvImgBtn3: TJvImgBtn;
-    JvImgBtn4: TJvImgBtn;
-    Splitter11: TSplitter;
-    Panel15: TPanel;
-    JvImgBtn5: TJvImgBtn;
-    JvImgBtn6: TJvImgBtn;
-    Panel16: TPanel;
-    JvImgBtn7: TJvImgBtn;
-    JvImgBtn8: TJvImgBtn;
-    Panel17: TPanel;
-    JvImgBtn9: TJvImgBtn;
-    JvImgBtn10: TJvImgBtn;
-    Panel18: TPanel;
-    JvImgBtn11: TJvImgBtn;
-    JvImgBtn12: TJvImgBtn;
-    Panel19: TPanel;
-    JvImgBtn13: TJvImgBtn;
-    JvImgBtn14: TJvImgBtn;
-    Panel20: TPanel;
-    JvImgBtn15: TJvImgBtn;
-    JvImgBtn16: TJvImgBtn;
-    Splitter12: TSplitter;
-    Splitter13: TSplitter;
-    Splitter14: TSplitter;
-    Splitter15: TSplitter;
-    Splitter16: TSplitter;
-    Splitter17: TSplitter;
-    TabSheet45: TTabSheet;
-    TabSheet46: TTabSheet;
-    TabSheet47: TTabSheet;
-    DesignerIconListView_Box: TListView;
-    DesignerIconListView_List: TListView;
-    DesignerIconListView_Edit: TListView;
-    TabSheet48: TTabSheet;
-    DesignerIconListView_Button: TListView;
-    TabSheet49: TTabSheet;
-    DesignerIconListView_Grid: TListView;
-    TabSheet50: TTabSheet;
-    DesignerIconListView_DataBase: TListView;
-    TabSheet51: TTabSheet;
-    DesignerIconListView_Image: TListView;
-    TabSheet52: TTabSheet;
-    TabSheet53: TTabSheet;
-    DesignerIconListView_CS: TListView;
-    DesignerIconListView_Scroll: TListView;
     MenuBarButton_DataBase: TCtrlMenuBarButton;
     PopupMenu_DataBase: TJvPopupMenu;
     SQLExplorer1: TMenuItem;
@@ -352,25 +220,7 @@ type
     IdTCPClient1: TIdTCPClient;
     Splitter3: TSplitter;
     Frame_Panel: TPanel;
-    C64ConfigTabSheet: TTabSheet;
-    Splitter4: TSplitter;
-    Panel3: TPanel;
-    Button3: TJvImgBtn;
-    Button4: TJvImgBtn;
-    Button5: TJvImgBtn;
     NewProjectScrollBox: TScrollBox;
-    PageControl2: TPageControl;
-    LocalTabSheet: TTabSheet;
-    RemoteTabSheet: TTabSheet;
-    LocalFoldersScrollBox: TScrollBox;
-    RemoteFoldersScrollBox: TScrollBox;
-    Panel4: TPanel;
-    Splitter2: TSplitter;
-    JvImgBtn1: TJvImgBtn;
-    JvImgBtn2: TJvImgBtn;
-    JvImgBtn18: TJvImgBtn;
-    JvImgBtn19: TJvImgBtn;
-    JvImgBtn20: TJvImgBtn;
     Panel14: TPanel;
     JvImgBtn21: TJvImgBtn;
     JvImgBtn22: TJvImgBtn;
@@ -453,17 +303,11 @@ type
     procedure SynEdit1DragOver(Sender, Source: TObject; X, Y: Integer;
       State: TDragState; var Accept: Boolean);
     procedure SynEdit1DragDrop(Sender, Source: TObject; X, Y: Integer);
-    procedure JvInspector1BeforeEdit(Sender: TObject;
-      Item: TJvCustomInspectorItem; Edit: TCustomEdit);
     procedure C64ScreenTimerTimer(Sender: TObject);
     procedure DesignerIconListView_StandardMouseDown(Sender: TObject;
       Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure JvInspector1BeforeSelection(Sender: TObject;
       NewItem: TJvCustomInspectorItem; var Allow: Boolean);
-    procedure JvInspector1ItemDoubleClicked(Sender: TObject;
-      Item: TJvCustomInspectorItem);
-    procedure JvInspector1ItemValueChanged(Sender: TObject;
-      Item: TJvCustomInspectorItem);
     procedure PaintBox1DragDrop(Sender, Source: TObject; X, Y: Integer);
     procedure PaintBox1DragOver(Sender, Source: TObject; X, Y: Integer;
       State: TDragState; var Accept: Boolean);
@@ -509,7 +353,6 @@ type
     procedure FormResize(Sender: TObject);
     procedure NewProjectPageControlChange(Sender: TObject);
     procedure InternalCompiler1Click(Sender: TObject);
-    procedure JvSpeedButton3Click(Sender: TObject);
     procedure Windows32Bit1Click(Sender: TObject);
     procedure Windows64Bit1Click(Sender: TObject);
     procedure MSDOS32Bit1Click(Sender: TObject);
@@ -526,6 +369,7 @@ type
     procedure Timer1Timer(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure C64ScreenKeyPress(Sender: TObject; var Key: WideChar);
+    procedure EnvironmentOptions1Click(Sender: TObject);
   private
     Cv1: TCanvas;
     ircListLimit: Integer;
@@ -536,6 +380,10 @@ type
     IniFile_SQL_Monitor : String;
 
     IniFile_IDE_Language: String;
+
+    IniFile_AsmOutput : String;
+    IniFile_AsmInclude: String;
+    IniFile_AsmYasm   : String;
 
     IniFile_Image_Edit  : String;
   public
@@ -569,6 +417,12 @@ type
     DFrameFormatLayout  : TFrame17;
 
     DFrameSpread        : TFrame18;
+    DFrameEditor        : TFrame19;
+    DFrameChat          : TFrame20;
+    DFrameEditOptions   : TFrame21;
+    DFrameEnvOptions    : TFrame22;
+    DFrameLeftPanel     : TFrame23;
+
     DFrameHelpTopic     : TFrame15;
 
     DFrameFoldersLocal  : TFrame9;
@@ -582,7 +436,9 @@ type
     DFrameC64Drives  : TFrame7;
 
     topicCount: Integer;
+
     msdosapp  : Boolean;
+    dbaseapp  : Boolean;
 
     tipday: TJvTipOfDay;
 
@@ -607,7 +463,6 @@ type
     procedure CreateSimpleWin32dBaseProgram;
 
     procedure JvDesignPanelPaint(Sender: TObject);
-    procedure ItemClick(Sender: TObject);
     procedure CheckButtonOnClick(Sender: TObject);
     function WriteToC64Screen(X,Y: Integer; AString: WideString): Integer;
     function PutToC64Screen  (X,Y: Integer; AChar: Char): Integer;
@@ -670,8 +525,8 @@ begin
 end;
 procedure TForm1.PopupMenu_File_NewClick(Sender: TObject);
 begin
-  TabSheet31.Caption := 'Unnamed';
-  SynEdit1.Lines.Clear;
+  DFrameEditor.TabSheet1.Caption := 'Unamed';
+  DFrameEditor.SynEdit1.Lines.Clear;
 end;
 
 procedure TForm1.JvDesignPanelPaint(Sender: TObject);
@@ -691,7 +546,11 @@ var
   text      : WideString;
   xpos, ypos: Integer;
   row, col  : Integer;
+  cImage    : TImage;
+  S         : String;
+  Index     : Integer;
   letter1, letter2: Char;
+  rect: TRect;
 begin
   SplashForm.ProgressBar1.Position := 10;
 
@@ -713,14 +572,31 @@ begin
   IniFile_SQL_Monitor  := 'E:\Program Files (x86)\Borland\Delphi7\Bin\sqlmon.exe';
   IniFile_Image_Edit   := 'E:\Program Files (x86)\Borland\Delphi7\Bin\imagedit.exe';
 
+  IniFile_AsmOutput  := ExtractFilePath(Application.ExeName) + 'dev\tmp';
+  IniFile_AsmInclude := ExtractFilePath(Application.ExeName) + 'dev\asm';
+  IniFile_AsmYasm    := ExtractFilePath(Application.ExeName) + 'dev\bin';
+
+  // left panel (config, setup):
+  DFrameLeftPanel := TFrame23.Create(LeftPanel);
+  DFrameLeftPanel.Parent := LeftPanel;
+  DFrameLeftPanel.Align  := alClient;
+  DFrameLeftPanel.Visible := true;
+
+  // default editor synedit:
+  DFrameEditor := TFrame19.Create(TabSheet2);
+  DFrameEditor.Parent  := TabSheet2;
+  DFrameEditor.Align   := alClient;
+  DFrameEditor.Visible := false;
+
   // config: c64 keyboard
-  DFrameC64Config := TFrame5.Create(C64ConfigTabSheet);
-  DFrameC64Config.Parent  := C64ConfigTabSheet;
+  DFrameC64Config := TFrame5.Create(DFrameLeftPanel.C64ConfigTabSheet);
+  DFrameC64Config.Parent  := DFrameLeftPanel.C64ConfigTabSheet;
   DFrameC64Config.Align   := alClient;
 
   DFrameC64Config.ListBox2.Items.BeginUpdate;
-  for I := 0 to 127 do
-  DFrameC64Config.ListBox2.Items.Add(IntToStr(I));
+    for I := 0 to  95 do DFrameC64Config.ListBox2.Items.Add(IntToStr($E020 + I));
+    for I := 0 to 100 do DFrameC64Config.ListBox2.Items.Add(IntToStr($E0A0 + I));
+//    for I := $E0A0 to $E0E0 do DFrameC64Config.ListBox2.Items.Add(IntToStr(I));
   DFrameC64Config.ListBox2.Items.EndUpdate;
 
   DFrameC64Config.Visible := false;
@@ -747,13 +623,13 @@ begin
   DFrameNewProject.Align   := alClient;
   DFrameNewProject.Visible := true;
 
-  DFrameFoldersLocal := TFrame9.Create(LocalFoldersScrollBox);
-  DFrameFoldersLocal.Parent  := LocalFoldersScrollBox;
+  DFrameFoldersLocal := TFrame9.Create(DFrameLeftPanel.LocalFoldersScrollBox);
+  DFrameFoldersLocal.Parent  := DFrameLeftPanel.LocalFoldersScrollBox;
   DFrameFoldersLocal.Align   := alClient;
   DFrameFoldersLocal.Visible := true;
 
-  DFrameFoldersRemote := TFrame10.Create(RemoteFoldersScrollBox);
-  DFrameFoldersRemote.Parent  := RemoteFoldersScrollBox;
+  DFrameFoldersRemote := TFrame10.Create(DFrameLeftPanel.RemoteFoldersScrollBox);
+  DFrameFoldersRemote.Parent  := DFrameLeftPanel.RemoteFoldersScrollBox;
   DFrameFoldersRemote.Align   := alClient;
   DFrameFoldersRemote.Visible := true;
 
@@ -797,6 +673,11 @@ begin
   DFrameHelpTopic.Visible := false;
 
   SplashForm.ProgressBar1.Position := 30;
+
+  DFrameEnvOptions := TFrame22.Create(TabSheet_Options);
+  DFrameEnvOptions.Parent  := TabSheet_Options;
+  DFrameEnvOptions.Align   := alClient;
+  DFrameEnvOptions.Visible := false;
 
   // interpreter
   initInterpreter;
@@ -842,9 +723,9 @@ begin
   DFrame.JvDesignPanel1.DrawRules := false;
   DFrame.JvDesignPanel1.OnPaint   := DFrame.JvDesignPanel1Paint;
 
-  SynEdit1.Lines.Clear;
+  DFrameEditor.SynEdit1.Lines.Clear;
 
-  LeftPageControl.Pages[2].TabVisible := true;
+  DFrameLeftPanel.LeftPageControl.Pages[2].TabVisible := true;
 
   // canvas for TextWidth:
   Cv1 := TCanvas.Create;
@@ -864,13 +745,13 @@ begin
 
   SplashForm.ProgressBar1.Position := 40;
 
-  EventMethodeListBox.InsertRow('Caption','Text1',true);
-  EventMethodeListBox.InsertRow('Height' ,'0'    ,true);
-  EventMethodeListBox.InsertRow('Left'   ,'0'    ,true);
-  EventMethodeListBox.InsertRow('Top'    ,'0'    ,true);
-  EventMethodeListBox.InsertRow('Width'  ,'0'    ,true);
+  DFrameLeftPanel.EventMethodeListBox.InsertRow('Caption','Text1',true);
+  DFrameLeftPanel.EventMethodeListBox.InsertRow('Height' ,'0'    ,true);
+  DFrameLeftPanel.EventMethodeListBox.InsertRow('Left'   ,'0'    ,true);
+  DFrameLeftPanel.EventMethodeListBox.InsertRow('Top'    ,'0'    ,true);
+  DFrameLeftPanel.EventMethodeListBox.InsertRow('Width'  ,'0'    ,true);
 
-  EventMethodeListBox.InsertRow('Name'   ,'ObjectName',true);
+  DFrameLeftPanel.EventMethodeListBox.InsertRow('Name'   ,'ObjectName',true);
 
   // get alias/tables
   DFrameMembers.DataBaseComboBox.Items.Clear;
@@ -912,6 +793,18 @@ begin
   DFrameTeamServer.Visible := true;
 
   SplashForm.ProgressBar1.Position := 75;
+
+  // chat frame
+  DFrameChat := TFrame20.Create(ChatTabSheet);
+  DFrameChat.Parent  := ChatTabSheet;
+  DFrameChat.Align   := alClient;
+  DFrameChat.Visible := false;
+
+  // options frame
+  DFrameEditOptions := TFrame21.Create(TabSheet_Options);
+  DFrameEditOptions.Parent  := TabSheet_Options;
+  DFrameEditOptions.Align   := alClient;
+  DFrameEditOptions.Visible := false;
 
   // spread sheet
   DFrameSpread := TFrame18.Create(SpreadTabSheet);
@@ -967,8 +860,8 @@ begin
 
   DFrameComputerOS.Visible := true;
 
-  TabSheet31.Caption := 'Unnamed';
-  TabSheet3 .Caption := 'Project';
+  DFrameEditor.TabSheet1.Caption := 'Unamed';
+  DFrameLeftPanel.TabSheet3 .Caption := 'Project';
 
   WriteToC64Screen(5,2,'**** COMMODORE 64 BASIC V2 ****');
   WriteToC64Screen(2,4,'64K RAM SYSTEM  38911 BASIC BYTES FREE');
@@ -980,7 +873,7 @@ begin
   NewProjectPageControl.ActivePageIndex := 1;
   NewProjectPageControl.ActivePageIndex := 0;
 
-  LeftPageControl.ActivePageIndex := 2;
+  DFrameLeftPanel.LeftPageControl.ActivePageIndex := 2;
   MainPageControl.ActivePageIndex := 8;
 
   SplashForm.ProgressBar1.Position := 100;
@@ -1188,7 +1081,7 @@ end;
 
 procedure TForm1.JvSpeedButton3Click1(Sender: TObject);
 begin
-  if SynEdit1.Modified then
+  if DFrameEditor.SynEdit1.Modified then
   JvSpeedButton2Click(Sender);
 
   if not(OpenDialog1.Execute) then
@@ -1199,14 +1092,15 @@ begin
     has_errors := true;
     exit
   end;
-  SynEdit1.Lines.Clear;
-  SynEdit1.Lines.LoadFromFile(OpenDialog1.FileName);
-  SynEdit1.Lines.Delete(SynEdit1.Lines.Count - 1);
+  DFrameEditor.SynEdit1.Lines.Clear;
+  DFrameEditor.SynEdit1.Lines.LoadFromFile(OpenDialog1.FileName);
+  DFrameEditor.SynEdit1.Lines.Delete(
+  DFrameEditor.SynEdit1.Lines.Count - 1);
 
-  TabSheet31.Caption := ExtractFileName(OpenDialog1.FileName);
+  DFrameEditor.TabSheet1.Caption := ExtractFileName(OpenDialog1.FileName);
 
   MainPageControl.ActivePage := TabSheet2;
-  SynEdit1.SetFocus;
+  DFrameEditor.SynEdit1.SetFocus;
 end;
 
 procedure TForm1.JvSpeedButton2Click2(Sender: TObject);
@@ -1220,11 +1114,11 @@ begin
     exit;
   end;
 
-  if TabSheet31.Caption = 'Unnamed' then
-  TabSheet31.Caption := OpenDialog1.FileName;
+  if DFrameEditor.TabSheet1.Caption = 'Unamed' then
+     DFrameEditor.TabSheet1.Caption := OpenDialog1.FileName;
 
-  SynEdit1.Lines.SaveToFile(OpenDialog1.FileName);
-  SynEdit1.Modified := false;
+  DFrameEditor.SynEdit1.Lines.SaveToFile(OpenDialog1.FileName);
+  DFrameEditor.SynEdit1.Modified := false;
 end;
 
 procedure TForm1.JvSpeedButton1Click(Sender: TObject);
@@ -1232,12 +1126,12 @@ var
   S1,S2: String;
   SL: TStringList;
 begin
-  if Length(Trim(SynEdit1.Lines.Text)) < 1 then
-  SynEdit1.Modified := false;
+  if Length(Trim(DFrameEditor.SynEdit1.Lines.Text)) < 1 then
+  DFrameEditor.SynEdit1.Modified := false;
 
-  if SynEdit1.Modified then
+  if DFrameEditor.SynEdit1.Modified then
   begin
-    if TabSheet31.Caption = 'Unnamed' then
+    if DFrameEditor.TabSheet1.Caption = 'Unamed' then
     begin
       if not(SaveDialog1.Execute) then
       begin
@@ -1258,14 +1152,14 @@ begin
         exit;
       end;
 
-      TabSheet31.Caption := S2;
+      DFrameEditor.TabSheet1.Caption := S2;
 
       sl := TStringList.Create;
-      sl.Add(SynEdit1.Lines.Text);
+      sl.Add(DFrameEditor.SynEdit1.Lines.Text);
       sl.SaveToFile(S1);
       sl.Free;
 
-      SynEdit1.Modified := false;
+      DFrameEditor.SynEdit1.Modified := false;
       exit;
     end;
 
@@ -1280,14 +1174,14 @@ begin
     S1 := SaveDialog1.FileName;
     S2 := ExtractFileName(s1);
 
-    TabSheet31.Caption := S2;
+    DFrameEditor.TabSheet1.Caption := S2;
 
     sl := TStringList.Create;
-    sl.Add(SynEdit1.Lines.Text);
+    sl.Add(DFrameEditor.SynEdit1.Lines.Text);
     sl.SaveToFile(S1);
     sl.Free;
 
-    SynEdit1.Modified := false;
+    DFrameEditor.SynEdit1.Modified := false;
     exit;
   end;
 
@@ -1302,50 +1196,53 @@ begin
   S1 := OpenDialog1.FileName;
   S2 := ExtractFileName(s1);
 
-  TabSheet31.Caption := S2;
+  DFrameEditor.TabSheet1.Caption := S2;
 
-  SynEdit1.Lines.Clear;
-  SynEdit1.Lines.LoadFromFile(S1);
-  SynEdit1.Lines.Delete(SynEdit1.Lines.Count - 1);
+  DFrameEditor.SynEdit1.Lines.Clear;
+  DFrameEditor.SynEdit1.Lines.LoadFromFile(S1);
+  DFrameEditor.SynEdit1.Lines.Delete(
+  DFrameEditor.SynEdit1.Lines.Count - 1);
 
-  SynEdit1.Modified := false;
+  DFrameEditor.SynEdit1.Modified := false;
 
   MainPageControl.ActivePageIndex := 0;
-  SynEdit1.SetFocus;
+  DFrameEditor.SynEdit1.SetFocus;
 
 end;
 
 procedure TForm1.JvSpeedButton2Click(Sender: TObject);
 var
-  s: String;
   sl: TStrings;
 begin
-  if not(SynEdit1.Modified) then exit;
-  if not(SaveDialog1.Execute) then
+  if not(DFrameEditor.SynEdit1.Modified) then exit;
+  if DFrameEditor.TabSheet1.Caption = 'Unamed' then
   begin
-    ErrorBox.Text('something went wrong at open file:' + #13 + SaveDialog1.FileName);
-    ErrorBox.BringToFront;
-    ErrorBox.Show;
-    
-    has_errors := true;
-    exit;
-  end else
-  begin
-    if TabSheet31.Caption = 'Unnamed' then
-    TabSheet31.Caption := SaveDialog1.FileName;
-    S := SynEdit1.Lines.Text;
-    sl := TStringList.Create;
-    sl.Add(S);
-    sl.SaveToFile(SaveDialog1.FileName);
-    sl.Free;
-    //SynEdit1.Lines.SaveToFile(SaveDialog1.FileName);
-    SynEdit1.Modified := false;
+    if not(SaveDialog1.Execute) then
+    begin
+      ErrorBox.Text('something went wrong at open file:' + #13 + SaveDialog1.FileName);
+      ErrorBox.BringToFront;
+      ErrorBox.Show;
+
+      has_errors := true;
+      exit;
+    end;
   end;
+
+  if DFrameEditor.TabSheet1.Caption = 'Unamed' then
+     DFrameEditor.TabSheet1.Caption := SaveDialog1.FileName;
+
+  sl := TStringList.Create;
+  sl.Add(DFrameEditor.SynEdit1.Lines.Text);
+  sl.SaveToFile(SaveDialog1.FileName);
+  sl.Free;
+
+  DFrameEditor.SynEdit1.Modified := false;
+  has_errors := false;
 end;
 
 procedure TForm1.StartCompileClick(Sender: TObject);
 var
-  callParser:          function(fileSrc: PChar): BOOL; cdecl;
+  callParser:          function(fileSrc, tempDir: PChar): BOOL; cdecl;
   callParserGetLine  : function: Integer; cdecl;
   callParserGetLines : function: Integer; cdecl;
   callParserCloseFile: procedure; cdecl;
@@ -1374,34 +1271,41 @@ begin
   Console1.SetFocus;
 
 // TODO: parser (below):
+(*
 if msdosapp then
 begin
-  JvInterpreterProgram1.Pas.Text := String(SynEdit1.Text);
+  JvInterpreterProgram1.Pas.Text := String(DFrameEditor.SynEdit1.Text);
   JvInterpreterProgram1.Compile;
   JvInterpreterProgram1.Run;
 end else
 begin
-  JvInterpreterFm1.Pas.Text := String(SynEdit1.Text);
+  JvInterpreterFm1.Pas.Text := String(DFrameEditor.SynEdit1.Text);
   JvInterpreterFm1.Compile;
   JvInterpreterFm1.Run;
 end;
-exit;
+exit;*)
 
 // TODO: parser:
   DateTimeToString(res,'',now);
   buildListBox.Items.Insert(0,res + ': ' + 'initialize...');
 
-  Handle := LoadLibrary(PChar(ExtractFilePath(Application.ExeName) + '\parsers.dll'));
+  Handle := LoadLibrary(PChar(ExtractFilePath(Application.ExeName) + '\dBaseDSL.dll'));
   if Handle <> 0 then
   begin
     DateTimeToString(res,'',now);
-    buildListBox.Items.Insert(0,res + ': load parsers.dll: OK.');
-
+    buildListBox.Items.Insert(0,res + ': load dBaseDSL.dll: OK.');
+(*
     callParser          := GetProcAddress(Handle,'_yy_pascal_lex_main');
     callParserCloseFile := GetProcAddress(Handle,'_yy_pascal_lex_close');
     callParserGetLine   := GetProcAddress(Handle,'_yy_pascal_lex_get_line');
     callParserGetLines  := GetProcAddress(Handle,'_yy_pascal_lex_getlines');
     callParserError     := GetProcAddress(Handle,'_yy_pascal_lex_parser_error');
+*)
+    callParser          := GetProcAddress(Handle,'_yy_dbase_lex_main');
+    callParserCloseFile := GetProcAddress(Handle,'_yy_dbase_lex_close');
+    callParserGetLine   := GetProcAddress(Handle,'_yy_dbase_lex_get_line');
+    callParserGetLines  := GetProcAddress(Handle,'_yy_dbase_lex_getlines');
+    callParserError     := GetProcAddress(Handle,'_yy_dbase_lex_parser_error');
 
     // hook: yyerror
     if @callParserError <> nil then
@@ -1420,7 +1324,15 @@ exit;
     if @callParser <> nil then
     begin
       try
-        callParser(PChar(TabSheet31.Caption));
+        if DFrameEditor.TabSheet1.Caption = 'Unamed' then
+        begin
+          DFrameEditor.SynEdit1.Modified := true;
+          JvSpeedButton2Click(Sender);
+        end;
+        callParser(
+          PChar(DFrameEditor.TabSheet1.Caption),
+          PChar(IniFile_AsmOutput)
+        );
         InfoBox.Text('Compile OK' + #13#10 +
         'Lines: ' + IntToStr(callParserGetLines-1));
       except
@@ -1455,6 +1367,7 @@ begin
   TabSheet_Options.SetFocus;
 
   MainPageControl.ActivePage := TabSheet_Options;
+  DFrameEditOptions.Visible := true;
 end;
 
 procedure TForm1.SynEdit1KeyDown(Sender: TObject; var Key: Word;
@@ -1601,6 +1514,9 @@ end;
 
 procedure TForm1.MainPageControlChange(Sender: TObject);
 begin
+  PanelResizer.Align := alClient;
+  PanelResizer.Visible := true;
+
   C64ScreenTimer.Enabled := false;
   DFrameC64KeyBoard.Visible := false;
 
@@ -1610,9 +1526,9 @@ begin
   DFrameFoldersLocal.Visible := true;
   DFrameFoldersRemote.Visible := true;
 
-  LeftPageControl.Pages[0].TabVisible := true;
-  LeftPageControl.Pages[1].TabVisible := true;
-  LeftPageControl.Pages[2].TabVisible := true;
+  DFrameLeftPanel.LeftPageControl.Pages[0].TabVisible := true;
+  DFrameLeftPanel.LeftPageControl.Pages[1].TabVisible := true;
+  DFrameLeftPanel.LeftPageControl.Pages[2].TabVisible := true;
 
   Splitter5.Visible := true;
   ModeButton.Visible := false;
@@ -1626,14 +1542,19 @@ begin
 
   DFrameC64Drives.Visible := false;
 
-  LeftPageControl.Visible := true;
+  DFrameLeftPanel.LeftPageControl.Visible := true;
   DFrameHelpTopic.Visible := false;
 
   DFrameComputerOS.Visible := true;
 
+  Panel22   .Visible := true;
+  Splitter19.Visible := true;
+  Splitter19.Left    := 650;
+
   if MainPageControl.ActivePage.Caption = 'C-64 Display' then
   begin
     C64ScreenTimer.Enabled := true;
+    Panel22.Visible := false;
 
     DFrameTeamServer.Visible := false;
     DFrameEdit.Visible := false;
@@ -1641,9 +1562,9 @@ begin
     DFrameC64KeyBoard.Visible := true;
     LogPanel.Visible := false;
 
-    LeftPageControl.Pages[0].TabVisible := false;
-    LeftPageControl.Pages[1].TabVisible := false;
-    LeftPageControl.Pages[2].TabVisible := true;
+    DFrameLeftPanel.LeftPageControl.Pages[0].TabVisible := false;
+    DFrameLeftPanel.LeftPageControl.Pages[1].TabVisible := false;
+    DFrameLeftPanel.LeftPageControl.Pages[2].TabVisible := true;
 
     DFrameMembers.PageControl5.Visible := false;
     DFrameMembers.Visible := false;
@@ -1657,7 +1578,7 @@ begin
   end else
   if MainPageControl.ActivePage.Caption = 'SQL-Builder' then
   begin
-    LeftPageControl.ActivePageIndex := 0;
+    DFrameLeftPanel.LeftPageControl.ActivePageIndex := 0;
 
     DFrameC64Config.Visible := false;
     DFrameC64Drives.Visible := false;
@@ -1678,11 +1599,15 @@ begin
     ModeButton.Visible := false;
     LogPanel.Visible := true;
 
+    DFrameEdit.PageControl3.Visible := false;
+    DFrameEdit.Splitter1.Align := alRight;
+    DFrameEdit.PageControl2.Align := alClient;
+
     DFrameComputerOS.Visible := false;
   end else
   if MainPageControl.ActivePage.Caption = 'Editor' then
   begin
-    LeftPageControl.ActivePageIndex := 1;
+    DFrameLeftPanel.LeftPageControl.ActivePageIndex := 1;
 
     DFrameC64Config.Visible := false;
     DFrameC64Drives.Visible := false;
@@ -1698,11 +1623,20 @@ begin
 
     DFrameComputerOS.Visible := false;
 
-    SynEdit1.SetFocus;
+
+
+    DFrameEdit.PageControl2.Align := alLeft;
+    DFrameEdit.PageControl2.Width := 400;
+    DFrameEdit.PageControl2.Visible := true;
+    DFrameEdit.Splitter1.Align := alLeft;
+
+    DFrameEdit.PageControl3.Visible := true;
+    DFrameEditor.Visible := true;
+    DFrameEditor.SynEdit1.SetFocus;
   end else
   if MainPageControl.ActivePage.Caption = 'Designer' then
   begin
-    LeftPageControl.ActivePageIndex := 0;
+    DFrameLeftPanel.LeftPageControl.ActivePageIndex := 0;
 
     DFrameC64Config.Visible := false;
     DFrameC64Drives.Visible := false;
@@ -1725,9 +1659,9 @@ begin
     DFrameFoldersLocal.Visible := true;
     DFrameFoldersRemote.Visible := true;
 
-    LeftPageControl.Pages[2].TabVisible := true;
-    LeftPageControl.Visible := true;
-    LeftPageControl.ActivePageIndex := 2;
+    DFrameLeftPanel.LeftPageControl.Pages[2].TabVisible := true;
+    DFrameLeftPanel.LeftPageControl.Visible := true;
+    DFrameLeftPanel.LeftPageControl.ActivePageIndex := 2;
 
     DFrameComputerOS.Visible := false;
 
@@ -1743,11 +1677,13 @@ begin
     DFrameFontStyle .Visible := true;
 
     ModeButton.Visible := false;
-    LeftPageControl.Visible := false;
+    DFrameLeftPanel.LeftPageControl.Visible := false;
     DFrameHelpTopic.Visible := true;
 
     DFrameComputerOS.Visible := false;
   end;
+
+  PanelResizer.Visible := false;
 end;
 
 procedure TForm1.Options1Click(Sender: TObject);
@@ -1764,20 +1700,18 @@ var
   S1: String;
 begin
   try
-    ircConnectButton.Enabled := false;
-
-//    ListBox1.Items.Clear;
-    ListBox2.Items.Clear;
+    DFrameChat.ircConnectButton.Enabled := false;
+    DFrameChat.ListBox1.Items.Clear;
 
     idirc1.Host := 'irc.libera.chat';
     idirc1.Port := 6667;
 
-    idirc1.Username := ircUserName.Text;
-    idirc1.Nick     := ircUserName.Text;
-    idirc1.Password := ircUserPass.Text;
+    idirc1.Username := DFrameChat.ircUserName.Text;
+    idirc1.Nick     := DFrameChat.ircUserName.Text;
+    idirc1.Password := DFrameChat.ircUserPass.Text;
 
     idirc1.Connect(10000);
-    idirc1.Join(ircChannel.Text);
+    idirc1.Join(DFrameChat.ircChannel.Text);
 
     // channels
     ircListLimit := 0;
@@ -1786,12 +1720,12 @@ begin
     idirc1.SendCmd('LIST',ares);
 
     // users
-    idirc1.SendCmd('NAMES ' + ircChannel.Text,ares);
+    idirc1.SendCmd('NAMES ' + DFrameChat.ircChannel.Text,ares);
   except
     ErrorBox.Text('connect error');
     ErrorBox.BringToFront;
     ErrorBox.Show;
-    ircConnectButton.Enabled := true;
+    DFrameChat.ircConnectButton.Enabled := true;
   end;
 end;
 
@@ -1811,12 +1745,14 @@ var
 begin
   S1 := AUser.Nick;
   S1 := S1 + ': ' + Content;
-  ircRichEdit.Lines.Add(S1);
+  DFrameChat.ircRichEdit.Lines.Add(S1);
 end;
 
 procedure TForm1.Button9Click(Sender: TObject);
 begin
-  idIRC1.Say(ircChannel.Text, sendChatTextEdit.Text)
+  idIRC1.Say(
+  DFrameChat.ircChannel.Text,
+  DFrameChat.sendChatTextEdit.Text)
 end;
 
 procedure TForm1.IdIRC1List(
@@ -1844,7 +1780,7 @@ var
 begin
   for I := 0 to AUsers.Count - 1 do
   begin
-    ListBox2.Items.Add(Ausers.Items[I].Nick);
+    DFrameChat.ListBox1.Items.Add(Ausers.Items[I].Nick);
   end;
 end;
 
@@ -1863,8 +1799,6 @@ begin
   Panel2  .Color := clGray;
   LogPanel.Color := clGray;
   Panel8  .Color := clGray;
-  Panel10 .Color := clGray;
-  Panel11 .Color := clGray;
   Panel12 .Color := clGray;
 
   JvSpeedButton1.Color := clGray;
@@ -1875,19 +1809,19 @@ begin
 
   PageControl1.Color := clGray;
   DFrameEdit.PageControl2.Color := clGray;
-  PageControl3.Color := clGray;
+  DFrameEditOptions.PageControl3.Color := clGray;
   DFrameMembers.PageControl5.Color := clGray;
-  PageControl6.Color := clGray;
-  PageControl7.Color := clGray;
-  PageControl8.Color := clGray;
+  DFrameChat.PageControl6.Color := clGray;
+  DFrameChat.PageControl7.Color := clGray;
+  DFrameChat.PageControl8.Color := clGray;
 
-  sendChatTextEdit.Color := clYellow;
+  DFrameChat.sendChatTextEdit.Color := clYellow;
 
 //  ListBox1.Color := clSilver;
 //  ListBox1.Font.Color := clBlack;
 
-  ListBox2.Color := clSilver;
-  ListBox2.Font.Color := clBlack;
+  DFrameChat.ListBox1.Color := clSilver;
+  DFrameChat.ListBox1.Font.Color := clBlack;
 
   BuildListBox.Color := clSilver;
   BuildListBox.Font.Color := clBlack;
@@ -1903,28 +1837,28 @@ begin
 //  TreeView3.Color := clSilver;
 //  TreeView3.Font.Color := clBlack;
 
-  LeftPageControl.Color := clGray;
-  ScrollBox1.Color := clGray;
+  DFrameLeftPanel.LeftPageControl.Color := clGray;
+  DFrameEditOptions.ScrollBox1.Color := clGray;
 
-  ircChannelEdit.Color := clYellow;
-  ircUserName.Color := clYellow;
-  ircUserPass.Color := clYellow;
-  ircChannel.Color := clYellow;
+  DFrameChat.ircChannelEdit.Color := clYellow;
+  DFrameChat.ircUserName.Color := clYellow;
+  DFrameChat.ircUserPass.Color := clYellow;
+  DFrameChat.ircChannel.Color := clYellow;
 
-  ircLabelNick    .Font.Color := clWhite;
-  ircLabelPassword.Font.Color := clWhite;
-  ircLabelChannel .Font.Color := clWhite;
+  DFrameChat.ircLabelNick    .Font.Color := clWhite;
+  DFrameChat.ircLabelPassword.Font.Color := clWhite;
+  DFrameChat.ircLabelChannel .Font.Color := clWhite;
 
-  ircListBox.Color := clSilver;
-  ircListBox.Font.Color := clBlack;
+  DFrameChat.ircListBox.Color := clSilver;
+  DFrameChat.ircListBox.Font.Color := clBlack;
 
-  ircTopicEdit.Color := clYellow;
-  ircRichEdit.Color  := clSilver;
+  DFrameChat.ircTopicEdit.Color := clYellow;
+  DFrameChat.ircRichEdit.Color  := clSilver;
 
 
-  SynEdit1.Color := clBlue;
-  SynEdit1.Font.Color := clYellow;
-  SynEdit1.Gutter.Color := $00FF8000;
+  DFrameEditor.SynEdit1.Color := clBlue;
+  DFrameEditor.SynEdit1.Font.Color := clYellow;
+  DFrameEditor.SynEdit1.Gutter.Color := $00FF8000;
 
   DFrameEdit.SynEdit2.Color := clBlue;
   DFrameEdit.SynEdit2.Font.Color := clYellow;
@@ -1958,8 +1892,6 @@ begin
   Panel2  .Color := clBtnFace;
   LogPanel.Color := clBtnFace;
   Panel8  .Color := clBtnFace;
-  Panel10 .Color := clBtnFace;
-  Panel11 .Color := clBtnFace;
   Panel12 .Color := clBtnFace;
 
   JvSpeedButton1.Color := clBtnFace;
@@ -1969,24 +1901,24 @@ begin
 
   StatusBar1.Color := clBtnFace;
 
-  sendChatTextEdit.Color := clWhite;
+  DFrameChat.sendChatTextEdit.Color := clWhite;
 
   PageControl1.Color := clBtnFace;
   DFrameEdit.PageControl2.Color := clBtnFace;
-  PageControl3.Color := clBtnFace;
+  DFrameEditOptions.PageControl3.Color := clBtnFace;
   DFrameMembers.PageControl5.Color := clBtnFace;
-  PageControl6.Color := clBtnFace;
-  PageControl7.Color := clBtnFace;
-  PageControl8.Color := clBtnFace;
+  DFrameChat.PageControl6.Color := clBtnFace;
+  DFrameChat.PageControl7.Color := clBtnFace;
+  DFrameChat.PageControl8.Color := clBtnFace;
 
-  LeftPageControl.Color := clBtnFace;
-  ScrollBox1.Color := clBtnFace;
+  DFrameLeftPanel.LeftPageControl.Color := clBtnFace;
+  DFrameEditOptions.ScrollBox1.Color := clBtnFace;
 
 //  ListBox1.Color := clWhite;
 //  ListBox1.Font.Color := clBlack;
 
-  ListBox2.Color := clWhite;
-  ListBox2.Font.Color := clBlack;
+  DFrameChat.ListBox1.Color := clWhite;
+  DFrameChat.ListBox1.Font.Color := clBlack;
 
   BuildListBox.Color := clWhite;
   BuildListBox.Font.Color := clBlack;
@@ -1997,24 +1929,24 @@ begin
 //  TreeView1.Color := clWhite;
 //  TreeView1.Font.Color := clBlack;
 
-  ircChannelEdit.Color := clWhite;
-  ircUserName.Color := clWhite;
-  ircUserPass.Color := clWhite;
-  ircChannel .Color := clWhite;
+  DFrameChat.ircChannelEdit.Color := clWhite;
+  DFrameChat.ircUserName.Color := clWhite;
+  DFrameChat.ircUserPass.Color := clWhite;
+  DFrameChat.ircChannel .Color := clWhite;
 
-  ircLabelNick    .Font.Color := clBlack;
-  ircLabelPassword.Font.Color := clBlack;
-  ircLabelChannel .Font.Color := clBlack;
+  DFrameChat.ircLabelNick    .Font.Color := clBlack;
+  DFrameChat.ircLabelPassword.Font.Color := clBlack;
+  DFrameChat.ircLabelChannel .Font.Color := clBlack;
 
-  ircListBox.Color := clWhite;
-  ircListBox.Font.Color := clBlack;
+  DFrameChat.ircListBox.Color := clWhite;
+  DFrameChat.ircListBox.Font.Color := clBlack;
 
-  ircTopicEdit.Color := clWhite;
-  ircRichEdit.Color  := clWhite;
+  DFrameChat.ircTopicEdit.Color := clWhite;
+  DFrameChat.ircRichEdit.Color  := clWhite;
 
-  SynEdit1.Color := clWhite;
-  SynEdit1.Font.Color := clBlack;
-  SynEdit1.Gutter.Color := clBtnFace;
+  DFrameEditor.SynEdit1.Color := clWhite;
+  DFrameEditor.SynEdit1.Font.Color := clBlack;
+  DFrameEditor.SynEdit1.Gutter.Color := clBtnFace;
 
   DFrameEdit.SynEdit2.Color := clWhite;
   DFrameEdit.SynEdit2.Font.Color := clBlack;
@@ -2083,31 +2015,10 @@ begin
       'Image.Visible := true;'        + sLineBreak ;
     end;
 
-    SynEdit1.InsertBlock(
-    SynEdit1.CaretXY,
-    SynEdit1.CaretXY, PWideChar(txt), true);
-    SynEdit1.SetFocus;
-  end;
-end;
-
-procedure TForm1.JvInspector1BeforeEdit(Sender: TObject;
-  Item: TJvCustomInspectorItem; Edit: TCustomEdit);
-begin
-  TEdit(Edit).OnClick := ItemClick;
-end;
-
-procedure TForm1.ItemClick(Sender: TObject);
-var
-  I: Integer;
-  found: Boolean;
-begin
-  if JvInspector1.Selected.DisplayName = 'Color' then
-  begin
-    if ColorDialog1.Execute then
-    begin
-      JvInspector1.Selected.SetDisplayValue(
-      ColorToString(ColorDialog1.Color));
-    end;
+    DFrameEditor.SynEdit1.InsertBlock(
+    DFrameEditor.SynEdit1.CaretXY,
+    DFrameEditor.SynEdit1.CaretXY, PWideChar(txt), true);
+    DFrameEditor.SynEdit1.SetFocus;
   end;
 end;
 
@@ -2215,36 +2126,13 @@ end;
 procedure TForm1.DesignerIconListView_StandardMouseDown(Sender: TObject;
   Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
-  DesignerIconListView_Standard.BeginDrag(false);
+  DFrameLeftPanel.DesignerIconListView_Standard.BeginDrag(false);
 end;
 
 procedure TForm1.JvInspector1BeforeSelection(Sender: TObject;
   NewItem: TJvCustomInspectorItem; var Allow: Boolean);
 begin
   Allow := true;
-end;
-
-procedure TForm1.JvInspector1ItemDoubleClicked(Sender: TObject;
-  Item: TJvCustomInspectorItem);
-begin
-  showMessage(item.DisplayName);
-end;
-
-procedure TForm1.JvInspector1ItemValueChanged(
-  Sender: TObject;
-  Item  : TJvCustomInspectorItem);
-var
-  sValue: String;
-begin
-  if (Item.Data <> nil) then
-  begin
-    sValue := Item.DisplayValue;
-
-    if (CompareText(Item.Data.Name, 'Color') = 0) then
-    begin
-      Item.SetDisplayValue(ColorToString(ColorDialog1.Color));
-    end;
-  end;
 end;
 
 procedure TForm1.PaintBox1DragDrop(Sender, Source: TObject; X, Y: Integer);
@@ -2362,13 +2250,15 @@ begin
   begin
     ChatWindow1.Checked := true;
     ChatTabSheet.TabVisible := true;
+    DFrameChat.Visible := true;
     MainPageControl.ActivePage := ChatTabSheet;
   end else
   begin
     ChatWindow1.Checked := false;
     ChatTabSheet.TabVisible := false;
+    DFrameChat.Visible := false;
     MainPageControl.ActivePage := TabSheet2;
-    SynEdit1.SetFocus;
+    DFrameEditor.SynEdit1.SetFocus;
   end;
 end;
 
@@ -2427,8 +2317,8 @@ begin
   DFrameFontColor.Visible := false;
   DFrameFontStyle.Visible := false;
 
-  LeftPageControl.Visible := true;
-  LeftPageControl.ActivePageIndex := 2;
+  DFrameLeftPanel.LeftPageControl.Visible := true;
+  DFrameLeftPanel.LeftPageControl.ActivePageIndex := 2;
 
   Panel8.Visible := true;
   DFrameComputerOS.Visible := true;
@@ -2480,6 +2370,10 @@ Begin
       IniFile_Image_Edit   := ini.ReadString('common','imageEdit'  ,iniFile_Image_Edit  );
       IniFile_IDE_Language := ini.ReadString('common','language'   ,iniFile_IDE_Language);
 
+      IniFile_AsmOutput  := ini.ReadString('asm','dBaseAsmOutput' ,IniFile_AsmOutput);
+      IniFile_AsmInclude := ini.ReadString('asm','dBaseAsmInclude',IniFile_AsmInclude);
+      IniFile_AsmYasm    := ini.ReadString('asm','dBaseAsmYasm'   ,IniFile_AsmYasm);
+
       for I := 0 to 60 do
       begin
         S := ini.ReadString('keyboard','key' + IntToStr(I),'default');
@@ -2513,6 +2407,10 @@ begin
       ini.WriteString('common','imageEdit'  ,IniFile_Image_Edit);
       ini.WriteString('common','language'   ,IniFile_IDE_Language);
 
+      ini.WriteString('asm','AsmOutput' ,IniFile_AsmOutput);
+      ini.WriteString('asm','AsmInclude',IniFile_AsmInclude);
+      ini.WriteString('asm','AsmYasm'   ,IniFile_AsmYasm);
+
       for I := 0 to 60 do
       begin
         ini.WriteString('keyboard','key' + IntToStr(I),
@@ -2536,55 +2434,55 @@ end;
 procedure TForm1.DesignerIconListView_BoxMouseDown(Sender: TObject;
   Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
-  DesignerIconListView_Box.BeginDrag(false);
+  DFrameLeftPanel.DesignerIconListView_Box.BeginDrag(false);
 end;
 
 procedure TForm1.DesignerIconListView_ListMouseDown(Sender: TObject;
   Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
-  DesignerIconListView_List.BeginDrag(false);
+  DFrameLeftPanel.DesignerIconListView_List.BeginDrag(false);
 end;
 
 procedure TForm1.DesignerIconListView_ButtonMouseDown(Sender: TObject;
   Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
-  DesignerIconListView_Button.BeginDrag(false);
+  DFrameLeftPanel.DesignerIconListView_Button.BeginDrag(false);
 end;
 
 procedure TForm1.DesignerIconListView_GridMouseDown(Sender: TObject;
   Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
-  DesignerIconListView_Grid.BeginDrag(false);
+  DFrameLeftPanel.DesignerIconListView_Grid.BeginDrag(false);
 end;
 
 procedure TForm1.DesignerIconListView_DataBaseMouseDown(Sender: TObject;
   Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
-  DesignerIconListView_DataBase.BeginDrag(false);
+  DFrameLeftPanel.DesignerIconListView_DataBase.BeginDrag(false);
 end;
 
 procedure TForm1.DesignerIconListView_ImageMouseDown(Sender: TObject;
   Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
-  DesignerIconListView_Image.BeginDrag(false);
+  DFrameLeftPanel.DesignerIconListView_Image.BeginDrag(false);
 end;
 
 procedure TForm1.DesignerIconListView_ScrollMouseDown(Sender: TObject;
   Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
-  DesignerIconListView_Scroll.BeginDrag(false);
+  DFrameLeftPanel.DesignerIconListView_Scroll.BeginDrag(false);
 end;
 
 procedure TForm1.DesignerIconListView_CSMouseDown(Sender: TObject;
   Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
-  DesignerIconListView_CS.BeginDrag(false);
+  DFrameLeftPanel.DesignerIconListView_CS.BeginDrag(false);
 end;
 
 procedure TForm1.DesignerIconListView_EditMouseDown(Sender: TObject;
   Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
-  DesignerIconListView_Edit.BeginDrag(false);
+  DFrameLeftPanel.DesignerIconListView_Edit.BeginDrag(false);
 end;
 
 procedure TForm1.JvApplicationHotKey1HotKey(Sender: TObject);
@@ -2758,7 +2656,7 @@ begin
   end else
   if msg.CharCode = VK_F2 then
   begin
-    if SynEdit1.Focused then
+    if DFrameEditor.SynEdit1.Focused then
     begin
       StartCompileClick(self);
     end else
@@ -2822,7 +2720,7 @@ begin
   case Run_MenuItem.Tag of
     0:
     begin
-      if (Length(Trim(SynEdit1.Lines.Text)) < 1) then
+      if (Length(Trim(DFrameEditor.SynEdit1.Lines.Text)) < 1) then
       begin
         ErrorBox.Text('Warning:' + #10 + 'no source code data.');
         ErrorBox.BringToFront;
@@ -2842,7 +2740,7 @@ begin
             ErrorBox.BringToFront;
             ErrorBox.Show;
             
-            SynEdit1.SetFocus;
+            DFrameEditor.SynEdit1.SetFocus;
           end;
         end;
       end;
@@ -2893,19 +2791,19 @@ end;
 
 procedure TForm1.LeftPageControlChange(Sender: TObject);
 begin
-  if LeftPageControl.ActivePage.Caption = 'Project' then
+  if DFrameLeftPanel.LeftPageControl.ActivePage.Caption = 'Project' then
   begin
     MainPageControl.ActivePageIndex := 0;
     DFrameTeamServer.Visible := false;
     DFrameEdit.Visible := true;
   end else
-  if LeftPageControl.ActivePage.Caption = 'Design' then
+  if DFrameLeftPanel.LeftPageControl.ActivePage.Caption = 'Design' then
   begin
     MainPageControl.ActivePageIndex := 4;
     DFrameTeamServer.Visible := false;
     DFrameEdit.Visible := true;
   end else
-  if LeftPageControl.ActivePage.Caption = 'Folder''s' then
+  if DFrameLeftPanel.LeftPageControl.ActivePage.Caption = 'Folder''s' then
   begin
     MainPageControl.ActivePageIndex := 8;
     DFrameEdit.Visible := false;
@@ -2960,30 +2858,10 @@ begin
   InternalCompiler1.Checked := true;
 end;
 
-procedure TForm1.JvSpeedButton3Click(Sender: TObject);
-begin
-(*
-  if not(DFrameHelpAuthor.FontBold) then
-  begin
-    DFrameHelpAuthor.CurrText.Style :=
-    DFrameHelpAuthor.CurrText.Style + [fsBold];
-    DFrameHelpAuthor.CurrText.Color := clYellow;
-//    DFrameHelpAuthor.FontColor;
-    DFrameHelpAuthor.FontBold := true;
-  end else
-  begin
-    DFrameHelpAuthor.CurrText.Style :=
-    DFrameHelpAuthor.CurrText.Style - [fsBold];
-    DFrameHelpAuthor.CurrText.Color := clBlack;
-//    DFrameHelpAuthor.FontColor;
-    DFrameHelpAuthor.FontBold := false;
-  end;*)
-end;
-
 procedure TForm1.CreateSimpleMSDOSProgram;
 begin
   EditPanel.Visible := true;
-  SynEdit1.Text :=
+  DFrameEditor.SynEdit1.Text :=
   '// This File was created automatically' + sLineBreak +
   '// Press F2-key to execute it.'         + sLineBreak +
   'unit main;'                             + sLineBreak +
@@ -3001,9 +2879,9 @@ begin
 
   DFrameEdit.Visible := true;
 
-  LeftPageControl.Visible := true;
+  DFrameLeftPanel.LeftPageControl.Visible := true;
   MainPageControl.ActivePageIndex := 0;
-  SynEdit1.SetFocus;
+  DFrameEditor.SynEdit1.SetFocus;
 end;
 
 procedure TForm1.SetEditMisc;
@@ -3014,15 +2892,15 @@ begin
 
   DFrameEdit.Visible := true;
 
-  LeftPageControl.Visible := true;
+  DFrameLeftPanel.LeftPageControl.Visible := true;
   MainPageControl.ActivePageIndex := 0;
-  SynEdit1.SetFocus;
+  DFrameEditor.SynEdit1.SetFocus;
 end;
 
 procedure TForm1.CreateSimpleWin32Program;
 begin
   EditPanel.Visible := true;
-  SynEdit1.Text :=
+  DFrameEditor.SynEdit1.Text :=
   '// This File was created automatically' + sLineBreak +
   '// Press F2-key to execute it.'         + sLineBreak +
   'unit main;'                             + sLineBreak +
@@ -3057,7 +2935,7 @@ end;
 procedure TForm1.CreateSimpleWin32dBaseProgram;
 begin
   EditPanel.Visible := true;
-  SynEdit1.Text :=
+  DFrameEditor.SynEdit1.Text :=
   '// This File was created automatically' + sLineBreak +
   '// Press F2-key to execute it.'         + sLineBreak +
   '** End of Header';
@@ -3067,11 +2945,12 @@ end;
 
 procedure TForm1.CreateSimpleMSDOSdBaseProgram;
 begin
+  DFrameEditor.Visible := true;
   EditPanel.Visible := true;
-  SynEdit1.Text :=
+  DFrameEditor.SynEdit1.Text :=
   '// This File was created automatically' + sLineBreak +
-  '// Press F2-key to execute it.'         + sLineBreak ;
-
+  '// Press F2-key to execute it.'         + sLineBreak +
+  '34';
   SetEditMisc;
 end;
 
@@ -3092,22 +2971,22 @@ end;
 
 procedure TForm1.Cut1Click(Sender: TObject);
 begin
-  SynEdit1.CutToClipboard;
+  DFrameEditor.SynEdit1.CutToClipboard;
 end;
 
 procedure TForm1.Copy1Click(Sender: TObject);
 begin
-  SynEdit1.CopyToClipboard;
+  DFrameEditor.SynEdit1.CopyToClipboard;
 end;
 
 procedure TForm1.Paste1Click(Sender: TObject);
 begin
-  SynEdit1.PasteFromClipboard;
+  DFrameEditor.SynEdit1.PasteFromClipboard;
 end;
 
 procedure TForm1.Delete1Click(Sender: TObject);
 begin
-  SynEdit1.SelText := '';
+  DFrameEditor.SynEdit1.SelText := '';
 end;
 
 procedure TForm1.Console1CommandExecute(
@@ -3236,6 +3115,17 @@ end;
 procedure TForm1.C64ScreenKeyPress(Sender: TObject; var Key: WideChar);
 begin
   key := #0
+end;
+
+procedure TForm1.EnvironmentOptions1Click(Sender: TObject);
+begin
+  TabSheet_Options.Visible := true;
+  TabSheet_Options.Enabled := true;
+  TabSheet_Options.SetFocus;
+
+  DFrameEditOptions.Visible := false;
+  MainPageControl.ActivePage := TabSheet_Options;
+  DFrameEnvOptions.Visible := true;
 end;
 
 end.
