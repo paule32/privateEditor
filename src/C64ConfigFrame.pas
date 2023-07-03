@@ -28,7 +28,6 @@ type
     procedure ListBox2DrawItem(Control: TWinControl; Index: Integer;
       Rect: TRect; State: TOwnerDrawState);
   private
-    MemBitmap: TBitmap;
   public
     { Public declarations }
   end;
@@ -56,6 +55,8 @@ end;
 procedure TFrame5.ListBox2MeasureItem(Control: TWinControl; Index: Integer;
   var Height: Integer);
 begin
+  if (Index >= 95) and (Index <= 127) then
+  Height := 0 else
   Height := ImageList1.Height + 4;
 end;
 

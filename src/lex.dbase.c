@@ -2231,7 +2231,7 @@ BOOL yy_dbase_lex_main(
 	free(buffer);
 	return false;
   }
-  
+
   yyin = fopen(filename,"r");
   if (!yyin) {
     buffer = (char*) malloc(100);
@@ -2283,9 +2283,10 @@ BOOL yy_dbase_lex_main(
 
   if (strlen(tempDir) > 1)
     strcpy(buffer,tempDir); else
-    strcpy(buffer,dBaseDLLdirectory);
+    strcpy(buffer,tempDir);
     strcat(buffer,"\\temp.$asm");
-
+	
+MessageBox(0,buffer,"22222",0);
   yy_out = fopen(buffer,"w");
   if (!yy_out)
   {

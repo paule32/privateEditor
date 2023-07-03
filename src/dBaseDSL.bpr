@@ -56,7 +56,7 @@
       -N0E:\Projekte\SWIPL\SWIPEL_ZWAP\src\lang\dcu -$Y- -$U -$Q -$L- -$D- -$C- 
       -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
-    <AFLAGS value="/mx /w2 /zn"/>
+    <AFLAGS value="/ml /w2 /zn"/>
     <LFLAGS value="-lE:\Projekte\SWIPL\SWIPEL_ZWAP\src\lang\dcu 
       -IE:\Projekte\SWIPL\SWIPEL_ZWAP\src\lang\dcu -D&quot;&quot; -aa -Tpd -x -Gn -Gi"/>
     <OTHERFILES value=""/>
@@ -127,8 +127,9 @@ Count=1
 Item0=E:\Projekte\SWIPL\SWIPEL_ZWAP\src\lang\dcu
 
 [HistoryLists\hlFinalOutputDir]
-Count=1
-Item0=E:\Projekte\SWIPL\SWIPEL_ZWAP\src\lang\dcu
+Count=2
+Item0=E:\Projekte\SWIPL\SWIPEL_ZWAP\src\lang\dcu\
+Item1=E:\Projekte\SWIPL\SWIPEL_ZWAP\src\lang\dcu
 
 [HistoryLists\hIBPIOutputDir]
 Count=1

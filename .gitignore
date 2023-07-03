@@ -12972,3 +12972,4 @@ src/HelpTopicFrame.~ddp
 *.$asm
 *.obj
 *.~bpg
+*.~pas
