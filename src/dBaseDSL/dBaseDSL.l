@@ -5,7 +5,7 @@
 // License: all rights reserved.
 // ----------------------------------------------------------------------------
 # include "common.h"
-# include "dbasedslparser.h"
+# include "dBaseDSL.tab.h"
 
 // ----------------------------------------------------------------------------
 // parser variables and constants:
@@ -28,6 +28,13 @@ int yy_dbase_lex_get_line(void) { return yy_dbase_count(); }
 int yy_dbase_lex_getlines(void) { return yy_dbase_count(); }
 
 #define int YYSTYPE
+
+void yyerror(const char* msg)
+{
+    fprintf(stderr,"error: %s\n",msg);
+    exit(1);
+}
+
 %}
 
 DIGIT       [0-9]
@@ -72,33 +79,32 @@ Z [z|Z]
 %%
 
 "//".*                  { /* DO NOTHING */ }
-"//".*\n                { /* DO NOTHING */ }
+"//".*\n                { /* DO NOTHING */ yy_row++; }
 
 "&&".*                  { /* DO NOTHING */ }
-"&&".*\n                { /* DO NOTHING */ }
+"&&".*\n                { /* DO NOTHING */ yy_row++; }
 
 "**".*                  { /* DO NOTHING */ }
-"**".*\n                { /* DO NOTHING */ }
+"**".*\n                { /* DO NOTHING */ yy_row++; }
 
 "/*"                    { BEGIN(Comment1); }
-<Comment1>\n*           { yy_row += 1;     }
+<Comment1>\n*           { yy_row += 1;     yy_row++; }
 <Comment1>"*"+"/"       { BEGIN(INITIAL);  }
 
 [ \t]*                  { /* empty */ }
-[\n|\r\n]               { yy_col = 1; yylineno++;   }
+[\n|\r\n]               { yy_col = 1;      yy_row++; }
 
-{ID}                        { return TOK_DBASE_ID    ; }
+{ID}                    { return TOK_ID    ; }
+[0-9]+                  { return TOK_NUMBER; }
+[0-9]+\.[0-9]+          { return TOK_NUMBER; }
 
-[0-9]+           { MessageBoxA(0,yytext,"infooo111",0); return TOK_DBASE_NUMBER; }
-[0-9]+\.[0-9]+   { MessageBoxA(0,yytext,"infooo222",0); return TOK_DBASE_NUMBER; }
-
-":"                     { return TOK_DBASE_SYM_1; }
-";"                     { return TOK_DBASE_SYM_2; }
-"+"                     { return TOK_DBASE_SYM_3; }
-"-"                     { return TOK_DBASE_SYM_4; }
-"*"                     { return TOK_DBASE_SYM_5; }
-"/"                     { return TOK_DBASE_SYM_6; }
-<<EOF>>                 { return TOK_DBASE_YYEOF; }
+":"                     { return ':'; }
+";"                     { return ';'; }
+"-"                     { return '-'; }
+"+"                     { return '+'; }
+"*"                     { return '*'; }
+"/"                     { return '/'; }
+<<EOF>>                 { return TOK_YYEOF; }
 .                       {
     char buffer[200];
     sprintf( buffer, "Unrecognized character: %s\n", yytext );
@@ -132,7 +138,7 @@ BOOL EXPORT yy_dbase_lex_main(
     int   length;
     int   bytesWritten;
   
-MessageBoxA(0,filename,"tempdir",0);
+MessageBoxA(0,filename,tempDir,0);
 
     if (strlen(tempDir) < 1) {
         buffer = (char*) malloc(100);
@@ -143,7 +149,7 @@ MessageBoxA(0,filename,"tempdir",0);
         free(buffer);
         return false;
     }
-MessageBoxA(0,"11111,"0000",0);
+MessageBoxA(0,"11111","0000",0);
 
     yyin = fopen(filename,"r");
     if (!yyin) {

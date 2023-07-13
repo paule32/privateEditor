@@ -16,30 +16,23 @@ extern char* data_data;
 #define YYSTYPE int
 %}
 
-%token <char*> ID
-%token <int>         TOK_DBASE_NUMBER
-%token <float>       TOK_DBASE_FLOAT
+%token TOK_ID
+%token TOK_NUMBER
+%token TOK_FLOAT
 
-%type <float> number
-%type <float> factor
-%type <float> term
-%type <float> expr
+%type number
+%type factor
+%type term
+%type expr
 
-%token TOK_DBASE_SYM_1
-%token TOK_DBASE_SYM_2
-%token TOK_DBASE_SYM_3
-%token TOK_DBASE_SYM_4
-%token TOK_DBASE_SYM_5
-%token TOK_DBASE_SYM_6
+%token TOK_YYEOF 0
 
-%token YYEOF 0
-
-%start program_dbase
+%start program
 %%
 
-program_dbase
+program
   : /* empty */
-  | program_dbase expr {
+  | program expr {
 	char buffer[200];
     sprintf(buffer,"--> %f",$2);
     MessageBoxA(0,buffer,"3333",0);
@@ -65,7 +58,7 @@ factor
   ;
   
 number
-  : TOK_DBASE_NUMBER  { $$ = $1;  }
+  : TOK_NUMBER        { $$ = $1;  }
   ;
   
 %%
