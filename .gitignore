@@ -13006,3 +13006,4 @@ src/PascalDSL.tab.cpp
 src/dBaseDSL.tab.h
 src/dBaseDSL/dBaseDSL.tab.h
 src/dBaseDSL/dBaseDSL.tab.c
+src/dBaseDSL/nodes.o

@@ -28,16 +28,11 @@
     # pragma warning Unknown dynamic link import/export semantics.
 #endif
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-extern int yyparse();
-
 // ----------------------------------------------------------------------------
 // standard i/o header proto type stuff:
 // ----------------------------------------------------------------------------
 # include <stdio.h>
+# include <stdlib.h>
 # include <string.h>
 # include <io.h>
 # include <sys/types.h>
@@ -51,6 +46,30 @@ extern int yyparse();
 
 #define false 0
 #define true  1
+
+struct node {
+	char *name;
+	int     id;
+	int    num;
+	
+	struct node *prev;
+	struct node *next;
+	
+	struct node *lhs;
+	struct node *rhs;
+} *root;
+
+# define ID_TYPE_OP_PLUS 1
+# define ID_TYPE_PRINT   10
+
+#ifdef __cplusplus
+extern BOOL initNode(void);
+extern void insertNode(struct node* prev_node, int data);
+#endif
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 extern char* dBaseDLLdirectory;
 
@@ -92,6 +111,7 @@ extern int   EXPORT yy_dbase_lex_getlines(void);
 extern BOOL  EXPORT yy_dbase_lex_main(char*,char*);
 
 extern void  EXPORT yy_dbase_fatal_error(char* message);
+
 #ifdef __cplusplus
 }
 #endif
