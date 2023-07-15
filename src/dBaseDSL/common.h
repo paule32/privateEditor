@@ -34,8 +34,6 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
-# include <io.h>
-# include <sys/types.h>
 
 // ----------------------------------------------------------------------------
 // Microsoft Windows win32api:
@@ -48,9 +46,10 @@
 #define true  1
 
 struct node {
+	char *token;
 	char *name;
 	int     id;
-	int    num;
+	float  num;
 	
 	struct node *prev;
 	struct node *next;
@@ -59,13 +58,21 @@ struct node {
 	struct node *rhs;
 } *root;
 
-# define ID_TYPE_OP_PLUS 1
-# define ID_TYPE_PRINT   10
+// typedef struct node* YYSTYPE;
+// # define YYSTYPE_IS_DECLARED
 
-#ifdef __cplusplus
+# define ID_TYPE_OP_SUB  1
+# define ID_TYPE_OP_ADD  2
+# define ID_TYPE_OP_MUL  3
+# define ID_TYPE_OP_DIV  4
+
+# define ID_TYPE_CONST 10
+# define ID_TYPE_EXPR  20
+
+# define ID_TYPE_PRINT   100
+
 extern BOOL initNode(void);
 extern void insertNode(struct node* prev_node, int data);
-#endif
 
 #ifdef __cplusplus
 extern "C" {

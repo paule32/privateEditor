@@ -13007,3 +13007,8 @@ src/dBaseDSL.tab.h
 src/dBaseDSL/dBaseDSL.tab.h
 src/dBaseDSL/dBaseDSL.tab.c
 src/dBaseDSL/nodes.o
+src/dBaseDSL/dBaseDSL.~y
+src/dBaseDSL/dBaseDSL.tab.~c
+src/dBaseDSL/dBaseDSL.tab.o
+src/dBaseDSL/lex.yy.o
+src/dBaseDSL/dllmain.o

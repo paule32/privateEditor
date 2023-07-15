@@ -24,8 +24,6 @@ int yy_dbase_count(void)        { return yy_row; }
 int yy_dbase_lex_get_line(void) { return yy_dbase_count(); }
 int yy_dbase_lex_getlines(void) { return yy_dbase_count(); }
 
-#define int YYSTYPE
-
 void yyerror(const char* msg)
 {
     fprintf(stderr,"error: %s\n",msg);
@@ -101,6 +99,16 @@ Z [z|Z]
 "+"                     { return '+'; }
 "*"                     { return '*'; }
 "/"                     { return '/'; }
+\%                      { return '%'; }
+
+\(                      { return '('; }
+\)                      { return ')'; }
+\[                      { return '['; }
+\]                      { return ']'; }
+\{                      { return '{'; }
+\}                      { return '}'; }
+\.                      { return '.'; }
+
 <<EOF>>                 { return TOK_YYEOF; }
 .                       {
     char buffer[200];

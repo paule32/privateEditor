@@ -50,7 +50,7 @@ void init_root_node(void)
 	
 	root = (struct node*) malloc(sizeof(struct node));
 	
-	next_node  = add_op_plus_node(root,ID_TYPE_OP_PLUS,5,4);
+	next_node  = add_op_plus_node(root,ID_TYPE_OP_ADD,5,4);
 	print_node = add_func_print(next_node);
 }
 
@@ -67,7 +67,7 @@ int test_nodes()
 			printf("printer: %d\n",
 				ptr->num);
 		}
-		else if (ptr->id == ID_TYPE_OP_PLUS) {
+		else if (ptr->id == ID_TYPE_OP_ADD) {
 			printf("plus: %d\n",
 				ptr->lhs->num +
 				ptr->rhs->num
