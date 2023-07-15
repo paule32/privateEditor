@@ -844,96 +844,100 @@ YY_RULE_SETUP
 case 12:
 YY_RULE_SETUP
 #line 92 "dBaseDSL.l"
-{ return TOK_ID    ; }
+{
+	yylval.node_and_value.name = (char*) malloc( strlen( yytext ) + 1); strcpy(
+	yylval.node_and_value.name, yytext);
+	return TOK_ID;
+}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 93 "dBaseDSL.l"
-{ return TOK_NUMBER; }
+#line 97 "dBaseDSL.l"
+{ yylval.node_and_value.value = atof(yytext); return TOK_NUMBER; }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 94 "dBaseDSL.l"
-{ return TOK_NUMBER; }
+#line 98 "dBaseDSL.l"
+{ yylval.node_and_value.value = atof(yytext); return TOK_NUMBER; }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 96 "dBaseDSL.l"
+#line 100 "dBaseDSL.l"
 { return ':'; }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 97 "dBaseDSL.l"
+#line 101 "dBaseDSL.l"
 { return ';'; }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 98 "dBaseDSL.l"
+#line 102 "dBaseDSL.l"
 { return '-'; }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 99 "dBaseDSL.l"
+#line 103 "dBaseDSL.l"
 { return '+'; }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 100 "dBaseDSL.l"
+#line 104 "dBaseDSL.l"
 { return '*'; }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 101 "dBaseDSL.l"
+#line 105 "dBaseDSL.l"
 { return '/'; }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 102 "dBaseDSL.l"
+#line 106 "dBaseDSL.l"
 { return '%'; }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 104 "dBaseDSL.l"
+#line 108 "dBaseDSL.l"
 { return '('; }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 105 "dBaseDSL.l"
+#line 109 "dBaseDSL.l"
 { return ')'; }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 106 "dBaseDSL.l"
+#line 110 "dBaseDSL.l"
 { return '['; }
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 107 "dBaseDSL.l"
+#line 111 "dBaseDSL.l"
 { return ']'; }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 108 "dBaseDSL.l"
+#line 112 "dBaseDSL.l"
 { return '{'; }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 109 "dBaseDSL.l"
+#line 113 "dBaseDSL.l"
 { return '}'; }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 110 "dBaseDSL.l"
+#line 114 "dBaseDSL.l"
 { return '.'; }
 	YY_BREAK
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(Comment1):
-#line 112 "dBaseDSL.l"
+#line 116 "dBaseDSL.l"
 { return TOK_YYEOF; }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 113 "dBaseDSL.l"
+#line 117 "dBaseDSL.l"
 {
     char buffer[200];
     sprintf( buffer, "Unrecognized character: %s\n", yytext );
@@ -942,10 +946,10 @@ YY_RULE_SETUP
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 119 "dBaseDSL.l"
+#line 123 "dBaseDSL.l"
 ECHO;
 	YY_BREAK
-#line 948 "lex.yy.c"
+#line 952 "lex.yy.c"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -1948,7 +1952,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 119 "dBaseDSL.l"
+#line 123 "dBaseDSL.l"
 
 
 void yy_dbase_lex_parser_error(void (*func)(char*)) {

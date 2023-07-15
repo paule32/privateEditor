@@ -26,34 +26,52 @@ mknode(
 
 %}
 
-%token TOK_ID
+%union {
+	struct {
+		float       value;
+		char        *name;
+		struct node *next;
+	} node_and_value;
+}
+
+%token <node_and_value> TOK_ID
 %token <node_and_value> TOK_NUMBER
+
+%token <node_and_value> TOK_IF TOK_ELSE TOK_ENDIF
 
 %type  <node_and_value> number
 %type  <node_and_value> factor
 %type  <node_and_value> term
+
 %type  <node_and_value> expr
+%type  <node_and_value> ident
+%type  <node_and_value> stmt if_else_endif
 
 %token TOK_YYEOF 0
 
 %start program
 
-%union {
-	struct {
-		float       value;
-		struct node *next;
-	} node_and_value;
-}
-
 %%
 
 program
 	: /* empty */
-	| program expr {
+	| program stmt
+	;
+	
+stmt
+	: expr {
 		char buffer[200];
-		sprintf(buffer,"--> %f",$2.value);
+		sprintf(buffer,"--> %f",$1.value);
 		MessageBoxA(0,buffer,"3333",0);
+		
+		$$ = $1;
 	}
+	| ident {
+		MessageBoxA(0,$1.name,"0000",0);
+		
+		$$ = $1;
+	}
+	| if_else_endif
 	;
 
 expr
@@ -75,9 +93,22 @@ factor
 	;
   
 number
-	: TOK_NUMBER        { $$.value = atof(yytext);  }
+	: TOK_NUMBER
+	{
+		$$.next  = mknode($1.next,NULL,"const");
+		$$.value = $1.value;
+	}
 	;
-  
+
+ident
+	: TOK_ID { $$.next = mknode($1.next,NULL,$1.name); }
+	;
+
+if_else_endif
+	: TOK_IF expr '=' expr {
+	}
+	;
+
 %%
 
 struct node*

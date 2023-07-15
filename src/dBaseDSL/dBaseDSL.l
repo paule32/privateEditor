@@ -89,9 +89,13 @@ Z [z|Z]
 [ \t]*                  { /* empty */ }
 [\n|\r\n]               { yy_col = 1;      yy_row++; }
 
-{ID}                    { return TOK_ID    ; }
-[0-9]+                  { return TOK_NUMBER; }
-[0-9]+\.[0-9]+          { return TOK_NUMBER; }
+{ID}                    {
+	yylval.node_and_value.name = (char*) malloc( strlen( yytext ) + 1); strcpy(
+	yylval.node_and_value.name, yytext);
+	return TOK_ID;
+}
+[0-9]+                  { yylval.node_and_value.value = atof(yytext); return TOK_NUMBER; }
+[0-9]+\.[0-9]+          { yylval.node_and_value.value = atof(yytext); return TOK_NUMBER; }
 
 ":"                     { return ':'; }
 ";"                     { return ';'; }
