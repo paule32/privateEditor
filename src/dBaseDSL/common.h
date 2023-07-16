@@ -34,11 +34,24 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
+# include <signal.h>
 
 // ----------------------------------------------------------------------------
 // Microsoft Windows win32api:
 // ----------------------------------------------------------------------------
 # include <windows.h>
+
+// ----------------------------------------------------------------------------
+// Microsoft Windows XP, and up specified stuff:
+// ----------------------------------------------------------------------------
+struct parser_dll_plugin {
+	int      version;
+	char   * name;
+	char   * path;
+} * ptr_parser_dll_plugin;
+
+# define DBASE__PLUGIN_VERSION 20230717  // version on latest date of compile
+# define PASCAL_PLUGIN_VERSION 20230717  // ...
 
 # define YY_NO_UNISTD_H
 
@@ -51,11 +64,13 @@ struct node {
 	int     id;
 	float  num;
 	
-	struct node *prev;
-	struct node *next;
+	struct node * prev;
+	struct node * next;
 	
-	struct node *lhs;
-	struct node *rhs;
+	struct node * lhs;
+	struct node * rhs;
+	
+	struct node * stmt;
 } *root;
 
 // typedef struct node* YYSTYPE;
@@ -78,8 +93,6 @@ extern void insertNode(struct node* prev_node, int data);
 extern "C" {
 #endif
 
-extern char* dBaseDLLdirectory;
-
 // ----------------------------------------------------------------------------
 // parser stuff ...
 // ----------------------------------------------------------------------------
@@ -88,6 +101,7 @@ extern char* yy_text;
 
 extern int   yy_col;
 extern int   yy_row;
+extern int   yylineno;
 
 extern int yyparse(void);
 

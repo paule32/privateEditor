@@ -13012,3 +13012,6 @@ src/dBaseDSL/dBaseDSL.tab.~c
 src/dBaseDSL/dBaseDSL.tab.o
 src/dBaseDSL/lex.yy.o
 src/dBaseDSL/dllmain.o
+src/dBaseDSL/dllmain.~c
+test.pl
+test.prg

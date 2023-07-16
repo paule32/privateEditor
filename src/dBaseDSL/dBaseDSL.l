@@ -89,6 +89,10 @@ Z [z|Z]
 [ \t]*                  { /* empty */ }
 [\n|\r\n]               { yy_col = 1;      yy_row++; }
 
+{E}{L}{S}{E}			{ return TOK_ELSE;  }
+{E}{N}{D}{I}{F} 		{ return TOK_ENDIF; }
+{I}{F}					{ return TOK_IF;    }
+
 {ID}                    {
 	yylval.node_and_value.name = (char*) malloc( strlen( yytext ) + 1); strcpy(
 	yylval.node_and_value.name, yytext);
@@ -96,6 +100,13 @@ Z [z|Z]
 }
 [0-9]+                  { yylval.node_and_value.value = atof(yytext); return TOK_NUMBER; }
 [0-9]+\.[0-9]+          { yylval.node_and_value.value = atof(yytext); return TOK_NUMBER; }
+
+"=="                    { return TOK_EQEQ; }
+"!="					{ return TOK_LTGT; }
+"=>"                    { return TOK_EQGT; }
+"=<"                    { return TOK_EQLT; }
+"<="                    { return TOK_LTEQ; }
+">="                    { return TOK_GTEQ; }
 
 ":"                     { return ':'; }
 ";"                     { return ';'; }
@@ -113,13 +124,15 @@ Z [z|Z]
 \}                      { return '}'; }
 \.                      { return '.'; }
 
-<<EOF>>                 { return TOK_YYEOF; }
 .                       {
     char buffer[200];
     sprintf( buffer, "Unrecognized character: %s\n", yytext );
+	MessageBoxA(0,"eeeeeeee","0000",0);
     dbaseerror(buffer);
-  }
+	MessageBoxA(0,"bbbbb","1111",0);
+}
 
+<<EOF>>                 { return TOK_YYEOF; }
 %%
 
 void yy_dbase_lex_parser_error(void (*func)(char*)) {
@@ -130,10 +143,11 @@ int yywrap(void) { return 1; }
 
 void dbaseerror(char* m)
 {
-  char bu[320];
-  sprintf(bu,"error: %d: %s",
-  yy_row, m);
-  m_addParserErrorText(bu);
+  char buffer[320];
+  sprintf(buffer,"error: %d: %s", yy_row, m);
+  MessageBoxA(0,buffer,"Error",0);
+  
+//  m_addParserErrorText(bu);
 }
 
 BOOL EXPORT

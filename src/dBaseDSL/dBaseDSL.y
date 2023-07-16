@@ -19,25 +19,28 @@ extern char* yytext;
 
 struct node*
 mknode(
-	struct node *left,
-	struct node *right,
-	char *token
+	struct node * left ,
+	struct node * right,
+	struct node * stmt ,
+	char        * token
 );
 
 %}
 
 %union {
 	struct {
-		float       value;
-		char        *name;
-		struct node *next;
-	} node_and_value;
+		float         value;
+		char        * name ;
+		struct node * stmt ;
+		struct node * next ;
+	}   node_and_value;
 }
 
 %token <node_and_value> TOK_ID
 %token <node_and_value> TOK_NUMBER
 
 %token <node_and_value> TOK_IF TOK_ELSE TOK_ENDIF
+%token <node_and_value> TOK_EQEQ TOK_EQLT TOK_EQGT TOK_GTEQ TOK_LTEQ TOK_LTGT
 
 %type  <node_and_value> number
 %type  <node_and_value> factor
@@ -56,10 +59,17 @@ mknode(
 program
 	: /* empty */
 	| program stmt
+	| program error
+	{
+		char *buffer = (char*) malloc(320);
+		sprintf(buffer,"Error in Grammar at Line: %d", yy_row - 1);
+		MessageBoxA(0,buffer,"Attempt",0);
+	}
 	;
 	
 stmt
-	: expr {
+	: /* empty */ { }
+	| expr {
 		char buffer[200];
 		sprintf(buffer,"--> %f",$1.value);
 		MessageBoxA(0,buffer,"3333",0);
@@ -95,17 +105,55 @@ factor
 number
 	: TOK_NUMBER
 	{
-		$$.next  = mknode($1.next,NULL,"const");
+		$$.next  = mknode($1.next,NULL,NULL,"const");
 		$$.value = $1.value;
 	}
 	;
 
 ident
-	: TOK_ID { $$.next = mknode($1.next,NULL,$1.name); }
+	: TOK_ID { $$.next = mknode($1.next,NULL,NULL,$1.name); }
 	;
 
 if_else_endif
-	: TOK_IF expr '=' expr {
+	: TOK_IF expr TOK_EQEQ expr stmt TOK_ENDIF
+	{
+		if ($2.value == $4.value) {
+			$5.next = mknode(
+				$2.next,
+				$4.next,
+				$5.next,
+				"eqeq");
+		}
+	}
+	| TOK_IF expr TOK_LTEQ expr stmt TOK_ENDIF
+	{
+		if ($2.value <= $4.value) {
+			$5.next = mknode(
+				$2.next,
+				$4.next,
+				$5.next,
+				"eqlt");
+		}
+	}
+	| TOK_IF expr TOK_GTEQ expr stmt TOK_ENDIF
+	{
+		if ($2.value >= $4.value) {
+			$5.next = mknode(
+				$2.next,
+				$4.next,
+				$5.next,
+				"eqgt");
+		}
+	}
+	| TOK_IF expr TOK_LTGT expr stmt TOK_ENDIF
+	{
+		if ($2.value != $4.value) {
+			$5.next = mknode(
+				$2.next,
+				$4.next,
+				$5.next,
+				"lteq");
+		}
 	}
 	;
 
@@ -115,6 +163,7 @@ struct node*
 mknode(
 	struct node *left,
 	struct node *right,
+	struct node *stmt,
 	char *token)
 {
 	struct node *newnode = (struct node *) malloc( sizeof( struct node )    );
@@ -124,7 +173,8 @@ mknode(
 	
 	newnode->lhs   = left;
 	newnode->rhs   = right;
-	newnode->token = newstr;
+	newnode->stmt  = stmt;
 	
+	newnode->token = newstr;
 	return newnode;
 }
