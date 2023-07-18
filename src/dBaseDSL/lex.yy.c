@@ -547,15 +547,11 @@ int yy_dbase_count(void)        { return yy_row; }
 int yy_dbase_lex_get_line(void) { return yy_dbase_count(); }
 int yy_dbase_lex_getlines(void) { return yy_dbase_count(); }
 
-void yyerror(const char* msg)
-{
-    fprintf(stderr,"error: %s\n",msg);
-    
-}
+extern void yyerror(const char* msg);
 
-#line 556 "lex.yy.c"
+#line 552 "lex.yy.c"
 
-#line 558 "lex.yy.c"
+#line 554 "lex.yy.c"
 
 #define INITIAL 0
 #define Comment1 1
@@ -773,10 +769,10 @@ YY_DECL
 		}
 
 	{
-#line 74 "dBaseDSL.l"
+#line 70 "dBaseDSL.l"
 
 
-#line 779 "lex.yy.c"
+#line 775 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -835,82 +831,82 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 76 "dBaseDSL.l"
+#line 72 "dBaseDSL.l"
 { /* DO NOTHING */ }
 	YY_BREAK
 case 2:
 /* rule 2 can match eol */
 YY_RULE_SETUP
-#line 77 "dBaseDSL.l"
+#line 73 "dBaseDSL.l"
 { /* DO NOTHING */ yy_row++; }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 79 "dBaseDSL.l"
+#line 75 "dBaseDSL.l"
 { /* DO NOTHING */ }
 	YY_BREAK
 case 4:
 /* rule 4 can match eol */
 YY_RULE_SETUP
-#line 80 "dBaseDSL.l"
+#line 76 "dBaseDSL.l"
 { /* DO NOTHING */ yy_row++; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 82 "dBaseDSL.l"
+#line 78 "dBaseDSL.l"
 { /* DO NOTHING */ }
 	YY_BREAK
 case 6:
 /* rule 6 can match eol */
 YY_RULE_SETUP
-#line 83 "dBaseDSL.l"
+#line 79 "dBaseDSL.l"
 { /* DO NOTHING */ yy_row++; }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 85 "dBaseDSL.l"
+#line 81 "dBaseDSL.l"
 { BEGIN(Comment1); }
 	YY_BREAK
 case 8:
 /* rule 8 can match eol */
 YY_RULE_SETUP
-#line 86 "dBaseDSL.l"
+#line 82 "dBaseDSL.l"
 { yy_row += 1;     yy_row++; }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 87 "dBaseDSL.l"
+#line 83 "dBaseDSL.l"
 { BEGIN(INITIAL);  }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 89 "dBaseDSL.l"
+#line 85 "dBaseDSL.l"
 { /* empty */ }
 	YY_BREAK
 case 11:
 /* rule 11 can match eol */
 YY_RULE_SETUP
-#line 90 "dBaseDSL.l"
+#line 86 "dBaseDSL.l"
 { yy_col = 1;      yy_row++; }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 92 "dBaseDSL.l"
+#line 88 "dBaseDSL.l"
 { return TOK_ELSE;  }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 93 "dBaseDSL.l"
+#line 89 "dBaseDSL.l"
 { return TOK_ENDIF; }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 94 "dBaseDSL.l"
+#line 90 "dBaseDSL.l"
 { return TOK_IF;    }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 96 "dBaseDSL.l"
+#line 92 "dBaseDSL.l"
 {
 	yylval.node_and_value.name = (char*) malloc( strlen( yytext ) + 1); strcpy(
 	yylval.node_and_value.name, yytext);
@@ -919,136 +915,134 @@ YY_RULE_SETUP
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 101 "dBaseDSL.l"
+#line 97 "dBaseDSL.l"
 { yylval.node_and_value.value = atof(yytext); return TOK_NUMBER; }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 102 "dBaseDSL.l"
+#line 98 "dBaseDSL.l"
 { yylval.node_and_value.value = atof(yytext); return TOK_NUMBER; }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 104 "dBaseDSL.l"
+#line 100 "dBaseDSL.l"
 { return TOK_EQEQ; }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 105 "dBaseDSL.l"
+#line 101 "dBaseDSL.l"
 { return TOK_LTGT; }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 106 "dBaseDSL.l"
+#line 102 "dBaseDSL.l"
 { return TOK_EQGT; }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 107 "dBaseDSL.l"
+#line 103 "dBaseDSL.l"
 { return TOK_EQLT; }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 108 "dBaseDSL.l"
+#line 104 "dBaseDSL.l"
 { return TOK_LTEQ; }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 109 "dBaseDSL.l"
+#line 105 "dBaseDSL.l"
 { return TOK_GTEQ; }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 111 "dBaseDSL.l"
+#line 107 "dBaseDSL.l"
 { return ':'; }
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 112 "dBaseDSL.l"
+#line 108 "dBaseDSL.l"
 { return ';'; }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 113 "dBaseDSL.l"
+#line 109 "dBaseDSL.l"
 { return '-'; }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 114 "dBaseDSL.l"
+#line 110 "dBaseDSL.l"
 { return '+'; }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 115 "dBaseDSL.l"
+#line 111 "dBaseDSL.l"
 { return '*'; }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 116 "dBaseDSL.l"
+#line 112 "dBaseDSL.l"
 { return '/'; }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 117 "dBaseDSL.l"
+#line 113 "dBaseDSL.l"
 { return '%'; }
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 119 "dBaseDSL.l"
+#line 115 "dBaseDSL.l"
 { return '('; }
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 120 "dBaseDSL.l"
+#line 116 "dBaseDSL.l"
 { return ')'; }
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 121 "dBaseDSL.l"
+#line 117 "dBaseDSL.l"
 { return '['; }
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 122 "dBaseDSL.l"
+#line 118 "dBaseDSL.l"
 { return ']'; }
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 123 "dBaseDSL.l"
+#line 119 "dBaseDSL.l"
 { return '{'; }
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 124 "dBaseDSL.l"
+#line 120 "dBaseDSL.l"
 { return '}'; }
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 125 "dBaseDSL.l"
+#line 121 "dBaseDSL.l"
 { return '.'; }
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 127 "dBaseDSL.l"
+#line 123 "dBaseDSL.l"
 {
     char buffer[200];
     sprintf( buffer, "Unrecognized character: %s\n", yytext );
-	MessageBoxA(0,"eeeeeeee","0000",0);
-    dbaseerror(buffer);
-	MessageBoxA(0,"bbbbb","1111",0);
+    yyerror(buffer);
 }
 	YY_BREAK
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(Comment1):
-#line 135 "dBaseDSL.l"
+#line 129 "dBaseDSL.l"
 { return TOK_YYEOF; }
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 136 "dBaseDSL.l"
+#line 130 "dBaseDSL.l"
 ECHO;
 	YY_BREAK
-#line 1051 "lex.yy.c"
+#line 1045 "lex.yy.c"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -2051,7 +2045,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 136 "dBaseDSL.l"
+#line 130 "dBaseDSL.l"
 
 
 void yy_dbase_lex_parser_error(void (*func)(char*)) {
@@ -2060,7 +2054,7 @@ void yy_dbase_lex_parser_error(void (*func)(char*)) {
 
 int yywrap(void) { return 1; }
 
-void dbaseerror(char* m)
+void yyerror(const char* m)
 {
   char buffer[320];
   sprintf(buffer,"error: %d: %s", yy_row, m);
@@ -2074,11 +2068,13 @@ yy_dbase_lex_main(
     char* filename,
     char* tempDir )
 {
-    BOOL  result;
-    char* buffer;
-  
-    yyin = fopen(filename,"r");
-    if (!yyin) {
+    BOOL   result = FALSE;
+    char * buffer;
+
+	// ------------------------------------------
+	// try to open file, saved before ...
+	// ------------------------------------------
+    if (!(yyin = fopen(filename,"r"))) {
         buffer = (char*) malloc(100);
     
         sprintf(buffer, "could not open file: %s", filename);
@@ -2091,13 +2087,27 @@ yy_dbase_lex_main(
     yy_row = 1;
     yy_col = 1;
 
-    // ------------------------------------------
-    // start the race run ...
-    // ------------------------------------------
-    result = yyparse();
-
-    fclose(yyin);
-    return result;
+	// ------------------------------------------
+	// start the race run ...
+	// ------------------------------------------
+	node_head        = (struct node *) malloc( sizeof( struct node ) );
+	node_new         = (struct node *) malloc( sizeof( struct node ) ); // dummy to point head itself
+	node_head->token = (       char *) malloc( 8 );
+	strcpy( node_head->token, "root" );
+	
+	// ------------------------
+	// root/first record item
+	// ------------------------
+	node_new->prev = node_head;
+	node_new->next = NULL;
+	
+	// ------------------------
+	// call parser ...
+	// ------------------------
+	result = yyparse();
+	
+	fclose(yyin);
+	return result;
 }
 
 void yy_dbase_lex_close(void) {

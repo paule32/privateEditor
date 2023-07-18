@@ -24,11 +24,7 @@ int yy_dbase_count(void)        { return yy_row; }
 int yy_dbase_lex_get_line(void) { return yy_dbase_count(); }
 int yy_dbase_lex_getlines(void) { return yy_dbase_count(); }
 
-void yyerror(const char* msg)
-{
-    fprintf(stderr,"error: %s\n",msg);
-    exit(1);
-}
+extern void yyerror(const char* msg);
 
 %}
 
@@ -127,9 +123,7 @@ Z [z|Z]
 .                       {
     char buffer[200];
     sprintf( buffer, "Unrecognized character: %s\n", yytext );
-	MessageBoxA(0,"eeeeeeee","0000",0);
-    dbaseerror(buffer);
-	MessageBoxA(0,"bbbbb","1111",0);
+    yyerror(buffer);
 }
 
 <<EOF>>                 { return TOK_YYEOF; }
@@ -141,7 +135,7 @@ void yy_dbase_lex_parser_error(void (*func)(char*)) {
 
 int yywrap(void) { return 1; }
 
-void dbaseerror(char* m)
+void yyerror(const char* m)
 {
   char buffer[320];
   sprintf(buffer,"error: %d: %s", yy_row, m);
@@ -155,11 +149,13 @@ yy_dbase_lex_main(
     char* filename,
     char* tempDir )
 {
-    BOOL  result;
-    char* buffer;
-  
-    yyin = fopen(filename,"r");
-    if (!yyin) {
+    BOOL   result = FALSE;
+    char * buffer;
+
+	// ------------------------------------------
+	// try to open file, saved before ...
+	// ------------------------------------------
+    if (!(yyin = fopen(filename,"r"))) {
         buffer = (char*) malloc(100);
     
         sprintf(buffer, "could not open file: %s", filename);
@@ -172,13 +168,27 @@ yy_dbase_lex_main(
     yy_row = 1;
     yy_col = 1;
 
-    // ------------------------------------------
-    // start the race run ...
-    // ------------------------------------------
-    result = yyparse();
-
-    fclose(yyin);
-    return result;
+	// ------------------------------------------
+	// start the race run ...
+	// ------------------------------------------
+	node_head        = (struct node *) malloc( sizeof( struct node ) );
+	node_new         = (struct node *) malloc( sizeof( struct node ) ); // dummy to point head itself
+	node_head->token = (       char *) malloc( 8 );
+	strcpy( node_head->token, "root" );
+	
+	// ------------------------
+	// root/first record item
+	// ------------------------
+	node_new->prev = node_head;
+	node_new->next = NULL;
+	
+	// ------------------------
+	// call parser ...
+	// ------------------------
+	result = yyparse();
+	
+	fclose(yyin);
+	return result;
 }
 
 void yy_dbase_lex_close(void) {

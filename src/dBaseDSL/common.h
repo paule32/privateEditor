@@ -58,23 +58,33 @@ struct parser_dll_plugin {
 #define false 0
 #define true  1
 
-struct node {
-	char *token;
+enum token_type {
+	tt_illegal = -1,
+	tt_root,
+	
+	tt_const_number,	// constant number: 0-9
+	tt_const_string,	// constant letter array A-Z | a-z
+	
+	tt_factor,			// number   factor
+	tt_factor_neg,  	// negative factor
+	tt_factor_paren 	// factor in paren
+};
+
+typedef struct node {
+	char * token;
+	enum   token_type  token_id;
+		   
 	char *name;
 	int     id;
-	float  num;
+	float        value;
 	
 	struct node * prev;
 	struct node * next;
-	
-	struct node * lhs;
-	struct node * rhs;
-	
-	struct node * stmt;
-} *root;
+} node_t;
 
-// typedef struct node* YYSTYPE;
-// # define YYSTYPE_IS_DECLARED
+extern struct node * node_head;
+extern struct node * node_prev;
+extern struct node * node_new;
 
 # define ID_TYPE_OP_SUB  1
 # define ID_TYPE_OP_ADD  2
