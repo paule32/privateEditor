@@ -32,7 +32,7 @@ object Frame18: TFrame18
           Ctl3D = True
           DefaultRowHeight = 26
           FixedColor = clWhite
-          RowCount = 6556
+          RowCount = 2049
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -16
@@ -71,7 +71,6 @@ object Frame18: TFrame18
           ControlLook.DropDownFooter.Font.Style = []
           ControlLook.DropDownFooter.Visible = True
           ControlLook.DropDownFooter.Buttons = <>
-          DefaultAlignment = taCenter
           EnableBlink = True
           EnhRowColMove = False
           Filter = <>
@@ -154,7 +153,8 @@ object Frame18: TFrame18
           SelectionColorMixer = True
           SelectionRectangle = True
           SelectionResizer = True
-          SelectionTextColor = clHighlightText
+          SelectionTextColor = 8454016
+          ShowModified.Enabled = True
           ShowDesignHelper = False
           SizeWhileTyping.Width = True
           UIStyle = tsOffice2003Classic

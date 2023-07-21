@@ -1,9 +1,16 @@
+// -------------------------------------------------------------------
+// File:    AboutBox.pas
+// Author:  paule32 - Jens Kallup
+// License: (c) 2023  non-profit Software
+//          All Rights Reserved - only for private or education usage.
+// -------------------------------------------------------------------
 unit AboutBox;
 
 interface
 
 uses Windows, SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
-  Buttons, ExtCtrls, JvGradientCaption;
+  Buttons, ExtCtrls, JvGradientCaption, JvComponentBase, JvStarfield,
+  JvExControls, JvPoweredBy;
 
 type
   TOKRightDlg = class(TForm)
@@ -14,8 +21,12 @@ type
     Label3: TLabel;
     Label4: TLabel;
     JvGradientCaption1: TJvGradientCaption;
+    JvPoweredByJVCL1: TJvPoweredByJVCL;
+    JvStarfield1: TJvStarfield;
+    Timer1: TTimer;
     procedure FormShow(Sender: TObject);
     procedure OKBtnClick(Sender: TObject);
+    procedure Timer1Timer(Sender: TObject);
   private
     { Private declarations }
   public
@@ -32,10 +43,19 @@ implementation
 procedure TOKRightDlg.FormShow(Sender: TObject);
 begin
   JvGradientCaption1.Active := true;
+  JvStarfield1.Active := true;
+  Timer1.Interval := 30000;
+  Timer1.Enabled  :=  true;
 end;
 
 procedure TOKRightDlg.OKBtnClick(Sender: TObject);
 begin
+  Close;
+end;
+
+procedure TOKRightDlg.Timer1Timer(Sender: TObject);
+begin
+  Timer1.Enabled := false;
   Close;
 end;
 

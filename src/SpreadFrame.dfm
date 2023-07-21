@@ -153,7 +153,7 @@ object Frame18: TFrame18
           SelectionColorMixer = True
           SelectionRectangle = True
           SelectionResizer = True
-          SelectionTextColor = 8454016
+          SelectionTextColor = clHighlightText
           ShowModified.Enabled = True
           ShowDesignHelper = False
           SizeWhileTyping.Width = True

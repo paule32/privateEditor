@@ -2,13 +2,13 @@ object Frame16: TFrame16
   Left = 0
   Top = 0
   Width = 259
-  Height = 416
+  Height = 427
   TabOrder = 0
   object ScrollBox1: TScrollBox
     Left = 0
     Top = 0
     Width = 259
-    Height = 416
+    Height = 427
     Align = alClient
     TabOrder = 0
     object Splitter1: TSplitter
@@ -40,76 +40,6 @@ object Frame16: TFrame16
       Align = alTop
       Color = clSilver
       ParentColor = False
-    end
-    object GroupBox1: TGroupBox
-      Left = 0
-      Top = 0
-      Width = 255
-      Height = 125
-      Align = alTop
-      Caption = ' Programming Language: '
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -16
-      Font.Name = 'Consolas'
-      Font.Style = []
-      ParentFont = False
-      TabOrder = 0
-      object JvCheckBox1: TJvRadioButton
-        Left = 8
-        Top = 24
-        Width = 201
-        Height = 26
-        Alignment = taLeftJustify
-        Caption = 'Pascal'
-        Checked = True
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -19
-        Font.Name = 'Comic Sans MS'
-        Font.Style = []
-        ParentFont = False
-        TabOrder = 0
-        TabStop = True
-        AutoSize = False
-        LinkedControls = <>
-      end
-      object JvCheckBox2: TJvRadioButton
-        Left = 8
-        Top = 56
-        Width = 201
-        Height = 26
-        Alignment = taLeftJustify
-        Caption = 'BASIC'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -19
-        Font.Name = 'Comic Sans MS'
-        Font.Style = []
-        ParentFont = False
-        TabOrder = 1
-        TabStop = True
-        AutoSize = False
-        LinkedControls = <>
-      end
-      object JvCheckBox3: TJvRadioButton
-        Left = 8
-        Top = 88
-        Width = 201
-        Height = 26
-        Alignment = taLeftJustify
-        Caption = 'dBASE'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -19
-        Font.Name = 'Comic Sans MS'
-        Font.Style = []
-        ParentFont = False
-        TabOrder = 2
-        TabStop = True
-        AutoSize = False
-        LinkedControls = <>
-      end
     end
     object GroupBox2: TGroupBox
       Left = 0
@@ -219,7 +149,7 @@ object Frame16: TFrame16
       Left = 0
       Top = 330
       Width = 255
-      Height = 82
+      Height = 93
       Align = alClient
       Caption = ' Compiler:'
       TabOrder = 2
@@ -248,6 +178,120 @@ object Frame16: TFrame16
         Height = 17
         Caption = 'Extern GCC'
         TabOrder = 2
+      end
+    end
+    object GroupBox1: TScrollBox
+      Left = 0
+      Top = 0
+      Width = 255
+      Height = 125
+      Align = alTop
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -16
+      Font.Name = 'Consolas'
+      Font.Style = []
+      ParentBackground = True
+      ParentFont = False
+      TabOrder = 0
+      object GroupBox4: TGroupBox
+        Left = 0
+        Top = 0
+        Width = 161
+        Height = 191
+        Caption = ' Language: '
+        TabOrder = 0
+        object JvCheckBox1: TJvRadioButton
+          Left = 8
+          Top = 24
+          Width = 77
+          Height = 26
+          Alignment = taLeftJustify
+          Caption = 'Pascal'
+          Checked = True
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -19
+          Font.Name = 'Comic Sans MS'
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 0
+          TabStop = True
+          AutoSize = False
+          LinkedControls = <>
+        end
+        object JvCheckBox2: TJvRadioButton
+          Left = 8
+          Top = 56
+          Width = 82
+          Height = 26
+          Alignment = taLeftJustify
+          Caption = 'BASIC'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -19
+          Font.Name = 'Comic Sans MS'
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 1
+          TabStop = True
+          AutoSize = False
+          LinkedControls = <>
+        end
+        object JvCheckBox3: TJvRadioButton
+          Left = 8
+          Top = 88
+          Width = 84
+          Height = 26
+          Alignment = taLeftJustify
+          Caption = 'dBASE'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -19
+          Font.Name = 'Comic Sans MS'
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 2
+          TabStop = True
+          AutoSize = False
+          LinkedControls = <>
+        end
+        object JvRadioButton1: TJvRadioButton
+          Left = 8
+          Top = 120
+          Width = 121
+          Height = 26
+          Alignment = taLeftJustify
+          Caption = 'C - LISP'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -19
+          Font.Name = 'Comic Sans MS'
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 3
+          TabStop = True
+          AutoSize = False
+          LinkedControls = <>
+        end
+        object JvRadioButton2: TJvRadioButton
+          Left = 8
+          Top = 152
+          Width = 129
+          Height = 26
+          Alignment = taLeftJustify
+          Caption = 'Assembler'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -19
+          Font.Name = 'Comic Sans MS'
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 4
+          TabStop = True
+          AutoSize = False
+          LinkedControls = <>
+        end
       end
     end
   end

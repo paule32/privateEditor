@@ -1,3 +1,9 @@
+// -------------------------------------------------------------------
+// File:    NewProjectFrame.pas
+// Author:  paule32 - Jens Kallup
+// License: (c) 2023  non-profit Software
+//          All Rights Reserved - only for private or education usage.
+// -------------------------------------------------------------------
 unit NewProjectFrame;
 
 interface
@@ -39,6 +45,8 @@ begin
     ErrorBox.Text('Error: No projectname given.');
     ErrorBox.BringToFront;
     ErrorBox.Show;
+
+    Form1.ProjectNameEdit.SetFocus;
     exit;
   end;
 

@@ -13015,3 +13015,5 @@ src/dBaseDSL/dllmain.o
 src/dBaseDSL/dllmain.~c
 test.pl
 test.prg
+src/SpreadFrame.~dfm
+src/SpreadFrame.~dfm

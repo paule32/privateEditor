@@ -1,3 +1,9 @@
+// -------------------------------------------------------------------
+// File:    ComputerFrame.pas
+// Author:  paule32 - Jens Kallup
+// License: (c) 2023  non-profit Software
+//          All Rights Reserved - only for private or education usage.
+// -------------------------------------------------------------------
 unit ComputerFrame;
 
 interface
@@ -12,10 +18,6 @@ type
     ScrollBox1: TScrollBox;
     Splitter1: TSplitter;
     Splitter2: TSplitter;
-    GroupBox1: TGroupBox;
-    JvCheckBox1: TJvRadioButton;
-    JvCheckBox2: TJvRadioButton;
-    JvCheckBox3: TJvRadioButton;
     GroupBox2: TGroupBox;
     JvCheckBox4: TJvCheckBox;
     JvCheckBox5: TJvRadioButton;
@@ -27,6 +29,13 @@ type
     RadioButton1: TRadioButton;
     RadioButton2: TRadioButton;
     RadioButton3: TRadioButton;
+    GroupBox1: TScrollBox;
+    GroupBox4: TGroupBox;
+    JvCheckBox1: TJvRadioButton;
+    JvCheckBox2: TJvRadioButton;
+    JvCheckBox3: TJvRadioButton;
+    JvRadioButton1: TJvRadioButton;
+    JvRadioButton2: TJvRadioButton;
   private
     { Private declarations }
   public

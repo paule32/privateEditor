@@ -12,7 +12,7 @@
 // ----------------------------------------------------------------------------
 
 typedef void (*addParserErrorText)(char* message);
-static addParserErrorText m_addParserErrorText;
+static addParserErrorText m_addParserErrorText ;
 
 int count(void);
 void* addTextPtr;
@@ -29,41 +29,41 @@ extern void yyerror(const char* msg);
 %}
 
 DIGIT       [0-9]
-LETTER      [a-zA-Z]
-HEXALETTER  [a-fA-F]
+LETTER      [a-zA-Z]+
+HEXALETTER  [a-fA-F]+
 HEXANUMBER  [0][x](({DIGIT}|{HEXALETTER})+)
 NUM         ({DIGIT}+)
-ID          [a-z_]+[a-zA-Z0-9_]*
+ID          ([a-zA-Z]+)|([a-zA-Z0-9_]+)
 FILE1       [ a-zA-Z0-9\_\.\\]*
 FILENAME    \"(({LETTER}\:\\{FILE1})|({LETTER}\:{FILE1})|({FILE1})*)\"
 STRING      ("([^"]|"")*")
 
-A [a|A]
-B [b|B]
-C [c|C]
-D [d|D]
-E [e|E]
-F [f|F]
-G [g|G]
-H [h|H]
-I [i|I]
-J [j|J]
-K [k|K]
-L [l|L]
-M [m|M]
-N [n|N]
-O [o|O]
-P [p|P]
-Q [q|Q]
-R [r|R]
-S [s|S]
-T [t|T]
-U [u|U]
-V [v|V]
-W [w|W]
-X [x|X]
-Y [y|Y]
-Z [z|Z]
+A           [a|A]
+B           [b|B]
+C           [c|C]
+D           [d|D]
+E           [e|E]
+F           [f|F]
+G           [g|G]
+H           [h|H]
+I           [i|I]
+J           [j|J]
+K           [k|K]
+L           [l|L]
+M           [m|M]
+N           [n|N]
+O           [o|O]
+P           [p|P]
+Q           [q|Q]
+R           [r|R]
+S           [s|S]
+T           [t|T]
+U           [u|U]
+V           [v|V]
+W           [w|W]
+X           [x|X]
+Y           [y|Y]
+Z           [z|Z]
 
 %x Comment1
 
@@ -85,17 +85,32 @@ Z [z|Z]
 [ \t]*                  { /* empty */ }
 [\n|\r\n]               { yy_col = 1;      yy_row++; }
 
-{E}{L}{S}{E}			{ return TOK_ELSE;  }
-{E}{N}{D}{I}{F} 		{ return TOK_ENDIF; }
-{I}{F}					{ return TOK_IF;    }
+{C}{L}{A}{S}{S} 				{ return TOK_CLASS;     }
+{C}{L}{E}{A}{R} 				{ return TOK_CLEAR;     }
+{E}{L}{S}{E}					{ return TOK_ELSE;      }
+{E}{N}{D}{C}{L}{A}{S}{S} 		{ return TOK_ENDCLASS;  }
+{E}{N}{D}{F}{O}{R} 				{ return TOK_ENDFOR;    }
+{E}{N}{D}{I}{F} 				{ return TOK_ENDIF;     }
+{E}{N}{D}{W}{I}{T}{H} 		    { return TOK_ENDWITH;   }
+{F}{O}{R}               		{ return TOK_FOR;       }
+{F}{U}{N}{C}{T}{I}{O}{N} 		{ return TOK_FUNCTION;  }
+{I}{F}							{ return TOK_IF;        }
+{N}{E}{W}               		{ return TOK_NEW;       }
+{O}{F}							{ return TOK_OF;        }
+{P}{R}{O}{C}{E}{D}{U}{R}{E}		{ return TOK_PROCEDURE; }
+{R}{E}{T}{U}{R}{N}		 		{ return TOK_RETURN;    }
+{S}{E}{T}               		{ return TOK_SET;       }
+{T}{O}							{ return TOK_TO;        }
+{W}{I}{T}{H}			 		{ return TOK_WITH;      }
 
-{ID}                    {
+[0-9]+                  { yylval.node_and_value.value = atof(yytext); return TOK_NUMBER; }
+[0-9]+\.[0-9]+          { yylval.node_and_value.value = atof(yytext); return TOK_NUMBER; }
+
+[a-zA-Z_]+|[a-zA-Z0-9_]+  {
 	yylval.node_and_value.name = (char*) malloc( strlen( yytext ) + 1); strcpy(
 	yylval.node_and_value.name, yytext);
 	return TOK_ID;
 }
-[0-9]+                  { yylval.node_and_value.value = atof(yytext); return TOK_NUMBER; }
-[0-9]+\.[0-9]+          { yylval.node_and_value.value = atof(yytext); return TOK_NUMBER; }
 
 "=="                    { return TOK_EQEQ; }
 "!="					{ return TOK_LTGT; }
@@ -111,6 +126,8 @@ Z [z|Z]
 "*"                     { return '*'; }
 "/"                     { return '/'; }
 \%                      { return '%'; }
+
+(\=)|(\:\=)             { return TOK_ASSIGN; }
 
 \(                      { return '('; }
 \)                      { return ')'; }
@@ -129,19 +146,26 @@ Z [z|Z]
 <<EOF>>                 { return TOK_YYEOF; }
 %%
 
-void yy_dbase_lex_parser_error(void (*func)(char*)) {
-  m_addParserErrorText = func;
+void EXPORT
+yy_dbase_lex_parser_error (void (* func)(const char *message)) {
+	m_addParserErrorText =         func;
 }
 
 int yywrap(void) { return 1; }
 
 void yyerror(const char* m)
 {
-  char buffer[320];
-  sprintf(buffer,"error: %d: %s", yy_row, m);
-  MessageBoxA(0,buffer,"Error",0);
-  
-//  m_addParserErrorText(bu);
+	char * buffer = (char *) malloc(1024);
+	char * number = (char *) malloc( 255);
+	
+	itoa(yy_row,number,10);
+	
+	strcpy( buffer, "error in line: ");
+	strcat( buffer, number);
+	strcat( buffer, ": ");
+	strcat( buffer, m);
+
+	m_addParserErrorText(buffer);
 }
 
 BOOL EXPORT
@@ -191,14 +215,11 @@ yy_dbase_lex_main(
 	return result;
 }
 
-void yy_dbase_lex_close(void) {
+void EXPORT
+yy_dbase_lex_close(void) {
     fclose(yyin);
 }
-
-void EXPORT yy_dbase_lex_parser_error(void (*func)(char*));
-void EXPORT yy_dbase_lex_close(void);
 
 int  EXPORT yy_dbase_lex_get_line(void);
 int  EXPORT yy_dbase_lex_getlines(void);
 
-BOOL EXPORT yy_dbase_lex_main(char*, char*);

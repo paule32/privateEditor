@@ -43,14 +43,14 @@ object Frame14: TFrame14
     end
     object Label1: TLabel
       Left = 424
-      Top = 16
-      Width = 153
-      Height = 20
+      Top = 8
+      Width = 193
+      Height = 33
       AutoSize = False
       Caption = 'Text Sample Test'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -16
+      Font.Height = -22
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False

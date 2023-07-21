@@ -103,7 +103,7 @@ object Frame21: TFrame21
           Top = 8
           Width = 137
           Height = 27
-          ItemHeight = 19
+          ItemHeight = 0
           TabOrder = 0
           Text = 'ComboBox1'
         end
@@ -162,7 +162,7 @@ object Frame21: TFrame21
             Top = 24
             Width = 145
             Height = 27
-            ItemHeight = 19
+            ItemHeight = 0
             TabOrder = 0
             Text = 'ComboBox2'
           end

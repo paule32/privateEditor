@@ -66,7 +66,7 @@ object OKRightDlg: TOKRightDlg
   end
   object Label4: TLabel
     Left = 16
-    Top = 144
+    Top = 128
     Width = 329
     Height = 22
     Alignment = taCenter
@@ -79,9 +79,20 @@ object OKRightDlg: TOKRightDlg
     Font.Style = []
     ParentFont = False
   end
+  object JvPoweredByJVCL1: TJvPoweredByJVCL
+    Left = 72
+    Top = 160
+    URL = 'http://jvcl.delphi-jedi.org/'
+  end
+  object JvStarfield1: TJvStarfield
+    Left = 368
+    Top = 8
+    Width = 89
+    Height = 81
+  end
   object OKBtn: TButton
     Left = 369
-    Top = 10
+    Top = 34
     Width = 93
     Height = 31
     Caption = 'OK'
@@ -116,5 +127,12 @@ object OKRightDlg: TOKRightDlg
     EndColor = clYellow
     Left = 369
     Top = 48
+  end
+  object Timer1: TTimer
+    Enabled = False
+    Interval = 30000
+    OnTimer = Timer1Timer
+    Left = 368
+    Top = 168
   end
 end

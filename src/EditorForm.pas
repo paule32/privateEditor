@@ -1,3 +1,9 @@
+// -------------------------------------------------------------------
+// File:    EditorForm.pas
+// Author:  paule32 - Jens Kallup
+// License: (c) 2023  non-profit Software
+//          All Rights Reserved - only for private or education usage.
+// -------------------------------------------------------------------
 unit EditorForm;
 
 interface
@@ -268,8 +274,6 @@ type
     procedure JvSpeedButton2Click(Sender: TObject);
     procedure StartCompileClick(Sender: TObject);
     procedure EditorOptions1Click(Sender: TObject);
-    procedure SynEdit1KeyDown(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
     procedure JvSpeedButton1MouseEnter(Sender: TObject);
     procedure JvSpeedButton1MouseLeave(Sender: TObject);
     procedure JvSpeedButton2MouseEnter(Sender: TObject);
@@ -1254,7 +1258,7 @@ var
 
   procedure ParserError(msg: PChar);
   begin
-    raise Exception.Create(msg);
+    raise Exception.Create(PChar(msg));
   end;
 begin
   JvSpeedButton2Click(Sender);
@@ -1289,63 +1293,72 @@ exit;*)
   DateTimeToString(res,'',now);
   buildListBox.Items.Insert(0,res + ': ' + 'initialize...');
 
-  Handle := LoadLibrary(PChar(ExtractFilePath(Application.ExeName) + '\dBaseDSL.dll'));
-  if Handle <> 0 then
-  begin
-    DateTimeToString(res,'',now);
-    buildListBox.Items.Insert(0,res + ': load dBaseDSL.dll: OK.');
-(*
-    callParser          := GetProcAddress(Handle,'_yy_pascal_lex_main');
-    callParserCloseFile := GetProcAddress(Handle,'_yy_pascal_lex_close');
-    callParserGetLine   := GetProcAddress(Handle,'_yy_pascal_lex_get_line');
-    callParserGetLines  := GetProcAddress(Handle,'_yy_pascal_lex_getlines');
-    callParserError     := GetProcAddress(Handle,'_yy_pascal_lex_parser_error');
-*)
-    callParser          := GetProcAddress(Handle,'_yy_dbase_lex_main');
-    callParserCloseFile := GetProcAddress(Handle,'_yy_dbase_lex_close');
-    callParserGetLine   := GetProcAddress(Handle,'_yy_dbase_lex_get_line');
-    callParserGetLines  := GetProcAddress(Handle,'_yy_dbase_lex_getlines');
-    callParserError     := GetProcAddress(Handle,'_yy_dbase_lex_parser_error');
+  try
+    try
+      Handle := LoadLibrary(PChar(ExtractFilePath(Application.ExeName) + '\dBaseDSL.dll'));
+      if Handle <> 0 then
+      begin
+        DateTimeToString(res,'',now);
+        buildListBox.Items.Insert(0,res + ': load dBaseDSL.dll: OK.');
 
-    // hook: yyerror
-    if @callParserError <> nil then
-    begin
-      DateTimeToString(res,'',now);
-      buildListBox.Items.Insert(0,
-      res + ': ' + 'callParserError init success.');
-      callParserError(@ParserError);
-    end else
-    begin
-      DateTimeToString(res,'',now);
-      buildListBox.Items.Insert(0,
-      res + ': ' + 'callParserError init failed.');
-    end;
+        callParser          := GetProcAddress(Handle,'_yy_dbase_lex_main');
+        callParserCloseFile := GetProcAddress(Handle,'_yy_dbase_lex_close');
+        callParserGetLine   := GetProcAddress(Handle,'_yy_dbase_lex_get_line');
+        callParserGetLines  := GetProcAddress(Handle,'_yy_dbase_lex_getlines');
+        callParserError     := GetProcAddress(Handle,'_yy_dbase_lex_parser_error');
 
-    if @callParser <> nil then
-    begin
-      try
-        if DFrameEditor.TabSheet1.Caption = 'Unamed' then
+        // hook: yyerror
+        if @callParserError <> nil then
         begin
-          DFrameEditor.SynEdit1.Modified := true;
-          JvSpeedButton2Click(Sender);
-        end;
-        callParser(
-          PChar(DFrameEditor.TabSheet1.Caption),
-          PChar(IniFile_AsmOutput)
-        );
-        InfoBox.Text('Compile OK' + #13#10 +
-        'Lines: ' + IntToStr(callParserGetLines-1));
-      except
-        on E: Exception do
+          DateTimeToString(res,'',now);
+          buildListBox.Items.Insert(0,
+          res + ': ' + 'callParserError init success.');
+          callParserError(@ParserError);
+        end else
         begin
-          callParserCloseFile;
-          ErrorBox.Text('Exception:' + #13 + E.Message);
-          ErrorBox.BringToFront;
-          ErrorBox.Show;
+          DateTimeToString(res,'',now);
+          buildListBox.Items.Insert(0,
+          res + ': ' + 'callParserError init failed.');
         end;
+
+        if @callParser <> nil then
+        begin
+          try
+            if DFrameEditor.TabSheet1.Caption = 'Unamed' then
+            begin
+              DFrameEditor.SynEdit1.Modified := true;
+              JvSpeedButton2Click(Sender);
+            end;
+            callParser(
+              PChar(DFrameEditor.TabSheet1.Caption),
+              PChar(IniFile_AsmOutput)
+            );
+            InfoBox.Text('Compile OK' + #13#10 +
+            'Lines: ' + IntToStr(callParserGetLines-1));
+          except
+            on E: Exception do
+            begin
+              callParserCloseFile;
+              ErrorBox.Text('Exception:' + #13 + E.Message);
+              ErrorBox.BringToFront;
+              ErrorBox.Show;
+            end;
+          end;
+        end;
+      end else
+      begin
+        DateTimeToString(res,'',now);
+        buildListBox.Items.Insert(0,res + ': load parsers.dll: FAIL.');
+      end;
+    except
+      on E: Exception do
+      begin
+        ErrorBox.Text('Error:' + #13 + E.Message);
+        ErrorBox.BringToFront;
+        ErrorBox.Show;
       end;
     end;
-
+  finally
     FreeLibrary(handle);
 
     DateTimeToString(res,'',now);
@@ -1353,10 +1366,6 @@ exit;*)
     res + ': ' + 'parser.dll: closed.');
 
     Handle := 0;
-  end else
-  begin
-    DateTimeToString(res,'',now);
-    buildListBox.Items.Insert(0,res + ': load parsers.dll: FAIL.');
   end;
 end;
 
@@ -1368,29 +1377,6 @@ begin
 
   MainPageControl.ActivePage := TabSheet_Options;
   DFrameEditOptions.Visible := true;
-end;
-
-procedure TForm1.SynEdit1KeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
-begin
-  if ssCtrl in Shift then
-  begin
-    if key = Ord('O') then
-    begin
-      JvSpeedButton1Click(Sender);
-      exit;
-    end else
-    if key = Ord('S') then
-    begin
-      JvSpeedButton2Click(Sender);
-      exit;
-    end;
-  end;
-
-  if key = VK_F2 then
-  begin
-    StartCompileClick(Sender);
-  end;
 end;
 
 procedure TForm1.JvSpeedButton1MouseEnter(Sender: TObject);
@@ -1456,7 +1442,7 @@ begin
     ErrorBox.Text(sl.Text);
     ErrorBox.BringToFront;
     ErrorBox.Show;
-    
+
     ExpandTopLevel;
   finally
     sl.Clear;
@@ -2950,7 +2936,24 @@ begin
   DFrameEditor.SynEdit1.Text :=
   '// This File was created automatically' + sLineBreak +
   '// Press F2-key to execute it.'         + sLineBreak +
-  '34';
+  'class foo of form'         + sLineBreak +
+  '   with ( this )'          + sLineBreak +
+  '   endwith'                + sLineBreak +
+  ''                          + sLineBreak +
+  '   this.container  = new container ( this )'          + sLineBreak +
+  '   this.pushbutton = new pushbutton( this.container)' + sLineBreak +
+  '   with (this.pushbutton)' + sLineBreak +
+  '     foo.xxx = 4'          + sLineBreak +
+  '   endwith'                + sLineBreak +
+  ''                          + sLineBreak +
+  '   function dummy1'        + sLineBreak +
+  '   return'                 + sLineBreak +
+  ''                          + sLineBreak +
+  '   function dummy2'        + sLineBreak +
+  '   return'                 + sLineBreak +
+  ''                          + sLineBreak +
+  'endclass'                  + sLineBreak;
+
   SetEditMisc;
 end;
 

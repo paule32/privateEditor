@@ -63,20 +63,52 @@ enum token_type {
 	tt_root,
 	
 	tt_const_number,	// constant number: 0-9
-	tt_const_string,	// constant letter array A-Z | a-z
+	tt_const_ident ,    // constant letter array A-Z | a-z
+	tt_const_string,	// ident letters in qoute
 	
-	tt_factor,			// number   factor
+	tt_term,
+	
+	tt_expr_sub,
+	tt_expr_add,
+	tt_expr_mul,
+	tt_expr_div,
+	
+	tt_term_sub,
+	tt_term_add,
+	tt_term_mul,
+	tt_term_div,
+	
+	tt_factor,
+	
+	tt_factor_number,	// number   factor
+	tt_factor_term,     // term
 	tt_factor_neg,  	// negative factor
-	tt_factor_paren 	// factor in paren
+	tt_factor_paren, 	// factor in paren
+	
+	tt_factor_sub,		// -
+	tt_factor_add,		// +
+	tt_factor_mul,		// *
+	tt_factor_div,		// /
+	
+	tt_ident_assign,	// :=
+	
+	tt_for_loop,		// for <ident> := 0 to 9
+	
+	tt_end_of_list
 };
 
 typedef struct node {
 	char * token;
+	char * token_ident;
 	enum   token_type  token_id;
 		   
 	char *name;
 	int     id;
+	
 	float        value;
+	
+	float     for_from; 	// for loop: from
+	float     for_to  ; 	// : to
 	
 	struct node * prev;
 	struct node * next;
@@ -135,7 +167,7 @@ extern void  EXPORT yy_pascal_fatal_error(char* message);
 // ----------------------------------------------------------------------------
 extern void  EXPORT dbaseerror(char* m);
 
-extern void  EXPORT yy_dbase_lex_parser_error(void (*func)(char*));
+extern void  EXPORT yy_dbase_lex_parser_error(void (*func)(const char*));
 extern void  EXPORT yy_dbase_lex_close(void);
 extern int   EXPORT yy_dbase_lex_get_line(void);
 extern int   EXPORT yy_dbase_lex_getlines(void);

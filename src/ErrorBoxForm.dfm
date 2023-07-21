@@ -1,10 +1,10 @@
 object ErrorBox: TErrorBox
-  Left = 613
-  Top = 391
+  Left = 164
+  Top = 618
   BorderStyle = bsDialog
   Caption = 'Error:'
-  ClientHeight = 170
-  ClientWidth = 386
+  ClientHeight = 271
+  ClientWidth = 454
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -21,8 +21,8 @@ object ErrorBox: TErrorBox
   object JvGradient1: TJvGradient
     Left = 0
     Top = 0
-    Width = 386
-    Height = 170
+    Width = 454
+    Height = 271
     Style = grVertical
     StartColor = clRed
     EndColor = clYellow
@@ -30,20 +30,20 @@ object ErrorBox: TErrorBox
   object JvScrollBox1: TJvScrollBox
     Left = 24
     Top = 16
-    Width = 335
-    Height = 97
+    Width = 409
+    Height = 201
     Color = clYellow
     ParentColor = False
     TabOrder = 0
     object Memo1: TMemo
       Left = 8
       Top = 8
-      Width = 313
-      Height = 76
+      Width = 389
+      Height = 179
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -16
-      Font.Name = 'MS Sans Serif'
+      Font.Name = 'Consolas'
       Font.Style = []
       ParentFont = False
       ReadOnly = True
@@ -53,7 +53,7 @@ object ErrorBox: TErrorBox
   end
   object JvImgBtn1: TJvImgBtn
     Left = 24
-    Top = 128
+    Top = 224
     Width = 75
     Height = 25
     Caption = 'OK'
@@ -73,8 +73,8 @@ object ErrorBox: TErrorBox
     HotTrackFont.Style = []
   end
   object JvImgBtn2: TJvImgBtn
-    Left = 288
-    Top = 128
+    Left = 360
+    Top = 224
     Width = 75
     Height = 25
     Caption = 'Cancel'
@@ -104,5 +104,12 @@ object ErrorBox: TErrorBox
     EndColor = clYellow
     Left = 161
     Top = 128
+  end
+  object Timer1: TTimer
+    Enabled = False
+    Interval = 30000
+    OnTimer = Timer1Timer
+    Left = 160
+    Top = 160
   end
 end

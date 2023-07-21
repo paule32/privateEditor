@@ -822,17 +822,7 @@ object InputBoxWindow: TInputBoxWindow
   end
   object JvGradientCaption1: TJvGradientCaption
     Active = False
-    Captions = <
-      item
-        Caption = 'Private Editor 1.0 (c) 2023 paule32'
-        Font.Charset = ANSI_CHARSET
-        Font.Color = clBlack
-        Font.Height = -16
-        Font.Name = 'Arial'
-        Font.Style = [fsBold]
-        ParentFont = False
-        InactiveColor = clGradientActiveCaption
-      end>
+    Captions = <>
     DefaultFont = False
     FormCaption = 'New Folder ...'
     FontInactiveColor = clBlack

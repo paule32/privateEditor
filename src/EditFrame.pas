@@ -1,3 +1,9 @@
+// -------------------------------------------------------------------
+// File:    EditFrame.pas
+// Author:  paule32 - Jens Kallup
+// License: (c) 2023  non-profit Software
+//          All Rights Reserved - only for private or education usage.
+// -------------------------------------------------------------------
 unit EditFrame;
 
 interface
