@@ -181,11 +181,6 @@ object Frame19: TFrame19
     object N2: TMenuItem
       Caption = '-'
     end
-    object Delete1: TMenuItem
-      Caption = 'Delete'
-      ShortCut = 46
-      OnClick = Delete1Click
-    end
     object SelectAll1: TMenuItem
       Caption = 'Select All'
       ShortCut = 16449

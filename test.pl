@@ -1,5 +1,15 @@
 // This File was created automatically
 // Press F2-key to execute it.
+
+# define TESTMACRO 42         // macro for: number
+# define MACRO2    "string"   // macro for: string
+
+parameter bModal
+local f = new Form1()
+if bModal == .T.
+  f.open()
+endif
+
 class foo of form
    with ( this )
    endwith
@@ -8,13 +18,18 @@ class foo of form
    this.pushbutton = new pushbutton( this.container)
    with (this.pushbutton)
      foo.xxx = 4
+     bool = .F.
+     fatz = "sssss"
+     futz = 'xxxx'
+     baz = [ \"dddd 22 ]
    endwith
 
-   function dummy1
+   procedure dummy1(p1,p2,p3)
    return
 
-   function dummy2
-   return
+   function dummy2(p1)
+     baz = 32
+   return ("foobar" + ddd + "goo")
 
 endclass
 

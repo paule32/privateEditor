@@ -35,7 +35,6 @@ type
     Copy1: TMenuItem;
     Paste1: TMenuItem;
     N2: TMenuItem;
-    Delete1: TMenuItem;
     SelectAll1: TMenuItem;
     procedure JvImgBtn1Click(Sender: TObject);
     procedure CopyButtonClick(Sender: TObject);
@@ -191,13 +190,6 @@ begin
   if key = VK_F2 then
   begin
     Form1.StartCompileClick(Sender);
-    exit;
-  end else
-  if key = VK_DELETE then
-  begin
-    SynEdit1.SelStart := SynEdit1.CaretX;
-    SynEdit1.SelEnd   := SynEdit1.SelStart + 1;
-    SynEdit1.ClearSelection;
     exit;
   end;
 

@@ -45,16 +45,18 @@ extern void tree_execute(void);
 }
 
 %token <node_and_value> TOK_ID
-%token <node_and_value> TOK_NUMBER
+%token <node_and_value> TOK_NUMBER TOK_STRING TOK_STRING_BRACE
 
 %token <node_and_value> TOK_IF TOK_ELSE TOK_ENDIF
 %token <node_and_value> TOK_EQEQ TOK_EQLT TOK_EQGT TOK_GTEQ TOK_LTEQ TOK_LTGT
-%token <node_and_value> TOK_ASSIGN
+%token <node_and_value> TOK_ASSIGN TOK_FALSE TOK_TRUE TOK_AND TOK_NOT TOK_OR
+%token <node_and_value> TOK_PARAMETER TOK_LOCAL TOK_PRIVATE
 
 %token <node_and_value> TOK_FUNCTION TOK_PROCEDURE TOK_RETURN TOK_SET TOK_CLEAR
 %token <node_and_value> TOK_FOR TOK_TO TOK_ENDFOR
 %token <node_and_value> TOK_CLASS TOK_OF TOK_ENDCLASS TOK_NEW
-%token <node_and_value> TOK_WITH TOK_ENDWITH
+%token <node_and_value> TOK_WITH TOK_ENDWITH TOK_CUSTOM
+%token <node_and_value> TOK_DEFINE
 
 %type  <node_and_value> number
 %type  <node_and_value> factor
@@ -62,7 +64,7 @@ extern void tree_execute(void);
 
 %type  <node_and_value> expr
 %type  <node_and_value> ident
-%type  <node_and_value> stmt if_else_endif ident_object
+%type  <node_and_value> stmt if_else_endif ident_object param_object
 
 %token TOK_YYEOF 0
 
@@ -80,10 +82,15 @@ program
 		yyerror( buffer );
 	}
 	;
-	
+
+define_macro
+	:	'#' TOK_DEFINE ident_object
+	|	'#' TOK_DEFINE expr
+	;
+
 stmt
-	: /* empty */ { }
-	| ident_object TOK_ASSIGN expr
+	:	/* empty */ { }
+	|	ident_object TOK_ASSIGN expr
 	{
 		// -----------------------------
 		// make a ident node to tree
@@ -114,7 +121,7 @@ stmt
 		node_new->next  = NULL;
 		
 		node_prev = node_new;
-	}
+	}	stmt
 	|	TOK_FOR ident '=' expr TOK_TO expr {
 		node_new = (struct node *) malloc( sizeof( struct node ) );
 		node_new->token = (char *) malloc( 12 );
@@ -141,25 +148,95 @@ stmt
 		node_new->next = NULL;
 		node_prev      = node_new;
 	}
-	| TOK_CLASS     ident TOK_OF ident stmt TOK_ENDCLASS stmt { MessageBoxA(0,"classss","ooooo",0);
+	|	define_macro TOK_ASSIGN ident_object { }
+	|	define_macro TOK_ASSIGN ident_string { }
+	|	define_macro TOK_ASSIGN expr         { }
+	|	define_macro            ident_object { }
+	|	define_macro            ident_string { }
+	|	define_macro            expr         {
 	}
-	| TOK_PROCEDURE ident              stmt TOK_RETURN   stmt
-	| TOK_FUNCTION  ident              stmt TOK_RETURN   stmt {
+	|	TOK_CLASS     ident_object '(' ident_object ')' TOK_OF '(' ident_object                  ')' TOK_CUSTOM stmt TOK_ENDCLASS stmt
+	|	TOK_CLASS     ident_object                      TOK_OF '(' ident_object ',' ident_object ')' TOK_CUSTOM stmt TOK_ENDCLASS stmt
+	|	TOK_CLASS     ident_object                      TOK_OF     ident_object                      TOK_CUSTOM stmt TOK_ENDCLASS stmt
+	|	TOK_CLASS     ident_object                      TOK_OF     ident_object                                 stmt TOK_ENDCLASS stmt {
 	}
-	| TOK_WITH '('  ident_object ')'   stmt TOK_ENDWITH  stmt
-	| TOK_WITH      ident_object       stmt TOK_ENDWITH  stmt {
+	|	TOK_LOCAL     local_object       stmt {
 	}
-	| ident_object  TOK_ASSIGN TOK_NEW ident_object '(' ident_object ')' stmt
-	| ident_object  TOK_ASSIGN TOK_NEW ident_object '('              ')' stmt {
+	|	TOK_PRIVATE   ident_object       stmt { }
+	|	TOK_PARAMETER param_object       stmt {
 	}
-	| if_else_endif
+	|	TOK_PROCEDURE ident args_param   stmt TOK_RETURN                   stmt
+	|	TOK_FUNCTION  ident args_param   stmt TOK_RETURN   return_value    stmt {
+	}
+	|	TOK_WITH '('  ident_object ')'   stmt TOK_ENDWITH  stmt
+	|	TOK_WITH      ident_object       stmt TOK_ENDWITH  stmt {
+	}
+	|	ident_object  TOK_ASSIGN TOK_NEW ident_object '(' ident_object ')' stmt
+	|	ident_object  TOK_ASSIGN TOK_NEW ident_object '('              ')' stmt {
+	}
+	|	ident_object  TOK_ASSIGN ident_object ident_string  stmt
+	|	ident_object  TOK_ASSIGN ident_object { }           stmt
+	|	ident_object  TOK_ASSIGN              ident_string  stmt
+	|	ident_object  TOK_ASSIGN              TOK_FALSE     stmt
+	|	ident_object  TOK_ASSIGN              TOK_TRUE { }  stmt
+	|	ident_object  '('        ident_object ')'           stmt
+	|	ident_object  '('                     ')'      { }  stmt
+	|	if_else_endif
 	;
 
 ident_object
 	: TOK_ID
 	| ident_object '.' ident_object
 	;
+
+local_object
+	: ident_object TOK_ASSIGN TOK_NEW ident_object '(' ident_object ')'
+	| ident_object TOK_ASSIGN TOK_NEW ident_object '(' ')'
+	| ident_object
+	| local_object ',' local_object
+	;
 	
+param_object
+	: ident_object
+	| param_object ',' param_object
+	;
+
+args_param
+	:	/* empty */
+	|	'(' param_object ')'
+	|	'('              ')'
+	;
+
+ident_string
+	: TOK_STRING
+	| TOK_STRING_BRACE
+	| ident_string '+' ident_string
+	;
+
+return_merge
+	:	/* empty */
+	|	ident_object '+' ident_object
+	|   ident_object '+' ident_string {
+	}
+	|	ident_string '+' ident_string
+	|	ident_string '+' ident_object {
+	}
+	|	ident_object
+	|	ident_string {
+	}
+	|	TOK_FALSE
+	|	TOK_TRUE
+	|	expr
+	;
+ident_merge
+	:	return_merge
+	|	return_merge '+' return_merge
+	;
+return_value
+	:	'(' ident_merge ')'
+	|	    ident_merge
+	;
+
 expr
 	: expr
 	{
@@ -442,59 +519,37 @@ ident
 	}
 	;
 
+if_ident_and_eqeq : TOK_AND ident_object TOK_EQEQ relation ;
+if_ident_and_lteq : TOK_AND ident_object TOK_LTEQ relation ;
+if_ident_and_gteq : TOK_AND ident_object TOK_GTEQ relation ;
+if_ident_and_ltgt : TOK_AND ident_object TOK_LTGT relation ;
+
+if_rel
+	:	/* empty */
+	|	if_ident_and_eqeq
+	|	if_ident_and_lteq
+	|	if_ident_and_gteq
+	|	if_ident_and_ltgt
+	;
+
+relation
+	:	ident_object if_rel
+	|	ident_string if_rel
+	|	expr         if_rel
+	|	TOK_FALSE    if_rel
+	|	TOK_TRUE     if_rel
+	;
+
+if_ident_eqeq : TOK_IF ident_object TOK_EQEQ relation stmt TOK_ENDIF ;
+if_ident_lteq : TOK_IF ident_object TOK_LTEQ relation stmt TOK_ENDIF ;
+if_ident_gteq : TOK_IF ident_object TOK_GTEQ relation stmt TOK_ENDIF ;
+if_ident_ltgt : TOK_IF ident_object TOK_LTGT relation stmt TOK_ENDIF ;
+
 if_else_endif
-	: TOK_IF expr TOK_EQEQ expr stmt TOK_ENDIF
-	{
-		if ($2.value == $4.value) {
-		/*
-			$5.next = mknode(
-				$2.next,
-				$4.next,
-				$5.next,
-				"eqeq");
-			$5.prev = $$.next;
-		*/
-		}
-	}
-	| TOK_IF expr TOK_LTEQ expr stmt TOK_ENDIF
-	{
-		if ($2.value <= $4.value) {
-		/*
-			$5.next = mknode(
-				$2.next,
-				$4.next,
-				$5.next,
-				"eqlt");
-			$5.prev = $$.next;
-		*/
-		}
-	}
-	| TOK_IF expr TOK_GTEQ expr stmt TOK_ENDIF
-	{
-		if ($2.value >= $4.value) {
-		/*
-			$5.next = mknode(
-				$2.next,
-				$4.next,
-				$5.next,
-				"eqgt");
-			$5.prev = $$.next;
-		*/
-		}
-	}
-	| TOK_IF expr TOK_LTGT expr stmt TOK_ENDIF
-	{
-		if ($2.value != $4.value) {
-		/*
-			$5.next = mknode(
-				$2.next,
-				$4.next,
-				$5.next,
-				"lteq");
-			$5.prev = $$.next;
-		*/
-		}
-	}
+	:	if_ident_eqeq stmt { }
+	|	if_ident_lteq stmt { }
+	|	if_ident_gteq stmt { }
+	|	if_ident_ltgt stmt { }
 	;
 
 %%

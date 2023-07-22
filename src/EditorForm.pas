@@ -2936,6 +2936,16 @@ begin
   DFrameEditor.SynEdit1.Text :=
   '// This File was created automatically' + sLineBreak +
   '// Press F2-key to execute it.'         + sLineBreak +
+  ''                                       + sLineBreak +
+  '# define TESTMACRO 42         // macro for: number'  + sLineBreak +
+  '# define MACRO2    "string"   // macro for: string'  + sLineBreak +
+  ''                                                    + sLineBreak +
+  'parameter bModal'          + sLineBreak +
+  'local f = new Form1()'     + sLineBreak +
+  'if bModal == .T.'          + sLineBreak +
+  '  f.open()'                + sLineBreak +
+  'endif'                     + sLineBreak +
+  ''                          + sLineBreak +
   'class foo of form'         + sLineBreak +
   '   with ( this )'          + sLineBreak +
   '   endwith'                + sLineBreak +
@@ -2944,13 +2954,18 @@ begin
   '   this.pushbutton = new pushbutton( this.container)' + sLineBreak +
   '   with (this.pushbutton)' + sLineBreak +
   '     foo.xxx = 4'          + sLineBreak +
+  '     bool = .F.'           + sLineBreak +
+  '     fatz = "sssss"'       + sLineBreak +
+  '     futz = ''xxxx'''      + sLineBreak +
+  '     baz = [ \"dddd 22 ]'  + sLineBreak +
   '   endwith'                + sLineBreak +
   ''                          + sLineBreak +
-  '   function dummy1'        + sLineBreak +
+  '   procedure dummy1(p1,p2,p3)' + sLineBreak +
   '   return'                 + sLineBreak +
   ''                          + sLineBreak +
-  '   function dummy2'        + sLineBreak +
-  '   return'                 + sLineBreak +
+  '   function dummy2(p1)'    + sLineBreak +
+  '     baz = 32'                      + sLineBreak +
+  '   return ("foobar" + ddd + "goo")' + sLineBreak +
   ''                          + sLineBreak +
   'endclass'                  + sLineBreak;
 
