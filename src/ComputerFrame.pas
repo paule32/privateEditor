@@ -31,11 +31,11 @@ type
     RadioButton3: TRadioButton;
     GroupBox1: TScrollBox;
     GroupBox4: TGroupBox;
-    JvCheckBox1: TJvRadioButton;
-    JvCheckBox2: TJvRadioButton;
-    JvCheckBox3: TJvRadioButton;
-    JvRadioButton1: TJvRadioButton;
-    JvRadioButton2: TJvRadioButton;
+    JvCheckBox10: TJvRadioButton;
+    JvCheckBox11: TJvRadioButton;
+    JvCheckBox12: TJvRadioButton;
+    JvCheckBox13: TJvRadioButton;
+    JvCheckBox14: TJvRadioButton;
   private
     { Private declarations }
   public

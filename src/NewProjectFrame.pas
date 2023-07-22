@@ -9,7 +9,7 @@ unit NewProjectFrame;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, 
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ComCtrls, ImgList, ExtCtrls;
 
 type
@@ -23,6 +23,13 @@ type
   public
 
   end;
+
+type
+  myAppType = set of (
+    atMSDOS, atWin32,
+    atPascal, atBASIC, atdBASE, atcLISP, atAssembler);
+var
+  appType: myAppType;
 
 implementation
 
@@ -55,19 +62,34 @@ begin
   or (S = 'Windows 64-Bit App') then
   begin
     // template code
-    Form1.msdosapp := false;
-    if Form1.DFrameComputerOS.JvCheckBox3.Checked = true then
-       Form1.CreateSimpleWin32dBaseProgram else
-       Form1.CreateSimpleWin32Program;
+    if Form1.DFrameComputerOS.JvCheckBox5.Checked = true then
+    begin
+      if Form1.DFrameComputerOS.JvCheckBox10.Checked then appType := [atWin32, atPascal    ] else
+      if Form1.DFrameComputerOS.JvCheckBox11.Checked then appType := [atWin32, atBASIC     ] else
+      if Form1.DFrameComputerOS.JvCheckBox12.Checked then appType := [atWin32, atdBASE     ] else
+      if Form1.DFrameComputerOS.JvCheckBox13.Checked then appType := [atWin32, atcLISP     ] else
+      if Form1.DFrameComputerOS.JvCheckBox14.Checked then appType := [atWin32, atAssembler ] ;
+
+      Form1.CreateSimpleProgram( appType );
+      exit;
+    end else
+    raise Exception.Create('not supported');
   end else
   if S = 'MS-DOS 32-Bit App' then
   begin
     // template code
-    Form1.msdosapp := true;
+    if Form1.DFrameComputerOS.JvCheckBox6.Checked = true then
+    begin
+      if Form1.DFrameComputerOS.JvCheckBox10.Checked then appType := [atMSDOS, atPascal] else
+      if Form1.DFrameComputerOS.JvCheckBox11.Checked then appType := [atMSDOS, atBASIC ] else
+      if Form1.DFrameComputerOS.JvCheckBox12.Checked then appType := [atMSDOS, atdBASE ] else
+      if Form1.DFrameComputerOS.JvCheckBox13.Checked then appType := [atMSDOS, atcLISP ] else
+      if Form1.DFrameComputerOS.JvCheckBox14.Checked then appType := [atMSDOS, atAssembler ];
 
-    if Form1.DFrameComputerOS.JvCheckBox3.Checked = true then
-       Form1.CreateSimpleMSDOSdBaseProgram else
-       Form1.CreateSimpleMSDOSProgram;
+      Form1.CreateSimpleProgram( appType );
+      exit;
+    end else
+    raise Exception.Create('not supported');
   end;
 end;
 

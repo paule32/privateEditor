@@ -201,7 +201,7 @@ object Frame16: TFrame16
         Height = 191
         Caption = ' Language: '
         TabOrder = 0
-        object JvCheckBox1: TJvRadioButton
+        object JvCheckBox10: TJvRadioButton
           Left = 8
           Top = 24
           Width = 77
@@ -220,7 +220,7 @@ object Frame16: TFrame16
           AutoSize = False
           LinkedControls = <>
         end
-        object JvCheckBox2: TJvRadioButton
+        object JvCheckBox11: TJvRadioButton
           Left = 8
           Top = 56
           Width = 82
@@ -238,7 +238,7 @@ object Frame16: TFrame16
           AutoSize = False
           LinkedControls = <>
         end
-        object JvCheckBox3: TJvRadioButton
+        object JvCheckBox12: TJvRadioButton
           Left = 8
           Top = 88
           Width = 84
@@ -256,7 +256,7 @@ object Frame16: TFrame16
           AutoSize = False
           LinkedControls = <>
         end
-        object JvRadioButton1: TJvRadioButton
+        object JvCheckBox13: TJvRadioButton
           Left = 8
           Top = 120
           Width = 121
@@ -274,7 +274,7 @@ object Frame16: TFrame16
           AutoSize = False
           LinkedControls = <>
         end
-        object JvRadioButton2: TJvRadioButton
+        object JvCheckBox14: TJvRadioButton
           Left = 8
           Top = 152
           Width = 129

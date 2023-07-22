@@ -5,7 +5,7 @@
 // License: all rights reserved.
 // ----------------------------------------------------------------------------
 # include "common.h"
-# include "dBaseDSL.tab.h"
+# include "dBaseDSLdos32.tab.h"
 
 // ----------------------------------------------------------------------------
 // parser variables and constants:

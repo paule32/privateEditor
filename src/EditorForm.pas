@@ -461,10 +461,25 @@ type
     procedure ModifyControl(const AControl: TControl; LS: TStrings);
     procedure ExpandTopLevel;
 
-    procedure CreateSimpleMSDOSProgram;
-    procedure CreateSimpleWin32Program;
-    procedure CreateSimpleMSDOSdBaseProgram;
-    procedure CreateSimpleWin32dBaseProgram;
+    procedure CreateSimpleProgram(aType: myAppType);
+
+    procedure CreateSimpleDos32PascalProgram   ;
+    procedure CreateSimpleDos32PascalUnit      ;
+    procedure CreateSimpleDos32PascalLibrary   ;
+
+    procedure CreateSimpleDos32BasicProgram    ;
+    procedure CreateSimpleDos32dBaseProgram    ;
+    procedure CreateSimpleDos32cLispProgram    ;
+    procedure CreateSimpleDos32AssemblerProgram;
+
+    procedure CreateSimpleWin32PascalProgram   ;
+    procedure CreateSimpleWin32PascalUnit      ;
+    procedure CreateSimpleWin32PascalLibrary   ;
+
+    procedure CreateSimpleWin32BasicProgram    ;
+    procedure CreateSimpleWin32dBaseProgram    ;
+    procedure CreateSimpleWin32cLispProgram    ;
+    procedure CreateSimpleWin32AssemblerProgram;
 
     procedure JvDesignPanelPaint(Sender: TObject);
     procedure CheckButtonOnClick(Sender: TObject);
@@ -2644,6 +2659,7 @@ begin
   begin
     if DFrameEditor.SynEdit1.Focused then
     begin
+    showmessage('ccc');
       StartCompileClick(self);
     end else
     if DFrameHelpTopic.TreeView1.Focused then
@@ -2844,12 +2860,152 @@ begin
   InternalCompiler1.Checked := true;
 end;
 
-procedure TForm1.CreateSimpleMSDOSProgram;
+procedure TForm1.CreateSimpleProgram(AType: myAppType);
 begin
+  if atMSDOS in AType then
+  begin
+    if atPascal    in AType then begin CreateSimpleDos32PascalProgram   ; end else
+    if atBASIC     in AType then begin CreateSimpleDos32BasicProgram    ; end else
+    if atdBase     in AType then begin CreateSimpleDos32dBaseProgram    ; end else
+    if atcLISP     in AType then begin CreateSimpleDos32cLispProgram    ; end else
+    if atAssembler in AType then begin CreateSimpleDos32AssemblerProgram; end else
+    raise Exception.Create('MSDos not supported');
+  end else
+  if atWin32 in AType then
+  begin
+    if atPascal    in AType then begin CreateSimpleWin32PascalProgram   ; end else
+    if atBASIC     in AType then begin CreateSimpleWin32BasicProgram    ; end else
+    if atdBase     in AType then begin CreateSimpleWin32dBaseProgram    ; end else
+    if atcLISP     in AType then begin CreateSimpleWin32cLispProgram    ; end else
+    if atAssembler in AType then begin CreateSimpleWin32AssemblerProgram; end else
+    raise Exception.Create('Win32 not supported');
+  end;
+end;
+
+procedure TForm1.CreateSimpleDos32BasicProgram;
+begin
+  DFrameEditor.Visible := true;
+  EditPanel.Visible := true;
+  DFrameEditor.SynEdit1.Text :=
+  '// dos32'       + sLineBreak +
+  '10 CLS'         + sLineBreak +
+  '20 PRINT "Hello World"'      + sLineBreak ;
+
+  SetEditMisc;
+end;
+procedure TForm1.CreateSimpleDos32cLispProgram;
+begin
+  DFrameEditor.Visible := true;
+  EditPanel.Visible := true;
+  DFrameEditor.SynEdit1.Text :=
+  '// dos32'       + sLineBreak +
+  '(+ 2 3)'        + sLineBreak ;
+
+  SetEditMisc;
+end;
+procedure TForm1.CreateSimpleDos32AssemblerProgram;
+begin
+  DFrameEditor.Visible := true;
+  EditPanel.Visible := true;
+  DFrameEditor.SynEdit1.Text :=
+  '// dos32'       + sLineBreak +
+  'mov eax'        + sLineBreak +
+  'ret'            + sLineBreak ;
+
+  SetEditMisc;
+end;
+
+procedure TForm1.CreateSimpleWin32BasicProgram;
+begin
+  DFrameEditor.Visible := true;
+  EditPanel.Visible := true;
+  DFrameEditor.SynEdit1.Text :=
+  '// win32'       + sLineBreak +
+  '10 CLS'         + sLineBreak +
+  '20 PRINT "Hello World"'      + sLineBreak ;
+
+  SetEditMisc;
+end;
+procedure TForm1.CreateSimpleWin32cLispProgram;
+begin
+  DFrameEditor.Visible := true;
+  EditPanel.Visible := true;
+  DFrameEditor.SynEdit1.Text :=
+  '// win32'       + sLineBreak +
+  '(+ 2 3)'        + sLineBreak ;
+
+  SetEditMisc;
+end;
+procedure TForm1.CreateSimpleWin32AssemblerProgram;
+begin
+  DFrameEditor.Visible := true;
+  EditPanel.Visible := true;
+  DFrameEditor.SynEdit1.Text :=
+  '// win32'       + sLineBreak +
+  'mov eax'        + sLineBreak +
+  'ret'            + sLineBreak ;
+
+  SetEditMisc;
+end;
+
+procedure TForm1.CreateSimpleWin32PascalProgram;
+begin
+  DFrameEditor.Visible := true;
+  EditPanel.Visible := true;
+  DFrameEditor.SynEdit1.Text :=
+  '// win32'       + sLineBreak +
+  'program test1;' + sLineBreak +
+  'begin'          + sLineBreak +
+  'end.'           + sLineBreak ;
+
+  SetEditMisc;
+end;
+procedure TForm1.CreateSimpleWin32PascalLibrary;
+begin
+  DFrameEditor.Visible := true;
+  EditPanel.Visible := true;
+  DFrameEditor.SynEdit1.Text :=
+  '// win32'       + sLineBreak +
+  'library test1;' + sLineBreak +
+  'begin'          + sLineBreak +
+  'end.'           + sLineBreak ;
+
+  SetEditMisc;
+end;
+
+procedure TForm1.CreateSimpleDos32PascalProgram;
+begin
+  DFrameEditor.Visible := true;
+  EditPanel.Visible := true;
+  DFrameEditor.SynEdit1.Text :=
+  '// dos32'       + sLineBreak +
+  'program test1;' + sLineBreak +
+  'begin'          + sLineBreak +
+  'end.'           + sLineBreak ;
+
+  SetEditMisc;
+end;
+procedure TForm1.CreateSimpleDos32PascalLibrary;
+begin
+  DFrameEditor.Visible := true;
+  EditPanel.Visible := true;
+  DFrameEditor.SynEdit1.Text :=
+  '// dos32'       + sLineBreak +
+  'library test1;' + sLineBreak +
+  'begin'          + sLineBreak +
+  'end.'           + sLineBreak ;
+
+  SetEditMisc;
+end;
+
+procedure TForm1.CreateSimpleDos32PascalUnit;
+begin
+  DFrameEditor.Visible := true;
   EditPanel.Visible := true;
   DFrameEditor.SynEdit1.Text :=
   '// This File was created automatically' + sLineBreak +
   '// Press F2-key to execute it.'         + sLineBreak +
+  '// dos32'                               + sLineBreak +
   'unit main;'                             + sLineBreak +
   ''                                       + sLineBreak +
   'procedure main;'                        + sLineBreak +
@@ -2883,13 +3039,16 @@ begin
   DFrameEditor.SynEdit1.SetFocus;
 end;
 
-procedure TForm1.CreateSimpleWin32Program;
+procedure TForm1.CreateSimpleWin32PascalUnit;
 begin
+  DFrameEditor.Visible := true;
   EditPanel.Visible := true;
   DFrameEditor.SynEdit1.Text :=
   '// This File was created automatically' + sLineBreak +
   '// Press F2-key to execute it.'         + sLineBreak +
+  '// win32'                               + sLineBreak +
   'unit main;'                             + sLineBreak +
+  ''                                       + sLineBreak +
   'interface'                              + sLineBreak +
   'uses'                                   + sLineBreak +
   '  Forms, Dialogs;'                      + sLineBreak +
@@ -2918,18 +3077,20 @@ begin
   SetEditMisc;
 end;
 
-procedure TForm1.CreateSimpleWin32dBaseProgram;
+procedure TForm1.CreateSimpleDos32dBaseProgram;
 begin
+  DFrameEditor.Visible := true;
   EditPanel.Visible := true;
   DFrameEditor.SynEdit1.Text :=
   '// This File was created automatically' + sLineBreak +
   '// Press F2-key to execute it.'         + sLineBreak +
-  '** End of Header';
+  '// dos32'                               + sLineBreak +
+  'use tabs';
 
   SetEditMisc;
 end;
 
-procedure TForm1.CreateSimpleMSDOSdBaseProgram;
+procedure TForm1.CreateSimpleWin32dBaseProgram;
 begin
   DFrameEditor.Visible := true;
   EditPanel.Visible := true;
@@ -2940,6 +3101,7 @@ begin
   '# define TESTMACRO 42         // macro for: number'  + sLineBreak +
   '# define MACRO2    "string"   // macro for: string'  + sLineBreak +
   ''                                                    + sLineBreak +
+  '** End of Header'          + sLineBreak +
   'parameter bModal'          + sLineBreak +
   'local f = new Form1()'     + sLineBreak +
   'if bModal == .T.'          + sLineBreak +
@@ -2974,17 +3136,17 @@ end;
 
 procedure TForm1.Windows64Bit1Click(Sender: TObject);
 begin
-  CreateSimpleMSDOSProgram;
+//  CreateSimpleDos32Program;
 end;
 
 procedure TForm1.Windows32Bit1Click(Sender: TObject);
 begin
-  CreateSimpleMSDOSProgram;
+//  CreateSimpleDos32Program;
 end;
 
 procedure TForm1.MSDOS32Bit1Click(Sender: TObject);
 begin
-  CreateSimpleMSDOSProgram;
+//  CreateSimpleDos32Program;
 end;
 
 procedure TForm1.Cut1Click(Sender: TObject);
@@ -3039,23 +3201,25 @@ begin
     ErrorBox.Show;
 
     exit;
-  end;
+  end else
 
+(*
   if Form1.DFrameComputerOS.JvCheckBox5.Checked then
   begin
     // Pascal
-    if Form1.DFrameComputerOS.JvCheckBox1.Checked then
+    if Form1.DFrameComputerOS.JvCheckBox10.Checked then
     begin
+      if atPascal in
       CreateSimpleWin32Program;
       exit;
     end else
     // BASIC
-    if Form1.DFrameComputerOS.JvCheckBox2.Checked then
+    if Form1.DFrameComputerOS.JvCheckBox11.Checked then
     begin
       exit;
     end else
     // dBase
-    if Form1.DFrameComputerOS.JvCheckBox3.Checked then
+    if Form1.DFrameComputerOS.JvCheckBox12.Checked then
     begin
       CreateSimpleWin32dBaseProgram;
       exit;
@@ -3064,23 +3228,24 @@ begin
   if Form1.DFrameComputerOS.JvCheckBox6.Checked then
   begin
     // Pascal
-    if Form1.DFrameComputerOS.JvCheckBox1.Checked then
+    if Form1.DFrameComputerOS.JvCheckBox10.Checked then
     begin
-      CreateSimpleMSDOSProgram;
+      CreateSimpleDos32Program;
       exit;
     end else
     // BASIC
-    if Form1.DFrameComputerOS.JvCheckBox2.Checked then
+    if Form1.DFrameComputerOS.JvCheckBox11.Checked then
     begin
       exit;
     end else
     // dBase
-    if Form1.DFrameComputerOS.JvCheckBox3.Checked then
+    if Form1.DFrameComputerOS.JvCheckBox12.Checked then
     begin
-      CreateSimpleMSDOSdBaseProgram;
+      CreateSimpleDos32dBaseProgram;
       exit;
     end;
   end else
+*)
   begin
     ErrorBox.Text('Information: not yet implemented.');
     ErrorBox.BringToFront;

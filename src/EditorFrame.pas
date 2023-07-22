@@ -189,6 +189,7 @@ begin
   end else
   if key = VK_F2 then
   begin
+  showmessage('xxxxx');
     Form1.StartCompileClick(Sender);
     exit;
   end;
