@@ -73,7 +73,7 @@ implementation
 {$R *.dfm}
 
 uses
-  EditorForm;
+  EditorForm, ErrorBoxForm, NewProjectFrame, InfoBoxForm;
 
 procedure TFrame19.JvImgBtn1Click(Sender: TObject);
 begin
@@ -179,6 +179,756 @@ begin
   end;
 end;
 
+procedure StartCompile(aType: myAppType);
+var
+  callParser:          function(fileSrc, tempDir: PChar): BOOL; cdecl;
+  callParserGetLine  : function: Integer; cdecl;
+  callParserGetLines : function: Integer; cdecl;
+  callParserCloseFile: procedure; cdecl;
+  callParserError    : procedure(msg: PChar); cdecl;
+
+  Handle : THandle;
+  res: String;
+  sl: TStrings;
+
+  procedure ParserError(msg: PChar);
+  begin
+    raise Exception.Create(PChar(msg));
+  end;
+
+begin
+  if not(Form1.DFrameEditor.SynEdit1.Modified) then exit;
+  if Form1.DFrameEditor.TabSheet1.Caption = 'Unamed' then
+  begin
+    if not(Form1.SaveDialog1.Execute) then
+    begin
+      ErrorBox.Text('something went wrong at open file:' + #13 + Form1.SaveDialog1.FileName);
+      ErrorBox.BringToFront;
+      ErrorBox.Show;
+
+      Form1.has_errors := true;
+      exit;
+    end;
+  end;
+
+  if Form1.DFrameEditor.TabSheet1.Caption = 'Unamed' then
+     Form1.DFrameEditor.TabSheet1.Caption := Form1.SaveDialog1.FileName;
+
+  sl := TStringList.Create;
+  sl.Add(Form1.DFrameEditor.SynEdit1.Lines.Text);
+  sl.SaveToFile(Form1.SaveDialog1.FileName);
+  sl.Free;
+
+  Form1.DFrameEditor.SynEdit1.Modified := false;
+  Form1.has_errors := false;
+
+  Form1.buildListBox.Items.Clear;
+
+  DateTimeToString(res,'',now);
+  Form1.buildListBox.Items.Insert(0,res + ': ' + 'initialize...');
+
+  Form1.MainPageControl.ActivePage := Form1.ConsoleTabSheet;
+  Form1.DblClickConsole;
+  Form1.Console1.SetFocus;
+
+  if atMSDOS in aType then
+  begin
+    if atPascal in aType then
+    begin
+      try
+        try
+          Handle := LoadLibrary(PChar(ExtractFilePath(Application.ExeName) + '\pascalDSLdos32.dll'));
+          if Handle = 0 then
+          raise Exception.Create('pascalDSLdos32.dll not loaded.');
+
+          DateTimeToString(res,'',now);
+          Form1.buildListBox.Items.Insert(0,res + ': load dBaseDSL.dll: OK.');
+
+          callParser          := GetProcAddress(Handle,'_yy_pascal_dos32_lex_main');
+          callParserCloseFile := GetProcAddress(Handle,'_yy_pascal_dos32_lex_close');
+          callParserGetLine   := GetProcAddress(Handle,'_yy_pascal_dos32_lex_get_line');
+          callParserGetLines  := GetProcAddress(Handle,'_yy_pascal_dos32_lex_getlines');
+          callParserError     := GetProcAddress(Handle,'_yy_pascal_dos32_lex_parser_error');
+
+          // hook: yyerror
+          if @callParserError <> nil then
+          begin
+            DateTimeToString(res,'',now);
+            Form1.buildListBox.Items.Insert(0,
+            res + ': ' + 'callParserError init success.');
+            callParserError(@ParserError);
+          end else
+          begin
+            DateTimeToString(res,'',now);
+            Form1.buildListBox.Items.Insert(0,
+            res + ': ' + 'callParserError init failed.');
+          end;
+
+          if @callParser <> nil then
+          begin
+            try
+              if Form1.DFrameEditor.TabSheet1.Caption = 'Unamed' then
+              begin
+                Form1.DFrameEditor.SynEdit1.Modified := true;
+                Form1.JvSpeedButton2Click(nil);
+              end;
+              callParser(
+                PChar(Form1.DFrameEditor.TabSheet1.Caption),
+                PChar(Form1.IniFile_AsmOutput)
+              );
+              InfoBox.Text('Compile OK' + #13#10 +
+              'Lines: ' + IntToStr(callParserGetLines-1));
+            except
+              on E: Exception do
+              begin
+                callParserCloseFile;
+                ErrorBox.Text('Exception:' + #13 + E.Message);
+                ErrorBox.BringToFront;
+                ErrorBox.Show;
+              end;
+            end;
+          end;
+        except
+          on E: Exception do
+          begin
+            FreeLibrary(Handle);
+            Handle := 0;
+            ErrorBox.Text('Exception occur:' + #13 + E.Message);
+            exit;
+          end;
+        end;
+      finally
+        FreeLibrary(Handle);
+        Handle := 0;
+      end;
+    end else
+    if atBASIC in aType then
+    begin
+      try
+        try
+          Handle := LoadLibrary(PChar(ExtractFilePath(Application.ExeName) + '\basicDSLdos32.dll'));
+          if Handle = 0 then
+          raise Exception.Create('basicDSLdos32.dll not loaded.');
+
+          DateTimeToString(res,'',now);
+          Form1.buildListBox.Items.Insert(0,res + ': load dBaseDSL.dll: OK.');
+
+          callParser          := GetProcAddress(Handle,'_yy_basic_dos32_lex_main');
+          callParserCloseFile := GetProcAddress(Handle,'_yy_basic_dos32_lex_close');
+          callParserGetLine   := GetProcAddress(Handle,'_yy_basic_dos32_lex_get_line');
+          callParserGetLines  := GetProcAddress(Handle,'_yy_basic_dos32_lex_getlines');
+          callParserError     := GetProcAddress(Handle,'_yy_basic_dos32_lex_parser_error');
+
+          // hook: yyerror
+          if @callParserError <> nil then
+          begin
+            DateTimeToString(res,'',now);
+            Form1.buildListBox.Items.Insert(0,
+            res + ': ' + 'callParserError init success.');
+            callParserError(@ParserError);
+          end else
+          begin
+            DateTimeToString(res,'',now);
+            Form1.buildListBox.Items.Insert(0,
+            res + ': ' + 'callParserError init failed.');
+          end;
+
+          if @callParser <> nil then
+          begin
+            try
+              if Form1.DFrameEditor.TabSheet1.Caption = 'Unamed' then
+              begin
+                Form1.DFrameEditor.SynEdit1.Modified := true;
+                Form1.JvSpeedButton2Click(nil);
+              end;
+              callParser(
+                PChar(Form1.DFrameEditor.TabSheet1.Caption),
+                PChar(Form1.IniFile_AsmOutput)
+              );
+              InfoBox.Text('Compile OK' + #13#10 +
+              'Lines: ' + IntToStr(callParserGetLines-1));
+            except
+              on E: Exception do
+              begin
+                callParserCloseFile;
+                ErrorBox.Text('Exception:' + #13 + E.Message);
+                ErrorBox.BringToFront;
+                ErrorBox.Show;
+              end;
+            end;
+          end;
+        except
+          on E: Exception do
+          begin
+            FreeLibrary(Handle);
+            Handle := 0;
+            ErrorBox.Text('Exception occur:' + #13 + E.Message);
+            exit;
+          end;
+        end;
+      finally
+        FreeLibrary(Handle);
+        Handle := 0;
+      end;
+    end else
+    if atdBASE in aType then
+    begin
+      try
+        try
+          Handle := LoadLibrary(PChar(ExtractFilePath(Application.ExeName) + '\dBaseDSLdos32.dll'));
+          if Handle = 0 then
+          raise Exception.Create('dBaseDSLdos32.dll not loaded.');
+
+          DateTimeToString(res,'',now);
+          Form1.buildListBox.Items.Insert(0,res + ': load dBaseDSL.dll: OK.');
+
+          callParser          := GetProcAddress(Handle,'_yy_dbase_dos32_lex_main');
+          callParserCloseFile := GetProcAddress(Handle,'_yy_dbase_dos32_lex_close');
+          callParserGetLine   := GetProcAddress(Handle,'_yy_dbase_dos32_lex_get_line');
+          callParserGetLines  := GetProcAddress(Handle,'_yy_dbase_dos32_lex_getlines');
+          callParserError     := GetProcAddress(Handle,'_yy_dbase_dos32_lex_parser_error');
+
+          // hook: yyerror
+          if @callParserError <> nil then
+          begin
+            DateTimeToString(res,'',now);
+            Form1.buildListBox.Items.Insert(0,
+            res + ': ' + 'callParserError init success.');
+            callParserError(@ParserError);
+          end else
+          begin
+            DateTimeToString(res,'',now);
+            Form1.buildListBox.Items.Insert(0,
+            res + ': ' + 'callParserError init failed.');
+          end;
+
+          if @callParser <> nil then
+          begin
+            try
+              if Form1.DFrameEditor.TabSheet1.Caption = 'Unamed' then
+              begin
+                Form1.DFrameEditor.SynEdit1.Modified := true;
+                Form1.JvSpeedButton2Click(nil);
+              end;
+              callParser(
+                PChar(Form1.DFrameEditor.TabSheet1.Caption),
+                PChar(Form1.IniFile_AsmOutput)
+              );
+              InfoBox.Text('Compile OK' + #13#10 +
+              'Lines: ' + IntToStr(callParserGetLines-1));
+            except
+              on E: Exception do
+              begin
+                callParserCloseFile;
+                ErrorBox.Text('Exception:' + #13 + E.Message);
+                ErrorBox.BringToFront;
+                ErrorBox.Show;
+              end;
+            end;
+          end;
+        except
+          on E: Exception do
+          begin
+            FreeLibrary(Handle);
+            Handle := 0;
+            ErrorBox.Text('Exception occur:' + #13 + E.Message);
+            exit;
+          end;
+        end;
+      finally
+        FreeLibrary(Handle);
+        Handle := 0;
+      end;
+    end else
+    if atcLisp in aType then
+    begin
+      try
+        try
+          Handle := LoadLibrary(PChar(ExtractFilePath(Application.ExeName) + '\cLispDSLdos32.dll'));
+          if Handle = 0 then
+          raise Exception.Create('cLispDSLdos32.dll not loaded.');
+
+          DateTimeToString(res,'',now);
+          Form1.buildListBox.Items.Insert(0,res + ': load dBaseDSL.dll: OK.');
+
+          callParser          := GetProcAddress(Handle,'_yy_clisp_dos32_lex_main');
+          callParserCloseFile := GetProcAddress(Handle,'_yy_clisp_dos32_lex_close');
+          callParserGetLine   := GetProcAddress(Handle,'_yy_clisp_dos32_lex_get_line');
+          callParserGetLines  := GetProcAddress(Handle,'_yy_clisp_dos32_lex_getlines');
+          callParserError     := GetProcAddress(Handle,'_yy_clisp_dos32_lex_parser_error');
+
+          // hook: yyerror
+          if @callParserError <> nil then
+          begin
+            DateTimeToString(res,'',now);
+            Form1.buildListBox.Items.Insert(0,
+            res + ': ' + 'callParserError init success.');
+            callParserError(@ParserError);
+          end else
+          begin
+            DateTimeToString(res,'',now);
+            Form1.buildListBox.Items.Insert(0,
+            res + ': ' + 'callParserError init failed.');
+          end;
+
+          if @callParser <> nil then
+          begin
+            try
+              if Form1.DFrameEditor.TabSheet1.Caption = 'Unamed' then
+              begin
+                Form1.DFrameEditor.SynEdit1.Modified := true;
+                Form1.JvSpeedButton2Click(nil);
+              end;
+              callParser(
+                PChar(Form1.DFrameEditor.TabSheet1.Caption),
+                PChar(Form1.IniFile_AsmOutput)
+              );
+              InfoBox.Text('Compile OK' + #13#10 +
+              'Lines: ' + IntToStr(callParserGetLines-1));
+            except
+              on E: Exception do
+              begin
+                callParserCloseFile;
+                ErrorBox.Text('Exception:' + #13 + E.Message);
+                ErrorBox.BringToFront;
+                ErrorBox.Show;
+              end;
+            end;
+          end;
+        except
+          on E: Exception do
+          begin
+            FreeLibrary(Handle);
+            Handle := 0;
+            ErrorBox.Text('Exception occur:' + #13 + E.Message);
+            exit;
+          end;
+        end;
+      finally
+        FreeLibrary(Handle);
+        Handle := 0;
+      end;
+    end else
+    if atAssembler in aType then
+    begin
+      try
+        try
+          Handle := LoadLibrary(PChar(ExtractFilePath(Application.ExeName) + '\assemblerDSLdos32.dll'));
+          if Handle = 0 then
+          raise Exception.Create('assemblerDSLdos32.dll not loaded.');
+
+          DateTimeToString(res,'',now);
+          Form1.buildListBox.Items.Insert(0,res + ': load dBaseDSL.dll: OK.');
+
+          callParser          := GetProcAddress(Handle,'_yy_assembler_dos32_lex_main');
+          callParserCloseFile := GetProcAddress(Handle,'_yy_assembler_dos32_lex_close');
+          callParserGetLine   := GetProcAddress(Handle,'_yy_assembler_dos32_lex_get_line');
+          callParserGetLines  := GetProcAddress(Handle,'_yy_assembler_dos32_lex_getlines');
+          callParserError     := GetProcAddress(Handle,'_yy_assembler_dos32_lex_parser_error');
+
+          // hook: yyerror
+          if @callParserError <> nil then
+          begin
+            DateTimeToString(res,'',now);
+            Form1.buildListBox.Items.Insert(0,
+            res + ': ' + 'callParserError init success.');
+            callParserError(@ParserError);
+          end else
+          begin
+            DateTimeToString(res,'',now);
+            Form1.buildListBox.Items.Insert(0,
+            res + ': ' + 'callParserError init failed.');
+          end;
+
+          if @callParser <> nil then
+          begin
+            try
+              if Form1.DFrameEditor.TabSheet1.Caption = 'Unamed' then
+              begin
+                Form1.DFrameEditor.SynEdit1.Modified := true;
+                Form1.JvSpeedButton2Click(nil);
+              end;
+              callParser(
+                PChar(Form1.DFrameEditor.TabSheet1.Caption),
+                PChar(Form1.IniFile_AsmOutput)
+              );
+              InfoBox.Text('Compile OK' + #13#10 +
+              'Lines: ' + IntToStr(callParserGetLines-1));
+            except
+              on E: Exception do
+              begin
+                callParserCloseFile;
+                ErrorBox.Text('Exception:' + #13 + E.Message);
+                ErrorBox.BringToFront;
+                ErrorBox.Show;
+              end;
+            end;
+          end;
+        except
+          on E: Exception do
+          begin
+            FreeLibrary(Handle);
+            Handle := 0;
+            ErrorBox.Text('Exception occur:' + #13 + E.Message);
+            exit;
+          end;
+        end;
+      finally
+        FreeLibrary(Handle);
+        Handle := 0;
+      end;
+    end;
+  end else
+  if atWin32 in aType then
+  begin
+    if atPascal in aType then
+    begin
+      try
+        try
+          Handle := LoadLibrary(PChar(ExtractFilePath(Application.ExeName) + '\pascalDSLwin32.dll'));
+          if Handle = 0 then
+          raise Exception.Create('pascalDSLwin32.dll not loaded.');
+
+          DateTimeToString(res,'',now);
+          Form1.buildListBox.Items.Insert(0,res + ': load dBaseDSL.dll: OK.');
+
+          callParser          := GetProcAddress(Handle,'_yy_pascal_win32_lex_main');
+          callParserCloseFile := GetProcAddress(Handle,'_yy_pascal_win32_lex_close');
+          callParserGetLine   := GetProcAddress(Handle,'_yy_pascal_win32_lex_get_line');
+          callParserGetLines  := GetProcAddress(Handle,'_yy_pascal_win32_lex_getlines');
+          callParserError     := GetProcAddress(Handle,'_yy_pascal_win32_lex_parser_error');
+
+          // hook: yyerror
+          if @callParserError <> nil then
+          begin
+            DateTimeToString(res,'',now);
+            Form1.buildListBox.Items.Insert(0,
+            res + ': ' + 'callParserError init success.');
+            callParserError(@ParserError);
+          end else
+          begin
+            DateTimeToString(res,'',now);
+            Form1.buildListBox.Items.Insert(0,
+            res + ': ' + 'callParserError init failed.');
+          end;
+
+          if @callParser <> nil then
+          begin
+            try
+              if Form1.DFrameEditor.TabSheet1.Caption = 'Unamed' then
+              begin
+                Form1.DFrameEditor.SynEdit1.Modified := true;
+                Form1.JvSpeedButton2Click(nil);
+              end;
+              callParser(
+                PChar(Form1.DFrameEditor.TabSheet1.Caption),
+                PChar(Form1.IniFile_AsmOutput)
+              );
+              InfoBox.Text('Compile OK' + #13#10 +
+              'Lines: ' + IntToStr(callParserGetLines-1));
+            except
+              on E: Exception do
+              begin
+                callParserCloseFile;
+                ErrorBox.Text('Exception:' + #13 + E.Message);
+                ErrorBox.BringToFront;
+                ErrorBox.Show;
+              end;
+            end;
+          end;
+        except
+          on E: Exception do
+          begin
+            FreeLibrary(Handle);
+            Handle := 0;
+            ErrorBox.Text('Exception occur:' + #13 + E.Message);
+            exit;
+          end;
+        end;
+      finally
+        FreeLibrary(Handle);
+        Handle := 0;
+      end;
+    end else
+    if atBASIC in aType then
+    begin
+      try
+        try
+          Handle := LoadLibrary(PChar(ExtractFilePath(Application.ExeName) + '\basicDSLwin32.dll'));
+          if Handle = 0 then
+          raise Exception.Create('basicDSLwin32.dll not loaded.');
+
+          DateTimeToString(res,'',now);
+          Form1.buildListBox.Items.Insert(0,res + ': load dBaseDSL.dll: OK.');
+
+          callParser          := GetProcAddress(Handle,'_yy_basic_win32_lex_main');
+          callParserCloseFile := GetProcAddress(Handle,'_yy_basic_win32_lex_close');
+          callParserGetLine   := GetProcAddress(Handle,'_yy_basic_win32_lex_get_line');
+          callParserGetLines  := GetProcAddress(Handle,'_yy_basic_win32_lex_getlines');
+          callParserError     := GetProcAddress(Handle,'_yy_basic_win32_lex_parser_error');
+
+          // hook: yyerror
+          if @callParserError <> nil then
+          begin
+            DateTimeToString(res,'',now);
+            Form1.buildListBox.Items.Insert(0,
+            res + ': ' + 'callParserError init success.');
+            callParserError(@ParserError);
+          end else
+          begin
+            DateTimeToString(res,'',now);
+            Form1.buildListBox.Items.Insert(0,
+            res + ': ' + 'callParserError init failed.');
+          end;
+
+          if @callParser <> nil then
+          begin
+            try
+              if Form1.DFrameEditor.TabSheet1.Caption = 'Unamed' then
+              begin
+                Form1.DFrameEditor.SynEdit1.Modified := true;
+                Form1.JvSpeedButton2Click(nil);
+              end;
+              callParser(
+                PChar(Form1.DFrameEditor.TabSheet1.Caption),
+                PChar(Form1.IniFile_AsmOutput)
+              );
+              InfoBox.Text('Compile OK' + #13#10 +
+              'Lines: ' + IntToStr(callParserGetLines-1));
+            except
+              on E: Exception do
+              begin
+                callParserCloseFile;
+                ErrorBox.Text('Exception:' + #13 + E.Message);
+                ErrorBox.BringToFront;
+                ErrorBox.Show;
+              end;
+            end;
+          end;
+        except
+          on E: Exception do
+          begin
+            FreeLibrary(Handle);
+            Handle := 0;
+            ErrorBox.Text('Exception occur:' + #13 + E.Message);
+            exit;
+          end;
+        end;
+      finally
+        FreeLibrary(Handle);
+        Handle := 0;
+      end;
+    end else
+    if atdBASE in aType then
+    begin
+      try
+        try
+          Handle := LoadLibrary(PChar(ExtractFilePath(Application.ExeName) + '\dBaseDSLwin32.dll'));
+          if Handle = 0 then
+          raise Exception.Create('dBaseDSLwin32.dll not loaded.');
+
+          DateTimeToString(res,'',now);
+          Form1.buildListBox.Items.Insert(0,res + ': load dBaseDSL.dll: OK.');
+
+          callParser          := GetProcAddress(Handle,'_yy_dbase_win32_lex_main');
+          callParserCloseFile := GetProcAddress(Handle,'_yy_dbase_win32_lex_close');
+          callParserGetLine   := GetProcAddress(Handle,'_yy_dbase_win32_lex_get_line');
+          callParserGetLines  := GetProcAddress(Handle,'_yy_dbase_win32_lex_getlines');
+          callParserError     := GetProcAddress(Handle,'_yy_dbase_win32_lex_parser_error');
+
+          // hook: yyerror
+          if @callParserError <> nil then
+          begin
+            DateTimeToString(res,'',now);
+            Form1.buildListBox.Items.Insert(0,
+            res + ': ' + 'callParserError init success.');
+            callParserError(@ParserError);
+          end else
+          begin
+            DateTimeToString(res,'',now);
+            Form1.buildListBox.Items.Insert(0,
+            res + ': ' + 'callParserError init failed.');
+          end;
+
+          if @callParser <> nil then
+          begin
+            try
+              if Form1.DFrameEditor.TabSheet1.Caption = 'Unamed' then
+              begin
+                Form1.DFrameEditor.SynEdit1.Modified := true;
+                Form1.JvSpeedButton2Click(nil);
+              end;
+              callParser(
+                PChar(Form1.DFrameEditor.TabSheet1.Caption),
+                PChar(Form1.IniFile_AsmOutput)
+              );
+              InfoBox.Text('Compile OK' + #13#10 +
+              'Lines: ' + IntToStr(callParserGetLines-1));
+            except
+              on E: Exception do
+              begin
+                callParserCloseFile;
+                ErrorBox.Text('Exception:' + #13 + E.Message);
+                ErrorBox.BringToFront;
+                ErrorBox.Show;
+              end;
+            end;
+          end;
+        except
+          on E: Exception do
+          begin
+            FreeLibrary(Handle);
+            Handle := 0;
+            ErrorBox.Text('Exception occur:' + #13 + E.Message);
+            exit;
+          end;
+        end;
+      finally
+        FreeLibrary(Handle);
+        Handle := 0;
+      end;
+    end else
+    if atcLisp in aType then
+    begin
+      try
+        try
+          Handle := LoadLibrary(PChar(ExtractFilePath(Application.ExeName) + '\cLispDSLwin32.dll'));
+          if Handle = 0 then
+          raise Exception.Create('cLispDSLwin32.dll not loaded.');
+
+          DateTimeToString(res,'',now);
+          Form1.buildListBox.Items.Insert(0,res + ': load dBaseDSL.dll: OK.');
+
+          callParser          := GetProcAddress(Handle,'_yy_clisp_win32_lex_main');
+          callParserCloseFile := GetProcAddress(Handle,'_yy_clisp_win32_lex_close');
+          callParserGetLine   := GetProcAddress(Handle,'_yy_clisp_win32_lex_get_line');
+          callParserGetLines  := GetProcAddress(Handle,'_yy_clisp_win32_lex_getlines');
+          callParserError     := GetProcAddress(Handle,'_yy_clisp_win32_lex_parser_error');
+
+          // hook: yyerror
+          if @callParserError <> nil then
+          begin
+            DateTimeToString(res,'',now);
+            Form1.buildListBox.Items.Insert(0,
+            res + ': ' + 'callParserError init success.');
+            callParserError(@ParserError);
+          end else
+          begin
+            DateTimeToString(res,'',now);
+            Form1.buildListBox.Items.Insert(0,
+            res + ': ' + 'callParserError init failed.');
+          end;
+
+          if @callParser <> nil then
+          begin
+            try
+              if Form1.DFrameEditor.TabSheet1.Caption = 'Unamed' then
+              begin
+                Form1.DFrameEditor.SynEdit1.Modified := true;
+                Form1.JvSpeedButton2Click(nil);
+              end;
+              callParser(
+                PChar(Form1.DFrameEditor.TabSheet1.Caption),
+                PChar(Form1.IniFile_AsmOutput)
+              );
+              InfoBox.Text('Compile OK' + #13#10 +
+              'Lines: ' + IntToStr(callParserGetLines-1));
+            except
+              on E: Exception do
+              begin
+                callParserCloseFile;
+                ErrorBox.Text('Exception:' + #13 + E.Message);
+                ErrorBox.BringToFront;
+                ErrorBox.Show;
+              end;
+            end;
+          end;
+        except
+          on E: Exception do
+          begin
+            FreeLibrary(Handle);
+            Handle := 0;
+            ErrorBox.Text('Exception occur:' + #13 + E.Message);
+            exit;
+          end;
+        end;
+      finally
+        FreeLibrary(Handle);
+        Handle := 0;
+      end;
+    end else
+    if atAssembler in aType then
+    begin
+      try
+        try
+          Handle := LoadLibrary(PChar(ExtractFilePath(Application.ExeName) + '\assemblerDSLwin32.dll'));
+          if Handle = 0 then
+          raise Exception.Create('assemblerDSLwin32.dll not loaded.');
+
+          DateTimeToString(res,'',now);
+          Form1.buildListBox.Items.Insert(0,res + ': load dBaseDSL.dll: OK.');
+
+          callParser          := GetProcAddress(Handle,'_yy_assembler_win32_lex_main');
+          callParserCloseFile := GetProcAddress(Handle,'_yy_assembler_win32_lex_close');
+          callParserGetLine   := GetProcAddress(Handle,'_yy_assembler_win32_lex_get_line');
+          callParserGetLines  := GetProcAddress(Handle,'_yy_assembler_win32_lex_getlines');
+          callParserError     := GetProcAddress(Handle,'_yy_assembler_win32_lex_parser_error');
+
+          // hook: yyerror
+          if @callParserError <> nil then
+          begin
+            DateTimeToString(res,'',now);
+            Form1.buildListBox.Items.Insert(0,
+            res + ': ' + 'callParserError init success.');
+            callParserError(@ParserError);
+          end else
+          begin
+            DateTimeToString(res,'',now);
+            Form1.buildListBox.Items.Insert(0,
+            res + ': ' + 'callParserError init failed.');
+          end;
+
+          if @callParser <> nil then
+          begin
+            try
+              if Form1.DFrameEditor.TabSheet1.Caption = 'Unamed' then
+              begin
+                Form1.DFrameEditor.SynEdit1.Modified := true;
+                Form1.JvSpeedButton2Click(nil);
+              end;
+              callParser(
+                PChar(Form1.DFrameEditor.TabSheet1.Caption),
+                PChar(Form1.IniFile_AsmOutput)
+              );
+              InfoBox.Text('Compile OK' + #13#10 +
+              'Lines: ' + IntToStr(callParserGetLines-1));
+            except
+              on E: Exception do
+              begin
+                callParserCloseFile;
+                ErrorBox.Text('Exception:' + #13 + E.Message);
+                ErrorBox.BringToFront;
+                ErrorBox.Show;
+              end;
+            end;
+          end;
+        except
+          on E: Exception do
+          begin
+            FreeLibrary(Handle);
+            Handle := 0;
+            ErrorBox.Text('Exception occur:' + #13 + E.Message);
+            exit;
+          end;
+        end;
+      finally
+        FreeLibrary(Handle);
+        Handle := 0;
+      end;
+    end;
+  end;
+end;
+
 procedure TFrame19.SynEdit1KeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
@@ -189,7 +939,23 @@ begin
   end else
   if key = VK_F2 then
   begin
-  showmessage('xxxxx');
+    if atMSDOS in appType then
+    begin
+      if atPascal    in appType then begin StartCompile([atMSDOS, atPascal   ]); end else
+      if atBASIC     in appType then begin StartCompile([atMSDOS, atBASIC    ]); end else
+      if atdBase     in appType then begin StartCompile([atMSDOS, atdBase    ]); end else
+      if atcLisp     in appType then begin StartCompile([atMSDOS, atcLisp    ]); end else
+      if atAssembler in appType then begin StartCompile([atMSDOS, atAssembler]); end ;
+    end else
+    if atWin32 in appType then
+    begin
+      if atPascal    in appType then begin StartCompile([atWin32, atPascal   ]); end else
+      if atBASIC     in appType then begin StartCompile([atWin32, atBASIC    ]); end else
+      if atdBase     in appType then begin StartCompile([atWin32, atdBase    ]); end else
+      if atcLisp     in appType then begin StartCompile([atWin32, atcLisp    ]); end else
+      if atAssembler in appType then begin StartCompile([atWin32, atAssembler]); end ;
+    end;
+
     Form1.StartCompileClick(Sender);
     exit;
   end;

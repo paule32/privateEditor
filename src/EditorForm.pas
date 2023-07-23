@@ -374,11 +374,9 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure C64ScreenKeyPress(Sender: TObject; var Key: WideChar);
     procedure EnvironmentOptions1Click(Sender: TObject);
-  private
+  public
     Cv1: TCanvas;
     ircListLimit: Integer;
-
-    has_errors: Boolean;
 
     IniFile_SQL_Explorer: String;
     IniFile_SQL_Monitor : String;
@@ -404,6 +402,7 @@ type
     C64KeyImage: TImage;
 
     dropList  : TStrings;
+    has_errors: Boolean;
 
     TableListBox: TMyTableListBox;
     Form: TForm;
@@ -480,6 +479,8 @@ type
     procedure CreateSimpleWin32dBaseProgram    ;
     procedure CreateSimpleWin32cLispProgram    ;
     procedure CreateSimpleWin32AssemblerProgram;
+
+    procedure DblClickConsole;
 
     procedure JvDesignPanelPaint(Sender: TObject);
     procedure CheckButtonOnClick(Sender: TObject);
@@ -900,6 +901,11 @@ begin
 
   DFrameFormatLayout.Visible := true;
   ProjectNameEdit.SetFocus;
+end;
+
+procedure TForm1.DblClickConsole;
+begin
+  Console1DblClick(nil);
 end;
 
 procedure TForm1.PopupMenu_File_ExitClick(Sender: TObject);
