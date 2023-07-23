@@ -606,7 +606,6 @@ object Form1: TForm1
         ParentFont = False
         OnMouseEnter = StartCompileMouseEnter
         OnMouseLeave = StartCompileMouseLeave
-        OnClick = StartCompileClick
       end
       object ModeButton: TJvSpeedButton
         Left = 910

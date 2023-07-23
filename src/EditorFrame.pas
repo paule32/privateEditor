@@ -197,7 +197,7 @@ var
   end;
 
 begin
-  if not(Form1.DFrameEditor.SynEdit1.Modified) then exit;
+//  if not(Form1.DFrameEditor.SynEdit1.Modified) then exit;
   if Form1.DFrameEditor.TabSheet1.Caption = 'Unamed' then
   begin
     if not(Form1.SaveDialog1.Execute) then
@@ -237,12 +237,12 @@ begin
     begin
       try
         try
-          Handle := LoadLibrary(PChar(ExtractFilePath(Application.ExeName) + '\pascalDSLdos32.dll'));
+          Handle := LoadLibrary(PChar(ExtractFilePath(Application.ExeName) + '\parser\DSLdos32Pascal.dll'));
           if Handle = 0 then
           raise Exception.Create('pascalDSLdos32.dll not loaded.');
 
           DateTimeToString(res,'',now);
-          Form1.buildListBox.Items.Insert(0,res + ': load dBaseDSL.dll: OK.');
+          Form1.buildListBox.Items.Insert(0,res + ': load pascalDSL.dll: OK.');
 
           callParser          := GetProcAddress(Handle,'_yy_pascal_dos32_lex_main');
           callParserCloseFile := GetProcAddress(Handle,'_yy_pascal_dos32_lex_close');
@@ -306,7 +306,7 @@ begin
     begin
       try
         try
-          Handle := LoadLibrary(PChar(ExtractFilePath(Application.ExeName) + '\basicDSLdos32.dll'));
+          Handle := LoadLibrary(PChar(ExtractFilePath(Application.ExeName) + '\parser\DSLdos32BASIC.dll'));
           if Handle = 0 then
           raise Exception.Create('basicDSLdos32.dll not loaded.');
 
@@ -375,7 +375,7 @@ begin
     begin
       try
         try
-          Handle := LoadLibrary(PChar(ExtractFilePath(Application.ExeName) + '\dBaseDSLdos32.dll'));
+          Handle := LoadLibrary(PChar(ExtractFilePath(Application.ExeName) + '\parser\DSLdos32DBase.dll'));
           if Handle = 0 then
           raise Exception.Create('dBaseDSLdos32.dll not loaded.');
 
@@ -444,12 +444,12 @@ begin
     begin
       try
         try
-          Handle := LoadLibrary(PChar(ExtractFilePath(Application.ExeName) + '\cLispDSLdos32.dll'));
+          Handle := LoadLibrary(PChar(ExtractFilePath(Application.ExeName) + '\parser\DSLdos32cLISP.dll'));
           if Handle = 0 then
           raise Exception.Create('cLispDSLdos32.dll not loaded.');
 
           DateTimeToString(res,'',now);
-          Form1.buildListBox.Items.Insert(0,res + ': load dBaseDSL.dll: OK.');
+          Form1.buildListBox.Items.Insert(0,res + ': load clispDSL.dll: OK.');
 
           callParser          := GetProcAddress(Handle,'_yy_clisp_dos32_lex_main');
           callParserCloseFile := GetProcAddress(Handle,'_yy_clisp_dos32_lex_close');
@@ -513,12 +513,12 @@ begin
     begin
       try
         try
-          Handle := LoadLibrary(PChar(ExtractFilePath(Application.ExeName) + '\assemblerDSLdos32.dll'));
+          Handle := LoadLibrary(PChar(ExtractFilePath(Application.ExeName) + '\parser\DSLdos32Assembler.dll'));
           if Handle = 0 then
           raise Exception.Create('assemblerDSLdos32.dll not loaded.');
 
           DateTimeToString(res,'',now);
-          Form1.buildListBox.Items.Insert(0,res + ': load dBaseDSL.dll: OK.');
+          Form1.buildListBox.Items.Insert(0,res + ': load assemblerDSL.dll: OK.');
 
           callParser          := GetProcAddress(Handle,'_yy_assembler_dos32_lex_main');
           callParserCloseFile := GetProcAddress(Handle,'_yy_assembler_dos32_lex_close');
@@ -585,12 +585,12 @@ begin
     begin
       try
         try
-          Handle := LoadLibrary(PChar(ExtractFilePath(Application.ExeName) + '\pascalDSLwin32.dll'));
+          Handle := LoadLibrary(PChar(ExtractFilePath(Application.ExeName) + '\parser\DSLwin32Pascal.dll'));
           if Handle = 0 then
           raise Exception.Create('pascalDSLwin32.dll not loaded.');
 
           DateTimeToString(res,'',now);
-          Form1.buildListBox.Items.Insert(0,res + ': load dBaseDSL.dll: OK.');
+          Form1.buildListBox.Items.Insert(0,res + ': load pascalDSL.dll: OK.');
 
           callParser          := GetProcAddress(Handle,'_yy_pascal_win32_lex_main');
           callParserCloseFile := GetProcAddress(Handle,'_yy_pascal_win32_lex_close');
@@ -654,12 +654,12 @@ begin
     begin
       try
         try
-          Handle := LoadLibrary(PChar(ExtractFilePath(Application.ExeName) + '\basicDSLwin32.dll'));
+          Handle := LoadLibrary(PChar(ExtractFilePath(Application.ExeName) + '\parser\DSLwin32BASIC.dll'));
           if Handle = 0 then
           raise Exception.Create('basicDSLwin32.dll not loaded.');
 
           DateTimeToString(res,'',now);
-          Form1.buildListBox.Items.Insert(0,res + ': load dBaseDSL.dll: OK.');
+          Form1.buildListBox.Items.Insert(0,res + ': load basicDSL.dll: OK.');
 
           callParser          := GetProcAddress(Handle,'_yy_basic_win32_lex_main');
           callParserCloseFile := GetProcAddress(Handle,'_yy_basic_win32_lex_close');
@@ -723,10 +723,11 @@ begin
     begin
       try
         try
-          Handle := LoadLibrary(PChar(ExtractFilePath(Application.ExeName) + '\dBaseDSLwin32.dll'));
+        showmessage('win dbase');
+          Handle := LoadLibrary(PChar(ExtractFilePath(Application.ExeName) + '\parser\DSLwin32DBase.dll'));
           if Handle = 0 then
           raise Exception.Create('dBaseDSLwin32.dll not loaded.');
-
+showmessage('xxxxxx');
           DateTimeToString(res,'',now);
           Form1.buildListBox.Items.Insert(0,res + ': load dBaseDSL.dll: OK.');
 
@@ -792,12 +793,12 @@ begin
     begin
       try
         try
-          Handle := LoadLibrary(PChar(ExtractFilePath(Application.ExeName) + '\cLispDSLwin32.dll'));
+          Handle := LoadLibrary(PChar(ExtractFilePath(Application.ExeName) + '\parser\DSLwin32cLISP.dll'));
           if Handle = 0 then
           raise Exception.Create('cLispDSLwin32.dll not loaded.');
 
           DateTimeToString(res,'',now);
-          Form1.buildListBox.Items.Insert(0,res + ': load dBaseDSL.dll: OK.');
+          Form1.buildListBox.Items.Insert(0,res + ': load cLispDSL.dll: OK.');
 
           callParser          := GetProcAddress(Handle,'_yy_clisp_win32_lex_main');
           callParserCloseFile := GetProcAddress(Handle,'_yy_clisp_win32_lex_close');
@@ -861,12 +862,12 @@ begin
     begin
       try
         try
-          Handle := LoadLibrary(PChar(ExtractFilePath(Application.ExeName) + '\assemblerDSLwin32.dll'));
+          Handle := LoadLibrary(PChar(ExtractFilePath(Application.ExeName) + '\parser\DSLwin32Assembler.dll'));
           if Handle = 0 then
           raise Exception.Create('assemblerDSLwin32.dll not loaded.');
 
           DateTimeToString(res,'',now);
-          Form1.buildListBox.Items.Insert(0,res + ': load dBaseDSL.dll: OK.');
+          Form1.buildListBox.Items.Insert(0,res + ': load assemblerDSL.dll: OK.');
 
           callParser          := GetProcAddress(Handle,'_yy_assembler_win32_lex_main');
           callParserCloseFile := GetProcAddress(Handle,'_yy_assembler_win32_lex_close');
@@ -939,24 +940,19 @@ begin
   end else
   if key = VK_F2 then
   begin
-    if atMSDOS in appType then
-    begin
-      if atPascal    in appType then begin StartCompile([atMSDOS, atPascal   ]); end else
-      if atBASIC     in appType then begin StartCompile([atMSDOS, atBASIC    ]); end else
-      if atdBase     in appType then begin StartCompile([atMSDOS, atdBase    ]); end else
-      if atcLisp     in appType then begin StartCompile([atMSDOS, atcLisp    ]); end else
-      if atAssembler in appType then begin StartCompile([atMSDOS, atAssembler]); end ;
-    end else
-    if atWin32 in appType then
-    begin
-      if atPascal    in appType then begin StartCompile([atWin32, atPascal   ]); end else
-      if atBASIC     in appType then begin StartCompile([atWin32, atBASIC    ]); end else
-      if atdBase     in appType then begin StartCompile([atWin32, atdBase    ]); end else
-      if atcLisp     in appType then begin StartCompile([atWin32, atcLisp    ]); end else
-      if atAssembler in appType then begin StartCompile([atWin32, atAssembler]); end ;
-    end;
+    if Form1.DFrameComputerOS.JvCheckBox10.Checked then appType := appType + [atPascal] else
+    if Form1.DFrameComputerOS.JvCheckBox10.Checked then appType := appType + [atBASIC ] else
+    if Form1.DFrameComputerOS.JvCheckBox10.Checked then appType := appType + [atDBase ] else
+    if Form1.DFrameComputerOS.JvCheckBox10.Checked then appType := appType + [atCLISP ] else
+    if Form1.DFrameComputerOS.JvCheckBox10.Checked then appType := appType + [atAssembler];
 
-    Form1.StartCompileClick(Sender);
+    if Form1.DFrameComputerOS.JvCheckBox5.Checked then appType  := appType + [atWin32] else
+    if Form1.DFrameComputerOS.JvCheckBox6.Checked then appType  := appType + [atMSDos] else
+    if Form1.DFrameComputerOS.JvCheckBox7.Checked then appType  := appType + [atLinux] else
+    if Form1.DFrameComputerOS.JvCheckBox8.Checked then appType  := appType + [atAmiga] ;
+
+    StartCompile(appType);
+
     exit;
   end;
 

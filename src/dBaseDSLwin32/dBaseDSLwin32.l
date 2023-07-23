@@ -4,7 +4,7 @@
 // Author : Jens Kallup (c) 2023-07.01
 // License: all rights reserved.
 // ----------------------------------------------------------------------------
-# include "../common.h"
+# include "common.h"
 # include "dBaseDSLwin32.tab.h"
 
 // ----------------------------------------------------------------------------
@@ -200,8 +200,8 @@ Z           [z|Z]
 %%
 
 void EXPORT
-yy_dbase_lex_parser_error (void (* func)(const char *message)) {
-	m_addParserErrorText =         func;
+yy_dbase_win32_lex_parser_error (void (* func)(const char *message)) {
+	m_addParserErrorText = func;
 }
 
 int yywrap(void) { return 1; }
@@ -222,7 +222,7 @@ void yyerror(const char* m)
 }
 
 BOOL EXPORT
-yy_dbase_lex_main(
+yy_dbase_win32_lex_main(
     char* filename,
     char* tempDir )
 {

@@ -26,7 +26,7 @@ type
 
 type
   myAppType = set of (
-    atMSDOS, atWin32,
+    atMSDOS, atWin32, atLinux, atAmiga,
     atPascal, atBASIC, atdBASE, atcLISP, atAssembler);
 var
   appType: myAppType;

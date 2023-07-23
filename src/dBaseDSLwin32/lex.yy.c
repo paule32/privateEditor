@@ -791,9 +791,9 @@ void* addTextPtr;
 int yy_col = 1;
 int yy_row = 1;
 
-int yy_dbase_count(void)        { return yy_row; }
-int yy_dbase_lex_get_line(void) { return yy_dbase_count(); }
-int yy_dbase_lex_getlines(void) { return yy_dbase_count(); }
+int        yy_dbase_win32_count(void)        { return yy_row; }
+int EXPORT yy_dbase_win32_lex_get_line(void) { return yy_dbase_win32_count(); }
+int EXPORT yy_dbase_win32_lex_getlines(void) { return yy_dbase_win32_count(); }
 
 extern void yyerror(const char* msg);
 
@@ -2487,8 +2487,8 @@ void yyfree (void * ptr )
 
 
 void EXPORT
-yy_dbase_lex_parser_error (void (* func)(const char *message)) {
-	m_addParserErrorText =         func;
+yy_dbase_win32_lex_parser_error (void (* func)(const char *message)) {
+	m_addParserErrorText = func;
 }
 
 int yywrap(void) { return 1; }
@@ -2509,7 +2509,7 @@ void yyerror(const char* m)
 }
 
 BOOL EXPORT
-yy_dbase_lex_main(
+yy_dbase_win32_lex_main(
     char* filename,
     char* tempDir )
 {
@@ -2556,11 +2556,8 @@ yy_dbase_lex_main(
 }
 
 void EXPORT
-yy_dbase_lex_close(void) {
+yy_dbase_win32_lex_close(void) {
     fclose(yyin);
 }
-
-int  EXPORT yy_dbase_lex_get_line(void);
-int  EXPORT yy_dbase_lex_getlines(void);
 
 

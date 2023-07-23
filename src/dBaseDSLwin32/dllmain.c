@@ -3,7 +3,7 @@
 // Author : Jens Kallup (c) 2023-07.01
 // License: all rights reserved.
 // ----------------------------------------------------------------------------
-# include "common.h"
+# include "../common.h"
 
 static BOOL   dll_has_error      = FALSE;
 static HANDLE dll_handle         = NULL;

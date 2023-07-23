@@ -272,7 +272,6 @@ type
     procedure JvSpeedButton2Click2(Sender: TObject);
     procedure JvSpeedButton1Click(Sender: TObject);
     procedure JvSpeedButton2Click(Sender: TObject);
-    procedure StartCompileClick(Sender: TObject);
     procedure EditorOptions1Click(Sender: TObject);
     procedure JvSpeedButton1MouseEnter(Sender: TObject);
     procedure JvSpeedButton1MouseLeave(Sender: TObject);
@@ -1263,131 +1262,6 @@ begin
 
   DFrameEditor.SynEdit1.Modified := false;
   has_errors := false;
-end;
-
-procedure TForm1.StartCompileClick(Sender: TObject);
-var
-  callParser:          function(fileSrc, tempDir: PChar): BOOL; cdecl;
-  callParserGetLine  : function: Integer; cdecl;
-  callParserGetLines : function: Integer; cdecl;
-  callParserCloseFile: procedure; cdecl;
-  callParserError    : procedure(msg: PChar); cdecl;
-
-  Handle : THandle;
-  yylines: Integer;
-  res: String;
-
-  procedure ParserError(msg: PChar);
-  begin
-    raise Exception.Create(PChar(msg));
-  end;
-begin
-  JvSpeedButton2Click(Sender);
-  buildListBox.Items.Clear;
-
-  if has_errors then
-  begin
-    has_errors := true;
-    exit;
-  end;
-
-  MainPageControl.ActivePage := ConsoleTabSheet;
-  Console1DblClick(Sender);
-  Console1.SetFocus;
-
-// TODO: parser (below):
-(*
-if msdosapp then
-begin
-  JvInterpreterProgram1.Pas.Text := String(DFrameEditor.SynEdit1.Text);
-  JvInterpreterProgram1.Compile;
-  JvInterpreterProgram1.Run;
-end else
-begin
-  JvInterpreterFm1.Pas.Text := String(DFrameEditor.SynEdit1.Text);
-  JvInterpreterFm1.Compile;
-  JvInterpreterFm1.Run;
-end;
-exit;*)
-
-// TODO: parser:
-  DateTimeToString(res,'',now);
-  buildListBox.Items.Insert(0,res + ': ' + 'initialize...');
-
-  try
-    try
-      Handle := LoadLibrary(PChar(ExtractFilePath(Application.ExeName) + '\dBaseDSL.dll'));
-      if Handle <> 0 then
-      begin
-        DateTimeToString(res,'',now);
-        buildListBox.Items.Insert(0,res + ': load dBaseDSL.dll: OK.');
-
-        callParser          := GetProcAddress(Handle,'_yy_dbase_lex_main');
-        callParserCloseFile := GetProcAddress(Handle,'_yy_dbase_lex_close');
-        callParserGetLine   := GetProcAddress(Handle,'_yy_dbase_lex_get_line');
-        callParserGetLines  := GetProcAddress(Handle,'_yy_dbase_lex_getlines');
-        callParserError     := GetProcAddress(Handle,'_yy_dbase_lex_parser_error');
-
-        // hook: yyerror
-        if @callParserError <> nil then
-        begin
-          DateTimeToString(res,'',now);
-          buildListBox.Items.Insert(0,
-          res + ': ' + 'callParserError init success.');
-          callParserError(@ParserError);
-        end else
-        begin
-          DateTimeToString(res,'',now);
-          buildListBox.Items.Insert(0,
-          res + ': ' + 'callParserError init failed.');
-        end;
-
-        if @callParser <> nil then
-        begin
-          try
-            if DFrameEditor.TabSheet1.Caption = 'Unamed' then
-            begin
-              DFrameEditor.SynEdit1.Modified := true;
-              JvSpeedButton2Click(Sender);
-            end;
-            callParser(
-              PChar(DFrameEditor.TabSheet1.Caption),
-              PChar(IniFile_AsmOutput)
-            );
-            InfoBox.Text('Compile OK' + #13#10 +
-            'Lines: ' + IntToStr(callParserGetLines-1));
-          except
-            on E: Exception do
-            begin
-              callParserCloseFile;
-              ErrorBox.Text('Exception:' + #13 + E.Message);
-              ErrorBox.BringToFront;
-              ErrorBox.Show;
-            end;
-          end;
-        end;
-      end else
-      begin
-        DateTimeToString(res,'',now);
-        buildListBox.Items.Insert(0,res + ': load parsers.dll: FAIL.');
-      end;
-    except
-      on E: Exception do
-      begin
-        ErrorBox.Text('Error:' + #13 + E.Message);
-        ErrorBox.BringToFront;
-        ErrorBox.Show;
-      end;
-    end;
-  finally
-    FreeLibrary(handle);
-
-    DateTimeToString(res,'',now);
-    buildListBox.Items.Insert(0,
-    res + ': ' + 'parser.dll: closed.');
-
-    Handle := 0;
-  end;
 end;
 
 procedure TForm1.EditorOptions1Click(Sender: TObject);
@@ -2663,11 +2537,6 @@ begin
   end else
   if msg.CharCode = VK_F2 then
   begin
-    if DFrameEditor.SynEdit1.Focused then
-    begin
-    showmessage('ccc');
-      StartCompileClick(self);
-    end else
     if DFrameHelpTopic.TreeView1.Focused then
     begin
       DFrameHelpTopic.TreeView1.ReadOnly := false;
@@ -2735,7 +2604,8 @@ begin
         ErrorBox.Show;
 
         exit;
-      end else
+      end;
+(*    else
       begin
         try
           StartCompileClick(Sender);
@@ -2747,11 +2617,11 @@ begin
             ErrorBox.Text(E.Message);
             ErrorBox.BringToFront;
             ErrorBox.Show;
-            
+
             DFrameEditor.SynEdit1.SetFocus;
           end;
         end;
-      end;
+      end;*)
     end;
     1:
     begin
