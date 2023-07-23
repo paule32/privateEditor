@@ -776,7 +776,7 @@ char *yytext;
 // License: all rights reserved.
 // ----------------------------------------------------------------------------
 # include "../common.h"
-# include "assemblerDSLdos32.tab.h"
+# include "assemblerDSLwin32.tab.h"
 
 // ----------------------------------------------------------------------------
 // parser variables and constants:
