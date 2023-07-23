@@ -1,11 +1,11 @@
 %{
 // ----------------------------------------------------------------------------
-// File   : dbaseDSL.l
+// File   : assemblerDSLdos32.l
 // Author : Jens Kallup (c) 2023-07.01
 // License: all rights reserved.
 // ----------------------------------------------------------------------------
 # include "../common.h"
-# include "dBaseDSLdos32.tab.h"
+# include "assemblerDSLwin32.tab.h"
 
 // ----------------------------------------------------------------------------
 // parser variables and constants:
@@ -20,9 +20,9 @@ void* addTextPtr;
 int yy_col = 1;
 int yy_row = 1;
 
-int        yy_dbase_dos32_count(void)        { return yy_row; }
-int EXPORT yy_dbase_dos32_lex_get_line(void) { return yy_dbase_dos32_count(); }
-int EXPORT yy_dbase_dos32_lex_getlines(void) { return yy_dbase_dos32_count(); }
+int        yy_assembler_dos32_count(void)        { return yy_row; }
+int EXPORT yy_assembler_dos32_lex_get_line(void) { return yy_assembler_dos32_count(); }
+int EXPORT yy_assembler_dos32_lex_getlines(void) { return yy_assembler_dos32_count(); }
 
 extern void yyerror(const char* msg);
 
@@ -200,7 +200,7 @@ Z           [z|Z]
 %%
 
 void EXPORT
-yy_dbase_dos32_lex_parser_error (void (* func)(const char *message)) {
+yy_assembler_dos32_lex_parser_error (void (* func)(const char *message)) {
 	m_addParserErrorText = func;
 }
 
@@ -222,7 +222,7 @@ void yyerror(const char* m)
 }
 
 BOOL EXPORT
-yy_dbase_dos32_lex_main(
+yy_assembler_dos32_lex_main(
     char* filename,
     char* tempDir )
 {
@@ -269,6 +269,6 @@ yy_dbase_dos32_lex_main(
 }
 
 void EXPORT
-yy_dbase_dos32_lex_close(void) {
+yy_assembler_dos32_lex_close(void) {
     fclose(yyin);
 }

@@ -768,15 +768,15 @@ int yy_flex_debug = 0;
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
-#line 1 "basicDSLdos32.l"
-#line 2 "basicDSLdos32.l"
+#line 1 "basicDSLwin32.l"
+#line 2 "basicDSLwin32.l"
 // ----------------------------------------------------------------------------
-// File   : basicDSLdos32.l
+// File   : basicDSLwin32.l
 // Author : Jens Kallup (c) 2023-07.01
 // License: all rights reserved.
 // ----------------------------------------------------------------------------
 # include "../common.h"
-# include "basicDSLdos32.tab.h"
+# include "basicDSLwin32.tab.h"
 
 // ----------------------------------------------------------------------------
 // parser variables and constants:
@@ -791,9 +791,9 @@ void* addTextPtr;
 int yy_col = 1;
 int yy_row = 1;
 
-int        yy_basic_dos32_count(void)        { return yy_row; }
-int EXPORT yy_basic_dos32_lex_get_line(void) { return yy_basic_dos32_count(); }
-int EXPORT yy_basic_dos32_lex_getlines(void) { return yy_basic_dos32_count(); }
+int        yy_basic_win32_count(void)        { return yy_row; }
+int EXPORT yy_basic_win32_lex_get_line(void) { return yy_basic_win32_count(); }
+int EXPORT yy_basic_win32_lex_getlines(void) { return yy_basic_win32_count(); }
 
 extern void yyerror(const char* msg);
 
@@ -1017,7 +1017,7 @@ YY_DECL
 		}
 
 	{
-#line 69 "basicDSLdos32.l"
+#line 69 "basicDSLwin32.l"
 
 
 #line 1023 "lex.yy.c"
@@ -1079,197 +1079,197 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 71 "basicDSLdos32.l"
+#line 71 "basicDSLwin32.l"
 { /* DO NOTHING */ }
 	YY_BREAK
 case 2:
 /* rule 2 can match eol */
 YY_RULE_SETUP
-#line 72 "basicDSLdos32.l"
+#line 72 "basicDSLwin32.l"
 { /* DO NOTHING */ yy_row++; }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 74 "basicDSLdos32.l"
+#line 74 "basicDSLwin32.l"
 { /* DO NOTHING */ }
 	YY_BREAK
 case 4:
 /* rule 4 can match eol */
 YY_RULE_SETUP
-#line 75 "basicDSLdos32.l"
+#line 75 "basicDSLwin32.l"
 { /* DO NOTHING */ yy_row++; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 77 "basicDSLdos32.l"
+#line 77 "basicDSLwin32.l"
 { /* DO NOTHING */ }
 	YY_BREAK
 case 6:
 /* rule 6 can match eol */
 YY_RULE_SETUP
-#line 78 "basicDSLdos32.l"
+#line 78 "basicDSLwin32.l"
 { /* DO NOTHING */ yy_row++; }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 80 "basicDSLdos32.l"
+#line 80 "basicDSLwin32.l"
 { BEGIN(Comment1); }
 	YY_BREAK
 case 8:
 /* rule 8 can match eol */
 YY_RULE_SETUP
-#line 81 "basicDSLdos32.l"
+#line 81 "basicDSLwin32.l"
 { yy_row += 1;     yy_row++; }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 82 "basicDSLdos32.l"
+#line 82 "basicDSLwin32.l"
 { BEGIN(INITIAL);  }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 84 "basicDSLdos32.l"
+#line 84 "basicDSLwin32.l"
 { /* empty */ }
 	YY_BREAK
 case 11:
 /* rule 11 can match eol */
 YY_RULE_SETUP
-#line 85 "basicDSLdos32.l"
+#line 85 "basicDSLwin32.l"
 { yy_col = 1;      yy_row++; }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 87 "basicDSLdos32.l"
+#line 87 "basicDSLwin32.l"
 { return TOK_CLASS;     }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 88 "basicDSLdos32.l"
+#line 88 "basicDSLwin32.l"
 { return TOK_CLEAR;     }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 89 "basicDSLdos32.l"
+#line 89 "basicDSLwin32.l"
 { return TOK_CUSTOM;    }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 90 "basicDSLdos32.l"
+#line 90 "basicDSLwin32.l"
 { return TOK_DEFINE;    }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 91 "basicDSLdos32.l"
+#line 91 "basicDSLwin32.l"
 { return TOK_ELSE;      }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 92 "basicDSLdos32.l"
+#line 92 "basicDSLwin32.l"
 { return TOK_ENDCLASS;  }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 93 "basicDSLdos32.l"
+#line 93 "basicDSLwin32.l"
 { return TOK_ENDFOR;    }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 94 "basicDSLdos32.l"
+#line 94 "basicDSLwin32.l"
 { return TOK_ENDIF;     }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 95 "basicDSLdos32.l"
+#line 95 "basicDSLwin32.l"
 { return TOK_ENDWITH;   }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 96 "basicDSLdos32.l"
+#line 96 "basicDSLwin32.l"
 { return TOK_FALSE;     }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 97 "basicDSLdos32.l"
+#line 97 "basicDSLwin32.l"
 { return TOK_FOR;       }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 98 "basicDSLdos32.l"
+#line 98 "basicDSLwin32.l"
 { return TOK_FUNCTION;  }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 99 "basicDSLdos32.l"
+#line 99 "basicDSLwin32.l"
 { return TOK_IF;        }
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 100 "basicDSLdos32.l"
+#line 100 "basicDSLwin32.l"
 { return TOK_LOCAL;     }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 101 "basicDSLdos32.l"
+#line 101 "basicDSLwin32.l"
 { return TOK_NEW;       }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 102 "basicDSLdos32.l"
+#line 102 "basicDSLwin32.l"
 { return TOK_OF;        }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 103 "basicDSLdos32.l"
+#line 103 "basicDSLwin32.l"
 { return TOK_PARAMETER; }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 104 "basicDSLdos32.l"
+#line 104 "basicDSLwin32.l"
 { return TOK_PRIVATE;   }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 105 "basicDSLdos32.l"
+#line 105 "basicDSLwin32.l"
 { return TOK_PROCEDURE; }
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 106 "basicDSLdos32.l"
+#line 106 "basicDSLwin32.l"
 { return TOK_RETURN;    }
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 107 "basicDSLdos32.l"
+#line 107 "basicDSLwin32.l"
 { return TOK_SET;       }
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 108 "basicDSLdos32.l"
+#line 108 "basicDSLwin32.l"
 { return TOK_TO;        }
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 109 "basicDSLdos32.l"
+#line 109 "basicDSLwin32.l"
 { return TOK_TRUE;      }
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 110 "basicDSLdos32.l"
+#line 110 "basicDSLwin32.l"
 { return TOK_WITH;      }
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 112 "basicDSLdos32.l"
+#line 112 "basicDSLwin32.l"
 { yylval.node_and_value.value = atof(yytext); return TOK_NUMBER; }
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 113 "basicDSLdos32.l"
+#line 113 "basicDSLwin32.l"
 { yylval.node_and_value.value = atof(yytext); return TOK_NUMBER; }
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 115 "basicDSLdos32.l"
+#line 115 "basicDSLwin32.l"
 {
 	// -----------------------------------
 	// pattern for: identifier's ...
@@ -1283,7 +1283,7 @@ YY_RULE_SETUP
 case 39:
 /* rule 39 can match eol */
 YY_RULE_SETUP
-#line 125 "basicDSLdos32.l"
+#line 125 "basicDSLwin32.l"
 {
 	// -----------------------------------
 	// pattern for: "Hello World"
@@ -1298,7 +1298,7 @@ YY_RULE_SETUP
 case 40:
 /* rule 40 can match eol */
 YY_RULE_SETUP
-#line 136 "basicDSLdos32.l"
+#line 136 "basicDSLwin32.l"
 {
 	// -----------------------------------
 	// pattern for:  [ "Hallo \" World" ]
@@ -1323,147 +1323,147 @@ YY_RULE_SETUP
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 158 "basicDSLdos32.l"
+#line 158 "basicDSLwin32.l"
 { return TOK_AND;    }
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 159 "basicDSLdos32.l"
+#line 159 "basicDSLwin32.l"
 { return TOK_NOT;    }
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 160 "basicDSLdos32.l"
+#line 160 "basicDSLwin32.l"
 { return TOK_OR;     }
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 162 "basicDSLdos32.l"
+#line 162 "basicDSLwin32.l"
 { return TOK_FALSE;  }
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 163 "basicDSLdos32.l"
+#line 163 "basicDSLwin32.l"
 { return TOK_TRUE;   }
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 165 "basicDSLdos32.l"
+#line 165 "basicDSLwin32.l"
 { return TOK_EQEQ; }
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 166 "basicDSLdos32.l"
+#line 166 "basicDSLwin32.l"
 { return TOK_LTGT; }
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 167 "basicDSLdos32.l"
+#line 167 "basicDSLwin32.l"
 { return TOK_EQGT; }
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 168 "basicDSLdos32.l"
+#line 168 "basicDSLwin32.l"
 { return TOK_EQLT; }
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 169 "basicDSLdos32.l"
+#line 169 "basicDSLwin32.l"
 { return TOK_LTEQ; }
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 170 "basicDSLdos32.l"
+#line 170 "basicDSLwin32.l"
 { return TOK_GTEQ; }
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 172 "basicDSLdos32.l"
+#line 172 "basicDSLwin32.l"
 { return ':'; }
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 173 "basicDSLdos32.l"
+#line 173 "basicDSLwin32.l"
 { return ';'; }
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 174 "basicDSLdos32.l"
+#line 174 "basicDSLwin32.l"
 { return '-'; }
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
-#line 175 "basicDSLdos32.l"
+#line 175 "basicDSLwin32.l"
 { return '+'; }
 	YY_BREAK
 case 56:
 YY_RULE_SETUP
-#line 176 "basicDSLdos32.l"
+#line 176 "basicDSLwin32.l"
 { return '*'; }
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
-#line 177 "basicDSLdos32.l"
+#line 177 "basicDSLwin32.l"
 { return '/'; }
 	YY_BREAK
 case 58:
 YY_RULE_SETUP
-#line 178 "basicDSLdos32.l"
+#line 178 "basicDSLwin32.l"
 { return '%'; }
 	YY_BREAK
 case 59:
 YY_RULE_SETUP
-#line 180 "basicDSLdos32.l"
+#line 180 "basicDSLwin32.l"
 { return '#'; }
 	YY_BREAK
 case 60:
 YY_RULE_SETUP
-#line 182 "basicDSLdos32.l"
+#line 182 "basicDSLwin32.l"
 { return TOK_ASSIGN; }
 	YY_BREAK
 case 61:
 YY_RULE_SETUP
-#line 184 "basicDSLdos32.l"
+#line 184 "basicDSLwin32.l"
 { return '('; }
 	YY_BREAK
 case 62:
 YY_RULE_SETUP
-#line 185 "basicDSLdos32.l"
+#line 185 "basicDSLwin32.l"
 { return ')'; }
 	YY_BREAK
 case 63:
 YY_RULE_SETUP
-#line 186 "basicDSLdos32.l"
+#line 186 "basicDSLwin32.l"
 { return '['; }
 	YY_BREAK
 case 64:
 YY_RULE_SETUP
-#line 187 "basicDSLdos32.l"
+#line 187 "basicDSLwin32.l"
 { return ']'; }
 	YY_BREAK
 case 65:
 YY_RULE_SETUP
-#line 188 "basicDSLdos32.l"
+#line 188 "basicDSLwin32.l"
 { return '{'; }
 	YY_BREAK
 case 66:
 YY_RULE_SETUP
-#line 189 "basicDSLdos32.l"
+#line 189 "basicDSLwin32.l"
 { return '}'; }
 	YY_BREAK
 case 67:
 YY_RULE_SETUP
-#line 190 "basicDSLdos32.l"
+#line 190 "basicDSLwin32.l"
 { return ','; }
 	YY_BREAK
 case 68:
 YY_RULE_SETUP
-#line 191 "basicDSLdos32.l"
+#line 191 "basicDSLwin32.l"
 { return '.'; }
 	YY_BREAK
 case 69:
 YY_RULE_SETUP
-#line 193 "basicDSLdos32.l"
+#line 193 "basicDSLwin32.l"
 {
     char buffer[200];
     sprintf( buffer, "Unrecognized character: %s\n", yytext );
@@ -1472,12 +1472,12 @@ YY_RULE_SETUP
 	YY_BREAK
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(Comment1):
-#line 199 "basicDSLdos32.l"
+#line 199 "basicDSLwin32.l"
 { return TOK_YYEOF; }
 	YY_BREAK
 case 70:
 YY_RULE_SETUP
-#line 200 "basicDSLdos32.l"
+#line 200 "basicDSLwin32.l"
 ECHO;
 	YY_BREAK
 #line 1483 "lex.yy.c"
@@ -2483,11 +2483,11 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 200 "basicDSLdos32.l"
+#line 200 "basicDSLwin32.l"
 
 
 void EXPORT
-yy_basic_dos32_lex_parser_error (void (* func)(const char *message)) {
+yy_basic_win32_lex_parser_error (void (* func)(const char *message)) {
 	m_addParserErrorText = func;
 }
 
@@ -2509,7 +2509,7 @@ void yyerror(const char* m)
 }
 
 BOOL EXPORT
-yy_basic_dos32_lex_main(
+yy_basic_win32_lex_main(
     char* filename,
     char* tempDir )
 {
@@ -2556,7 +2556,7 @@ yy_basic_dos32_lex_main(
 }
 
 void EXPORT
-yy_basic_dos32_lex_close(void) {
+yy_basic_win32_lex_close(void) {
     fclose(yyin);
 }
 

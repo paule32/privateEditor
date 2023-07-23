@@ -1,10 +1,10 @@
 %{
 // ----------------------------------------------------------------------------
-// File   : dBaseDSL.yy
+// File   : assemblerDSLdos32.y
 // Author : Jens Kallup (c) 2023-07.01
 // License: all rights reserved.
 // ----------------------------------------------------------------------------
-# include "common.h"
+# include "../common.h"
 
 // ----------------------------------------------------------------------------
 // parser variables and constants:
