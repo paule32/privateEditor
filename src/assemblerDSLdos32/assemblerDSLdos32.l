@@ -68,46 +68,53 @@ Z           [z|Z]
 
 %%
 
-"//".*                  { /* DO NOTHING */ }
-"//".*\n                { /* DO NOTHING */ yy_row++; }
-
-"&&".*                  { /* DO NOTHING */ }
-"&&".*\n                { /* DO NOTHING */ yy_row++; }
-
-"**".*                  { /* DO NOTHING */ }
-"**".*\n                { /* DO NOTHING */ yy_row++; }
-
-"/*"                    { BEGIN(Comment1); }
-<Comment1>\n*           { yy_row += 1;     yy_row++; }
-<Comment1>"*"+"/"       { BEGIN(INITIAL);  }
-
 [ \t]*                  { /* empty */ }
 [\n|\r\n]               { yy_col = 1;      yy_row++; }
 
-{C}{L}{A}{S}{S} 				{ return TOK_CLASS;     }
-{C}{L}{E}{A}{R} 				{ return TOK_CLEAR;     }
-{C}{U}{S}{T}{O}{M}				{ return TOK_CUSTOM;    }
-{D}{E}{F}{I}{N}{E}				{ return TOK_DEFINE;    }
-{E}{L}{S}{E}					{ return TOK_ELSE;      }
-{E}{N}{D}{C}{L}{A}{S}{S} 		{ return TOK_ENDCLASS;  }
-{E}{N}{D}{F}{O}{R} 				{ return TOK_ENDFOR;    }
-{E}{N}{D}{I}{F} 				{ return TOK_ENDIF;     }
-{E}{N}{D}{W}{I}{T}{H} 		    { return TOK_ENDWITH;   }
-{F}{A}{L}{S}{E} 				{ return TOK_FALSE;     }
-{F}{O}{R}               		{ return TOK_FOR;       }
-{F}{U}{N}{C}{T}{I}{O}{N} 		{ return TOK_FUNCTION;  }
-{I}{F}							{ return TOK_IF;        }
-{L}{O}{C}{A}{L} 				{ return TOK_LOCAL;     }
-{N}{E}{W}               		{ return TOK_NEW;       }
-{O}{F}							{ return TOK_OF;        }
-{P}{A}{R}{A}{M}{E}{T}{E}{R}		{ return TOK_PARAMETER; }
-{P}{R}{I}{V}{A}{T}{E}			{ return TOK_PRIVATE;   }
-{P}{R}{O}{C}{E}{D}{U}{R}{E}		{ return TOK_PROCEDURE; }
-{R}{E}{T}{U}{R}{N}		 		{ return TOK_RETURN;    }
-{S}{E}{T}               		{ return TOK_SET;       }
-{T}{O}							{ return TOK_TO;        }
-{T}{R}{U}{E}			 		{ return TOK_TRUE;      }
-{W}{I}{T}{H}			 		{ return TOK_WITH;      }
+{D}{W}{O}{R}{D}         { return TOK_DWORD;    }
+{W}{O}{R}{D}            { return TOK_WORD;     }
+{B}{Y}{T}{E}            { return TOK_BYTE;     }
+
+{P}{T}{R}               { return TOK_PTR;      }
+
+{A}{A}{A}               { return TOK_AAA;      }
+{A}{D}{D}               { return TOK_ADD;      }
+
+{M}{O}{V}               { return TOK_MOV;      }
+
+{P}{O}{P}               { return TOK_POP;      }
+{P}{U}{S}{H}            { return TOK_PUSH;     }
+
+{E}{A}{X}               { return TOK_EAX;      }
+{E}{B}{P}               { return TOK_EBP;      }
+{E}{B}{X}               { return TOK_EBX;      }
+{E}{C}{X}               { return TOK_ECX;      }
+{E}{D}{I}               { return TOK_EDI;      }
+{E}{D}{X}               { return TOK_EDX;      }
+{E}{I}{P}               { return TOK_EIP;      }
+{E}{S}{I}               { return TOK_ESI;      }
+{E}{S}{P}               { return TOK_ESP;      }
+
+{A}{X}                  { return TOK_AX;       }
+{B}{P}                  { return TOK_BP;       }
+{B}{X}                  { return TOK_BX;       }
+{C}{X}                  { return TOK_CX;       }
+{D}{I}                  { return TOK_DI;       }
+{D}{X}                  { return TOK_DX;       }
+
+{I}{P}                  { return TOK_IP;       }
+{S}{I}                  { return TOK_SI;       }
+{S}{P}                  { return TOK_SP;       }
+
+{A}{H}                  { return TOK_AH;       }
+{B}{H}                  { return TOK_BH;       }
+{C}{H}                  { return TOK_CH;       }
+{D}{H}                  { return TOK_DH;       }
+
+{A}{L}                  { return TOK_AL;       }
+{B}{L}                  { return TOK_BL;       }
+{C}{L}                  { return TOK_CL;       }
+{D}{L}                  { return TOK_DL;       }
 
 [0-9]+                  { yylval.node_and_value.value = atof(yytext); return TOK_NUMBER; }
 [0-9]+\.[0-9]+          { yylval.node_and_value.value = atof(yytext); return TOK_NUMBER; }
@@ -122,45 +129,15 @@ Z           [z|Z]
 	return TOK_ID;
 }
 
-["']((\\.|[^"'])*)["'] {
+[a-zA-Z_]+|[a-zA-Z0-9_]+[ \t]*\:  {
 	// -----------------------------------
-	// pattern for: "Hello World"
-	// pattern for: 'Hello World'
+	// pattern for: identifier's ...
 	// -----------------------------------
 	yylval.node_and_value.name = (char*) malloc( strlen( yytext ) + 1); strcpy(
-	yylval.node_and_value.name, yytext );
+	yylval.node_and_value.name, yytext);
 	
-	return TOK_STRING;
+	return TOK_LABEL;
 }
-
-\[(\"|\')?((\\.|[^\"\'\]])*)(\"|\')?\]   {
-	// -----------------------------------
-	// pattern for:  [ "Hallo \" World" ]
-	// pattern for:  [ 'Hello \' World' ]
-	// -----------------------------------
-	char* str = yytext;
-	int   len = 0;
-	
-	if (str[0] == '\'' || str[0] == '\"')
-		str++;
-		
-	len = strlen(str);
-	
-	if (str[len - 1] == '\'' || str[len - 1] == '\"')
-		str[len - 1] =  '\0' ;
-	
-	yylval.node_and_value.name = (char*) malloc( strlen( str ) + 1); strcpy(
-	yylval.node_and_value.name, str );
-	
-	return TOK_STRING_BRACE;
-}
-
-\.{A}{N}{D}\.			{ return TOK_AND;    }
-\.{N}{O}{T}\.			{ return TOK_NOT;    }
-\.{O}{R}\.			    { return TOK_OR;     }
-
-\.{F}\.                 { return TOK_FALSE;  }
-\.{T}\.                 { return TOK_TRUE;   }
 
 "=="                    { return TOK_EQEQ; }
 "!="					{ return TOK_LTGT; }
@@ -169,8 +146,10 @@ Z           [z|Z]
 "<="                    { return TOK_LTEQ; }
 ">="                    { return TOK_GTEQ; }
 
+\;.*                    { /* DO NOTHING */ }
+\;.*\n                  { /* DO NOTHING */ yy_row++; }
+
 ":"                     { return ':'; }
-";"                     { return ';'; }
 "-"                     { return '-'; }
 "+"                     { return '+'; }
 "*"                     { return '*'; }
@@ -178,8 +157,6 @@ Z           [z|Z]
 \%                      { return '%'; }
 
 \#                      { return '#'; }
-
-(\=)|(\:\=)             { return TOK_ASSIGN; }
 
 \(                      { return '('; }
 \)                      { return ')'; }

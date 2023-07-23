@@ -57,41 +57,54 @@ extern int yydebug;
     TOK_ID = 258,                  /* TOK_ID  */
     TOK_NUMBER = 259,              /* TOK_NUMBER  */
     TOK_STRING = 260,              /* TOK_STRING  */
-    TOK_STRING_BRACE = 261,        /* TOK_STRING_BRACE  */
-    TOK_IF = 262,                  /* TOK_IF  */
-    TOK_ELSE = 263,                /* TOK_ELSE  */
-    TOK_ENDIF = 264,               /* TOK_ENDIF  */
-    TOK_EQEQ = 265,                /* TOK_EQEQ  */
-    TOK_EQLT = 266,                /* TOK_EQLT  */
-    TOK_EQGT = 267,                /* TOK_EQGT  */
-    TOK_GTEQ = 268,                /* TOK_GTEQ  */
-    TOK_LTEQ = 269,                /* TOK_LTEQ  */
-    TOK_LTGT = 270,                /* TOK_LTGT  */
-    TOK_ASSIGN = 271,              /* TOK_ASSIGN  */
-    TOK_FALSE = 272,               /* TOK_FALSE  */
-    TOK_TRUE = 273,                /* TOK_TRUE  */
-    TOK_AND = 274,                 /* TOK_AND  */
-    TOK_NOT = 275,                 /* TOK_NOT  */
-    TOK_OR = 276,                  /* TOK_OR  */
-    TOK_PARAMETER = 277,           /* TOK_PARAMETER  */
-    TOK_LOCAL = 278,               /* TOK_LOCAL  */
-    TOK_PRIVATE = 279,             /* TOK_PRIVATE  */
-    TOK_FUNCTION = 280,            /* TOK_FUNCTION  */
-    TOK_PROCEDURE = 281,           /* TOK_PROCEDURE  */
-    TOK_RETURN = 282,              /* TOK_RETURN  */
-    TOK_SET = 283,                 /* TOK_SET  */
-    TOK_CLEAR = 284,               /* TOK_CLEAR  */
-    TOK_FOR = 285,                 /* TOK_FOR  */
-    TOK_TO = 286,                  /* TOK_TO  */
-    TOK_ENDFOR = 287,              /* TOK_ENDFOR  */
-    TOK_CLASS = 288,               /* TOK_CLASS  */
-    TOK_OF = 289,                  /* TOK_OF  */
-    TOK_ENDCLASS = 290,            /* TOK_ENDCLASS  */
-    TOK_NEW = 291,                 /* TOK_NEW  */
-    TOK_WITH = 292,                /* TOK_WITH  */
-    TOK_ENDWITH = 293,             /* TOK_ENDWITH  */
-    TOK_CUSTOM = 294,              /* TOK_CUSTOM  */
-    TOK_DEFINE = 295               /* TOK_DEFINE  */
+    TOK_LABEL = 261,               /* TOK_LABEL  */
+    TOK_EQEQ = 262,                /* TOK_EQEQ  */
+    TOK_EQLT = 263,                /* TOK_EQLT  */
+    TOK_EQGT = 264,                /* TOK_EQGT  */
+    TOK_GTEQ = 265,                /* TOK_GTEQ  */
+    TOK_LTEQ = 266,                /* TOK_LTEQ  */
+    TOK_LTGT = 267,                /* TOK_LTGT  */
+    TOK_ASSIGN = 268,              /* TOK_ASSIGN  */
+    TOK_FALSE = 269,               /* TOK_FALSE  */
+    TOK_TRUE = 270,                /* TOK_TRUE  */
+    TOK_AND = 271,                 /* TOK_AND  */
+    TOK_NOT = 272,                 /* TOK_NOT  */
+    TOK_OR = 273,                  /* TOK_OR  */
+    TOK_AAA = 274,                 /* TOK_AAA  */
+    TOK_ADD = 275,                 /* TOK_ADD  */
+    TOK_MOV = 276,                 /* TOK_MOV  */
+    TOK_POP = 277,                 /* TOK_POP  */
+    TOK_PUSH = 278,                /* TOK_PUSH  */
+    TOK_EAX = 279,                 /* TOK_EAX  */
+    TOK_EBP = 280,                 /* TOK_EBP  */
+    TOK_EBX = 281,                 /* TOK_EBX  */
+    TOK_ECX = 282,                 /* TOK_ECX  */
+    TOK_EDI = 283,                 /* TOK_EDI  */
+    TOK_EDX = 284,                 /* TOK_EDX  */
+    TOK_EIP = 285,                 /* TOK_EIP  */
+    TOK_ESI = 286,                 /* TOK_ESI  */
+    TOK_ESP = 287,                 /* TOK_ESP  */
+    TOK_AX = 288,                  /* TOK_AX  */
+    TOK_BP = 289,                  /* TOK_BP  */
+    TOK_BX = 290,                  /* TOK_BX  */
+    TOK_CX = 291,                  /* TOK_CX  */
+    TOK_DX = 292,                  /* TOK_DX  */
+    TOK_AH = 293,                  /* TOK_AH  */
+    TOK_BH = 294,                  /* TOK_BH  */
+    TOK_CH = 295,                  /* TOK_CH  */
+    TOK_DH = 296,                  /* TOK_DH  */
+    TOK_AL = 297,                  /* TOK_AL  */
+    TOK_BL = 298,                  /* TOK_BL  */
+    TOK_CL = 299,                  /* TOK_CL  */
+    TOK_DL = 300,                  /* TOK_DL  */
+    TOK_IP = 301,                  /* TOK_IP  */
+    TOK_SP = 302,                  /* TOK_SP  */
+    TOK_DI = 303,                  /* TOK_DI  */
+    TOK_SI = 304,                  /* TOK_SI  */
+    TOK_DWORD = 305,               /* TOK_DWORD  */
+    TOK_WORD = 306,                /* TOK_WORD  */
+    TOK_BYTE = 307,                /* TOK_BYTE  */
+    TOK_PTR = 308                  /* TOK_PTR  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -111,7 +124,7 @@ union YYSTYPE
 		struct node * prev ;
 	}	node_and_value;
 
-#line 115 "assemblerDSLdos32.tab.h"
+#line 128 "assemblerDSLdos32.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

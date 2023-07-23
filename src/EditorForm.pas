@@ -2762,6 +2762,7 @@ procedure TForm1.CreateSimpleDos32BasicProgram;
 begin
   DFrameEditor.Visible := true;
   EditPanel.Visible := true;
+  DFrameEditor.SynEdit1.Highlighter := DFrameEditor.HighBasic;
   DFrameEditor.SynEdit1.Text :=
   '// dos32'       + sLineBreak +
   '10 CLS'         + sLineBreak +
@@ -2773,6 +2774,7 @@ procedure TForm1.CreateSimpleDos32cLispProgram;
 begin
   DFrameEditor.Visible := true;
   EditPanel.Visible := true;
+  DFrameEditor.SynEdit1.Highlighter := DFrameEditor.HighCLISP;
   DFrameEditor.SynEdit1.Text :=
   '// dos32'       + sLineBreak +
   '(+ 2 3)'        + sLineBreak ;
@@ -2783,6 +2785,7 @@ procedure TForm1.CreateSimpleDos32AssemblerProgram;
 begin
   DFrameEditor.Visible := true;
   EditPanel.Visible := true;
+  DFrameEditor.SynEdit1.Highlighter := DFrameEditor.HighAssembler;
   DFrameEditor.SynEdit1.Text :=
   '// dos32'       + sLineBreak +
   'mov eax'        + sLineBreak +
@@ -2795,6 +2798,7 @@ procedure TForm1.CreateSimpleWin32BasicProgram;
 begin
   DFrameEditor.Visible := true;
   EditPanel.Visible := true;
+  DFrameEditor.SynEdit1.Highlighter := DFrameEditor.HighBasic;
   DFrameEditor.SynEdit1.Text :=
   '// win32'       + sLineBreak +
   '10 CLS'         + sLineBreak +
@@ -2806,6 +2810,7 @@ procedure TForm1.CreateSimpleWin32cLispProgram;
 begin
   DFrameEditor.Visible := true;
   EditPanel.Visible := true;
+  DFrameEditor.SynEdit1.Highlighter := DFrameEditor.HighCLISP;
   DFrameEditor.SynEdit1.Text :=
   '// win32'       + sLineBreak +
   '(+ 2 3)'        + sLineBreak ;
@@ -2816,6 +2821,7 @@ procedure TForm1.CreateSimpleWin32AssemblerProgram;
 begin
   DFrameEditor.Visible := true;
   EditPanel.Visible := true;
+  DFrameEditor.SynEdit1.Highlighter := DFrameEditor.HighAssembler;
   DFrameEditor.SynEdit1.Text :=
   '// win32'       + sLineBreak +
   'mov eax'        + sLineBreak +
@@ -2828,6 +2834,7 @@ procedure TForm1.CreateSimpleWin32PascalProgram;
 begin
   DFrameEditor.Visible := true;
   EditPanel.Visible := true;
+  DFrameEditor.SynEdit1.Highlighter := DFrameEditor.HighPas;
   DFrameEditor.SynEdit1.Text :=
   '// win32'       + sLineBreak +
   'program test1;' + sLineBreak +
@@ -2853,6 +2860,7 @@ procedure TForm1.CreateSimpleDos32PascalProgram;
 begin
   DFrameEditor.Visible := true;
   EditPanel.Visible := true;
+  DFrameEditor.SynEdit1.Highlighter := DFrameEditor.HighPas;
   DFrameEditor.SynEdit1.Text :=
   '// dos32'       + sLineBreak +
   'program test1;' + sLineBreak +
@@ -2865,6 +2873,7 @@ procedure TForm1.CreateSimpleDos32PascalLibrary;
 begin
   DFrameEditor.Visible := true;
   EditPanel.Visible := true;
+  DFrameEditor.SynEdit1.Highlighter := DFrameEditor.HighPas;
   DFrameEditor.SynEdit1.Text :=
   '// dos32'       + sLineBreak +
   'library test1;' + sLineBreak +
@@ -2878,6 +2887,7 @@ procedure TForm1.CreateSimpleDos32PascalUnit;
 begin
   DFrameEditor.Visible := true;
   EditPanel.Visible := true;
+  DFrameEditor.SynEdit1.Highlighter := DFrameEditor.HighPas;
   DFrameEditor.SynEdit1.Text :=
   '// This File was created automatically' + sLineBreak +
   '// Press F2-key to execute it.'         + sLineBreak +
@@ -2919,6 +2929,7 @@ procedure TForm1.CreateSimpleWin32PascalUnit;
 begin
   DFrameEditor.Visible := true;
   EditPanel.Visible := true;
+  DFrameEditor.SynEdit1.Highlighter := DFrameEditor.HighPas;
   DFrameEditor.SynEdit1.Text :=
   '// This File was created automatically' + sLineBreak +
   '// Press F2-key to execute it.'         + sLineBreak +
@@ -2957,6 +2968,7 @@ procedure TForm1.CreateSimpleDos32dBaseProgram;
 begin
   DFrameEditor.Visible := true;
   EditPanel.Visible := true;
+  DFrameEditor.SynEdit1.Highlighter := DFrameEditor.HighDBase;
   DFrameEditor.SynEdit1.Text :=
   '// This File was created automatically' + sLineBreak +
   '// Press F2-key to execute it.'         + sLineBreak +
@@ -2970,6 +2982,7 @@ procedure TForm1.CreateSimpleWin32dBaseProgram;
 begin
   DFrameEditor.Visible := true;
   EditPanel.Visible := true;
+  DFrameEditor.SynEdit1.Highlighter := DFrameEditor.HighDBase;
   DFrameEditor.SynEdit1.Text :=
   '// This File was created automatically' + sLineBreak +
   '// Press F2-key to execute it.'         + sLineBreak +
