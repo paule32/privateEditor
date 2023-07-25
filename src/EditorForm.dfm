@@ -2818,10 +2818,6 @@ object Form1: TForm1
     Left = 414
     Top = 395
   end
-  object JvInterpreterProgram1: TJvInterpreterProgram
-    Left = 382
-    Top = 259
-  end
   object C64ScreenTimer: TTimer
     Enabled = False
     Interval = 500
@@ -7834,10 +7830,6 @@ object Form1: TForm1
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000000000000000000000000000000000000000000000000000}
-  end
-  object JvInterpreterFm1: TJvInterpreterFm
-    Left = 353
-    Top = 258
   end
   object Timer1: TTimer
     OnTimer = Timer1Timer

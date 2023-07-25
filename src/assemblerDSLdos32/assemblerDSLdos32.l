@@ -78,12 +78,32 @@ Z           [z|Z]
 {P}{T}{R}               { return TOK_PTR;      }
 
 {A}{A}{A}               { return TOK_AAA;      }
-{A}{D}{D}               { return TOK_ADD;      }
 
+{A}{D}{D}               { return TOK_ADD;      }
+{S}{U}{B}               { return TOK_SUB;      }
+
+{S}{H}{L}               { return TOK_SHL;      }
+{S}{H}{R}               { return TOK_SHR;      }
+
+{A}{N}{D}               { return TOK_AND;      }
+{N}{O}{T}               { return TOK_NOT;      }
+{O}{R}                  { return TOK_OR;       }
+{X}{O}{R}               { return TOK_XOR;      }
+{N}{E}{G}               { return TOK_NEG;      }
+
+{D}{E}{C}               { return TOK_DEC;      }
+{I}{N}{C}               { return TOK_INC;      }
+
+{I}{M}{U}{L}            { return TOK_IMUL;     }
+{I}{D}{I}{V}            { return TOK_IDIV;     }
+
+{L}{E}{A}               { return TOK_LEA;      }
 {M}{O}{V}               { return TOK_MOV;      }
 
 {P}{O}{P}               { return TOK_POP;      }
 {P}{U}{S}{H}            { return TOK_PUSH;     }
+
+{R}{E}{T}               { return TOK_RET;      }
 
 {E}{A}{X}               { return TOK_EAX;      }
 {E}{B}{P}               { return TOK_EBP;      }
@@ -115,6 +135,17 @@ Z           [z|Z]
 {B}{L}                  { return TOK_BL;       }
 {C}{L}                  { return TOK_CL;       }
 {D}{L}                  { return TOK_DL;       }
+
+{C}{M}{P}               { return TOK_CMP;      }
+
+{J}{N}{E}               { return TOK_JNE;      }
+{J}{G}{E}               { return TOK_JGE;      }
+{J}{L}{E}               { return TOK_JLE;      }
+
+{J}{L}                  { return TOK_JL;       }
+{J}{E}                  { return TOK_JE;       }
+{J}{G}                  { return TOK_JG;       }
+{J}{Z}                  { return TOK_JZ;       }
 
 [0-9]+                  { yylval.node_and_value.value = atof(yytext); return TOK_NUMBER; }
 [0-9]+\.[0-9]+          { yylval.node_and_value.value = atof(yytext); return TOK_NUMBER; }

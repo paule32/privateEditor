@@ -11,7 +11,9 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, JvExStdCtrls, JvButton, JvCtrls, ExtCtrls, SynEdit,
-  ComCtrls, Menus, JvMenus, JvExComCtrls;
+  ComCtrls, Menus, JvMenus, JvExComCtrls, SynEditHighlighter,
+  SynHighlighterGeneral, SynHighlighterPas, JvComponentBase, JvInterpreter,
+  JvInterpreterFm;
 
 type
   TFrame19 = class(TFrame)
@@ -36,6 +38,14 @@ type
     Paste1: TMenuItem;
     N2: TMenuItem;
     SelectAll1: TMenuItem;
+    HighPascal: TSynGeneralSyn;
+    HighBasic: TSynGeneralSyn;
+    HighDBase: TSynGeneralSyn;
+    HighAssembler: TSynGeneralSyn;
+    HighCLISP: TSynGeneralSyn;
+    HighPas: TSynPasSyn;
+    JvInterpreterFm1: TJvInterpreterFm;
+    JvInterpreterProgram1: TJvInterpreterProgram;
     procedure JvImgBtn1Click(Sender: TObject);
     procedure CopyButtonClick(Sender: TObject);
     procedure PasteButtonClick(Sender: TObject);
@@ -237,6 +247,9 @@ begin
     begin
       try
         try
+          Form1.DFrameEditor.SynEdit1.Highlighter :=
+          Form1.DFrameEditor.HighPascal;
+
           Handle := LoadLibrary(PChar(ExtractFilePath(Application.ExeName) + '\parser\DSLdos32Pascal.dll'));
           if Handle = 0 then
           raise Exception.Create('pascalDSLdos32.dll not loaded.');
@@ -306,6 +319,9 @@ begin
     begin
       try
         try
+          Form1.DFrameEditor.SynEdit1.Highlighter :=
+          Form1.DFrameEditor.HighBasic;
+
           Handle := LoadLibrary(PChar(ExtractFilePath(Application.ExeName) + '\parser\DSLdos32BASIC.dll'));
           if Handle = 0 then
           raise Exception.Create('basicDSLdos32.dll not loaded.');
@@ -375,6 +391,9 @@ begin
     begin
       try
         try
+          Form1.DFrameEditor.SynEdit1.Highlighter :=
+          Form1.DFrameEditor.HighDBase;
+
           Handle := LoadLibrary(PChar(ExtractFilePath(Application.ExeName) + '\parser\DSLdos32DBase.dll'));
           if Handle = 0 then
           raise Exception.Create('dBaseDSLdos32.dll not loaded.');
@@ -444,6 +463,9 @@ begin
     begin
       try
         try
+          Form1.DFrameEditor.SynEdit1.Highlighter :=
+          Form1.DFrameEditor.HighCLISP;
+
           Handle := LoadLibrary(PChar(ExtractFilePath(Application.ExeName) + '\parser\DSLdos32cLISP.dll'));
           if Handle = 0 then
           raise Exception.Create('cLispDSLdos32.dll not loaded.');
@@ -513,6 +535,9 @@ begin
     begin
       try
         try
+          Form1.DFrameEditor.SynEdit1.Highlighter :=
+          Form1.DFrameEditor.HighAssembler;
+
           Handle := LoadLibrary(PChar(ExtractFilePath(Application.ExeName) + '\parser\DSLdos32Assembler.dll'));
           if Handle = 0 then
           raise Exception.Create('assemblerDSLdos32.dll not loaded.');
@@ -585,6 +610,9 @@ begin
     begin
       try
         try
+          Form1.DFrameEditor.SynEdit1.Highlighter :=
+          Form1.DFrameEditor.HighPascal;
+
           Handle := LoadLibrary(PChar(ExtractFilePath(Application.ExeName) + '\parser\DSLwin32Pascal.dll'));
           if Handle = 0 then
           raise Exception.Create('pascalDSLwin32.dll not loaded.');
@@ -654,6 +682,9 @@ begin
     begin
       try
         try
+          Form1.DFrameEditor.SynEdit1.Highlighter :=
+          Form1.DFrameEditor.HighBasic;
+
           Handle := LoadLibrary(PChar(ExtractFilePath(Application.ExeName) + '\parser\DSLwin32BASIC.dll'));
           if Handle = 0 then
           raise Exception.Create('basicDSLwin32.dll not loaded.');
@@ -723,11 +754,13 @@ begin
     begin
       try
         try
-        showmessage('win dbase');
+          Form1.DFrameEditor.SynEdit1.Highlighter :=
+          Form1.DFrameEditor.HighDBase;
+
           Handle := LoadLibrary(PChar(ExtractFilePath(Application.ExeName) + '\parser\DSLwin32DBase.dll'));
           if Handle = 0 then
           raise Exception.Create('dBaseDSLwin32.dll not loaded.');
-showmessage('xxxxxx');
+
           DateTimeToString(res,'',now);
           Form1.buildListBox.Items.Insert(0,res + ': load dBaseDSL.dll: OK.');
 
@@ -793,6 +826,9 @@ showmessage('xxxxxx');
     begin
       try
         try
+          Form1.DFrameEditor.SynEdit1.Highlighter :=
+          Form1.DFrameEditor.HighCLISP;
+
           Handle := LoadLibrary(PChar(ExtractFilePath(Application.ExeName) + '\parser\DSLwin32cLISP.dll'));
           if Handle = 0 then
           raise Exception.Create('cLispDSLwin32.dll not loaded.');
@@ -862,6 +898,9 @@ showmessage('xxxxxx');
     begin
       try
         try
+          Form1.DFrameEditor.SynEdit1.Highlighter :=
+          Form1.DFrameEditor.HighAssembler;
+
           Handle := LoadLibrary(PChar(ExtractFilePath(Application.ExeName) + '\parser\DSLwin32Assembler.dll'));
           if Handle = 0 then
           raise Exception.Create('assemblerDSLwin32.dll not loaded.');
@@ -951,7 +990,14 @@ begin
     if Form1.DFrameComputerOS.JvCheckBox7.Checked then appType  := appType + [atLinux] else
     if Form1.DFrameComputerOS.JvCheckBox8.Checked then appType  := appType + [atAmiga] ;
 
-    StartCompile(appType);
+    if (atWin32 in appType) and (atPascal in appType) then
+    begin
+      JvInterpreterProgram1.Source := SynEdit1.Lines.Text;
+      JvInterpreterProgram1.Run;
+    end else
+    begin
+      StartCompile(appType);
+    end;
 
     exit;
   end;

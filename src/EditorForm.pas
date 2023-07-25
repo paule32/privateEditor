@@ -143,7 +143,6 @@ type
     Console1: TConsole;
     ImageList2: TImageList;
     ColorDialog1: TColorDialog;
-    JvInterpreterProgram1: TJvInterpreterProgram;
     C64TabSheet: TTabSheet;
     ScrollBox6: TScrollBox;
     C64ScreenTimer: TTimer;
@@ -248,7 +247,6 @@ type
     Windows64Bit1: TMenuItem;
     N18: TMenuItem;
     MSDOS32Bit1: TMenuItem;
-    JvInterpreterFm1: TJvInterpreterFm;
     Panel22: TPanel;
     Splitter19: TSplitter;
     ScrollBox4: TScrollBox;
@@ -2835,11 +2833,13 @@ begin
   DFrameEditor.Visible := true;
   EditPanel.Visible := true;
   DFrameEditor.SynEdit1.Highlighter := DFrameEditor.HighPas;
-  DFrameEditor.SynEdit1.Text :=
+  CreateSimpleWin32PascalUnit;
+
+  (*DFrameEditor.SynEdit1.Text :=
   '// win32'       + sLineBreak +
   'program test1;' + sLineBreak +
   'begin'          + sLineBreak +
-  'end.'           + sLineBreak ;
+  'end.'           + sLineBreak ;*)
 
   SetEditMisc;
 end;
@@ -2937,16 +2937,17 @@ begin
   'unit main;'                             + sLineBreak +
   ''                                       + sLineBreak +
   'interface'                              + sLineBreak +
-  'uses'                                   + sLineBreak +
-  '  Forms, Dialogs;'                      + sLineBreak +
-  'type'                                   + sLineBreak +
-  '  TDemo = class(TForm)'                 + sLineBreak +
-  '  private'                              + sLineBreak +
-  '  public'                               + sLineBreak +
-  '  end;'                                 + sLineBreak +
+  ''                                       + sLineBreak +
   'var'                                    + sLineBreak +
-  '  Form1: TDemo;'                        + sLineBreak +
+  '  Form1: TForm;'                        + sLineBreak +
+  '  FButton: TButton;'                    + sLineBreak +
+  ''                                       + sLineBreak +
   'implementation'                         + sLineBreak +
+  ''                                       + sLineBreak +
+  'procedure FButtonOnClick(Sender: TOject);' + sLineBreak +
+  'begin'                                  + sLineBreak +
+  '  ShowMessage(''Hello There !'');'      + sLineBreak +
+  'end;'                                   + sLineBreak +
   ''                                       + sLineBreak +
   'procedure main;'                        + sLineBreak +
   'begin'                                  + sLineBreak +
@@ -2956,6 +2957,14 @@ begin
   '  Form1.Top    := 100;'                 + sLineBreak +
   '  Form1.Width  := 300;'                 + sLineBreak +
   '  Form1.Height := 200;'                 + sLineBreak +
+  '' + sLineBreak +
+  '  FButton := TButton.Create(Form1);'    + sLineBreak +
+  '  FButton.Parent := Form1;'             + sLineBreak +
+  '  FButton.Top := 20;'                   + sLineBreak +
+  '  FButton.Left := 20;'                  + sLineBreak +
+  '  FButton.Caption := ''Click ME'';'     + sLineBreak +
+  '  FButton.OnClick := FButtonOnClick;'   + sLineBreak +
+  '' + sLineBreak +
   '  Form1.ShowModal;'                     + sLineBreak +
   'end;'                                   + sLineBreak +
   ''                                       + sLineBreak +

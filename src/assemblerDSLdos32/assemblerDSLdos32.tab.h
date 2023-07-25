@@ -70,41 +70,59 @@ extern int yydebug;
     TOK_AND = 271,                 /* TOK_AND  */
     TOK_NOT = 272,                 /* TOK_NOT  */
     TOK_OR = 273,                  /* TOK_OR  */
-    TOK_AAA = 274,                 /* TOK_AAA  */
-    TOK_ADD = 275,                 /* TOK_ADD  */
-    TOK_MOV = 276,                 /* TOK_MOV  */
-    TOK_POP = 277,                 /* TOK_POP  */
-    TOK_PUSH = 278,                /* TOK_PUSH  */
-    TOK_EAX = 279,                 /* TOK_EAX  */
-    TOK_EBP = 280,                 /* TOK_EBP  */
-    TOK_EBX = 281,                 /* TOK_EBX  */
-    TOK_ECX = 282,                 /* TOK_ECX  */
-    TOK_EDI = 283,                 /* TOK_EDI  */
-    TOK_EDX = 284,                 /* TOK_EDX  */
-    TOK_EIP = 285,                 /* TOK_EIP  */
-    TOK_ESI = 286,                 /* TOK_ESI  */
-    TOK_ESP = 287,                 /* TOK_ESP  */
-    TOK_AX = 288,                  /* TOK_AX  */
-    TOK_BP = 289,                  /* TOK_BP  */
-    TOK_BX = 290,                  /* TOK_BX  */
-    TOK_CX = 291,                  /* TOK_CX  */
-    TOK_DX = 292,                  /* TOK_DX  */
-    TOK_AH = 293,                  /* TOK_AH  */
-    TOK_BH = 294,                  /* TOK_BH  */
-    TOK_CH = 295,                  /* TOK_CH  */
-    TOK_DH = 296,                  /* TOK_DH  */
-    TOK_AL = 297,                  /* TOK_AL  */
-    TOK_BL = 298,                  /* TOK_BL  */
-    TOK_CL = 299,                  /* TOK_CL  */
-    TOK_DL = 300,                  /* TOK_DL  */
-    TOK_IP = 301,                  /* TOK_IP  */
-    TOK_SP = 302,                  /* TOK_SP  */
-    TOK_DI = 303,                  /* TOK_DI  */
-    TOK_SI = 304,                  /* TOK_SI  */
-    TOK_DWORD = 305,               /* TOK_DWORD  */
-    TOK_WORD = 306,                /* TOK_WORD  */
-    TOK_BYTE = 307,                /* TOK_BYTE  */
-    TOK_PTR = 308                  /* TOK_PTR  */
+    TOK_XOR = 274,                 /* TOK_XOR  */
+    TOK_NEG = 275,                 /* TOK_NEG  */
+    TOK_SHL = 276,                 /* TOK_SHL  */
+    TOK_SHR = 277,                 /* TOK_SHR  */
+    TOK_JE = 278,                  /* TOK_JE  */
+    TOK_JNE = 279,                 /* TOK_JNE  */
+    TOK_JZ = 280,                  /* TOK_JZ  */
+    TOK_JG = 281,                  /* TOK_JG  */
+    TOK_JGE = 282,                 /* TOK_JGE  */
+    TOK_JL = 283,                  /* TOK_JL  */
+    TOK_JLE = 284,                 /* TOK_JLE  */
+    TOK_AAA = 285,                 /* TOK_AAA  */
+    TOK_ADD = 286,                 /* TOK_ADD  */
+    TOK_DEC = 287,                 /* TOK_DEC  */
+    TOK_INC = 288,                 /* TOK_INC  */
+    TOK_IMUL = 289,                /* TOK_IMUL  */
+    TOK_IDIV = 290,                /* TOK_IDIV  */
+    TOK_LEA = 291,                 /* TOK_LEA  */
+    TOK_MOV = 292,                 /* TOK_MOV  */
+    TOK_POP = 293,                 /* TOK_POP  */
+    TOK_PUSH = 294,                /* TOK_PUSH  */
+    TOK_RET = 295,                 /* TOK_RET  */
+    TOK_SUB = 296,                 /* TOK_SUB  */
+    TOK_EAX = 297,                 /* TOK_EAX  */
+    TOK_EBP = 298,                 /* TOK_EBP  */
+    TOK_EBX = 299,                 /* TOK_EBX  */
+    TOK_ECX = 300,                 /* TOK_ECX  */
+    TOK_EDI = 301,                 /* TOK_EDI  */
+    TOK_EDX = 302,                 /* TOK_EDX  */
+    TOK_EIP = 303,                 /* TOK_EIP  */
+    TOK_ESI = 304,                 /* TOK_ESI  */
+    TOK_ESP = 305,                 /* TOK_ESP  */
+    TOK_AX = 306,                  /* TOK_AX  */
+    TOK_BP = 307,                  /* TOK_BP  */
+    TOK_BX = 308,                  /* TOK_BX  */
+    TOK_CX = 309,                  /* TOK_CX  */
+    TOK_DX = 310,                  /* TOK_DX  */
+    TOK_AH = 311,                  /* TOK_AH  */
+    TOK_BH = 312,                  /* TOK_BH  */
+    TOK_CH = 313,                  /* TOK_CH  */
+    TOK_DH = 314,                  /* TOK_DH  */
+    TOK_AL = 315,                  /* TOK_AL  */
+    TOK_BL = 316,                  /* TOK_BL  */
+    TOK_CL = 317,                  /* TOK_CL  */
+    TOK_DL = 318,                  /* TOK_DL  */
+    TOK_IP = 319,                  /* TOK_IP  */
+    TOK_SP = 320,                  /* TOK_SP  */
+    TOK_DI = 321,                  /* TOK_DI  */
+    TOK_SI = 322,                  /* TOK_SI  */
+    TOK_DWORD = 323,               /* TOK_DWORD  */
+    TOK_WORD = 324,                /* TOK_WORD  */
+    TOK_BYTE = 325,                /* TOK_BYTE  */
+    TOK_PTR = 326                  /* TOK_PTR  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -124,7 +142,7 @@ union YYSTYPE
 		struct node * prev ;
 	}	node_and_value;
 
-#line 128 "assemblerDSLdos32.tab.h"
+#line 146 "assemblerDSLdos32.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

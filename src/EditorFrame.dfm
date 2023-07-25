@@ -143,7 +143,7 @@ object Frame19: TFrame19
     Top = 40
   end
   object OpenDialog1: TOpenDialog
-    Left = 216
+    Left = 208
     Top = 40
   end
   object JvPopupMenu1: TJvPopupMenu
@@ -154,7 +154,7 @@ object Frame19: TFrame19
     ImageMargin.Bottom = 0
     ImageSize.Height = 0
     ImageSize.Width = 0
-    Left = 249
+    Left = 241
     Top = 40
     object Run1: TMenuItem
       Caption = 'Run'
@@ -186,5 +186,73 @@ object Frame19: TFrame19
       ShortCut = 16449
       OnClick = SelectAll1Click
     end
+  end
+  object HighPascal: TSynGeneralSyn
+    Options.AutoDetectEnabled = False
+    Options.AutoDetectLineLimit = 0
+    Options.Visible = False
+    CommentAttri.Foreground = clLime
+    CommentAttri.Style = [fsBold, fsItalic]
+    Comments = [csPasStyle, csCPPStyle]
+    DetectPreprocessor = False
+    StringMultiLine = False
+    Left = 176
+    Top = 72
+  end
+  object HighBasic: TSynGeneralSyn
+    Options.AutoDetectEnabled = False
+    Options.AutoDetectLineLimit = 0
+    Options.Visible = False
+    DetectPreprocessor = False
+    StringMultiLine = False
+    Left = 208
+    Top = 72
+  end
+  object HighDBase: TSynGeneralSyn
+    Options.AutoDetectEnabled = False
+    Options.AutoDetectLineLimit = 0
+    Options.Visible = False
+    DetectPreprocessor = False
+    StringMultiLine = False
+    Left = 240
+    Top = 72
+  end
+  object HighAssembler: TSynGeneralSyn
+    Options.AutoDetectEnabled = False
+    Options.AutoDetectLineLimit = 0
+    Options.Visible = False
+    CommentAttri.Foreground = clLime
+    CommentAttri.Style = [fsBold, fsItalic]
+    Comments = [csAsmStyle, csCPPStyle]
+    DetectPreprocessor = False
+    StringMultiLine = False
+    Left = 272
+    Top = 72
+  end
+  object HighCLISP: TSynGeneralSyn
+    Options.AutoDetectEnabled = False
+    Options.AutoDetectLineLimit = 0
+    Options.Visible = False
+    DetectPreprocessor = False
+    StringMultiLine = False
+    Left = 304
+    Top = 72
+  end
+  object HighPas: TSynPasSyn
+    Options.AutoDetectEnabled = False
+    Options.AutoDetectLineLimit = 0
+    Options.Visible = False
+    CommentAttri.Foreground = clLime
+    DelphiVersion = dvDelphi7
+    Left = 176
+    Top = 104
+  end
+  object JvInterpreterFm1: TJvInterpreterFm
+    Left = 273
+    Top = 106
+  end
+  object JvInterpreterProgram1: TJvInterpreterProgram
+    Left = 302
+    Top = 107
   end
 end

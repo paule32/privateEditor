@@ -48,13 +48,27 @@ extern void tree_execute(void);
 %token <node_and_value> TOK_NUMBER TOK_STRING TOK_LABEL
 
 %token <node_and_value> TOK_EQEQ TOK_EQLT TOK_EQGT TOK_GTEQ TOK_LTEQ TOK_LTGT
-%token <node_and_value> TOK_ASSIGN TOK_FALSE TOK_TRUE TOK_AND TOK_NOT TOK_OR
+%token <node_and_value> TOK_ASSIGN TOK_FALSE TOK_TRUE
+
+%token <node_and_value> TOK_AND TOK_NOT TOK_OR TOK_XOR TOK_NEG
+%token <node_and_value> TOK_SHL TOK_SHR
+
+%token <node_and_value> TOK_JE TOK_JNE TOK_JZ TOK_JG TOK_JGE TOK_JL TOK_JLE
 
 %token <node_and_value> TOK_AAA
 %token <node_and_value> TOK_ADD
+
+%token <node_and_value> TOK_DEC
+%token <node_and_value> TOK_INC
+
+%token <node_and_value> TOK_IMUL TOK_IDIV
+
+%token <node_and_value> TOK_LEA
 %token <node_and_value> TOK_MOV
 %token <node_and_value> TOK_POP
 %token <node_and_value> TOK_PUSH
+%token <node_and_value> TOK_RET
+%token <node_and_value> TOK_SUB
 
 %token <node_and_value> TOK_EAX
 %token <node_and_value> TOK_EBP
@@ -101,7 +115,7 @@ extern void tree_execute(void);
 %type  <node_and_value> ident
 %type  <node_and_value> stmt
 
-%type  <node_and_value> reg8L reg8H reg16 reg32
+%type  <node_and_value> reg8 reg8L reg8H reg16 reg32
 
 %token TOK_YYEOF 0
 
@@ -145,19 +159,100 @@ stmt
 	|	TOK_AAA reg32 ',' ident stmt {
 	
 	}
+	|	TOK_ADD reg ',' reg stmt
+	|	TOK_ADD reg ',' mem stmt
+	|	TOK_ADD mem ',' reg stmt
+	|	TOK_ADD reg ',' con stmt
+	|	TOK_ADD mem ',' con stmt {
+	}
+	|	TOK_SHL reg ',' con
+	|	TOK_SHL mem ',' con
+	|	TOK_SHL reg ',' TOK_CL
+	|	TOK_SHL mem ',' TOK_CL {
+	}
+	|	TOK_SHR reg ',' con
+	|	TOK_SHR mem ',' con
+	|	TOK_SHR reg ',' TOK_CL
+	|	TOK_SHR mem ',' TOK_CL {
+	}
+	|	TOK_AND reg ',' reg
+	|	TOK_AND reg ',' mem
+	|	TOK_AND mem ',' reg
+	|	TOK_AND reg ',' con
+	|	TOK_AND mem ',' con {
+	}
+	|	TOK_NOT reg ',' reg
+	|	TOK_NOT reg ',' mem
+	|	TOK_NOT mem ',' reg
+	|	TOK_NOT reg ',' con
+	|	TOK_NOT mem ',' con {
+	}
+	|	TOK_XOR reg ',' reg
+	|	TOK_XOR reg ',' mem
+	|	TOK_XOR mem ',' reg
+	|	TOK_XOR reg ',' con
+	|	TOK_XOR mem ',' con {
+	}
+	|	TOK_OR reg ',' reg
+	|	TOK_OR reg ',' mem
+	|	TOK_OR mem ',' reg
+	|	TOK_OR reg ',' con
+	|	TOK_OR mem ',' con {
+	}
+	|	TOK_DEC reg stmt
+	|	TOK_DEC mem stmt {
+	}
+	|	TOK_IMUL reg32 ',' reg32         stmt
+	|	TOK_IMUL reg32 ',' mem           stmt
+	|	TOK_IMUL reg32 ',' reg32 ',' con stmt
+	|	TOK_IMUL reg32 ',' mem   ',' con stmt {
+	}
+	|	TOK_IDIV reg32 stmt
+	|	TOK_IDIV mem   stmt {
+	}
+	|	TOK_INC reg stmt
+	|	TOK_INC mem stmt {
+	}
+	|	TOK_LEA reg16 ',' mem16 stmt
+	|	TOK_LEA reg32 ',' mem32 stmt {
+	}
 	|	TOK_MOV reg ',' reg stmt
 	|	TOK_MOV reg ',' mem stmt
 	|	TOK_MOV mem ',' reg stmt
 	|	TOK_MOV reg ',' con stmt
 	|	TOK_MOV mem ',' con stmt {
 	}
-	|	TOK_POP reg
-	|	TOK_POP mem  {
+	|	TOK_NEG reg stmt
+	|	TOK_NEG mem stmt {
 	}
-	|	TOK_PUSH reg
-	|	TOK_PUSH mem
-	|	TOK_PUSH con {
+	|	TOK_POP reg  stmt 
+	|	TOK_POP mem  stmt {
 	}
+	|	TOK_PUSH reg stmt
+	|	TOK_PUSH mem stmt
+	|	TOK_PUSH con stmt {
+	}
+	|	TOK_RET      stmt {
+	}
+	|	TOK_SUB reg ',' reg stmt
+	|	TOK_SUB reg ',' mem stmt
+	|	TOK_SUB mem ',' reg stmt
+	|	TOK_SUB reg ',' con stmt
+	|	TOK_SUB mem ',' con stmt {
+	}
+	|	jump_label ident    stmt {
+	}
+	|	TOK_LABEL
+	;
+
+jump_label
+	: TOK_JE
+	| TOK_JNE
+	| TOK_JZ
+	| TOK_JG
+	| TOK_JGE
+	| TOK_JL
+	| TOK_JLE
 	;
 
 con
@@ -173,33 +268,68 @@ reg
 	;
 
 mem
+	:	mem16
+	|	mem32
+	;
+	
+mem16
+	:	'[' reg16  ']'
+	|	'[' expr   ']' {
+	}
+	|	TOK_WORD  TOK_PTR '[' regSeq16 ']'
+	|	TOK_WORD          '[' regSeq16 ']' {
+	}
+	|	TOK_BYTE  TOK_PTR '[' regSeq8 ']'
+	|	TOK_BYTE          '[' regSeq8 ']' {
+	}
+	;
+
+mem32
 	:	'[' reg  ']'
 	|	'[' expr ']' {
 	}
-	|	TOK_DWORD TOK_PTR '[' regSeq ']'
-	|	TOK_DWORD         '[' regSeq ']' {
+	|	TOK_DWORD TOK_PTR '[' regSeq32 ']'
+	|	TOK_DWORD         '[' regSeq32 ']' {
 	}
-	|	TOK_WORD  TOK_PTR '[' regSeq ']'
-	|	TOK_WORD          '[' regSeq ']' {
+	|	TOK_WORD  TOK_PTR '[' regSeq16 ']'
+	|	TOK_WORD          '[' regSeq16 ']' {
 	}
-	|	TOK_BYTE  TOK_PTR '[' regSeq ']'
-	|	TOK_BYTE          '[' regSeq ']' {
+	|	TOK_BYTE  TOK_PTR '[' regSeq8 ']'
+	|	TOK_BYTE          '[' regSeq8 ']' {
 	}
 	;
 
-regSeq
+regSeq32
 	:	reg
 	|	expr
-	|	regSeq '+' regSeq
+	|	regSeq32 '+' regSeq32
 	;
 
+regSeq16
+	:	reg16
+	|	reg8H
+	|	reg8L
+	|	expr
+	|	regSeq16 '+' regSeq16
+	;
+
+regSeq8
+	:	reg8L
+	|	reg8H
+	;
+	
+reg8
+	:	reg8L
+	|	reg8H
+	;
+	
 reg8L
 	:	TOK_AL
 	|	TOK_BL
 	|	TOK_CL
 	|	TOK_DL
 	;
-
+	
 reg8H
 	:	TOK_AH
 	|	TOK_BH
@@ -212,6 +342,10 @@ reg16
 	|	TOK_BX
 	|	TOK_CX
 	|	TOK_DX
+	|	TOK_DI
+	|	TOK_SI {
+	}
+	|	reg8
 	;
 
 reg32
@@ -219,6 +353,7 @@ reg32
 	|	TOK_EBX
 	|	TOK_ECX
 	|	TOK_EDX
+	|	TOK_EDI
 	;
 
 expr
