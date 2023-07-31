@@ -12,7 +12,7 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ComCtrls, ExtCtrls, JvExControls, JvSpeedButton, ToolWin,
   SynEdit, JvGradientCaption, Menus, SynEditHighlighter, SynHighlighterPas,
-  JvStringHolder, CtrlMenuBarButton, JvMenus, StdCtrls, Mask, JvExMask,
+  CtrlMenuBarButton, JvMenus, StdCtrls, Mask, JvExMask,
   JvSpin, Buttons, CheckLst, ShellApi, ShlObj, ImgList, OleCtrls, SHDocVw,
   IdComponent, IdTCPConnection, IdTCPClient, IdIRC, IdBaseComponent,
   IdAntiFreezeBase, IdAntiFreeze, JvExComCtrls, JvComCtrls, JvCheckTreeView,
@@ -27,7 +27,8 @@ uses
   C64DrivesFrame, NewProjectFrame, FoldersLocal, FoldersRemote, SpreadFrame,
   HelpTopicFrame, HelpAuthorFrame, FontStyleFrame, FontFaceFrame,
   FontColorFrame, ComputerFrame, FormatLayoutFrame, OptionsFrame,
-  JvDesignImp, JclSysInfo, EnvironmentFrame, LeftPanelFrame,
+  SimulationLeftPanel,
+  JvDesignImp, JclSysInfo, EnvironmentFrame, LeftPanelFrame, SimulationFrame,
   JvColorCombo, JvInterpreterFm;
 
 type
@@ -58,7 +59,6 @@ type
     SynPasSyn1: TSynPasSyn;
     OpenDialog1: TOpenDialog;
     SaveDialog1: TSaveDialog;
-    localesList: TJvMultiStringHolder;
     MenuBarButton_File: TCtrlMenuBarButton;
     MenuBarButton_Edit: TCtrlMenuBarButton;
     MenuBarButton_Tools: TCtrlMenuBarButton;
@@ -93,9 +93,6 @@ type
     Pascal1: TMenuItem;
     dBASE1: TMenuItem;
     PopupMenu_Tools: TJvPopupMenu;
-    PopupMenu_Tools_Language: TMenuItem;
-    PopupMenu_Tools_Language_English: TMenuItem;
-    PopupMenu_Tools_Language_German: TMenuItem;
     CtrlMenuBarButton1: TCtrlMenuBarButton;
     PopupMenu_Project: TJvPopupMenu;
     MenuItem1: TMenuItem;
@@ -109,7 +106,6 @@ type
     N10: TMenuItem;
     AddtoTemplateLibrary1: TMenuItem;
     AddNewProject1: TMenuItem;
-    N11: TMenuItem;
     IDE1: TMenuItem;
     EnvironmentOptions1: TMenuItem;
     EditorOptions1: TMenuItem;
@@ -254,6 +250,7 @@ type
     PanelResizer: TPanel;
     SpreadTabSheet: TTabSheet;
     C64Screen: TSynEdit;
+    Memo1: TMemo;
     procedure PopupMenu_File_NewClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -262,8 +259,6 @@ type
     procedure dBASE1Click(Sender: TObject);
     procedure PopupMenu_File_OpenClick(Sender: TObject);
     procedure PopupMenu_File_SaveAsClick(Sender: TObject);
-    procedure PopupMenu_Tools_Language_EnglishClick(Sender: TObject);
-    procedure PopupMenu_Tools_Language_GermanClick(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure PopupMenu_Help_AboutClick(Sender: TObject);
     procedure JvSpeedButton3Click1(Sender: TObject);
@@ -371,6 +366,7 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure C64ScreenKeyPress(Sender: TObject; var Key: WideChar);
     procedure EnvironmentOptions1Click(Sender: TObject);
+    procedure xx1Click(Sender: TObject);
   public
     Cv1: TCanvas;
     ircListLimit: Integer;
@@ -422,6 +418,9 @@ type
     DFrameEditOptions   : TFrame21;
     DFrameEnvOptions    : TFrame22;
     DFrameLeftPanel     : TFrame23;
+
+    DFrameSimulation          : TFrame24;
+    DFrameSimulationLeftPanel : TFrame25;
 
     DFrameHelpTopic     : TFrame15;
 
@@ -479,6 +478,8 @@ type
 
     procedure DblClickConsole;
 
+    procedure AppMessage(var Msg: TMsg; var Handled: Boolean);
+
     procedure JvDesignPanelPaint(Sender: TObject);
     procedure CheckButtonOnClick(Sender: TObject);
     function WriteToC64Screen(X,Y: Integer; AString: WideString): Integer;
@@ -495,7 +496,29 @@ implementation
 
 {$R *.dfm}
 uses
-  InterpreterClasses, SplashScreen;
+  InterpreterClasses, SplashScreen, reinit;
+
+const
+  ENGLISH = (SUBLANG_ENGLISH_US shl 10) or LANG_ENGLISH;
+  GERMAN  = (SUBLANG_GERMAN     shl 10) or LANG_GERMAN;
+
+procedure SetUIToEnglish;
+begin
+  if LoadNewResourceModule(ENGLISH) <> 0 then
+  begin
+    showmessage('load ok');
+    ReinitializeForms;
+  end;
+end;
+
+procedure SetUIToGerman;
+begin
+  if LoadNewResourceModule(GERMAN) <> 0 then
+  begin
+    showmessage('okkay');
+    ReinitializeForms;
+  end;
+end;
 
 function GetShellFolder(CSIDLFolder : integer) : string;
 begin
@@ -555,6 +578,32 @@ begin
   Form1.Console1.WriteLn(VarToStr(Args.Values[0]));
 end;
 
+procedure TForm1.AppMessage(var Msg: TMsg; var Handled: Boolean);
+var
+  Control: TWinControl;
+begin
+  if (msg.message = WM_KEYDOWN) and (msg.wparam = VK_TAB)
+  then begin
+    if GetKeyState(VK_CONTROL)
+    then begin
+      ShowMessage('xxx');
+      Control:= Screen.ActiveControl;
+      while Assigned(Control) do
+      begin
+        If Control Is TPageControl
+        then begin
+           Control.Perform( CM_DIALOGKEY, msg.wparam, msg.lparam );
+           Handled := True;
+           exit;
+        end;
+      end;
+    end else
+    begin
+      Control := Control.Parent;
+    end;
+  end;
+end;
+
 procedure TForm1.FormCreate(Sender: TObject);
 var
   I,J       : Integer;
@@ -583,6 +632,8 @@ begin
   dropList.Add('code' + IntToStr(I));
 
   ChatTabSheet.TabVisible := false;
+
+  Application.OnMessage := AppMessage;
 
   // default IDE values
   IniFile_SQL_Explorer := 'E:\Program Files (x86)\Borland\Delphi7\Bin\dbexplor.exe';
@@ -649,6 +700,19 @@ begin
   DFrameFoldersRemote.Parent  := DFrameLeftPanel.RemoteFoldersScrollBox;
   DFrameFoldersRemote.Align   := alClient;
   DFrameFoldersRemote.Visible := true;
+
+  // simulation
+  DFrameSimulation := TFrame24.Create(Form1);
+  DFrameSimulation.Parent  := Form1;
+  DFrameSimulation.Top     := 100;
+  DFrameSimulation.Left    := 264;
+  DFrameSimulation.Align   := alClient;
+  DFrameSimulation.Visible := false;
+
+  DFrameSimulationLeftPanel := TFrame25.Create(LeftPanel);
+  DFrameSimulationLeftPanel.Parent  := LeftPanel;
+  DFrameSimulationLeftPanel.Align   := alClient;
+  DFrameSimulationLeftPanel.Visible := false;
 
   // help authoring:
   DFrameHelpAuthor := TFrame11.Create(Form1);
@@ -732,9 +796,7 @@ begin
   DFrame.Visible := true;
   DFrame.count   := 1;
 
-  DFrame.JvDesignPanel1.Caption := '';
-  DFrame.JvDesignSurface1.Active := true;
-
+  DFrame.JvDesignPanel1.Caption   := '';
   DFrame.JvDesignPanel1.Active    := true;
   DFrame.JvDesignPanel1.Color     := clBtnFace;
   DFrame.JvDesignPanel1.DrawRules := false;
@@ -870,6 +932,16 @@ var
     Result:=UserName;
   end;
 begin
+  tipday := TJvTipOfDay.Create(Form1);
+
+  tipday.TipFont.Name := 'Consolas';
+  tipday.TipFont.Size := 10;
+
+  tipday.Tips.Add('The Free Pascal Compiler (FPC) can create Applications for multiple platforms ?');
+  tipday.Tips.Add('Pascal is not dead.');
+  tipday.Tips.Add('Pascal is a very good beginner Language (beside BASIc).');
+  tipday.Execute;
+
   JvGradientCaption1.Active := true;
 
   DFrameFoldersLocal.UserHomeFolder.Items.GetFirstNode.Text := CurrentUserName;
@@ -1031,24 +1103,6 @@ begin
   end;
 
   NS.Free;
-end;
-
-procedure TForm1.PopupMenu_Tools_Language_EnglishClick(Sender: TObject);
-var
-  LS: TStrings;
-begin
-  LS := localesList.StringsByName['ENG'];
-  LS.Delimiter := '|';
-  ModifyControl(Form1,LS);
-end;
-
-procedure TForm1.PopupMenu_Tools_Language_GermanClick(Sender: TObject);
-var
-  LS: TStrings;
-begin
-  LS := localesList.StringsByName['DEU'];
-  LS.Delimiter := '|';
-  ModifyControl(Form1,LS);
 end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
@@ -1515,19 +1569,29 @@ begin
   end else
   if MainPageControl.ActivePage.Caption = 'Designer' then
   begin
-    DFrameLeftPanel.LeftPageControl.ActivePageIndex := 0;
-
     DFrameC64Config.Visible := false;
     DFrameC64Drives.Visible := false;
 
-    DFrameFoldersLocal.Visible := true;
-    DFrameFoldersRemote.Visible := true;
+    // invisible gadget panel
+    if GetKeyState(VK_CONTROL) then
+    begin
+      EditPanel.Visible := false;
+      DFrameLeftPanel.Visible := false;
 
-    DFrameEdit.Visible := true;
+      DFrameSimulation.Visible := true;
+      DFrameSimulationLeftPanel.Visible := true;
+    end else
+    begin
+      DFrameLeftPanel.LeftPageControl.ActivePageIndex := 0;
 
-    ModeButton.Visible := true;
-    LogPanel.Visible := true;
+      DFrameFoldersLocal.Visible := true;
+      DFrameFoldersRemote.Visible := true;
 
+      DFrameEdit.Visible := true;
+
+      ModeButton.Visible := true;
+      LogPanel.Visible := true;
+    end;
     DFrameComputerOS.Visible := false;
   end else
   if MainPageControl.ActivePage.Caption = 'Console' then
@@ -2700,16 +2764,6 @@ begin
 
   PanelResizer.BringToFront;
   PanelResizer.Visible := true;
-
-  tipday := TJvTipOfDay.Create(Form1);
-
-  tipday.TipFont.Name := 'Consolas';
-  tipday.TipFont.Size := 10;
-
-  tipday.Tips.Add('The Free Pascal Compiler (FPC) can create Applications for multiple platforms ?');
-  tipday.Tips.Add('Pascal is not dead.');
-  tipday.Tips.Add('Pascal is a very good beginner Language (beside BASIc).');
-  tipday.Execute;
 end;
 
 procedure TForm1.NewProjectPageControlChange(Sender: TObject);
@@ -3207,6 +3261,11 @@ begin
   DFrameEditOptions.Visible := false;
   MainPageControl.ActivePage := TabSheet_Options;
   DFrameEnvOptions.Visible := true;
+end;
+
+procedure TForm1.xx1Click(Sender: TObject);
+begin
+//  SetUIToGerman;
 end;
 
 end.

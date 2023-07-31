@@ -53,7 +53,7 @@ extern void tree_execute(void);
 %token <node_and_value> TOK_AND TOK_NOT TOK_OR TOK_XOR TOK_NEG
 %token <node_and_value> TOK_SHL TOK_SHR
 
-%token <node_and_value> TOK_JE TOK_JNE TOK_JZ TOK_JG TOK_JGE TOK_JL TOK_JLE
+%token <node_and_value> TOK_JE TOK_JNE TOK_JZ TOK_JG TOK_JGE TOK_JL TOK_JLE TOK_CMP
 
 %token <node_and_value> TOK_AAA
 %token <node_and_value> TOK_ADD
@@ -232,7 +232,8 @@ stmt
 	|	TOK_PUSH mem stmt
 	|	TOK_PUSH con stmt {
 	}
-	|	TOK_RET      stmt {
+	|	TOK_CALL ident stmt
+	|	TOK_RET        stmt {
 	}
 	|	TOK_SUB reg ',' reg stmt
 	|	TOK_SUB reg ',' mem stmt
@@ -240,9 +241,13 @@ stmt
 	|	TOK_SUB reg ',' con stmt
 	|	TOK_SUB mem ',' con stmt {
 	}
+	|	TOK_CMP reg ',' reg stmt
+	|	TOK_CMP reg ',' mem stmt
+	|	TOK_CMP reg ',' con stmt {
+	}
 	|	jump_label ident    stmt {
 	}
-	|	TOK_LABEL
+	|	TOK_LABEL  stmt
 	;
 
 jump_label

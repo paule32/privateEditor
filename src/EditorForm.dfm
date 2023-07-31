@@ -1126,6 +1126,9 @@ object Form1: TForm1
     Height = 102
     Align = alBottom
     TabOrder = 3
+    DesignSize = (
+      1144
+      102)
     object PageControl1: TJvPageControl
       Left = 1
       Top = 1
@@ -1188,6 +1191,17 @@ object Form1: TForm1
         ImageIndex = 1
       end
     end
+    object Memo1: TMemo
+      Left = 776
+      Top = 0
+      Width = 313
+      Height = 89
+      Anchors = [akLeft, akTop, akBottom]
+      Lines.Strings = (
+        'Memo1')
+      ScrollBars = ssBoth
+      TabOrder = 1
+    end
   end
   object LeftPanel: TPanel
     Left = 0
@@ -1240,7 +1254,7 @@ object Form1: TForm1
         Top = 1
         Width = 648
         Height = 406
-        ActivePage = TabSheet13
+        ActivePage = TabSheet2
         Align = alLeft
         Anchors = [akLeft, akTop, akRight, akBottom]
         Font.Charset = DEFAULT_CHARSET
@@ -1722,65 +1736,6 @@ object Form1: TForm1
   object SaveDialog1: TSaveDialog
     Left = 441
     Top = 120
-  end
-  object localesList: TJvMultiStringHolder
-    MultipleStrings = <
-      item
-        Name = 'ENG'
-        Strings.Strings = (
-          'MenuBarButton_File=File'
-          'MenuBarButton_Edit=Edit'
-          'MenuBarButton_Tools=Tools'
-          'MenuBarButton_Help=Help'
-          'PopupMenu_File_New=New ...'
-          'PopupMenu_File_New_Application=Application'
-          'PopupMenu_File_New_Library=Library'
-          'PopupMenu_File_New_Other=Other ...'
-          'PopupMenu_File_Open=Open'
-          'PopupMenu_File_Save=Save'
-          'PopupMenu_File_SaveAs=Save As ...'
-          'PopupMenu_File_Exit=Exit'
-          'PopupMenu_Edit_Undo=Undo'
-          'PopupMenu_Edit_SelAll=Select Alll'
-          'PopupMenu_Edit_Cut=Cut'
-          'PopupMenu_Edit_Copy=Copy'
-          'PopupMenu_Edit_Paste=Paste'
-          'PopupMenu_Edit_Delete=Delete'
-          'PopupMenu_Tools_Language=Language'
-          'PopupMenu_Tools_Language_English=ENG  English'
-          'PopupMenu_Tools_Language_German=DEU  German'
-          'PopupMenu_Help_Help=Help'
-          'PopupMenu_Help_About=About ...')
-      end
-      item
-        Name = 'DEU'
-        Strings.Strings = (
-          'MenuBarButton_File=Datei'
-          'MenuBarButton_Edit=Bearbeiten'
-          'MenuBarButton_Tools=Extras'
-          'MenuBarButton_Help=Hilfe'
-          'PopupMenu_File_New=Neu ...'
-          'PopupMenu_File_New_Application=Anwendung'
-          'PopupMenu_File_New_Library=Bibliothek'
-          'PopupMenu_File_New_Other=Andere ...'
-          'PopupMenu_File_Open='#214'ffnen'
-          'PopupMenu_File_Save=Speichern'
-          'PopupMenu_File_SaveAs=Speichern unter ...'
-          'PopupMenu_File_Exit=Beenden'
-          'PopupMenu_Edit_Undo=Wiederherstellen'
-          'PopupMenu_Edit_SelAll=Alles makieren'
-          'PopupMenu_Edit_Cut=Ausschneiden'
-          'PopupMenu_Edit_Copy=Kopieren'
-          'PopupMenu_Edit_Paste=Einf'#252'gen'
-          'PopupMenu_Edit_Delete=L'#228'schen'
-          'PopupMenu_Tools_Language=Sprache'
-          'PopupMenu_Tools_Language_English=ENG  Englisch'
-          'PopupMenu_Tools_Language_German=DEU  Deutsch'
-          'PopupMenu_Help_Help=Hilfe'
-          'PopupMenu_Help_About='#220'ber ...')
-      end>
-    Left = 441
-    Top = 152
   end
   object PopupMenu_File: TJvPopupMenu
     Style = msOffice
@@ -2452,22 +2407,6 @@ object Form1: TForm1
     TextMargin = 5
     Left = 93
     Top = 312
-    object PopupMenu_Tools_Language: TMenuItem
-      Caption = 'Language'
-      object PopupMenu_Tools_Language_English: TMenuItem
-        Caption = 'ENG  English'
-        ImageIndex = 0
-        OnClick = PopupMenu_Tools_Language_EnglishClick
-      end
-      object PopupMenu_Tools_Language_German: TMenuItem
-        Caption = 'DEU  German'
-        ImageIndex = 1
-        OnClick = PopupMenu_Tools_Language_GermanClick
-      end
-    end
-    object N11: TMenuItem
-      Caption = '-'
-    end
     object IDE1: TMenuItem
       Caption = 'IDE'
       object EnvironmentOptions1: TMenuItem

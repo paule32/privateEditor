@@ -55,6 +55,7 @@ begin
   Timer1.Enabled := false;
   Application.CreateForm(TForm1, Form1);
   Form1.Show;
+  Hide;
 end;
 
 procedure TSplashForm.FormCreate(Sender: TObject);

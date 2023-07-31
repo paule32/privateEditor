@@ -3,12 +3,19 @@ unit reinit;
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms;
+  Windows, Dialogs, Messages, SysUtils, Classes, Graphics, Controls, Forms;
 
 procedure ReinitializeForms;
 function LoadNewResourceModule(Locale: LCID): Longint;
 
 implementation
+
+uses
+  EditorForm;
+
+var
+  NewInst: Longint;
+  FileLocale: String;
 
 type
   TAsInheritedReader = class(TReader)
@@ -45,70 +52,78 @@ end;
 function LoadNewResourceModule(Locale: LCID): Longint;
 var
   FileName: array [0..260] of char;
+  res : DWORD;
   P: PChar;
   LocaleName: array[0..4] of Char;
-  NewInst: Longint;
 begin
-  GetModuleFileName(HInstance, FileName, SizeOf(FileName));
-  GetLocaleInfo(Locale, LOCALE_SABBREVLANGNAME, LocaleName, SizeOf(LocaleName));
-  P := PChar(@FileName) + lstrlen(FileName);
-  while (P^ <> '.') and (P <> @FileName) do Dec(P);
-  NewInst := 0;
-  Result := 0;
-  if P <> @FileName then
+  res := GetModuleFileName(0, FileName, sizeof(FileName));
+  if res <> 0 then
   begin
-    Inc(P);
-    if LocaleName[0] <> #0 then
+    GetLocaleInfo(Locale, LOCALE_SABBREVLANGNAME, LocaleName, SizeOf(LocaleName));
+
+    NewInst := 0;
+    Result  := 0;
+
+    if Length(LocaleName) > 0 then
     begin
       // Then look for a potential language/country translation
-      lstrcpy(P, LocaleName);
-      NewInst := LoadLibraryEx(FileName, 0, LOAD_LIBRARY_AS_DATAFILE);
-      if NewInst = 0 then
-      begin
-        // Finally look for a language only translation
-        LocaleName[2] := #0;
-        lstrcpy(P, LocaleName);
-        NewInst := LoadLibraryEx(FileName, 0, LOAD_LIBRARY_AS_DATAFILE);
-      end;
+      FileLocale := ChangeFileExt(FileName, '.' + LocaleName);
+      NewInst    := LoadLibraryEx(PChar(FileLocale), 0, LOAD_LIBRARY_AS_DATAFILE);
+
+      if NewInst  = 0 then
+      raise Exception.Create('switch to default');
+
+      Result := SetResourceHInstance(NewInst);
+      exit;
     end;
-  end;
-  if NewInst <> 0 then
-    Result := SetResourceHInstance(NewInst)
+  end else
+  raise Exception.Create('Language-Module not loaded !');
+  result := 0;
 end;
 
 function InternalReloadComponentRes(const ResName: string; HInst: THandle; var Instance: TComponent): Boolean;
 var
-  HRsrc: THandle;
+  hr: HRSRC;
   ResStream: TResourceStream;
   AsInheritedReader: TAsInheritedReader;
-begin                   { avoid possible EResNotFound exception }
-  if HInst = 0 then HInst := HInstance;
-  HRsrc := FindResource(HInst, PChar(ResName), RT_RCDATA);
-  Result := HRsrc <> 0;
-  if not Result then Exit;
-  ResStream := TResourceStream.Create(HInst, ResName, RT_RCDATA);
+begin
   try
-    AsInheritedReader := TAsInheritedReader.Create(ResStream, 4096);
+    hr := FindResource(newInst, PChar(ResName), RT_RCDATA);
+    ResStream := TResourceStream.Create(newInst, ResName, RT_RCDATA);
     try
-      Instance := AsInheritedReader.ReadRootComponent(Instance);
+      // wird nie erreicht !
+      showmessage('SENSE');
+      AsInheritedReader := TAsInheritedReader.Create(ResStream, 4096);
+      try
+        Instance := AsInheritedReader.ReadRootComponent(Instance);
+      finally
+        AsInheritedReader.Free;
+      end;
     finally
-      AsInheritedReader.Free;
+      ResStream.Free;
     end;
-  finally
-    ResStream.Free;
+  except
+    on E: Exception do
+    begin
+      ShowMessage('Resource-Error: ' + #13#10 + E.Message);
+    end;
   end;
-  Result := True;
+  Result := true;
+  exit;
 end;
 
 function ReloadInheritedComponent(Instance: TComponent; RootAncestor: TClass): Boolean;
 
   function InitComponent(ClassType: TClass): Boolean;
   begin
-    Result := False;
-    if (ClassType = TComponent) or (ClassType = RootAncestor) then Exit;
-    Result := InitComponent(ClassType.ClassParent);
+    if ClassType.ClassParent = nil then
+    begin
+      Result := False;
+      exit;
+    end;
+
     Result := InternalReloadComponentRes(ClassType.ClassName, FindResourceHInstance(
-      FindClassHInstance(ClassType)), Instance) or Result;
+    FindClassHInstance(ClassType)), Instance) or Result;
   end;
 
 begin
@@ -119,13 +134,17 @@ procedure ReinitializeForms;
 var
   Count: Integer;
   I: Integer;
-  Form: TForm;
 begin
-  Count := Screen.FormCount;
-  for I := 0 to Count - 1 do
+  Form1.Memo1.Lines.Clear;
+
+  for I := 0 to Form1.ComponentCount - 1 do
   begin
-    Form := Screen.Forms[I];
-    ReloadInheritedComponent(Form, TForm);
+    if  (not (Form1.Components[i] is TControl))
+    and (not  Form1.Components[i].HasParent)
+    then begin
+      Form1.Memo1.Lines.Add(Form1.Components[i].Name);
+      ReloadInheritedComponent(Form1.Components[I], TForm1);
+    end;
   end;
 end;
 

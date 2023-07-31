@@ -2,6 +2,9 @@ program Editor;
 
 uses
   Forms,
+  Dialogs,
+  Windows,
+  SysUtils,
   EditorForm in 'EditorForm.pas' {Form1},
   AboutBox in 'AboutBox.pas' {OKRightDlg},
   FolderHelper in 'FolderHelper.pas',
@@ -32,7 +35,11 @@ uses
   ChatFrame in 'ChatFrame.pas' {Frame20: TFrame},
   OptionsFrame in 'OptionsFrame.pas' {Frame21: TFrame},
   EnvironmentFrame in 'EnvironmentFrame.pas' {Frame22: TFrame},
-  LeftPanelFrame in 'LeftPanelFrame.pas' {Frame23: TFrame};
+  LeftPanelFrame in 'LeftPanelFrame.pas' {Frame23: TFrame},
+  SimulationFrame in 'SimulationFrame.pas' {Frame24: TFrame},
+  SimulationLeftPanel in 'SimulationLeftPanel.pas' {Frame25: TFrame},
+  reinit in 'reinit.pas',
+  SimulationPartA in 'SimulationPartA.pas';
 
 {$R *.res}
 

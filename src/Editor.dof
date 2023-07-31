@@ -101,7 +101,7 @@ DebugSourceDirs=
 UsePackages=0
 [Parameters]
 RunParams=
-HostApplication=G:\AMIGA-500\paule32\test1\src\windows\start.exe
+HostApplication=
 Launcher=
 UseLauncher=0
 DebugCWD=
@@ -134,9 +134,17 @@ Item19=HelpTopicFrame.dfm
 Item20=ComputerFrame.dfm
 Item21=FormatLayoutFrame.dfm
 Item22=SpreadFrame.dfm
-Item23=Editor.drc
+Item23=SplashScreen.dfm
+Item24=EditorFrame.dfm
+Item25=ChatFrame.dfm
+Item26=OptionsFrame.dfm
+Item27=EnvironmentFrame.dfm
+Item28=LeftPanelFrame.dfm
+Item29=SimulationFrame.dfm
+Item30=SimulationLeftPanel.dfm
+Item31=Editor.drc
 [Language]
-ActiveLang=
+ActiveLang=DEU
 ProjectLang=$00000409
 RootDir=
 [Version Info]
