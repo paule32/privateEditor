@@ -62,4 +62,14 @@ object Frame24: TFrame24
       TabOrder = 0
     end
   end
+  object JvPopupMenu1: TJvPopupMenu
+    ImageMargin.Left = 0
+    ImageMargin.Top = 0
+    ImageMargin.Right = 0
+    ImageMargin.Bottom = 0
+    ImageSize.Height = 0
+    ImageSize.Width = 0
+    Left = 128
+    Top = 144
+  end
 end

@@ -1,10 +1,17 @@
+// -------------------------------------------------------------------
+// @File    SimulationPartA.pas
+// @Author  paule32 - Jens Kallup
+// @License (c) 2023  non-profit Software
+//          All Rights Reserved - only for private or education usage.
+// -------------------------------------------------------------------
 unit SimulationFrame;
 
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, 
-  Dialogs, StdCtrls, Buttons, ExtCtrls, ComCtrls;
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, Buttons, ExtCtrls, ComCtrls, Menus, JvMenus, ValEdit,
+  Grids;
 
 type
   TFrame24 = class(TFrame)
@@ -15,12 +22,15 @@ type
     Panel2: TPanel;
     BitBtn1: TBitBtn;
     ScrollBox1: TScrollBox;
+    JvPopupMenu1: TJvPopupMenu;
+    DeleteItem1: TMenuItem;
     procedure ScrollBox1DragOver(Sender, Source: TObject; X, Y: Integer;
       State: TDragState; var Accept: Boolean);
     procedure ScrollBox1DragDrop(Sender, Source: TObject; X, Y: Integer);
   private
     inReposition : boolean;
     oldPos : TPoint;
+    FCurrentControl: TObject;
 
     procedure ControlMouseUp(
       Sender: TObject;
@@ -33,8 +43,11 @@ type
     procedure ControlMouseMove(
       Sender: TObject;
       Shift : TShiftState; X, Y: Integer);
+
+    procedure FlipLineHorizontal(Sender: TObject);
+    procedure FlipLineVertical  (Sender: TObject);
   public
-    { Public declarations }
+    FWireCount: Integer;
   end;
 
 implementation
@@ -42,7 +55,7 @@ implementation
 {$R *.dfm}
 
 uses
-  SimulationPartA;
+  EditorForm, SimulationPartA;
 
 procedure TFrame24.ControlMouseMove(
   Sender: TObject;
@@ -87,6 +100,19 @@ procedure TFrame24.ControlMouseDown(
 begin
   if (Sender is TPaintWire) then
   begin
+    if Button = mbRight then
+    begin
+      FCurrentControl := Sender;
+      (Sender as TPaintWire).PopupMenu.Popup(
+        Mouse.CursorPos.X+4,
+        Mouse.CursorPos.Y+4);
+      exit;
+    end else
+    if Button = mbLeft then
+    begin
+      FCurrentControl := Sender;
+
+    end;
     inReposition := true;
     SetCapture(GetDC((Sender as TPaintWire).Canvas.Handle));
     GetCursorPos(oldPos);
@@ -106,32 +132,84 @@ begin
   end;
 end;
 
-procedure TFrame24.ScrollBox1DragOver(Sender, Source: TObject; X,
-  Y: Integer; State: TDragState; var Accept: Boolean);
+procedure TFrame24.ScrollBox1DragOver(
+  Sender: TObject;
+  Source: TObject;
+  X     : Integer;
+  Y     : Integer;
+  State : TDragState; var Accept: Boolean);
 begin
-  if (Source is TPanel) then Accept := true;
+  if (Source is TPaintWire) then Accept := true;
+end;
+
+procedure TFrame24.FlipLineVertical(Sender: TObject);
+var
+  mi: TMenuItem;
+begin
+  (FCurrentControl as TPaintWire).Height := 100;
+  (FCurrentControl as TPaintWire).Width  :=  20;
+  (FCurrentControl as TPaintWire).Position := poVertical;
+
+  if (Sender is TMenuItem) then
+  begin
+    mi := (Sender as TMenuItem);
+    mi.Caption := 'Flip horizontal';
+    mi.OnClick := FlipLineHorizontal;
+  end;
+end;
+procedure TFrame24.FlipLineHorizontal(Sender: TObject);
+var
+  mi: TMenuItem;
+begin
+  (FCurrentControl as TPaintWire).Height :=  20;
+  (FCurrentControl as TPaintWire).Width  := 100;
+  (FCurrentControl as TPaintWire).Position := poHorizontal;
+
+  if (Sender is TMenuItem) then
+  begin
+    mi := (Sender as TMenuItem);
+    mi.Caption := 'Flip vertical';
+    mi.OnClick := FlipLineVertical;
+  end;
 end;
 
 procedure TFrame24.ScrollBox1DragDrop(Sender, Source: TObject; X,
   Y: Integer);
 var
-  line1: TPaintWire;
+  line: TPaintWire;
+  menu: TJvPopupMenu;
+  item: TMenuItem;
 begin
   if (Source is TPaintWire) then
   begin
-    line1 := TPaintWire.Create(ScrollBox1);
-    line1.Parent := ScrollBox1;
-    line1.Width  := 100;
-    line1.Height := 20;
-    line1.Top := Y;
-    line1.Left := X;
+    line := TPaintWire.Create(ScrollBox1);
+    line.Name := 'TPaintWire_Wire_' + IntToStr(FWireCount-1);
+    line.Parent := ScrollBox1;
+    line.Width  := 100;
+    line.Height := 20;
+    line.Top    := Y;
+    line.Left   := X;
 
-    line1.OnMouseDown := ControlMouseDown;
-    line1.OnMouseMove := ControlMouseMove;
-    line1.OnMouseUp   := ControlMouseUp;
+    // Event handler
+    line.OnMouseDown := ControlMouseDown;
+    line.OnMouseMove := ControlMouseMove;
+    line.OnMouseUp   := ControlMouseUp;
 
-    line1.Visible := true;
-    line1.Enabled := true;
+    // popup menu
+    menu := TJvPopupMenu.Create(line);
+    item := TMenuItem   .Create(menu);
+
+    item.Caption := 'Flip vertical';
+    item.OnClick := FlipLineVertical;
+
+    menu.Style   := msOffice;
+    menu.Items.Add(item);
+
+    line.PopupMenu := menu;
+
+    // display visibilty
+    line.Visible := true;
+    line.Enabled := true;
   end;
 end;
 

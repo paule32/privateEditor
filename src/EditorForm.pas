@@ -708,6 +708,7 @@ begin
   DFrameSimulation.Left    := 264;
   DFrameSimulation.Align   := alClient;
   DFrameSimulation.Visible := false;
+  DFrameSimulation.FWireCount := 1;
 
   DFrameSimulationLeftPanel := TFrame25.Create(LeftPanel);
   DFrameSimulationLeftPanel.Parent  := LeftPanel;
@@ -2588,6 +2589,14 @@ begin
       end;
       Node.Delete;
       Handled := true;
+    end;
+  end else
+  if msg.CharCode = VK_ESCAPE then
+  begin
+    if DFrameSimulation.ScrollBox1.Focused then
+    begin
+      DFrameSimulation.ScrollBox1.EndDrag(true);
+      exit;
     end;
   end else
   if msg.CharCode = VK_F1 then
