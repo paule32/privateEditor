@@ -1,7 +1,10 @@
 program Editor;
 
 uses
-  Forms, Dialogs, Windows, SysUtils,
+  Forms,
+  Dialogs,
+  Windows,
+  SysUtils,
   EditorForm in 'EditorForm.pas' {Form1},
   AboutBox in 'AboutBox.pas' {OKRightDlg},
   FolderHelper in 'FolderHelper.pas',
@@ -35,7 +38,8 @@ uses
   LeftPanelFrame in 'LeftPanelFrame.pas' {Frame23: TFrame},
   SimulationFrame in 'SimulationFrame.pas' {Frame24: TFrame},
   SimulationLeftPanel in 'SimulationLeftPanel.pas' {Frame25: TFrame},
-  reinit in 'reinit.pas';
+  reinit in 'reinit.pas',
+  SimulationPartA in 'SimulationPartA.pas';
 
 {$R *.res}
 

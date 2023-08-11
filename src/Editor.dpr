@@ -39,7 +39,8 @@ uses
   SimulationFrame in 'SimulationFrame.pas' {Frame24: TFrame},
   SimulationLeftPanel in 'SimulationLeftPanel.pas' {Frame25: TFrame},
   reinit in 'reinit.pas',
-  SimulationPartA in 'SimulationPartA.pas';
+  SimulationPartA in 'SimulationPartA.pas',
+  SQLparser in 'SQLparser.pas';
 
 {$R *.res}
 

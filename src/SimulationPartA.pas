@@ -25,16 +25,46 @@ type
   );
 
 type
+  TElementType = class(TObject)
+  end;
+
+// ------------------------------------------------------------
+// @brief This ist the base class for all PaintElement's.
+// ------------------------------------------------------------
+type
   TPaintElementList = class(TList)
   private
     function getElement(Index: Integer): TPaintElementList;
   public
     constructor Create;
+  end;
+
+  TCustomPaintElement = class(TPaintBox)
+  private
+    FElementName        : String;
+    FElementNameDisplay : String;
+  public
+    constructor Create(AComponent: TComponent); reintroduce; overload;
+    constructor Create(AComponent: TComponent; AName: String); reintroduce; overload;
+  end;
+
+// ------------------------------------------------------------
+// @brief This class representant the connection's between the
+//        element's. It merge internal stuff with visual stuff.
+// ------------------------------------------------------------
+type
+  TCustomElementPorts = class(TPaintElementList)
+  private
+    FElementType: TElementType;
+//    function getElement(Index: Integer): TPaintElementList;
+  public
+    constructor Create;
+    property ElementType: TElementType read FElementType;
+
     property Input [Index: Integer]: TPaintElementList read getElement;
     property Output[Index: Integer]: TPaintElementList read getElement;
   end;
 
-type
   // ------------------------------------------------------------
   // @brief The TPaintWire class is used, when a wire (line) is
   //        place on the board, and wait for connection.
@@ -52,6 +82,23 @@ type
   end;
 
 implementation
+
+constructor TCustomElementPorts.Create;
+begin
+end;
+
+constructor TCustomPaintElement.Create(AComponent: TComponent);
+begin
+  Create(AComponent, 'Type 1');
+end;
+constructor TCustomPaintElement.Create(
+  AComponent: TComponent;
+  AName     : String);
+begin
+  inherited Create(AComponent);
+  FElementName        := AName;
+  FElementNameDisplay := AName;
+end;
 
 // ------------------------------------------------------------
 // @brief This is the constructor for class TPaintWire.
@@ -152,6 +199,7 @@ end;
 
 function TPaintElementList.getElement(Index: Integer): TPaintElementList;
 begin
+  result := nil;
 end;
 
 end.
