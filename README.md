@@ -4,6 +4,9 @@
 All begins on the zero page:<br>
 ![alpha ScreenShoot0](img/screen000.png)
 
+Instruction on start-up:
+![alpha ScreenShoot0](img/screen00A.png)
+
 The Editor for the selected DSL:<br>
 ![alpha ScreenShoot1](img/screen001.png)
 
