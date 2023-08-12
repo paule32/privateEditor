@@ -100,18 +100,19 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 36 "dBaseDSLwin32.y"
+#line 50 "dBaseDSLwin32.y"
 
 	struct {
 		float         value;
 		char        * name ;
 		struct node * node_for;
+        struct node * node_class;
 		struct node * stmt ;
 		struct node * next ;
 		struct node * prev ;
 	}	node_and_value;
 
-#line 115 "dBaseDSLwin32.tab.h"
+#line 116 "dBaseDSLwin32.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

@@ -5,6 +5,9 @@
 // License: all rights reserved.
 // ----------------------------------------------------------------------------
 # include "../common.h"
+# include <windows.h>
+
+# include "FormTemplate.h"
 
 // ----------------------------------------------------------------------------
 // parser variables and constants:
@@ -31,6 +34,17 @@ mknode(
 );
 
 extern void tree_execute(void);
+
+extern void add_node_new_class_ref( char*, char* );
+extern void add_node_new_class_obj( char*, char* );
+
+extern void display_list      ( );
+extern int  yylex();
+
+void EXPORT
+yy_dbase_win32_run_code(void) {
+    display_list();
+}
 %}
 
 %union {
@@ -38,6 +52,7 @@ extern void tree_execute(void);
 		float         value;
 		char        * name ;
 		struct node * node_for;
+        struct node * node_class;
 		struct node * stmt ;
 		struct node * next ;
 		struct node * prev ;
@@ -76,9 +91,7 @@ program
 	: /* empty */ { }
 	| program stmt { }
 	| program error {
-		char * buffer = (char *) malloc(1024);
-
-		strcpy ( buffer,"Error in Grammar");
+		char * buffer = strdup( "Error in Grammar" );
 		yyerror( buffer );
 	}
 	;
@@ -158,10 +171,11 @@ stmt
 	|	TOK_CLASS     ident_object '(' ident_object ')' TOK_OF '(' ident_object                  ')' TOK_CUSTOM stmt TOK_ENDCLASS stmt
 	|	TOK_CLASS     ident_object                      TOK_OF '(' ident_object ',' ident_object ')' TOK_CUSTOM stmt TOK_ENDCLASS stmt
 	|	TOK_CLASS     ident_object                      TOK_OF     ident_object                      TOK_CUSTOM stmt TOK_ENDCLASS stmt
-	|	TOK_CLASS     ident_object                      TOK_OF     ident_object                                 stmt TOK_ENDCLASS stmt {
+	|	TOK_CLASS     ident_object                      TOK_OF     ident_object
+    {
+        add_node_new_class_obj( $2.name, $4.name );    }   stmt TOK_ENDCLASS stmt {
 	}
-	|	TOK_LOCAL     local_object       stmt {
-	}
+	|	TOK_LOCAL     local_object       stmt
 	|	TOK_PRIVATE   ident_object       stmt { }
 	|	TOK_PARAMETER param_object       stmt {
 	}
@@ -192,6 +206,9 @@ ident_object
 local_object
 	: ident_object TOK_ASSIGN TOK_NEW ident_object '(' ident_object ')'
 	| ident_object TOK_ASSIGN TOK_NEW ident_object '(' ')'
+    {
+        add_node_new_class_ref( $4.name, $1.name );
+    }
 	| ident_object
 	| local_object ',' local_object
 	;
@@ -353,7 +370,7 @@ term
 		// ----------------------------
 		node_new = (struct node *) malloc( sizeof( struct node ) );
 		node_new->token = (char *) malloc( 12 );
-		
+
 		strcpy(node_new->token, "factor");
 		node_new->token_id = tt_term_mul;
 
@@ -505,13 +522,10 @@ ident
 		// -------------------------
 		node_new = (struct node *) malloc( sizeof( struct node )    );
 
-		node_new->token = (char *) malloc( strlen( $1.name     ) + 1);
-		$$.name         = (char *) malloc( strlen( $1.name     ) + 1);
-		strcpy($$.name, $1.name );
+		node_new->token = strdup( $1.name );
+		$$.name         = strdup( $1.name );
 
 		node_new->token_id = tt_const_ident;
-		strcpy(node_new->token, $1.name );
-		
 		node_new->prev  = node_prev;
 		node_new->next  = NULL;
 		
@@ -555,6 +569,177 @@ if_else_endif
 %%
 
 // ----------------------------------------------------------------------------
+// add a new class forwarder to the tree ...
+// ----------------------------------------------------------------------------
+void
+add_node_new_class_ref(
+    char* name,
+    char* parent)
+{
+    struct node * newnode = (struct node*) malloc( sizeof( struct node ));
+    struct node * current = node_head;
+    
+    newnode->token_id     = tt_class_ref;
+
+    if (newnode == NULL) {
+        MessageBoxA(0,"internal memory error.","Error",0);
+        return;
+    }
+
+    newnode->class_parent = strdup( parent );
+    newnode->class_name   = strdup( name   );
+    
+    newnode->token_id = tt_class_ref;
+    newnode->next = NULL;
+    newnode->prev = NULL;
+    
+    if (current == NULL) {
+        node_head = newnode;
+    }
+
+    while (current->next != NULL) {
+        current = current->next;
+    }
+
+    current->next = newnode;
+    newnode->prev = current;
+}
+
+// ----------------------------------------------------------------------------
+// add a new object class to the tree ...
+// ----------------------------------------------------------------------------
+void
+add_node_new_class_obj(
+    char* name,
+    char* class_type)
+{
+    struct node * newnode = (struct node*) malloc( sizeof( struct node ));
+    struct node * current = node_head;
+
+    if (current == NULL) {
+        MessageBoxA(0, "the list is empty","Warning",0);
+        return;
+    }
+
+    newnode->class_parent = strdup( class_type );
+    newnode->class_name   = strdup( name );
+
+    newnode->token_id     = tt_class_obj;
+    newnode->next = NULL;
+
+    // ----------------------
+    // safety search ...
+    // ----------------------
+    while (current->next != NULL) {
+        current = current->next;
+    }
+
+    current->next = newnode;
+    newnode->prev = current;
+}
+
+// ----------------------------------------------------------------------------
+// handle the created AST ...
+// ----------------------------------------------------------------------------
+void display_list()
+{
+    struct node * current = node_head;
+    struct node * tempA   = node_head;
+    struct node * tempB   = node_head;
+    
+    BOOL found   = false ;
+
+    char* buffer = (char *) malloc( 2048 );
+    char* class_name;
+
+    if (current == NULL) {
+        MessageBoxA(0, "the list is empty","Warning",0);
+        return;
+    }
+
+    while (current != NULL)
+    {
+        if (current->token_id == tt_class_ref)
+        {
+            class_name = strdup( current->class_name );
+            tempA = node_head;
+            
+            while (tempA != NULL)
+            {
+                if (tempA->class_name != NULL)
+                {
+                    tempB = node_head;
+                    while (tempB != NULL)
+                    {
+                        if (tempB->token_id == tt_class_obj)
+                        {
+                            /*  sprintf(buffer,"C: %s\nB: %s\nA: %s\nP: %s",
+                                class_name,
+                                tempB->class_name,
+                                tempA->class_name,
+                                tempB->class_parent);
+                                MessageBoxA(0,buffer,"impo",0);
+                            */
+                            if (!strcmp( class_name, tempB->class_name) ) {
+                            if (!strcmp( tempB->class_parent, "form" )  )
+                            {
+                                found = true;
+                                
+                                if (Form1 != NULL) {
+                                    delete Form1;
+                                    break;
+                                }
+                                
+                                Form1 = new TForm1(Application);
+                                Form1->ShowModal();
+                                
+                                break;
+                                
+                                /*
+                                    sprintf( buffer, "class: %s\nclass name: %s\nparent: %s",
+                                    tempA->class_parent,
+                                    tempB->class_name,
+                                    tempB->class_parent );
+                                    MessageBoxA( 0,buffer,"uuuuu",0 );
+                                */
+                            }   }
+                        }
+                        found = false;
+                        tempB = tempB->next;
+                    }
+                }
+                tempA = tempA->next;
+            }
+            if (found == false) {
+                std::sprintf( buffer,"class >> %s << not found !!!",
+                class_name);
+                yyerror( buffer );
+            }
+            break;
+        }
+        current = current->next;
+    }
+
+    // ----------------
+    // free memory ...
+    // ----------------
+    free( buffer );
+    
+    current = node_head;
+    while (current != NULL)
+    {
+        struct node * temp = current;
+        current = current->next;
+        
+        free( temp->class_parent );
+        free( temp->class_name   );
+        free( temp );
+    }
+    
+    MessageBoxA( 0,"end of task","Info",0 );
+}
+
+// ----------------------------------------------------------------------------
 // make/add a node to the parse tree ...
 // ----------------------------------------------------------------------------
 struct node *
@@ -594,61 +779,61 @@ tree_execute(void)
 			switch (node_prev->token_id)
 			{
 				case tt_const_ident:
-					sprintf(buffer,"detected ident: %s",
+					std::sprintf(buffer,"detected ident: %s",
 					ptr->token);
 				break;
-				
+
 				case tt_const_number:
-					sprintf(buffer,"fetch number: %f",
+					std::sprintf(buffer,"fetch number: %f",
 					ptr->value);
 				break;
-				
+
 				case tt_factor_neg:
-					sprintf(buffer,"negate number factor: %f",
+					std::sprintf(buffer,"negate number factor: %f",
 					ptr->value);
 				break;
-				
+
 				case tt_factor_term:
-					sprintf(buffer,"term factor:  %f ",
+					std::sprintf(buffer,"term factor:  %f ",
 					ptr->value);
 				break;
-				
+
 				case tt_factor_paren:
-					sprintf(buffer,"parens number factor: ( %f )",
+					std::sprintf(buffer,"parens number factor: ( %f )",
 					ptr->value);
 				break;
-				
+
 				case tt_factor_number:
-					sprintf(buffer,"simple factor number");
+					std::sprintf(buffer,"simple factor number");
 				break;
-				
+
 				case tt_term:    break;
 				case tt_factor:  break;
-				
-				case tt_expr_sub: sprintf(buffer, "expr sub" ); break;
-				case tt_expr_add: sprintf(buffer, "expr add" ); break;
-				case tt_expr_mul: sprintf(buffer, "expr mul" ); break;
-				case tt_expr_div: sprintf(buffer, "expr div" ); break;
-				
-				case tt_term_sub: sprintf(buffer, "term sub" ); break;
-				case tt_term_add: sprintf(buffer, "term add" ); break;
-				case tt_term_mul: sprintf(buffer, "term mul" ); break;
-				case tt_term_div: sprintf(buffer, "term div" ); break;
 
-				case tt_factor_sub: sprintf(buffer, "factor sub" ); break;
-				case tt_factor_add: sprintf(buffer, "factor add" ); break;
-				case tt_factor_mul: sprintf(buffer, "factor mul" ); break;
-				case tt_factor_div: sprintf(buffer, "factor div" ); break;
-				
+				case tt_expr_sub: std::sprintf(buffer, "expr sub" ); break;
+				case tt_expr_add: std::sprintf(buffer, "expr add" ); break;
+				case tt_expr_mul: std::sprintf(buffer, "expr mul" ); break;
+				case tt_expr_div: std::sprintf(buffer, "expr div" ); break;
+
+				case tt_term_sub: std::sprintf(buffer, "term sub" ); break;
+				case tt_term_add: std::sprintf(buffer, "term add" ); break;
+				case tt_term_mul: std::sprintf(buffer, "term mul" ); break;
+				case tt_term_div: std::sprintf(buffer, "term div" ); break;
+
+				case tt_factor_sub: std::sprintf(buffer, "factor sub" ); break;
+				case tt_factor_add: std::sprintf(buffer, "factor add" ); break;
+				case tt_factor_mul: std::sprintf(buffer, "factor mul" ); break;
+				case tt_factor_div: std::sprintf(buffer, "factor div" ); break;
+
 				case tt_ident_assign:
-					sprintf(buffer,"assign to: '%s' := %f",
+					std::sprintf(buffer,"assign to: '%s' := %f",
 						ptr->token,
 						ptr->value
 					);
 				break;
 				
 				default:
-					sprintf(buffer,"error on fetch type");
+					std::sprintf(buffer,"error on fetch type");
 				break;
 			}	MessageBoxA(0,buffer,"DebugInfo",0);
 		}

@@ -3,7 +3,7 @@
 // Author : Jens Kallup (c) 2023-07.01
 // License: all rights reserved.
 // ----------------------------------------------------------------------------
-# include "common.h"
+# include "../common.h"
 
 static BOOL   dll_has_error      = FALSE;
 static HANDLE dll_handle         = NULL;
@@ -174,6 +174,9 @@ int WINAPI DllEntryPoint(
 			ptr_parser_dll_plugin->path + 1;
 
 			ptr_parser_dll_plugin->path[length] = '\0';
+            
+            data_text = (char*) malloc(4096000); strcpy(data_text,"");
+            data_data = (char*) malloc(2048000); strcpy(data_data,"");
         }
         break;
         case DLL_PROCESS_DETACH:
@@ -191,6 +194,8 @@ int WINAPI DllEntryPoint(
 			// is set tu FALSE (no error'sÄ ...
 			// ---------------------------------------------
 			dll_has_error = FALSE;
+            free( data_text );
+            free( data_data );
         }
         break;
     }

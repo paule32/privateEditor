@@ -4,15 +4,14 @@
 // Author : Jens Kallup (c) 2023-07.01
 // License: all rights reserved.
 // ----------------------------------------------------------------------------
-# include "common.h"
+# include "../common.h"
 # include "dBaseDSLwin32.tab.h"
 
 // ----------------------------------------------------------------------------
 // parser variables and constants:
 // ----------------------------------------------------------------------------
-
-typedef void (*addParserErrorText)(char* message);
-static addParserErrorText m_addParserErrorText ;
+typedef void (*addParserErrorText)(const char* message);
+static addParserErrorText m_addParserErrorText = NULL;
 
 int count(void);
 void* addTextPtr;
@@ -24,7 +23,9 @@ int        yy_dbase_win32_count(void)        { return yy_row; }
 int EXPORT yy_dbase_win32_lex_get_line(void) { return yy_dbase_win32_count(); }
 int EXPORT yy_dbase_win32_lex_getlines(void) { return yy_dbase_win32_count(); }
 
-extern void yyerror(const char* msg);
+char* data_code;
+char* data_text;
+char* data_data;
 
 %}
 
@@ -74,6 +75,17 @@ Z           [z|Z]
 "&&".*                  { /* DO NOTHING */ }
 "&&".*\n                { /* DO NOTHING */ yy_row++; }
 
+"**"[ \t]*{E}{N}{D}[ \t]*{H}{E}{A}{D}{E}{R}([ \t]*|.*) {
+    header_isok = 1;
+    node_head   = (struct node*) malloc( sizeof( struct node ) );
+    BEGIN(INITIAL);
+}
+"**"[ \t]*{E}{N}{D}[ \t]*{H}{E}{A}{D}{E}{R}([ \t]*|.*)\n {
+    header_isok = 1;
+    node_head   = (struct node*) malloc( sizeof( struct node ) );
+    BEGIN(INITIAL);
+}
+
 "**".*                  { /* DO NOTHING */ }
 "**".*\n                { /* DO NOTHING */ yy_row++; }
 
@@ -84,7 +96,29 @@ Z           [z|Z]
 [ \t]*                  { /* empty */ }
 [\n|\r\n]               { yy_col = 1;      yy_row++; }
 
-{C}{L}{A}{S}{S} 				{ return TOK_CLASS;     }
+{C}{L}{A}{S}{S} 				{
+    if (header_isok != 1) {
+        yyerror("no header available !");
+        return 0;
+    }   else {
+    /*
+        static char dummy = 0;
+        data_text =
+            "unit A2;\n"
+            "interface\n"
+            "var Form2: TForm;\n"
+            "implementation\n"
+            "procedure main;\n"
+            "begin\n"
+              "Form2 := TForm.Create(Application);\n"
+              "Form2.ShowModal;\n"
+            "end;\n"
+            "end.";
+        if (dummy == 1)
+    */
+    }
+    return TOK_CLASS;
+}
 {C}{L}{E}{A}{R} 				{ return TOK_CLEAR;     }
 {C}{U}{S}{T}{O}{M}				{ return TOK_CUSTOM;    }
 {D}{E}{F}{I}{N}{E}				{ return TOK_DEFINE;    }
@@ -192,7 +226,7 @@ Z           [z|Z]
 
 .                       {
     char buffer[200];
-    sprintf( buffer, "Unrecognized character: %s\n", yytext );
+    std::sprintf( buffer, "Unrecognized character: %s\n", yytext );
     yyerror(buffer);
 }
 
@@ -200,7 +234,7 @@ Z           [z|Z]
 %%
 
 void EXPORT
-yy_dbase_win32_lex_parser_error (void (* func)(const char *message)) {
+yy_dbase_win32_lex_parser_error (void (*func)(const char *message)) {
 	m_addParserErrorText = func;
 }
 
@@ -229,15 +263,15 @@ yy_dbase_win32_lex_main(
     BOOL   result = FALSE;
     char * buffer;
 
-	// ------------------------------------------
-	// try to open file, saved before ...
-	// ------------------------------------------
+    // ------------------------------------------
+    // try to open file, saved before ...
+    // ------------------------------------------
     if (!(yyin = fopen(filename,"r"))) {
         buffer = (char*) malloc(100);
-    
-        sprintf(buffer, "could not open file: %s", filename);
+
+        std::sprintf(buffer, "could not open file: %s", filename);
         m_addParserErrorText(buffer);
-    
+
         free(buffer);
         return false;
     }
@@ -252,7 +286,7 @@ yy_dbase_win32_lex_main(
 	node_new         = (struct node *) malloc( sizeof( struct node ) ); // dummy to point head itself
 	node_head->token = (       char *) malloc( 8 );
 	strcpy( node_head->token, "root" );
-	
+
 	// ------------------------
 	// root/first record item
 	// ------------------------

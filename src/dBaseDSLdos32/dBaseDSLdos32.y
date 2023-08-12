@@ -31,6 +31,10 @@ mknode(
 );
 
 extern void tree_execute(void);
+
+char* EXPORT
+yy_dbase_win32_run_code(void) { return data_text; }
+
 %}
 
 %union {
@@ -158,8 +162,11 @@ stmt
 	|	TOK_CLASS     ident_object '(' ident_object ')' TOK_OF '(' ident_object                  ')' TOK_CUSTOM stmt TOK_ENDCLASS stmt
 	|	TOK_CLASS     ident_object                      TOK_OF '(' ident_object ',' ident_object ')' TOK_CUSTOM stmt TOK_ENDCLASS stmt
 	|	TOK_CLASS     ident_object                      TOK_OF     ident_object                      TOK_CUSTOM stmt TOK_ENDCLASS stmt
-	|	TOK_CLASS     ident_object                      TOK_OF     ident_object                                 stmt TOK_ENDCLASS stmt {
-	}
+	|	TOK_CLASS     ident_object                      TOK_OF     ident_object {
+    ss
+        yy_dbase_win32_run_code();
+        222
+    }   stmt TOK_ENDCLASS stmt { }
 	|	TOK_LOCAL     local_object       stmt {
 	}
 	|	TOK_PRIVATE   ident_object       stmt { }

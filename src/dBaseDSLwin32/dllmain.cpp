@@ -5,6 +5,11 @@
 // ----------------------------------------------------------------------------
 # include "../common.h"
 
+#ifdef __cpluscplus
+extern "C" {
+# include <windows.h>
+#endif
+
 static BOOL   dll_has_error      = FALSE;
 static HANDLE dll_handle         = NULL;
 static int    dll_thread_counter = 0;
@@ -57,6 +62,7 @@ static DWORD WINAPI dummy_worker(void *dummy)
     dll_thread_counter--;
     return 0;
 }
+
 int startThread(void)
 {
     int     rc = atexit(&goodbye);
@@ -188,7 +194,7 @@ int WINAPI DllEntryPoint(
 	    // ---------------------------------------------
 	    // after all is done, and the dll will be unload
 	    // and no crash was detected, then the flag here
-	    // is set tu FALSE (no error'sÃ„ ...
+	    // is set tu FALSE (no error'sÄ ...
 	    // ---------------------------------------------
 	    dll_has_error = FALSE;
         }
@@ -196,4 +202,8 @@ int WINAPI DllEntryPoint(
     }
     return TRUE;
 }
+
+#ifdef __cplusplus
+};
+#endif
 

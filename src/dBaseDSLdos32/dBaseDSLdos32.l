@@ -26,6 +26,8 @@ int EXPORT yy_dbase_dos32_lex_getlines(void) { return yy_dbase_dos32_count(); }
 
 extern void yyerror(const char* msg);
 
+int header_isok = 0;
+
 %}
 
 DIGIT       [0-9]
@@ -74,6 +76,11 @@ Z           [z|Z]
 "&&".*                  { /* DO NOTHING */ }
 "&&".*\n                { /* DO NOTHING */ yy_row++; }
 
+"**"[ \t]*{E}{N}{D}[ \t]*{O}{F}[ \t]*{H}{E}{A}{D}{E}{R}[ \t]*\n {
+    MessageBox(0,"121212,"sdwdewe",0);
+    header_isok = 1;
+}
+
 "**".*                  { /* DO NOTHING */ }
 "**".*\n                { /* DO NOTHING */ yy_row++; }
 
@@ -84,7 +91,25 @@ Z           [z|Z]
 [ \t]*                  { /* empty */ }
 [\n|\r\n]               { yy_col = 1;      yy_row++; }
 
-{C}{L}{A}{S}{S} 				{ return TOK_CLASS;     }
+{C}{L}{A}{S}{S} 				{
+    if (header_isok != 1) {
+        yyerror("no header available !");
+        return 0;
+    }   else {
+        strcat(data_text,
+            "unit A2;\n"
+            "interface\n"
+            "var Form2: TForm;\n"
+            "implementation\n"
+            "procedure main;\n"
+            "begin\n"
+              "Form2 := TForm.Create(Application);\n"
+              "Form2.ShowModal;\n"
+            "end;\n"
+            "end.");
+    }
+    return TOK_CLASS;
+}
 {C}{L}{E}{A}{R} 				{ return TOK_CLEAR;     }
 {C}{U}{S}{T}{O}{M}				{ return TOK_CUSTOM;    }
 {D}{E}{F}{I}{N}{E}				{ return TOK_DEFINE;    }

@@ -3056,19 +3056,23 @@ begin
   EditPanel.Visible := true;
   DFrameEditor.SynEdit1.Highlighter := DFrameEditor.HighDBase;
   DFrameEditor.SynEdit1.Text :=
-  '// This File was created automatically' + sLineBreak +
-  '// Press F2-key to execute it.'         + sLineBreak +
-  ''                                       + sLineBreak +
-  '# define TESTMACRO 42         // macro for: number'  + sLineBreak +
-  '# define MACRO2    "string"   // macro for: string'  + sLineBreak +
-  ''                                                    + sLineBreak +
-  '** End of Header'          + sLineBreak +
+  '// This File was created automatically' + sLineBreak   +
+  '// Press F2-key to execute it.'         + sLineBreak   +
+  ''                                       + sLineBreak   +
+  '# define TESTMACRO 42         // macro for: number'    + sLineBreak +
+  '# define MACRO2    "string"   // macro for: string'    + sLineBreak +
+  ''                                                      + sLineBreak +
+  '** END HEADER -- do not remove this line' + sLineBreak +
+  '//'                                       + sLineBreak +
+  '// Generated on 14/01/2022'               + sLineBreak +
+  '//'                                       + sLineBreak +
   'parameter bModal'          + sLineBreak +
   'local f = new Form1()'     + sLineBreak +
   'if bModal == .T.'          + sLineBreak +
   '  f.open()'                + sLineBreak +
   'endif'                     + sLineBreak +
   ''                          + sLineBreak +
+  '// change foo to: Form1, to see the form...' + sLineBreak +
   'class foo of form'         + sLineBreak +
   '   with ( this )'          + sLineBreak +
   '   endwith'                + sLineBreak +

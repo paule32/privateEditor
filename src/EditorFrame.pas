@@ -196,10 +196,13 @@ var
   callParserGetLines : function: Integer; cdecl;
   callParserCloseFile: procedure; cdecl;
   callParserError    : procedure(msg: PChar); cdecl;
+  callExecute        : procedure; cdecl;
 
   Handle : THandle;
   res: String;
   sl: TStrings;
+
+  InterpreterProgram: TJvInterpreterProgram;
 
   procedure ParserError(msg: PChar);
   begin
@@ -401,6 +404,8 @@ begin
           DateTimeToString(res,'',now);
           Form1.buildListBox.Items.Insert(0,res + ': load dBaseDSL.dll: OK.');
 
+          callExecute         := GetProcAddress(Handle,'_yy_dbase_win32_run_code');
+
           callParser          := GetProcAddress(Handle,'_yy_dbase_dos32_lex_main');
           callParserCloseFile := GetProcAddress(Handle,'_yy_dbase_dos32_lex_close');
           callParserGetLine   := GetProcAddress(Handle,'_yy_dbase_dos32_lex_get_line');
@@ -433,6 +438,7 @@ begin
                 PChar(Form1.DFrameEditor.TabSheet1.Caption),
                 PChar(Form1.IniFile_AsmOutput)
               );
+              callExecute;
               InfoBox.Text('Compile OK' + #13#10 +
               'Lines: ' + IntToStr(callParserGetLines-1));
             except
@@ -764,6 +770,8 @@ begin
           DateTimeToString(res,'',now);
           Form1.buildListBox.Items.Insert(0,res + ': load dBaseDSL.dll: OK.');
 
+          callExecute         := GetProcAddress(Handle,'_yy_dbase_win32_run_code');
+
           callParser          := GetProcAddress(Handle,'_yy_dbase_win32_lex_main');
           callParserCloseFile := GetProcAddress(Handle,'_yy_dbase_win32_lex_close');
           callParserGetLine   := GetProcAddress(Handle,'_yy_dbase_win32_lex_get_line');
@@ -796,6 +804,8 @@ begin
                 PChar(Form1.DFrameEditor.TabSheet1.Caption),
                 PChar(Form1.IniFile_AsmOutput)
               );
+
+              callExecute;
               InfoBox.Text('Compile OK' + #13#10 +
               'Lines: ' + IntToStr(callParserGetLines-1));
             except
@@ -980,10 +990,10 @@ begin
   if key = VK_F2 then
   begin
     if Form1.DFrameComputerOS.JvCheckBox10.Checked then appType := appType + [atPascal] else
-    if Form1.DFrameComputerOS.JvCheckBox10.Checked then appType := appType + [atBASIC ] else
-    if Form1.DFrameComputerOS.JvCheckBox10.Checked then appType := appType + [atDBase ] else
-    if Form1.DFrameComputerOS.JvCheckBox10.Checked then appType := appType + [atCLISP ] else
-    if Form1.DFrameComputerOS.JvCheckBox10.Checked then appType := appType + [atAssembler];
+    if Form1.DFrameComputerOS.JvCheckBox11.Checked then appType := appType + [atBASIC ] else
+    if Form1.DFrameComputerOS.JvCheckBox12.Checked then appType := appType + [atDBase ] else
+    if Form1.DFrameComputerOS.JvCheckBox13.Checked then appType := appType + [atCLISP ] else
+    if Form1.DFrameComputerOS.JvCheckBox14.Checked then appType := appType + [atAssembler];
 
     if Form1.DFrameComputerOS.JvCheckBox5.Checked then appType  := appType + [atWin32] else
     if Form1.DFrameComputerOS.JvCheckBox6.Checked then appType  := appType + [atMSDos] else

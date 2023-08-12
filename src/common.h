@@ -10,17 +10,20 @@
 // import/export stuff ...
 // ----------------------------------------------------------------------------
 #if defined(_MSC_VER)
-    //  Microsoft 
+    //  Microsoft
     # define EXPORT __declspec(dllexport)
     # define IMPORT __declspec(dllimport)
+    # pragma once
 #elif defined(__GNUC__)
     //  GCC
     # define EXPORT __attribute__((visibility("default")))
     # define IMPORT
+    # pragma once
 #elif defined(__BORLANDC__)
     // C++ Builder
     # define EXPORT __declspec(dllexport)
     # define IMPORT __declspec(dllimport)
+    # pragma once
 #else
     //  do nothing and hope for the best?
     # define EXPORT
@@ -31,23 +34,41 @@
 // ----------------------------------------------------------------------------
 // standard i/o header proto type stuff:
 // ----------------------------------------------------------------------------
+# include <vcl.h>
+
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
 # include <signal.h>
+# include <ctype.h>
+# include <mbstring.h>
 
 // ----------------------------------------------------------------------------
-// Microsoft Windows win32api:
+// C++ classes, container, header, structures ...
 // ----------------------------------------------------------------------------
+# include <iostream>
+# include <string>
+# include <algorithm>
+# include <functional>
+# include <io.h>
+
 # include <windows.h>
+
+extern std::string StringToUpperCase(const std::string& input);
+
+extern int header_isok = 0;
+
+extern char* date_text;
+extern char* data_code;
+extern char* data_data;
 
 // ----------------------------------------------------------------------------
 // Microsoft Windows XP, and up specified stuff:
 // ----------------------------------------------------------------------------
 struct parser_dll_plugin {
-	int      version;
-	char   * name;
-	char   * path;
+    int      version;
+    char   * name;
+    char   * path;
 } * ptr_parser_dll_plugin;
 
 # define DBASE__PLUGIN_VERSION 20230717  // version on latest date of compile
@@ -55,69 +76,84 @@ struct parser_dll_plugin {
 
 # define YY_NO_UNISTD_H
 
-#define false 0
-#define true  1
+# undef FALSE
+# undef TRUE
+
+# define FALSE 0
+# define TRUE  1
+
+# define false 0
+# define true  1
+
+# undef BOOL
+typedef int BOOL;
 
 // ----------------------------------------------------------------------------
 // token types for the vm:
 // ----------------------------------------------------------------------------
 enum token_type {
-	tt_illegal = -1,
-	tt_root,
-	
-	tt_const_number,	// constant number: 0-9
-	tt_const_ident ,    // constant letter array A-Z | a-z
-	tt_const_string,	// ident letters in qoute
-	
-	tt_term,
-	
-	tt_expr_sub,
-	tt_expr_add,
-	tt_expr_mul,
-	tt_expr_div,
-	
-	tt_term_sub,
-	tt_term_add,
-	tt_term_mul,
-	tt_term_div,
-	
-	tt_factor,
-	
-	tt_factor_number,	// number   factor
-	tt_factor_term,     // term
-	tt_factor_neg,  	// negative factor
-	tt_factor_paren, 	// factor in paren
-	
-	tt_factor_sub,		// -
-	tt_factor_add,		// +
-	tt_factor_mul,		// *
-	tt_factor_div,		// /
-	
-	tt_ident_assign,	// :=
-	
-	tt_for_loop,		// for <ident> := 0 to 9
-	
-	tt_end_of_list
+    tt_illegal = -1,
+    tt_root,
+
+    tt_const_number,	// constant number: 0-9
+    tt_const_ident ,    // constant letter array A-Z | a-z
+    tt_const_string,	// ident letters in qoute
+
+    tt_term,
+
+    tt_expr_sub,
+    tt_expr_add,
+    tt_expr_mul,
+    tt_expr_div,
+
+    tt_term_sub,
+    tt_term_add,
+    tt_term_mul,
+    tt_term_div,
+
+    tt_factor,
+
+    tt_factor_number,	// number   factor
+    tt_factor_term,     // term
+    tt_factor_neg,  	// negative factor
+    tt_factor_paren, 	// factor in paren
+
+    tt_factor_sub,		// -
+    tt_factor_add,		// +
+    tt_factor_mul,		// *
+    tt_factor_div,		// /
+
+    tt_ident_assign,	// :=
+
+    tt_for_loop,		// for <ident> := 0 to 9
+
+    tt_class_obj = 100,       // e.g.:  CLASS ... ENDCLASS
+    tt_class_ref = 200,       // e.g.:  local f = Form1()
+
+    tt_end_of_list
 };
 
 // ----------------------------------------------------------------------------
 // main stream structure of the parser tree ...
 // ----------------------------------------------------------------------------
 typedef struct node {
-	char * token;
-	char * token_ident;
-	enum   token_type  token_id;
-		   
-	char *name;
-	int     id;
-	
-	float        value;
-	
-	float     for_from; 	// for loop: from
-	float     for_to  ; 	// : to
-	
-	struct node * prev;
-	struct node * next;
+    char * token;
+    char * token_ident;
+    enum   token_type  token_id;
+
+    char * class_name;      // CLASS ... ENDCLASS
+    char * class_parent;
+
+    char * name;
+    int    id;
+
+    float  value;
+
+    float  for_from; 	// for loop: from
+    float  for_to  ; 	// : to
+
+    struct node * prev;
+    struct node * next;
 } node_t;
 
 extern struct node * node_head;
@@ -137,6 +173,11 @@ extern struct node * node_new;
 extern BOOL initNode(void);
 extern void insertNode(struct node* prev_node, int data);
 
+extern void yyerror(const char* msg);
+
+// ----------------------------------------------------------------------------
+// @brief C++ "no" mangled pure C signatures ...
+// ----------------------------------------------------------------------------
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -193,6 +234,8 @@ extern void  EXPORT yy_dbase_dos32_fatal_error(char* message);
 // ----------------------------------------------------------------------------
 // dbase win32 stuff:
 // ----------------------------------------------------------------------------
+extern void EXPORT yy_dbase_win32_run_code(void);
+
 extern void  EXPORT yy_dbase_win32_lex_parser_error(void (*func)(const char*));
 extern void  EXPORT yy_dbase_win32_lex_close(void);
 extern int   EXPORT yy_dbase_win32_lex_get_line(void);
