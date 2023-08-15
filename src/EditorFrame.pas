@@ -221,11 +221,8 @@ var
   end;
 
   procedure WriteTextToConsole( m: Pchar );
-  var
-    S1: String;
   begin
-    S1 := 'O ' + String(m) + ' O';
-    ShowMessage( '-----> ' + S1 );
+    Form1.Console1.WriteLn(m);
   end;
 
 begin
@@ -725,8 +722,8 @@ begin
           export_ShowParserErrorText := GetProcAddress(Handle,'_import_func_ShowParserErrorText');
           export_WriteTextToConsole  := GetProcAddress(Handle,'_import_func_WriteTextToConsole');
 
-          export_ShowParserErrorText(@ShowParserErrorText[1]);  // hook: yyerror
-          export_WriteTextToConsole (@WriteTextToConsole[1]);
+          export_ShowParserErrorText(@ShowParserErrorText);  // hook: yyerror
+          export_WriteTextToConsole (@WriteTextToConsole );
 
           if @callParser <> nil then
           begin

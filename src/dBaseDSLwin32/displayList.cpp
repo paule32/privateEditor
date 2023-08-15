@@ -166,21 +166,15 @@ void display_list()
                             escaped = false; // Setze den escaped-Status zurück
                         }
                     }
-                    
+
                     result = StringReplace( result, "\\\"", "\"", TReplaceFlags() << rfReplaceAll );
                     result = StringReplace( result, "\\n" , "\n", TReplaceFlags() << rfReplaceAll );
                     result = StringReplace( result, "\\r" , "\r", TReplaceFlags() << rfReplaceAll );
                     result = StringReplace( result, "\\t" , "    ", TReplaceFlags() << rfReplaceAll);  // tode: SET TAB
-                    
+
                     {
-                        char * buffer = (char*) malloc(1024);
-                        //buffer = strdup( result.c_str() );
-                        strcpy( buffer, "report");
-                        
-                        ShowMessage( "200");
-                        ShowMessage( buffer );
-                        ShowMessage( "100");
-                        
+                        char * buffer = (char*) malloc( strlen( result.c_str()));
+                        buffer = strdup( result.c_str() );
                         WriteTextToConsole( buffer );
                     }
                 }  

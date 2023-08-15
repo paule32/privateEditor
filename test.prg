@@ -4,7 +4,7 @@
 # define TESTMACRO 42         // macro for: number
 # define MACRO2    "string"   // macro for: string
 
-? "opass" + " neuer" + "frack"
+? "opass" + " neuer" + "  \"frack\tsss"
 ? "testung"
 
 ** END HEADER -- do not remove this line
