@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 434
-  Top = 88
+  Left = 685
+  Top = 64
   Width = 1162
   Height = 886
   Color = clBtnFace
@@ -1254,7 +1254,7 @@ object Form1: TForm1
         Top = 1
         Width = 648
         Height = 406
-        ActivePage = TabSheet2
+        ActivePage = ConsoleTabSheet
         Align = alLeft
         Anchors = [akLeft, akTop, akRight, akBottom]
         Font.Charset = DEFAULT_CHARSET

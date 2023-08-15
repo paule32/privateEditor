@@ -16,3 +16,41 @@ std::string StringToUpperCase(const std::string& input) {
     return result;
 }
 
+#include <vcl.h>
+#include <stdio.h>
+
+AnsiString
+FormatString(
+    const AnsiString& input,
+    const AnsiString& value)
+{
+    AnsiString result;
+    int i = 1;
+
+    while (i <= input.Length()) {
+        if (input[i] == '%' && i + 1 <= input.Length()) {
+            if (input[i + 1] == 's') {
+                result += value;
+                i += 2;
+            }
+            else if (input[i + 1] == 'd') {
+                result += value.ToInt();
+                i += 2;
+            }
+            else if (input[i + 1] == '%') {
+                result += '%';
+                i += 2;
+            }
+            else {
+                result += input[i];
+                i++;
+            }
+        }
+        else {
+            result += input[i];
+            i++;
+        }
+    }
+
+    return result;
+}

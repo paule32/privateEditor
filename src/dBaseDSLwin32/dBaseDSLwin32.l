@@ -7,12 +7,6 @@
 # include "../common.h"
 # include "dBaseDSLwin32.tab.h"
 
-// ----------------------------------------------------------------------------
-// parser variables and constants:
-// ----------------------------------------------------------------------------
-typedef void (*addParserErrorText)(const char* message);
-static addParserErrorText m_addParserErrorText = NULL;
-
 int count(void);
 void* addTextPtr;
 
@@ -97,26 +91,8 @@ Z           [z|Z]
 [\n|\r\n]               { yy_col = 1;      yy_row++; }
 
 {C}{L}{A}{S}{S} 				{
-    if (header_isok != 1) {
-        yyerror("no header available !");
-        return 0;
-    }   else {
-    /*
-        static char dummy = 0;
-        data_text =
-            "unit A2;\n"
-            "interface\n"
-            "var Form2: TForm;\n"
-            "implementation\n"
-            "procedure main;\n"
-            "begin\n"
-              "Form2 := TForm.Create(Application);\n"
-              "Form2.ShowModal;\n"
-            "end;\n"
-            "end.";
-        if (dummy == 1)
-    */
-    }
+    if (header_isok != 1)
+    yyerror("no header available !");
     return TOK_CLASS;
 }
 {C}{L}{E}{A}{R} 				{ return TOK_CLEAR;     }
@@ -161,9 +137,19 @@ Z           [z|Z]
 	// pattern for: "Hello World"
 	// pattern for: 'Hello World'
 	// -----------------------------------
-	yylval.node_and_value.name = (char*) malloc( strlen( yytext ) + 1); strcpy(
-	yylval.node_and_value.name, yytext );
-	
+	yylval.node_and_value.content_str = (char*) malloc( strlen( yytext ) + 1); strcpy(
+    yylval.node_and_value.content_str, yytext ) ;
+
+	return TOK_STRING;
+}
+["']((\\.|[^"'])*)["'][ \t\n\r] {
+	// -----------------------------------
+	// pattern for: "Hello World"
+	// pattern for: 'Hello World'
+	// -----------------------------------
+	yylval.node_and_value.content_str = (char*) malloc( strlen( yytext ) + 1); strcpy(
+    yylval.node_and_value.content_str, yytext ) ;
+
 	return TOK_STRING;
 }
 
@@ -203,6 +189,8 @@ Z           [z|Z]
 "<="                    { return TOK_LTEQ; }
 ">="                    { return TOK_GTEQ; }
 
+\?\?                    { return TOK_PRINT_TWO; }
+
 ":"                     { return ':'; }
 ";"                     { return ';'; }
 "-"                     { return '-'; }
@@ -224,6 +212,8 @@ Z           [z|Z]
 \,                      { return ','; }
 \.                      { return '.'; }
 
+\?                      { return TOK_PRINT_ONE; }
+
 .                       {
     char buffer[200];
     std::sprintf( buffer, "Unrecognized character: %s\n", yytext );
@@ -232,11 +222,6 @@ Z           [z|Z]
 
 <<EOF>>                 { return TOK_YYEOF; }
 %%
-
-void EXPORT
-yy_dbase_win32_lex_parser_error (void (*func)(const char *message)) {
-	m_addParserErrorText = func;
-}
 
 int yywrap(void) { return 1; }
 
@@ -252,7 +237,7 @@ void yyerror(const char* m)
 	strcat( buffer, ": ");
 	strcat( buffer, m);
 
-	m_addParserErrorText(buffer);
+	ShowParserErrorText( buffer );
 }
 
 BOOL EXPORT
@@ -270,7 +255,7 @@ yy_dbase_win32_lex_main(
         buffer = (char*) malloc(100);
 
         std::sprintf(buffer, "could not open file: %s", filename);
-        m_addParserErrorText(buffer);
+        ShowParserErrorText(buffer);
 
         free(buffer);
         return false;

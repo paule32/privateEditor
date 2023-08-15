@@ -189,14 +189,25 @@ begin
   end;
 end;
 
+type
+  TWriteTextToConsole = procedure(m: PChar);
+procedure WriteToMyConsole(m: PChar);
+begin
+  ShowMessage('---> ' + string(m));
+end;
+var
+  export_WriteToMyConsole: procedure(callback: TWriteTextToConsole); cdecl;
+
 procedure StartCompile(aType: myAppType);
 var
   callParser:          function(fileSrc, tempDir: PChar): BOOL; cdecl;
   callParserGetLine  : function: Integer; cdecl;
   callParserGetLines : function: Integer; cdecl;
   callParserCloseFile: procedure; cdecl;
-  callParserError    : procedure(msg: PChar); cdecl;
   callExecute        : procedure; cdecl;
+var
+  export_ShowParserErrorText: procedure( m: Pchar) cdecl;
+  export_WriteTextToConsole : procedure( m: Pchar) cdecl;
 
   Handle : THandle;
   res: String;
@@ -204,9 +215,17 @@ var
 
   InterpreterProgram: TJvInterpreterProgram;
 
-  procedure ParserError(msg: PChar);
+  procedure ShowParserErrorText(m: PChar);
   begin
-    raise Exception.Create(PChar(msg));
+    raise Exception.Create(PChar(m));
+  end;
+
+  procedure WriteTextToConsole( m: Pchar );
+  var
+    S1: String;
+  begin
+    S1 := 'O ' + String(m) + ' O';
+    ShowMessage( '-----> ' + S1 );
   end;
 
 begin
@@ -255,7 +274,7 @@ begin
 
           Handle := LoadLibrary(PChar(ExtractFilePath(Application.ExeName) + '\parser\DSLdos32Pascal.dll'));
           if Handle = 0 then
-          raise Exception.Create('pascalDSLdos32.dll not loaded.');
+          raise Exception.Create('dll not loaded.');
 
           DateTimeToString(res,'',now);
           Form1.buildListBox.Items.Insert(0,res + ': load pascalDSL.dll: OK.');
@@ -264,21 +283,12 @@ begin
           callParserCloseFile := GetProcAddress(Handle,'_yy_pascal_dos32_lex_close');
           callParserGetLine   := GetProcAddress(Handle,'_yy_pascal_dos32_lex_get_line');
           callParserGetLines  := GetProcAddress(Handle,'_yy_pascal_dos32_lex_getlines');
-          callParserError     := GetProcAddress(Handle,'_yy_pascal_dos32_lex_parser_error');
 
-          // hook: yyerror
-          if @callParserError <> nil then
-          begin
-            DateTimeToString(res,'',now);
-            Form1.buildListBox.Items.Insert(0,
-            res + ': ' + 'callParserError init success.');
-            callParserError(@ParserError);
-          end else
-          begin
-            DateTimeToString(res,'',now);
-            Form1.buildListBox.Items.Insert(0,
-            res + ': ' + 'callParserError init failed.');
-          end;
+          export_ShowParserErrorText := GetProcAddress(Handle,'_import_func_ShowParserErrorText');
+          export_WriteTextToConsole  := GetProcAddress(Handle,'_import_func_WriteTextToConsole');
+
+          export_ShowParserErrorText( @export_ShowParserErrorText );
+          export_WriteTextToConsole ( @WriteTextToConsole );
 
           if @callParser <> nil then
           begin
@@ -336,21 +346,11 @@ begin
           callParserCloseFile := GetProcAddress(Handle,'_yy_basic_dos32_lex_close');
           callParserGetLine   := GetProcAddress(Handle,'_yy_basic_dos32_lex_get_line');
           callParserGetLines  := GetProcAddress(Handle,'_yy_basic_dos32_lex_getlines');
-          callParserError     := GetProcAddress(Handle,'_yy_basic_dos32_lex_parser_error');
 
-          // hook: yyerror
-          if @callParserError <> nil then
-          begin
-            DateTimeToString(res,'',now);
-            Form1.buildListBox.Items.Insert(0,
-            res + ': ' + 'callParserError init success.');
-            callParserError(@ParserError);
-          end else
-          begin
-            DateTimeToString(res,'',now);
-            Form1.buildListBox.Items.Insert(0,
-            res + ': ' + 'callParserError init failed.');
-          end;
+          export_ShowParserErrorText := GetProcAddress(Handle,'_yy_basic_dos32_lex_parser_error');
+
+          export_ShowParserErrorText( @ShowParserErrorText );
+          export_WriteTextToConsole ( @WriteTextToConsole );
 
           if @callParser <> nil then
           begin
@@ -410,21 +410,10 @@ begin
           callParserCloseFile := GetProcAddress(Handle,'_yy_dbase_dos32_lex_close');
           callParserGetLine   := GetProcAddress(Handle,'_yy_dbase_dos32_lex_get_line');
           callParserGetLines  := GetProcAddress(Handle,'_yy_dbase_dos32_lex_getlines');
-          callParserError     := GetProcAddress(Handle,'_yy_dbase_dos32_lex_parser_error');
+          export_ShowParserErrorText := GetProcAddress(Handle,'_yy_dbase_dos32_lex_parser_error');
 
-          // hook: yyerror
-          if @callParserError <> nil then
-          begin
-            DateTimeToString(res,'',now);
-            Form1.buildListBox.Items.Insert(0,
-            res + ': ' + 'callParserError init success.');
-            callParserError(@ParserError);
-          end else
-          begin
-            DateTimeToString(res,'',now);
-            Form1.buildListBox.Items.Insert(0,
-            res + ': ' + 'callParserError init failed.');
-          end;
+          export_ShowParserErrorText( @ShowParserErrorText );
+          export_WriteTextToConsole ( @WriteTextToConsole );
 
           if @callParser <> nil then
           begin
@@ -483,21 +472,8 @@ begin
           callParserCloseFile := GetProcAddress(Handle,'_yy_clisp_dos32_lex_close');
           callParserGetLine   := GetProcAddress(Handle,'_yy_clisp_dos32_lex_get_line');
           callParserGetLines  := GetProcAddress(Handle,'_yy_clisp_dos32_lex_getlines');
-          callParserError     := GetProcAddress(Handle,'_yy_clisp_dos32_lex_parser_error');
+          export_ShowParserErrorText := GetProcAddress(Handle,'_yy_clisp_dos32_lex_parser_error');
 
-          // hook: yyerror
-          if @callParserError <> nil then
-          begin
-            DateTimeToString(res,'',now);
-            Form1.buildListBox.Items.Insert(0,
-            res + ': ' + 'callParserError init success.');
-            callParserError(@ParserError);
-          end else
-          begin
-            DateTimeToString(res,'',now);
-            Form1.buildListBox.Items.Insert(0,
-            res + ': ' + 'callParserError init failed.');
-          end;
 
           if @callParser <> nil then
           begin
@@ -555,21 +531,10 @@ begin
           callParserCloseFile := GetProcAddress(Handle,'_yy_assembler_dos32_lex_close');
           callParserGetLine   := GetProcAddress(Handle,'_yy_assembler_dos32_lex_get_line');
           callParserGetLines  := GetProcAddress(Handle,'_yy_assembler_dos32_lex_getlines');
-          callParserError     := GetProcAddress(Handle,'_yy_assembler_dos32_lex_parser_error');
+          export_ShowParserErrorText := GetProcAddress(Handle,'_yy_assembler_dos32_lex_parser_error');
 
-          // hook: yyerror
-          if @callParserError <> nil then
-          begin
-            DateTimeToString(res,'',now);
-            Form1.buildListBox.Items.Insert(0,
-            res + ': ' + 'callParserError init success.');
-            callParserError(@ParserError);
-          end else
-          begin
-            DateTimeToString(res,'',now);
-            Form1.buildListBox.Items.Insert(0,
-            res + ': ' + 'callParserError init failed.');
-          end;
+          export_ShowParserErrorText( @ShowParserErrorText );
+          export_WriteTextToConsole ( @WriteTextToConsole );
 
           if @callParser <> nil then
           begin
@@ -630,21 +595,11 @@ begin
           callParserCloseFile := GetProcAddress(Handle,'_yy_pascal_win32_lex_close');
           callParserGetLine   := GetProcAddress(Handle,'_yy_pascal_win32_lex_get_line');
           callParserGetLines  := GetProcAddress(Handle,'_yy_pascal_win32_lex_getlines');
-          callParserError     := GetProcAddress(Handle,'_yy_pascal_win32_lex_parser_error');
+          export_ShowParserErrorText := GetProcAddress(Handle,'_yy_pascal_win32_lex_parser_error');
 
-          // hook: yyerror
-          if @callParserError <> nil then
-          begin
-            DateTimeToString(res,'',now);
-            Form1.buildListBox.Items.Insert(0,
-            res + ': ' + 'callParserError init success.');
-            callParserError(@ParserError);
-          end else
-          begin
-            DateTimeToString(res,'',now);
-            Form1.buildListBox.Items.Insert(0,
-            res + ': ' + 'callParserError init failed.');
-          end;
+          export_ShowParserErrorText( @ShowParserErrorText );
+          export_WriteTextToConsole ( @WriteTextToConsole );
+
 
           if @callParser <> nil then
           begin
@@ -702,21 +657,11 @@ begin
           callParserCloseFile := GetProcAddress(Handle,'_yy_basic_win32_lex_close');
           callParserGetLine   := GetProcAddress(Handle,'_yy_basic_win32_lex_get_line');
           callParserGetLines  := GetProcAddress(Handle,'_yy_basic_win32_lex_getlines');
-          callParserError     := GetProcAddress(Handle,'_yy_basic_win32_lex_parser_error');
+          export_ShowParserErrorText     := GetProcAddress(Handle,'_yy_basic_win32_lex_parser_error');
 
-          // hook: yyerror
-          if @callParserError <> nil then
-          begin
-            DateTimeToString(res,'',now);
-            Form1.buildListBox.Items.Insert(0,
-            res + ': ' + 'callParserError init success.');
-            callParserError(@ParserError);
-          end else
-          begin
-            DateTimeToString(res,'',now);
-            Form1.buildListBox.Items.Insert(0,
-            res + ': ' + 'callParserError init failed.');
-          end;
+          export_ShowParserErrorText( @ShowParserErrorText );
+          export_WriteTextToConsole ( @WriteTextToConsole );
+
 
           if @callParser <> nil then
           begin
@@ -774,23 +719,14 @@ begin
 
           callParser          := GetProcAddress(Handle,'_yy_dbase_win32_lex_main');
           callParserCloseFile := GetProcAddress(Handle,'_yy_dbase_win32_lex_close');
-          callParserGetLine   := GetProcAddress(Handle,'_yy_dbase_win32_lex_get_line');
+          callParserGetLine   := GetProcAddress(Handle,'_yy_dbase_win32_lex_get_lin');
           callParserGetLines  := GetProcAddress(Handle,'_yy_dbase_win32_lex_getlines');
-          callParserError     := GetProcAddress(Handle,'_yy_dbase_win32_lex_parser_error');
 
-          // hook: yyerror
-          if @callParserError <> nil then
-          begin
-            DateTimeToString(res,'',now);
-            Form1.buildListBox.Items.Insert(0,
-            res + ': ' + 'callParserError init success.');
-            callParserError(@ParserError);
-          end else
-          begin
-            DateTimeToString(res,'',now);
-            Form1.buildListBox.Items.Insert(0,
-            res + ': ' + 'callParserError init failed.');
-          end;
+          export_ShowParserErrorText := GetProcAddress(Handle,'_import_func_ShowParserErrorText');
+          export_WriteTextToConsole  := GetProcAddress(Handle,'_import_func_WriteTextToConsole');
+
+          export_ShowParserErrorText(@ShowParserErrorText[1]);  // hook: yyerror
+          export_WriteTextToConsole (@WriteTextToConsole[1]);
 
           if @callParser <> nil then
           begin
@@ -850,21 +786,8 @@ begin
           callParserCloseFile := GetProcAddress(Handle,'_yy_clisp_win32_lex_close');
           callParserGetLine   := GetProcAddress(Handle,'_yy_clisp_win32_lex_get_line');
           callParserGetLines  := GetProcAddress(Handle,'_yy_clisp_win32_lex_getlines');
-          callParserError     := GetProcAddress(Handle,'_yy_clisp_win32_lex_parser_error');
+          export_ShowParserErrorText     := GetProcAddress(Handle,'_yy_clisp_win32_lex_parser_error');
 
-          // hook: yyerror
-          if @callParserError <> nil then
-          begin
-            DateTimeToString(res,'',now);
-            Form1.buildListBox.Items.Insert(0,
-            res + ': ' + 'callParserError init success.');
-            callParserError(@ParserError);
-          end else
-          begin
-            DateTimeToString(res,'',now);
-            Form1.buildListBox.Items.Insert(0,
-            res + ': ' + 'callParserError init failed.');
-          end;
 
           if @callParser <> nil then
           begin
@@ -922,21 +845,10 @@ begin
           callParserCloseFile := GetProcAddress(Handle,'_yy_assembler_win32_lex_close');
           callParserGetLine   := GetProcAddress(Handle,'_yy_assembler_win32_lex_get_line');
           callParserGetLines  := GetProcAddress(Handle,'_yy_assembler_win32_lex_getlines');
-          callParserError     := GetProcAddress(Handle,'_yy_assembler_win32_lex_parser_error');
+          export_ShowParserErrorText     := GetProcAddress(Handle,'_yy_assembler_win32_lex_parser_error');
 
-          // hook: yyerror
-          if @callParserError <> nil then
-          begin
-            DateTimeToString(res,'',now);
-            Form1.buildListBox.Items.Insert(0,
-            res + ': ' + 'callParserError init success.');
-            callParserError(@ParserError);
-          end else
-          begin
-            DateTimeToString(res,'',now);
-            Form1.buildListBox.Items.Insert(0,
-            res + ': ' + 'callParserError init failed.');
-          end;
+          export_ShowParserErrorText( @ShowParserErrorText );
+          export_WriteTextToConsole ( @WriteTextToConsole );
 
           if @callParser <> nil then
           begin

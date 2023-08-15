@@ -4,6 +4,9 @@
 # define TESTMACRO 42         // macro for: number
 # define MACRO2    "string"   // macro for: string
 
+? "opass" + " neuer" + "frack"
+? "testung"
+
 ** END HEADER -- do not remove this line
 //
 // Generated on 14/01/2022
@@ -15,7 +18,7 @@ if bModal == .T.
 endif
 
 // change foo to: Form1, to see the form...
-class Form1 of form
+class foo of form
    with ( this )
    endwith
 

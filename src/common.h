@@ -51,6 +51,11 @@
 # include <algorithm>
 # include <functional>
 # include <io.h>
+# include <vector>
+# include <map>
+# include <string>
+# include <cstring>
+# include <sstream>
 
 # include <windows.h>
 
@@ -95,9 +100,9 @@ enum token_type {
     tt_illegal = -1,
     tt_root,
 
-    tt_const_number,	// constant number: 0-9
-    tt_const_ident ,    // constant letter array A-Z | a-z
-    tt_const_string,	// ident letters in qoute
+    tt_const_number = 5,	// constant number: 0-9
+    tt_const_ident  = 6,    // constant letter array A-Z | a-z
+    tt_const_string = 7,	// ident letters in qoute
 
     tt_term,
 
@@ -125,13 +130,72 @@ enum token_type {
 
     tt_ident_assign,	// :=
 
+    tt_print_one,       // ?  with new line after string
+    tt_print_two,       // ?? no   ...
+    
     tt_for_loop,		// for <ident> := 0 to 9
 
-    tt_class_obj = 100,       // e.g.:  CLASS ... ENDCLASS
-    tt_class_ref = 200,       // e.g.:  local f = Form1()
+    tt_class_obj,       // e.g.:  CLASS ... ENDCLASS
+    tt_class_ref,       // e.g.:  local f = Form1()
 
     tt_end_of_list
 };
+
+extern std::map< int, std::string > globsl_tt_type;
+
+// ----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
+class Node {
+public:
+    Node(const std::string& data) : data(data) {}
+    Node(const std::string& data, int ttype)
+        : data(data)
+        , token_type( ttype ) { }
+    Node( int ttype )
+        : token_type( ttype ) { }
+    Node() {}
+   ~Node() {}
+    void AddSubNode( Node * subNode ) {
+        subNodes.push_back( subNode ) ;
+    }
+    void SetData(const std::string& newStr, int ttype) {
+        data = newStr;
+        token_type = ttype;
+    }   
+    void SetData(const std::string& newData) {
+        data = newData;
+    }
+    void SetTokenTrace( int command ) {
+        token_trace = command;
+    }
+    void SetTokenType( int ttype ) {
+        token_type = ttype;
+    }
+    const int GetTokenType() const {
+        return token_type;
+    }
+    const int GetTokenTrace() const {
+        return token_trace;
+    }
+    const std::string& GetData() const {
+        return data;
+    }
+    const std::vector<Node*>& GetSubNodes() const {
+        return subNodes;
+    }
+
+private:
+    int token_type;
+    int token_trace;
+    
+    std::string data;
+    std::vector<Node*> subNodes;
+};
+
+extern std::vector< Node *> rootNodes;
+extern class        Node *  currentRootNode;
+
+extern AnsiString FormatString(const AnsiString&, const AnsiString& ); 
 
 // ----------------------------------------------------------------------------
 // main stream structure of the parser tree ...
@@ -144,6 +208,10 @@ typedef struct node {
     char * class_name;      // CLASS ... ENDCLASS
     char * class_parent;
 
+    char * content_str;     // ?? "text"  or:  ? "text"
+    
+    std::vector< Node *> node_str;
+    
     char * name;
     int    id;
 
@@ -236,13 +304,24 @@ extern void  EXPORT yy_dbase_dos32_fatal_error(char* message);
 // ----------------------------------------------------------------------------
 extern void EXPORT yy_dbase_win32_run_code(void);
 
-extern void  EXPORT yy_dbase_win32_lex_parser_error(void (*func)(const char*));
 extern void  EXPORT yy_dbase_win32_lex_close(void);
 extern int   EXPORT yy_dbase_win32_lex_get_line(void);
 extern int   EXPORT yy_dbase_win32_lex_getlines(void);
 extern BOOL  EXPORT yy_dbase_win32_lex_main(char*,char*);
 
 extern void  EXPORT yy_dbase_win32_fatal_error(char* message);
+
+// ----------------------------------------------------------------------------
+// parser call-back's
+// ----------------------------------------------------------------------------
+typedef void (*func_ShowParserErrorText)(char* message); 
+typedef void (*func_WriteTextToConsole )(char* message); 
+
+extern func_ShowParserErrorText ShowParserErrorText ;
+extern func_WriteTextToConsole  WriteTextToConsole  ;
+
+extern void  EXPORT import_func_ShowParserErrorText ( void(*)(char*) );
+extern void  EXPORT import_func_WriteTextToConsole  ( void(*)(char*) );
 
 // ----------------------------------------------------------------------------
 // basic dos32 stuff:

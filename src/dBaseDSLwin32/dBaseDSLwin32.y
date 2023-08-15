@@ -5,9 +5,6 @@
 // License: all rights reserved.
 // ----------------------------------------------------------------------------
 # include "../common.h"
-# include <windows.h>
-
-# include "FormTemplate.h"
 
 // ----------------------------------------------------------------------------
 // parser variables and constants:
@@ -38,9 +35,21 @@ extern void tree_execute(void);
 extern void add_node_new_class_ref( char*, char* );
 extern void add_node_new_class_obj( char*, char* );
 
+extern void add_node_string( int, char* );
+extern void add_node_print ( int, int );
+
 extern void display_list      ( );
 extern int  yylex();
 
+// ----------------------------------------------------------------------------
+// this variable is important ! - it counts the commands, and is in relation
+// to, and with other command's...
+// ----------------------------------------------------------------------------
+static int command_reference_counter = 1;
+
+// ----------------------------------------------------------------------------
+// the following "export" function is used in Delphi, to call the tree run ...
+// ----------------------------------------------------------------------------
 void EXPORT
 yy_dbase_win32_run_code(void) {
     display_list();
@@ -48,15 +57,16 @@ yy_dbase_win32_run_code(void) {
 %}
 
 %union {
-	struct {
-		float         value;
-		char        * name ;
-		struct node * node_for;
+    struct {
+        float         value;
+        char        * name ;
+        char        * content_str;
+        struct node * node_for;
         struct node * node_class;
-		struct node * stmt ;
-		struct node * next ;
-		struct node * prev ;
-	}	node_and_value;
+        struct node * stmt ;
+        struct node * next ;
+        struct node * prev ;
+    }	node_and_value;
 }
 
 %token <node_and_value> TOK_ID
@@ -73,12 +83,15 @@ yy_dbase_win32_run_code(void) {
 %token <node_and_value> TOK_WITH TOK_ENDWITH TOK_CUSTOM
 %token <node_and_value> TOK_DEFINE
 
+%token <node_and_value> TOK_PRINT_ONE
+%token <node_and_value> TOK_PRINT_TWO
+
 %type  <node_and_value> number
 %type  <node_and_value> factor
 %type  <node_and_value> term
 
 %type  <node_and_value> expr
-%type  <node_and_value> ident
+%type  <node_and_value> ident ident_string
 %type  <node_and_value> stmt if_else_endif ident_object param_object
 
 %token TOK_YYEOF 0
@@ -88,204 +101,231 @@ yy_dbase_win32_run_code(void) {
 %%
 
 program
-	: /* empty */ { }
-	| program stmt { }
-	| program error {
-		char * buffer = strdup( "Error in Grammar" );
-		yyerror( buffer );
-	}
-	;
+    : /* empty */ { }
+    | program stmt { }
+    | program error {
+    	char * buffer = strdup( "Error in Grammar" );
+    	yyerror( buffer );
+    }
+    ;
 
 define_macro
-	:	'#' TOK_DEFINE ident_object
-	|	'#' TOK_DEFINE expr
-	;
+    :	'#' TOK_DEFINE ident_object
+    |	'#' TOK_DEFINE expr
+    ;
 
 stmt
-	:	/* empty */ { }
-	|	ident_object TOK_ASSIGN expr
-	{
-		// -----------------------------
-		// make a ident node to tree
-		// -----------------------------
-		node_new = (struct node *) malloc( sizeof( struct node )    );
-		node_new->token = (char *) malloc( strlen( $1.name     ) + 1);
-		
-		strcpy(node_new->token, $1.name   );
-		node_new->token_id = tt_const_ident;
+    :	/* empty */ { }
+    |	ident_object TOK_ASSIGN expr
+    {
+    	// -----------------------------
+    	// make a ident node to tree
+    	// -----------------------------
+    	node_new = (struct node *) malloc( sizeof( struct node )    );
+    	node_new->token = (char *) malloc( strlen( $1.name     ) + 1);
 
-		node_new->prev  = node_prev;
-		node_new->next  = NULL;
-		
-		node_prev = node_new;
+    	strcpy(node_new->token, $1.name   );
+    	node_new->token_id = tt_const_ident;
+
+    	node_new->prev  = node_prev;
+    	node_new->next  = NULL;
+
+    	node_prev = node_new;
 
 
-		// ------------------------------
-		// make a ident expr node to tree
-		// ------------------------------
-		node_new = (struct node *) malloc( sizeof( struct node ) );
-		node_new->token = (char *) malloc( 12 );
-		
-		strcpy(node_new->token, "assign");
-		node_new->token_id = tt_ident_assign;
+    	// ------------------------------
+    	// make a ident expr node to tree
+    	// ------------------------------
+    	node_new = (struct node *) malloc( sizeof( struct node ) );
+    	node_new->token = (char *) malloc( 12 );
 
-		node_new->value = $3.value;
-		node_new->prev  = node_prev;
-		node_new->next  = NULL;
-		
-		node_prev = node_new;
-	}	stmt
-	|	TOK_FOR ident '=' expr TOK_TO expr {
-		node_new = (struct node *) malloc( sizeof( struct node ) );
-		node_new->token = (char *) malloc( 12 );
-		
-		strcpy(node_new->token, "forloop");
+    	strcpy(node_new->token, "assign");
+    	node_new->token_id = tt_ident_assign;
 
-		$1.node_for = (struct node *) malloc( sizeof( struct node ) );
-		$1.node_for->token_id = tt_for_loop;
-		$1.node_for->for_from = $4.value;
-		$1.node_for->for_to   = $6.value;
+    	node_new->value = $3.value;
+    	node_new->prev  = node_prev;
+    	node_new->next  = NULL;
 
-		node_new->prev = $1.node_for;
-		node_new->next = NULL;
-		node_prev      = node_new;
+    	node_prev = node_new;
+    }	stmt
+    |	TOK_FOR ident '=' expr TOK_TO expr {
+    	node_new = (struct node *) malloc( sizeof( struct node ) );
+    	node_new->token = (char *) malloc( 12 );
 
-	}	stmt TOK_ENDFOR {
-		node_new = (struct node *) malloc( sizeof( struct node ) );
-		node_new->token = (char *) malloc( 12 );
-		
-		strcpy(node_new->token, "forend");
-		node_new->token_id = $1.node_for->token_id;
-		
-		node_new->prev = $1.node_for;
-		node_new->next = NULL;
-		node_prev      = node_new;
-	}
-	|	define_macro TOK_ASSIGN ident_object { }
-	|	define_macro TOK_ASSIGN ident_string { }
-	|	define_macro TOK_ASSIGN expr         { }
-	|	define_macro            ident_object { }
-	|	define_macro            ident_string { }
-	|	define_macro            expr         {
-	}
-	|	TOK_CLASS     ident_object '(' ident_object ')' TOK_OF '(' ident_object                  ')' TOK_CUSTOM stmt TOK_ENDCLASS stmt
-	|	TOK_CLASS     ident_object                      TOK_OF '(' ident_object ',' ident_object ')' TOK_CUSTOM stmt TOK_ENDCLASS stmt
-	|	TOK_CLASS     ident_object                      TOK_OF     ident_object                      TOK_CUSTOM stmt TOK_ENDCLASS stmt
-	|	TOK_CLASS     ident_object                      TOK_OF     ident_object
+    	strcpy(node_new->token, "forloop");
+
+    	$1.node_for = (struct node *) malloc( sizeof( struct node ) );
+    	$1.node_for->token_id = tt_for_loop;
+    	$1.node_for->for_from = $4.value;
+    	$1.node_for->for_to   = $6.value;
+
+    	node_new->prev = $1.node_for;
+    	node_new->next = NULL;
+    	node_prev      = node_new;
+
+    }	stmt TOK_ENDFOR {
+    	node_new = (struct node *) malloc( sizeof( struct node ) );
+    	node_new->token = (char *) malloc( 12 );
+
+    	strcpy(node_new->token, "forend");
+    	node_new->token_id = $1.node_for->token_id;
+
+    	node_new->prev = $1.node_for;
+    	node_new->next = NULL;
+    	node_prev      = node_new;
+    }
+    |	define_macro TOK_ASSIGN ident_object { }
+    |	define_macro TOK_ASSIGN ident_string { }
+    |	define_macro TOK_ASSIGN expr         { }
+    |	define_macro            ident_object { }
+    |	define_macro            ident_string { }
+    |	define_macro            expr         {
+    }
+    |   TOK_PRINT_ONE  {
+        // ------------------------------------------------------
+        // print 1 line into the console window without word wrap
+        // ------------------------------------------------------
+        add_node_print ( command_reference_counter, 1 );
+    }   ident_string   {
+        add_node_string( command_reference_counter++, $3.content_str );
+    }
+    |   TOK_PRINT_TWO  {
+        // ------------------------------------------------------
+        // print 1 line into the console window, no line break:
+        // ------------------------------------------------------
+        add_node_print ( command_reference_counter, 2 );
+    }   ident_string   {
+        add_node_string( command_reference_counter++, $3.content_str );
+    }
+    |	TOK_CLASS     ident_object '(' ident_object ')' TOK_OF '(' ident_object                  ')' TOK_CUSTOM stmt TOK_ENDCLASS stmt
+    |	TOK_CLASS     ident_object                      TOK_OF '(' ident_object ',' ident_object ')' TOK_CUSTOM stmt TOK_ENDCLASS stmt
+    |	TOK_CLASS     ident_object                      TOK_OF     ident_object                      TOK_CUSTOM stmt TOK_ENDCLASS stmt
+    |	TOK_CLASS     ident_object                      TOK_OF     ident_object
     {
         add_node_new_class_obj( $2.name, $4.name );    }   stmt TOK_ENDCLASS stmt {
-	}
-	|	TOK_LOCAL     local_object       stmt
-	|	TOK_PRIVATE   ident_object       stmt { }
-	|	TOK_PARAMETER param_object       stmt {
-	}
-	|	TOK_PROCEDURE ident args_param   stmt TOK_RETURN                   stmt
-	|	TOK_FUNCTION  ident args_param   stmt TOK_RETURN   return_value    stmt {
-	}
-	|	TOK_WITH '('  ident_object ')'   stmt TOK_ENDWITH  stmt
-	|	TOK_WITH      ident_object       stmt TOK_ENDWITH  stmt {
-	}
-	|	ident_object  TOK_ASSIGN TOK_NEW ident_object '(' ident_object ')' stmt
-	|	ident_object  TOK_ASSIGN TOK_NEW ident_object '('              ')' stmt {
-	}
-	|	ident_object  TOK_ASSIGN ident_object ident_string  stmt
-	|	ident_object  TOK_ASSIGN ident_object { }           stmt
-	|	ident_object  TOK_ASSIGN              ident_string  stmt
-	|	ident_object  TOK_ASSIGN              TOK_FALSE     stmt
-	|	ident_object  TOK_ASSIGN              TOK_TRUE { }  stmt
-	|	ident_object  '('        ident_object ')'           stmt
-	|	ident_object  '('                     ')'      { }  stmt
-	|	if_else_endif
-	;
+    }
+    |	TOK_LOCAL     local_object       stmt
+    |	TOK_PRIVATE   ident_object       stmt { }
+    |	TOK_PARAMETER param_object       stmt {
+    }
+    |	TOK_PROCEDURE ident args_param   stmt TOK_RETURN                   stmt
+    |	TOK_FUNCTION  ident args_param   stmt TOK_RETURN   return_value    stmt {
+    }
+    |	TOK_WITH '('  ident_object ')'   stmt TOK_ENDWITH  stmt
+    |	TOK_WITH      ident_object       stmt TOK_ENDWITH  stmt {
+    }
+    |	ident_object  TOK_ASSIGN TOK_NEW ident_object '(' ident_object ')' stmt
+    |	ident_object  TOK_ASSIGN TOK_NEW ident_object '('              ')' stmt {
+    }
+    |	ident_object  TOK_ASSIGN ident_object ident_string  stmt
+    |	ident_object  TOK_ASSIGN ident_object { }           stmt
+    |	ident_object  TOK_ASSIGN              ident_string  stmt
+    |	ident_object  TOK_ASSIGN              TOK_FALSE     stmt
+    |	ident_object  TOK_ASSIGN              TOK_TRUE { }  stmt
+    |	ident_object  '('        ident_object ')'           stmt
+    |	ident_object  '('                     ')'      { }  stmt
+    |	if_else_endif
+    ;
 
 ident_object
-	: TOK_ID
-	| ident_object '.' ident_object
-	;
+    : TOK_ID
+    | ident_object '.' ident_object
+    ;
 
 local_object
-	: ident_object TOK_ASSIGN TOK_NEW ident_object '(' ident_object ')'
-	| ident_object TOK_ASSIGN TOK_NEW ident_object '(' ')'
+    : ident_object TOK_ASSIGN TOK_NEW ident_object '(' ident_object ')'
+    | ident_object TOK_ASSIGN TOK_NEW ident_object '(' ')'
     {
         add_node_new_class_ref( $4.name, $1.name );
     }
-	| ident_object
-	| local_object ',' local_object
-	;
-	
+    | ident_object
+    | local_object ',' local_object
+    ;
+
 param_object
-	: ident_object
-	| param_object ',' param_object
-	;
+    : ident_object
+    | param_object ',' param_object
+    ;
 
 args_param
-	:	/* empty */
-	|	'(' param_object ')'
-	|	'('              ')'
-	;
+    :	/* empty */
+    |	'(' param_object ')'
+    |	'('              ')'
+    ;
 
 ident_string
-	: TOK_STRING
-	| TOK_STRING_BRACE
-	| ident_string '+' ident_string
-	;
+    :   TOK_STRING
+    {
+        $$.content_str = strdup( $1.content_str );
+    }
+    |   TOK_STRING_BRACE
+    |   ident_string '+' ident_string
+    {
+        AnsiString str1 = $1.content_str;
+        AnsiString str2 = $3.content_str;
+        
+        AnsiString str3 = str1 + str2;
+        
+        $$.content_str = strdup( str3.c_str() );
+    }
+    ;
 
 return_merge
-	:	/* empty */
-	|	ident_object '+' ident_object
-	|   ident_object '+' ident_string {
-	}
-	|	ident_string '+' ident_string
-	|	ident_string '+' ident_object {
-	}
-	|	ident_object
-	|	ident_string {
-	}
-	|	TOK_FALSE
-	|	TOK_TRUE
-	|	expr
-	;
+    :    /* empty */
+    |    ident_object '+' ident_object
+    |    ident_object '+' ident_string {
+    }
+    |    ident_string '+' ident_string
+    |    ident_string '+' ident_object {
+    }
+    |    ident_object
+    |    ident_string {
+    }
+    |    TOK_FALSE
+    |    TOK_TRUE
+    |    expr
+    ;
 ident_merge
-	:	return_merge
-	|	return_merge '+' return_merge
-	;
+    :	return_merge
+    |	return_merge '+' return_merge
+    ;
 return_value
-	:	'(' ident_merge ')'
-	|	    ident_merge
-	;
+    :	'(' ident_merge ')'
+    |	    ident_merge
+    ;
 
 expr
-	: expr
-	{
-		// ----------------------------
-		// make a mul term node to tree
-		// ----------------------------
-		node_new = (struct node *) malloc( sizeof( struct node ) );
-		node_new->token = (char *) malloc( 12 );
-		
-		strcpy(node_new->token, "expr");
-		node_new->token_id = tt_expr_sub;
+    : expr
+    {
+    	// ----------------------------
+    	// make a mul term node to tree
+    	// ----------------------------
+    	node_new = (struct node *) malloc( sizeof( struct node ) );
+    	node_new->token = (char *) malloc( 12 );
 
-		node_new->value = $1.value;
-		node_new->prev  = node_prev;
-		node_new->next  = NULL;
-		
-		node_prev = node_new;
-	}
-	'-' term
-	{
-		// ----------------------------
-		// make a sub term node to tree
-		// ----------------------------
-		node_new = (struct node *) malloc( sizeof( struct node ) );
-		node_new->token = (char *) malloc( 12 );
-		
-		strcpy(node_new->token, "term");
-		node_new->token_id = tt_term_sub;
+    	strcpy(node_new->token, "expr");
+    	node_new->token_id = tt_expr_sub;
 
-		node_new->value = $4.value;
-		node_new->prev  = node_prev;
-		node_new->next  = NULL;
+    	node_new->value = $1.value;
+    	node_new->prev  = node_prev;
+    	node_new->next  = NULL;
+
+    	node_prev = node_new;
+    }
+    '-' term
+    {
+    	// ----------------------------
+    	// make a sub term node to tree
+    	// ----------------------------
+    	node_new = (struct node *) malloc( sizeof( struct node ) );
+    	node_new->token = (char *) malloc( 12 );
+
+    	strcpy(node_new->token, "term");
+    	node_new->token_id = tt_term_sub;
+
+    	node_new->value = $4.value;
+    	node_new->prev  = node_prev;
+    	node_new->next  = NULL;
 		
 		node_prev = node_new;
 		$$.value = $1.value - $4.value;
@@ -314,7 +354,7 @@ expr
 		// ----------------------------
 		node_new = (struct node *) malloc( sizeof( struct node ) );
 		node_new->token = (char *) malloc( 12 );
-		
+
 		strcpy(node_new->token, "term");
 		node_new->token_id = tt_term_add;
 
@@ -339,7 +379,7 @@ expr
 		node_new->value = $1.value;
 		node_new->prev  = node_prev;
 		node_new->next  = NULL;
-		
+
 		node_prev = node_new;
 		$$.value = $1.value;
 	}
@@ -353,7 +393,7 @@ term
 		// ----------------------------
 		node_new = (struct node *) malloc( sizeof( struct node ) );
 		node_new->token = (char *) malloc( 12 );
-		
+
 		strcpy(node_new->token, "term");
 		node_new->token_id = tt_term_mul;
 
@@ -377,7 +417,7 @@ term
 		node_new->value = $4.value;
 		node_new->prev  = node_prev;
 		node_new->next  = NULL;
-		
+
 		node_prev = node_new;
 		$$.value = $1.value * $4.value;
 	}
@@ -395,7 +435,7 @@ term
 		node_new->value = $1.value;
 		node_new->prev  = node_prev;
 		node_new->next  = NULL;
-		
+
 		node_prev = node_new;
 	}
 	'/' factor
@@ -578,8 +618,6 @@ add_node_new_class_ref(
 {
     struct node * newnode = (struct node*) malloc( sizeof( struct node ));
     struct node * current = node_head;
-    
-    newnode->token_id     = tt_class_ref;
 
     if (newnode == NULL) {
         MessageBoxA(0,"internal memory error.","Error",0);
@@ -626,6 +664,11 @@ add_node_new_class_obj(
 
     newnode->token_id     = tt_class_obj;
     newnode->next = NULL;
+    newnode->prev = NULL;
+    
+    if (current == NULL) {
+        node_head = newnode;
+    }
 
     // ----------------------
     // safety search ...
@@ -638,105 +681,48 @@ add_node_new_class_obj(
     newnode->prev = current;
 }
 
-// ----------------------------------------------------------------------------
-// handle the created AST ...
-// ----------------------------------------------------------------------------
-void display_list()
+void
+add_node_print( int command, int flag )
 {
-    struct node * current = node_head;
-    struct node * tempA   = node_head;
-    struct node * tempB   = node_head;
-    
-    BOOL found   = false ;
+    if (flag == 1) {
+        Node * nod = new Node( tt_print_one );
+        nod->SetTokenTrace( command );
 
-    char* buffer = (char *) malloc( 2048 );
-    char* class_name;
+        rootNodes.push_back( nod );
+    }   else {
+        Node * nod = new Node( tt_print_two );
+        nod->SetTokenTrace( command );
 
-    if (current == NULL) {
-        MessageBoxA(0, "the list is empty","Warning",0);
+        rootNodes.push_back( nod );
+    }
+}
+
+void
+add_node_string( int command, char *str )
+{
+    Node * nod = new Node( str );
+
+    nod->SetTokenType ( tt_const_string );
+    nod->SetTokenTrace( command );
+    nod->SetData( str );
+
+    rootNodes.push_back( nod );
+}
+
+
+void DisplayTree(const Node* root)
+{
+    std::stringstream ss;
+    if (root == NULL) {
+        ShowMessage("List is empty !");
         return;
     }
 
-    while (current != NULL)
-    {
-        if (current->token_id == tt_class_ref)
-        {
-            class_name = strdup( current->class_name );
-            tempA = node_head;
-            
-            while (tempA != NULL)
-            {
-                if (tempA->class_name != NULL)
-                {
-                    tempB = node_head;
-                    while (tempB != NULL)
-                    {
-                        if (tempB->token_id == tt_class_obj)
-                        {
-                            /*  sprintf(buffer,"C: %s\nB: %s\nA: %s\nP: %s",
-                                class_name,
-                                tempB->class_name,
-                                tempA->class_name,
-                                tempB->class_parent);
-                                MessageBoxA(0,buffer,"impo",0);
-                            */
-                            if (!strcmp( class_name, tempB->class_name) ) {
-                            if (!strcmp( tempB->class_parent, "form" )  )
-                            {
-                                found = true;
-                                
-                                if (Form1 != NULL) {
-                                    delete Form1;
-                                    break;
-                                }
-                                
-                                Form1 = new TForm1(Application);
-                                Form1->ShowModal();
-                                
-                                break;
-                                
-                                /*
-                                    sprintf( buffer, "class: %s\nclass name: %s\nparent: %s",
-                                    tempA->class_parent,
-                                    tempB->class_name,
-                                    tempB->class_parent );
-                                    MessageBoxA( 0,buffer,"uuuuu",0 );
-                                */
-                            }   }
-                        }
-                        found = false;
-                        tempB = tempB->next;
-                    }
-                }
-                tempA = tempA->next;
-            }
-            if (found == false) {
-                std::sprintf( buffer,"class >> %s << not found !!!",
-                class_name);
-                yyerror( buffer );
-            }
-            break;
-        }
-        current = current->next;
-    }
+    const std::vector<Node*>& subNodes = root->GetSubNodes();
 
-    // ----------------
-    // free memory ...
-    // ----------------
-    free( buffer );
-    
-    current = node_head;
-    while (current != NULL)
-    {
-        struct node * temp = current;
-        current = current->next;
-        
-        free( temp->class_parent );
-        free( temp->class_name   );
-        free( temp );
+    for (int i = 0; i < subNodes.size(); ++i) {
+        DisplayTree(subNodes[i]);
     }
-    
-    MessageBoxA( 0,"end of task","Info",0 );
 }
 
 // ----------------------------------------------------------------------------
@@ -754,7 +740,7 @@ mknode(
 	newnode->token = (char *) malloc( strlen( token       ) + 1);
 	newnode->prev  =  prev;
 	newnode->next  =  NULL;
-	
+
 	strcpy(newnode->token, token);
 	return newnode;
 }
@@ -770,7 +756,7 @@ tree_execute(void)
 	
 	buffer = (char *) malloc(255);
 	node_prev = ptr;
-	
+
 	// ---------------------------------------
 	// traverse the parse tree from behind ...
 	// ---------------------------------------

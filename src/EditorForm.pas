@@ -3062,6 +3062,9 @@ begin
   '# define TESTMACRO 42         // macro for: number'    + sLineBreak +
   '# define MACRO2    "string"   // macro for: string'    + sLineBreak +
   ''                                                      + sLineBreak +
+  '? "opass" + " neuer" + "frack"'  + sLineBreak +
+  '? "testung"'                     + sLineBreak +
+  ''                                + sLineBreak +
   '** END HEADER -- do not remove this line' + sLineBreak +
   '//'                                       + sLineBreak +
   '// Generated on 14/01/2022'               + sLineBreak +

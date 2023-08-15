@@ -91,7 +91,9 @@ extern int yydebug;
     TOK_WITH = 292,                /* TOK_WITH  */
     TOK_ENDWITH = 293,             /* TOK_ENDWITH  */
     TOK_CUSTOM = 294,              /* TOK_CUSTOM  */
-    TOK_DEFINE = 295               /* TOK_DEFINE  */
+    TOK_DEFINE = 295,              /* TOK_DEFINE  */
+    TOK_PRINT_ONE = 296,           /* TOK_PRINT_ONE  */
+    TOK_PRINT_TWO = 297            /* TOK_PRINT_TWO  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -100,19 +102,20 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 50 "dBaseDSLwin32.y"
+#line 59 "dBaseDSLwin32.y"
 
-	struct {
-		float         value;
-		char        * name ;
-		struct node * node_for;
+    struct {
+        float         value;
+        char        * name ;
+        char        * content_str;
+        struct node * node_for;
         struct node * node_class;
-		struct node * stmt ;
-		struct node * next ;
-		struct node * prev ;
-	}	node_and_value;
+        struct node * stmt ;
+        struct node * next ;
+        struct node * prev ;
+    }	node_and_value;
 
-#line 116 "dBaseDSLwin32.tab.h"
+#line 119 "dBaseDSLwin32.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
