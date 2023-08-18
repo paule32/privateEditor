@@ -464,6 +464,7 @@ type
 
     procedure CreateSimpleDos32BasicProgram    ;
     procedure CreateSimpleDos32dBaseProgram    ;
+    procedure CreateSimpleDos32PrologProgram   ;
     procedure CreateSimpleDos32cLispProgram    ;
     procedure CreateSimpleDos32AssemblerProgram;
 
@@ -473,6 +474,7 @@ type
 
     procedure CreateSimpleWin32BasicProgram    ;
     procedure CreateSimpleWin32dBaseProgram    ;
+    procedure CreateSimpleWin32PrologProgram   ;
     procedure CreateSimpleWin32cLispProgram    ;
     procedure CreateSimpleWin32AssemblerProgram;
 
@@ -2804,6 +2806,7 @@ begin
     if atPascal    in AType then begin CreateSimpleDos32PascalProgram   ; end else
     if atBASIC     in AType then begin CreateSimpleDos32BasicProgram    ; end else
     if atdBase     in AType then begin CreateSimpleDos32dBaseProgram    ; end else
+    if atProlog    in AType then begin CreateSimpleDos32PrologProgram   ; end else
     if atcLISP     in AType then begin CreateSimpleDos32cLispProgram    ; end else
     if atAssembler in AType then begin CreateSimpleDos32AssemblerProgram; end else
     raise Exception.Create('MSDos not supported');
@@ -2813,10 +2816,34 @@ begin
     if atPascal    in AType then begin CreateSimpleWin32PascalProgram   ; end else
     if atBASIC     in AType then begin CreateSimpleWin32BasicProgram    ; end else
     if atdBase     in AType then begin CreateSimpleWin32dBaseProgram    ; end else
+    if atProlog    in AType then begin CreateSimpleWin32PrologProgram   ; end else
     if atcLISP     in AType then begin CreateSimpleWin32cLispProgram    ; end else
     if atAssembler in AType then begin CreateSimpleWin32AssemblerProgram; end else
     raise Exception.Create('Win32 not supported');
   end;
+end;
+
+procedure TForm1.CreateSimpleDos32PrologProgram;
+begin
+  DFrameEditor.Visible := true;
+  EditPanel.Visible := true;
+  DFrameEditor.SynEdit1.Text :=
+  '% this file is an automaticall created template' + sLineBreak +
+  '% you can run this script by pressing F2-key.'   + sLineBreak +
+  '';
+
+  SetEditMisc;
+end;                          öö
+procedure TForm1.CreateSimpleWin32PrologProgram;
+begin
+  DFrameEditor.Visible := true;
+  EditPanel.Visible := true;
+  DFrameEditor.SynEdit1.Text :=
+  '% this file is an automaticall created template' + sLineBreak +
+  '% you can run this script by pressing F2-key.'   + sLineBreak +
+  '';
+
+  SetEditMisc;
 end;
 
 procedure TForm1.CreateSimpleDos32BasicProgram;

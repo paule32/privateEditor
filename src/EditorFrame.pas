@@ -52,20 +52,15 @@ type
     procedure JvImgBtn4Click(Sender: TObject);
     procedure SaveButtonClick(Sender: TObject);
     procedure OpenButtonClick(Sender: TObject);
-    procedure JvImgBtn1KeyDown(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
-    procedure CopyButtonKeyDown(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
-    procedure PasteButtonKeyDown(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
-    procedure JvImgBtn4KeyDown(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
-    procedure OpenButtonKeyDown(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
-    procedure SaveButtonKeyDown(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
-    procedure SynEdit1KeyDown(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
+
+    procedure JvImgBtn1KeyDown  (Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure CopyButtonKeyDown (Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure PasteButtonKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure JvImgBtn4KeyDown  (Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure OpenButtonKeyDown (Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure SaveButtonKeyDown (Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure SynEdit1KeyDown   (Sender: TObject; var Key: Word; Shift: TShiftState);
+
     procedure Run1Click(Sender: TObject);
     procedure Cut1Click(Sender: TObject);
     procedure Copy1Click(Sender: TObject);
@@ -898,16 +893,20 @@ begin
   end else
   if key = VK_F2 then
   begin
-    if Form1.DFrameComputerOS.JvCheckBox10.Checked then appType := appType + [atPascal] else
-    if Form1.DFrameComputerOS.JvCheckBox11.Checked then appType := appType + [atBASIC ] else
-    if Form1.DFrameComputerOS.JvCheckBox12.Checked then appType := appType + [atDBase ] else
-    if Form1.DFrameComputerOS.JvCheckBox13.Checked then appType := appType + [atCLISP ] else
-    if Form1.DFrameComputerOS.JvCheckBox14.Checked then appType := appType + [atAssembler];
+    with Form1.DFrameComputerOS do
+    begin
+      if JvCheckBox10.Checked then appType := appType + [atPascal] else
+      if JvCheckBox11.Checked then appType := appType + [atBASIC ] else
+      if JvCheckBox12.Checked then appType := appType + [atDBase ] else
+      if JvCheckBox15.Checked then appType := appType + [atProlog] else
+      if JvCheckBox13.Checked then appType := appType + [atCLISP ] else
+      if JvCheckBox14.Checked then appType := appType + [atAssembler];
 
-    if Form1.DFrameComputerOS.JvCheckBox5.Checked then appType  := appType + [atWin32] else
-    if Form1.DFrameComputerOS.JvCheckBox6.Checked then appType  := appType + [atMSDos] else
-    if Form1.DFrameComputerOS.JvCheckBox7.Checked then appType  := appType + [atLinux] else
-    if Form1.DFrameComputerOS.JvCheckBox8.Checked then appType  := appType + [atAmiga] ;
+      if JvCheckBox5.Checked then appType  := appType + [atWin32] else
+      if JvCheckBox6.Checked then appType  := appType + [atMSDos] else
+      if JvCheckBox7.Checked then appType  := appType + [atLinux] else
+      if JvCheckBox8.Checked then appType  := appType + [atAmiga] ;
+    end;
 
     if (atWin32 in appType) and (atPascal in appType) then
     begin

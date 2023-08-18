@@ -36,6 +36,7 @@ type
     JvCheckBox12: TJvRadioButton;
     JvCheckBox13: TJvRadioButton;
     JvCheckBox14: TJvRadioButton;
+    JvCheckBox15: TJvRadioButton;
   private
     { Private declarations }
   public

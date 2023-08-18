@@ -197,14 +197,14 @@ object Frame16: TFrame16
       object GroupBox4: TGroupBox
         Left = 0
         Top = 0
-        Width = 161
-        Height = 191
+        Width = 177
+        Height = 192
         Caption = ' Language: '
         TabOrder = 0
         object JvCheckBox10: TJvRadioButton
           Left = 8
           Top = 24
-          Width = 77
+          Width = 153
           Height = 26
           Alignment = taLeftJustify
           Caption = 'Pascal'
@@ -222,9 +222,9 @@ object Frame16: TFrame16
         end
         object JvCheckBox11: TJvRadioButton
           Left = 8
-          Top = 56
-          Width = 82
-          Height = 26
+          Top = 51
+          Width = 153
+          Height = 25
           Alignment = taLeftJustify
           Caption = 'BASIC'
           Font.Charset = DEFAULT_CHARSET
@@ -240,9 +240,9 @@ object Frame16: TFrame16
         end
         object JvCheckBox12: TJvRadioButton
           Left = 8
-          Top = 88
-          Width = 84
-          Height = 26
+          Top = 80
+          Width = 153
+          Height = 25
           Alignment = taLeftJustify
           Caption = 'dBASE'
           Font.Charset = DEFAULT_CHARSET
@@ -258,9 +258,9 @@ object Frame16: TFrame16
         end
         object JvCheckBox13: TJvRadioButton
           Left = 8
-          Top = 120
-          Width = 121
-          Height = 26
+          Top = 133
+          Width = 153
+          Height = 25
           Alignment = taLeftJustify
           Caption = 'C - LISP'
           Font.Charset = DEFAULT_CHARSET
@@ -276,9 +276,9 @@ object Frame16: TFrame16
         end
         object JvCheckBox14: TJvRadioButton
           Left = 8
-          Top = 152
-          Width = 129
-          Height = 26
+          Top = 160
+          Width = 153
+          Height = 25
           Alignment = taLeftJustify
           Caption = 'Assembler'
           Font.Charset = DEFAULT_CHARSET
@@ -288,6 +288,24 @@ object Frame16: TFrame16
           Font.Style = []
           ParentFont = False
           TabOrder = 4
+          TabStop = True
+          AutoSize = False
+          LinkedControls = <>
+        end
+        object JvCheckBox15: TJvRadioButton
+          Left = 8
+          Top = 107
+          Width = 153
+          Height = 25
+          Alignment = taLeftJustify
+          Caption = 'PROLOG'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -19
+          Font.Name = 'Comic Sans MS'
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 5
           TabStop = True
           AutoSize = False
           LinkedControls = <>

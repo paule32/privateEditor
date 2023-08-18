@@ -1,2 +1,0 @@
-echo "ssssss"
-pause

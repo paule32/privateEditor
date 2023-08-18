@@ -4,8 +4,8 @@
   <MACROS>
     <VERSION value="BCB.06.00"/>
     <PROJECT value=".\temp\DSLwin32Prolog.dll"/>
-    <OBJFILES value="temp\dllmain.obj temp\prologDSLwin32.tab.obj temp\lex.yy.obj temp\utils.obj 
-      temp\FormTemplate.obj temp\displayList.obj"/>
+    <OBJFILES value="temp\dllmain.obj temp\prologDSLwin32.tab.obj temp\lex.yy.obj 
+      temp\utils.obj temp\FormTemplate.obj temp\displayList.obj"/>
     <RESFILES value="DSLwin32Prolog.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>

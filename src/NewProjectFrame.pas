@@ -27,7 +27,7 @@ type
 type
   myAppType = set of (
     atMSDOS, atWin32, atLinux, atAmiga,
-    atPascal, atBASIC, atdBASE, atcLISP, atAssembler);
+    atPascal, atBASIC, atdBASE, atProlog, atcLISP, atAssembler);
 var
   appType: myAppType;
 
@@ -62,34 +62,42 @@ begin
   or (S = 'Windows 64-Bit App') then
   begin
     // template code
-    if Form1.DFrameComputerOS.JvCheckBox5.Checked = true then
+    with Form1.DFrameComputerOS do
     begin
-      if Form1.DFrameComputerOS.JvCheckBox10.Checked then appType := [atWin32, atPascal    ] else
-      if Form1.DFrameComputerOS.JvCheckBox11.Checked then appType := [atWin32, atBASIC     ] else
-      if Form1.DFrameComputerOS.JvCheckBox12.Checked then appType := [atWin32, atdBASE     ] else
-      if Form1.DFrameComputerOS.JvCheckBox13.Checked then appType := [atWin32, atcLISP     ] else
-      if Form1.DFrameComputerOS.JvCheckBox14.Checked then appType := [atWin32, atAssembler ] ;
+      if JvCheckBox5.Checked = true then
+      begin
+        if JvCheckBox10.Checked then appType := [atWin32, atPascal ] else
+        if JvCheckBox11.Checked then appType := [atWin32, atBASIC  ] else
+        if JvCheckBox12.Checked then appType := [atWin32, atdBASE  ] else
+        if JvCheckBox15.Checked then appType := [atWin32, atProlog ] else
+        if JvCheckBox13.Checked then appType := [atWin32, atcLISP  ] else
+        if JvCheckBox14.Checked then appType := [atWin32, atAssembler ] ;
 
-      Form1.CreateSimpleProgram( appType );
-      exit;
-    end else
-    raise Exception.Create('not supported');
+        Form1.CreateSimpleProgram( appType );
+        exit;
+      end else
+      raise Exception.Create('not supported');
+    end;
   end else
   if S = 'MS-DOS 32-Bit App' then
   begin
     // template code
-    if Form1.DFrameComputerOS.JvCheckBox6.Checked = true then
+    with Form1.DFrameComputerOS do
     begin
-      if Form1.DFrameComputerOS.JvCheckBox10.Checked then appType := [atMSDOS, atPascal] else
-      if Form1.DFrameComputerOS.JvCheckBox11.Checked then appType := [atMSDOS, atBASIC ] else
-      if Form1.DFrameComputerOS.JvCheckBox12.Checked then appType := [atMSDOS, atdBASE ] else
-      if Form1.DFrameComputerOS.JvCheckBox13.Checked then appType := [atMSDOS, atcLISP ] else
-      if Form1.DFrameComputerOS.JvCheckBox14.Checked then appType := [atMSDOS, atAssembler ];
+      if JvCheckBox6.Checked = true then
+      begin
+        if JvCheckBox10.Checked then appType := [atMSDOS, atPascal ] else
+        if JvCheckBox11.Checked then appType := [atMSDOS, atBASIC  ] else
+        if JvCheckBox12.Checked then appType := [atMSDOS, atdBASE  ] else
+        if JvCheckBox15.Checked then appType := [atMSDOS, atProlog ] else
+        if JvCheckBox13.Checked then appType := [atMSDOS, atcLISP  ] else
+        if JvCheckBox14.Checked then appType := [atMSDOS, atAssembler ];
 
-      Form1.CreateSimpleProgram( appType );
-      exit;
-    end else
-    raise Exception.Create('not supported');
+        Form1.CreateSimpleProgram( appType );
+        exit;
+      end else
+      raise Exception.Create('not supported');
+    end;
   end;
 end;
 
@@ -99,11 +107,14 @@ begin
 //  Form1.DFrameComputerOS.JvCheckBox2.Checked := false;
 //  Form1.DFrameComputerOS.JvCheckBox3.Checked := false;
 
-  Form1.DFrameComputerOS.JvCheckBox4.Checked := false;
-  Form1.DFrameComputerOS.JvCheckBox5.Checked := false;
-  Form1.DFrameComputerOS.JvCheckBox6.Checked := false;
-  Form1.DFrameComputerOS.JvCheckBox7.Checked := false;
-  Form1.DFrameComputerOS.JvCheckBox8.Checked := false;
+  with Form1.DFrameComputerOS do
+  begin
+    JvCheckBox4.Checked := false;
+    JvCheckBox5.Checked := false;
+    JvCheckBox6.Checked := false;
+    JvCheckBox7.Checked := false;
+    JvCheckBox8.Checked := false;
+  end;
 end;
 
 procedure TFrame8.NewApplication_ListViewClick(Sender: TObject);

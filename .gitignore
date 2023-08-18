@@ -42,6 +42,7 @@
 src/build/*
 src/rpc/*
 src/include/rpc/*
+src/include/*
 src/ENU/*
 src/DEU/*
 
@@ -51,7 +52,16 @@ src/nodetest.cpp
 src/parsers.res
 src/initVCL.h
 
+dcu/eng/*
+dcu/deu/*
+dcu/dev/*
+dcu/pack/*
+dcu/parser/*
 dcu/*
+dcu/.*
+dcu/*.*
+
 Amiga/*
 
 *.$asm
+1.exe
