@@ -11,7 +11,7 @@
 *.~bpr
 *.~dpr
 *.~ddp
-*.~dfm
+/*.~dfm
 *.~c
 *.~cc
 *.~cpp
@@ -38,6 +38,10 @@
 *.yy.o
 *.log
 *.pl
+
+src/*.~pas
+src/*.~dfm
+src/*.~dpr
 
 src/build/*
 src/rpc/*
