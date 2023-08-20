@@ -57,41 +57,8 @@ extern int yydebug;
     TOK_ID = 258,                  /* TOK_ID  */
     TOK_NUMBER = 259,              /* TOK_NUMBER  */
     TOK_STRING = 260,              /* TOK_STRING  */
-    TOK_STRING_BRACE = 261,        /* TOK_STRING_BRACE  */
-    TOK_IF = 262,                  /* TOK_IF  */
-    TOK_ELSE = 263,                /* TOK_ELSE  */
-    TOK_ENDIF = 264,               /* TOK_ENDIF  */
-    TOK_EQEQ = 265,                /* TOK_EQEQ  */
-    TOK_EQLT = 266,                /* TOK_EQLT  */
-    TOK_EQGT = 267,                /* TOK_EQGT  */
-    TOK_GTEQ = 268,                /* TOK_GTEQ  */
-    TOK_LTEQ = 269,                /* TOK_LTEQ  */
-    TOK_LTGT = 270,                /* TOK_LTGT  */
-    TOK_ASSIGN = 271,              /* TOK_ASSIGN  */
-    TOK_FALSE = 272,               /* TOK_FALSE  */
-    TOK_TRUE = 273,                /* TOK_TRUE  */
-    TOK_AND = 274,                 /* TOK_AND  */
-    TOK_NOT = 275,                 /* TOK_NOT  */
-    TOK_OR = 276,                  /* TOK_OR  */
-    TOK_PARAMETER = 277,           /* TOK_PARAMETER  */
-    TOK_LOCAL = 278,               /* TOK_LOCAL  */
-    TOK_PRIVATE = 279,             /* TOK_PRIVATE  */
-    TOK_FUNCTION = 280,            /* TOK_FUNCTION  */
-    TOK_PROCEDURE = 281,           /* TOK_PROCEDURE  */
-    TOK_RETURN = 282,              /* TOK_RETURN  */
-    TOK_SET = 283,                 /* TOK_SET  */
-    TOK_CLEAR = 284,               /* TOK_CLEAR  */
-    TOK_FOR = 285,                 /* TOK_FOR  */
-    TOK_TO = 286,                  /* TOK_TO  */
-    TOK_ENDFOR = 287,              /* TOK_ENDFOR  */
-    TOK_CLASS = 288,               /* TOK_CLASS  */
-    TOK_OF = 289,                  /* TOK_OF  */
-    TOK_ENDCLASS = 290,            /* TOK_ENDCLASS  */
-    TOK_NEW = 291,                 /* TOK_NEW  */
-    TOK_WITH = 292,                /* TOK_WITH  */
-    TOK_ENDWITH = 293,             /* TOK_ENDWITH  */
-    TOK_CUSTOM = 294,              /* TOK_CUSTOM  */
-    TOK_DEFINE = 295               /* TOK_DEFINE  */
+    TOK_PRINT_ONE = 261,           /* TOK_PRINT_ONE  */
+    TOK_PRINT_TWO = 262            /* TOK_PRINT_TWO  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -100,18 +67,16 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 36 "pascalDSLwin32.y"
+#line 39 "pascalDSLwin32.y"
 
-	struct {
-		float         value;
-		char        * name ;
-		struct node * node_for;
-		struct node * stmt ;
-		struct node * next ;
-		struct node * prev ;
-	}	node_and_value;
+    struct {
+        float         value;
+        char        * name ;
+        char        * content_str;
+        struct node * sub_nodes;
+    }	node_and_value;
 
-#line 115 "pascalDSLwin32.tab.h"
+#line 80 "pascalDSLwin32.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

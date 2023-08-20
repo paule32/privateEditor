@@ -760,6 +760,73 @@ begin
         Handle := 0;
       end;
     end else
+    if atProlog in aType then
+    begin
+      try
+        try
+          Form1.DFrameEditor.SynEdit1.Highlighter :=
+          Form1.DFrameEditor.HighDBase;
+
+          Handle := LoadLibrary(PChar(ExtractFilePath(Application.ExeName) + '\parser\DSLwin32Prolog.dll'));
+          if Handle = 0 then
+          raise Exception.Create('DSLwin32Prolog.dll not loaded.');
+
+          DateTimeToString(res,'',now);
+          Form1.buildListBox.Items.Insert(0,res + ': load PrologDSL.dll: OK.');
+
+          callExecute         := GetProcAddress(Handle,'_yy_prolog_win32_run_code');
+
+          callParser          := GetProcAddress(Handle,'_yy_prolog_win32_lex_main');
+          callParserCloseFile := GetProcAddress(Handle,'_yy_prolog_win32_lex_close');
+          callParserGetLine   := GetProcAddress(Handle,'_yy_prolog_win32_lex_get_lin');
+          callParserGetLines  := GetProcAddress(Handle,'_yy_prolog_win32_lex_getlines');
+
+          export_ShowParserErrorText := GetProcAddress(Handle,'_import_func_ShowParserErrorText');
+          export_WriteTextToConsole  := GetProcAddress(Handle,'_import_func_WriteTextToConsole');
+
+          export_ShowParserErrorText(@ShowParserErrorText);  // hook: yyerror
+          export_WriteTextToConsole (@WriteTextToConsole );
+
+          if @callParser <> nil then
+          begin
+            try
+              if Form1.DFrameEditor.TabSheet1.Caption = 'Unamed' then
+              begin
+                Form1.DFrameEditor.SynEdit1.Modified := true;
+                Form1.JvSpeedButton2Click(nil);
+              end;
+              callParser(
+                PChar(Form1.DFrameEditor.TabSheet1.Caption),
+                PChar(Form1.IniFile_AsmOutput)
+              );
+showmessage('start');
+              callExecute;
+              InfoBox.Text('Compile OK' + #13#10 +
+              'Lines: ' + IntToStr(callParserGetLines-1));
+            except
+              on E: Exception do
+              begin
+                callParserCloseFile;
+                ErrorBox.Text('Exception:' + #13 + E.Message);
+                ErrorBox.BringToFront;
+                ErrorBox.Show;
+              end;
+            end;
+          end;
+        except
+          on E: Exception do
+          begin
+            FreeLibrary(Handle);
+            Handle := 0;
+            ErrorBox.Text('Exception occur:' + #13 + E.Message);
+            exit;
+          end;
+        end;
+      finally
+        FreeLibrary(Handle);
+        Handle := 0;
+      end;
+    end else
     if atcLisp in aType then
     begin
       try

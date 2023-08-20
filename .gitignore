@@ -69,3 +69,6 @@ Amiga/*
 
 *.$asm
 1.exe
+*.~dfm
+src/pascalDSLwin32/pascalDSLwin32.tab.c
+src/pascalDSLwin32/pascalDSLwin32.tab.h

@@ -2833,7 +2833,7 @@ begin
   '';
 
   SetEditMisc;
-end;                          öö
+end;
 procedure TForm1.CreateSimpleWin32PrologProgram;
 begin
   DFrameEditor.Visible := true;
@@ -2841,6 +2841,10 @@ begin
   DFrameEditor.SynEdit1.Text :=
   '% this file is an automaticall created template' + sLineBreak +
   '% you can run this script by pressing F2-key.'   + sLineBreak +
+  '' + sLineBreak +
+  'mr(john).'                         + sLineBreak +
+  'john(lennon).'                     + sLineBreak +
+  'human(john, mary, jane, pluto).'  + sLineBreak +
   '';
 
   SetEditMisc;

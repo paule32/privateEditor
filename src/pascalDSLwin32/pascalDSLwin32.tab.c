@@ -70,7 +70,7 @@
 #line 1 "pascalDSLwin32.y"
 
 // ----------------------------------------------------------------------------
-// File   : dBaseDSL.yy
+// File   : pascalDSL.y
 // Author : Jens Kallup (c) 2023-07.01
 // License: all rights reserved.
 // ----------------------------------------------------------------------------
@@ -79,30 +79,33 @@
 // ----------------------------------------------------------------------------
 // parser variables and constants:
 // ----------------------------------------------------------------------------
-extern char* data_code;
-extern char* data_text;
-extern char* data_data;
-
 extern char * yytext;
 
+extern void add_node_fact_string ( char * str );
+extern void add_node_fact_number ( char * str );
+extern void add_node_fact        ( char * str );
+
+extern void add_node_string( int, char* );
+extern void add_node_print ( int, int );
+
+extern void display_list  ( );
+extern int  yylex();
+
 // ----------------------------------------------------------------------------
-// temporary used node symbols/struct:
+// this variable is important ! - it counts the commands, and is in relation
+// to, and with other command's...
 // ----------------------------------------------------------------------------
-struct node * node_head = NULL;
-struct node * node_new  = NULL;
-struct node * node_prev = NULL;
+static int command_reference_counter = 1;
 
-struct node *
-mknode(
-	char * fmt,
-	struct node * prev ,
-	float         value,
-	char        * token
-);
+// ----------------------------------------------------------------------------
+// the following "export" function is used in Delphi, to call the tree run ...
+// ----------------------------------------------------------------------------
+void EXPORT
+yy_pascal_win32_run_code(void) {
+    display_list();
+}
 
-extern void tree_execute(void);
-
-#line 106 "pascalDSLwin32.tab.c"
+#line 109 "pascalDSLwin32.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -136,88 +139,27 @@ enum yysymbol_kind_t
   YYSYMBOL_TOK_ID = 3,                     /* TOK_ID  */
   YYSYMBOL_TOK_NUMBER = 4,                 /* TOK_NUMBER  */
   YYSYMBOL_TOK_STRING = 5,                 /* TOK_STRING  */
-  YYSYMBOL_TOK_STRING_BRACE = 6,           /* TOK_STRING_BRACE  */
-  YYSYMBOL_TOK_IF = 7,                     /* TOK_IF  */
-  YYSYMBOL_TOK_ELSE = 8,                   /* TOK_ELSE  */
-  YYSYMBOL_TOK_ENDIF = 9,                  /* TOK_ENDIF  */
-  YYSYMBOL_TOK_EQEQ = 10,                  /* TOK_EQEQ  */
-  YYSYMBOL_TOK_EQLT = 11,                  /* TOK_EQLT  */
-  YYSYMBOL_TOK_EQGT = 12,                  /* TOK_EQGT  */
-  YYSYMBOL_TOK_GTEQ = 13,                  /* TOK_GTEQ  */
-  YYSYMBOL_TOK_LTEQ = 14,                  /* TOK_LTEQ  */
-  YYSYMBOL_TOK_LTGT = 15,                  /* TOK_LTGT  */
-  YYSYMBOL_TOK_ASSIGN = 16,                /* TOK_ASSIGN  */
-  YYSYMBOL_TOK_FALSE = 17,                 /* TOK_FALSE  */
-  YYSYMBOL_TOK_TRUE = 18,                  /* TOK_TRUE  */
-  YYSYMBOL_TOK_AND = 19,                   /* TOK_AND  */
-  YYSYMBOL_TOK_NOT = 20,                   /* TOK_NOT  */
-  YYSYMBOL_TOK_OR = 21,                    /* TOK_OR  */
-  YYSYMBOL_TOK_PARAMETER = 22,             /* TOK_PARAMETER  */
-  YYSYMBOL_TOK_LOCAL = 23,                 /* TOK_LOCAL  */
-  YYSYMBOL_TOK_PRIVATE = 24,               /* TOK_PRIVATE  */
-  YYSYMBOL_TOK_FUNCTION = 25,              /* TOK_FUNCTION  */
-  YYSYMBOL_TOK_PROCEDURE = 26,             /* TOK_PROCEDURE  */
-  YYSYMBOL_TOK_RETURN = 27,                /* TOK_RETURN  */
-  YYSYMBOL_TOK_SET = 28,                   /* TOK_SET  */
-  YYSYMBOL_TOK_CLEAR = 29,                 /* TOK_CLEAR  */
-  YYSYMBOL_TOK_FOR = 30,                   /* TOK_FOR  */
-  YYSYMBOL_TOK_TO = 31,                    /* TOK_TO  */
-  YYSYMBOL_TOK_ENDFOR = 32,                /* TOK_ENDFOR  */
-  YYSYMBOL_TOK_CLASS = 33,                 /* TOK_CLASS  */
-  YYSYMBOL_TOK_OF = 34,                    /* TOK_OF  */
-  YYSYMBOL_TOK_ENDCLASS = 35,              /* TOK_ENDCLASS  */
-  YYSYMBOL_TOK_NEW = 36,                   /* TOK_NEW  */
-  YYSYMBOL_TOK_WITH = 37,                  /* TOK_WITH  */
-  YYSYMBOL_TOK_ENDWITH = 38,               /* TOK_ENDWITH  */
-  YYSYMBOL_TOK_CUSTOM = 39,                /* TOK_CUSTOM  */
-  YYSYMBOL_TOK_DEFINE = 40,                /* TOK_DEFINE  */
-  YYSYMBOL_41_ = 41,                       /* '#'  */
-  YYSYMBOL_42_ = 42,                       /* '='  */
-  YYSYMBOL_43_ = 43,                       /* '('  */
-  YYSYMBOL_44_ = 44,                       /* ')'  */
-  YYSYMBOL_45_ = 45,                       /* ','  */
-  YYSYMBOL_46_ = 46,                       /* '.'  */
-  YYSYMBOL_47_ = 47,                       /* '+'  */
-  YYSYMBOL_48_ = 48,                       /* '-'  */
-  YYSYMBOL_49_ = 49,                       /* '*'  */
-  YYSYMBOL_50_ = 50,                       /* '/'  */
-  YYSYMBOL_YYACCEPT = 51,                  /* $accept  */
-  YYSYMBOL_program = 52,                   /* program  */
-  YYSYMBOL_define_macro = 53,              /* define_macro  */
-  YYSYMBOL_stmt = 54,                      /* stmt  */
-  YYSYMBOL_55_1 = 55,                      /* $@1  */
-  YYSYMBOL_56_2 = 56,                      /* $@2  */
-  YYSYMBOL_57_3 = 57,                      /* $@3  */
-  YYSYMBOL_58_4 = 58,                      /* $@4  */
-  YYSYMBOL_59_5 = 59,                      /* $@5  */
-  YYSYMBOL_ident_object = 60,              /* ident_object  */
-  YYSYMBOL_local_object = 61,              /* local_object  */
-  YYSYMBOL_param_object = 62,              /* param_object  */
-  YYSYMBOL_args_param = 63,                /* args_param  */
-  YYSYMBOL_ident_string = 64,              /* ident_string  */
-  YYSYMBOL_return_merge = 65,              /* return_merge  */
-  YYSYMBOL_ident_merge = 66,               /* ident_merge  */
-  YYSYMBOL_return_value = 67,              /* return_value  */
-  YYSYMBOL_expr = 68,                      /* expr  */
-  YYSYMBOL_69_6 = 69,                      /* $@6  */
-  YYSYMBOL_70_7 = 70,                      /* $@7  */
-  YYSYMBOL_term = 71,                      /* term  */
-  YYSYMBOL_72_8 = 72,                      /* $@8  */
-  YYSYMBOL_73_9 = 73,                      /* $@9  */
-  YYSYMBOL_factor = 74,                    /* factor  */
-  YYSYMBOL_number = 75,                    /* number  */
-  YYSYMBOL_ident = 76,                     /* ident  */
-  YYSYMBOL_if_ident_and_eqeq = 77,         /* if_ident_and_eqeq  */
-  YYSYMBOL_if_ident_and_lteq = 78,         /* if_ident_and_lteq  */
-  YYSYMBOL_if_ident_and_gteq = 79,         /* if_ident_and_gteq  */
-  YYSYMBOL_if_ident_and_ltgt = 80,         /* if_ident_and_ltgt  */
-  YYSYMBOL_if_rel = 81,                    /* if_rel  */
-  YYSYMBOL_relation = 82,                  /* relation  */
-  YYSYMBOL_if_ident_eqeq = 83,             /* if_ident_eqeq  */
-  YYSYMBOL_if_ident_lteq = 84,             /* if_ident_lteq  */
-  YYSYMBOL_if_ident_gteq = 85,             /* if_ident_gteq  */
-  YYSYMBOL_if_ident_ltgt = 86,             /* if_ident_ltgt  */
-  YYSYMBOL_if_else_endif = 87              /* if_else_endif  */
+  YYSYMBOL_TOK_PRINT_ONE = 6,              /* TOK_PRINT_ONE  */
+  YYSYMBOL_TOK_PRINT_TWO = 7,              /* TOK_PRINT_TWO  */
+  YYSYMBOL_8_ = 8,                         /* '('  */
+  YYSYMBOL_9_ = 9,                         /* ')'  */
+  YYSYMBOL_10_ = 10,                       /* '.'  */
+  YYSYMBOL_11_ = 11,                       /* '+'  */
+  YYSYMBOL_12_ = 12,                       /* ','  */
+  YYSYMBOL_13_ = 13,                       /* '-'  */
+  YYSYMBOL_14_ = 14,                       /* '*'  */
+  YYSYMBOL_15_ = 15,                       /* '/'  */
+  YYSYMBOL_YYACCEPT = 16,                  /* $accept  */
+  YYSYMBOL_program = 17,                   /* program  */
+  YYSYMBOL_stmt = 18,                      /* stmt  */
+  YYSYMBOL_facts = 19,                     /* facts  */
+  YYSYMBOL_ident_string = 20,              /* ident_string  */
+  YYSYMBOL_expr = 21,                      /* expr  */
+  YYSYMBOL_term = 22,                      /* term  */
+  YYSYMBOL_factor = 23,                    /* factor  */
+  YYSYMBOL_number = 24,                    /* number  */
+  YYSYMBOL_ident = 25,                     /* ident  */
+  YYSYMBOL_idents = 26                     /* idents  */
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
 
@@ -334,7 +276,7 @@ typedef int yytype_uint16;
 
 
 /* Stored state numbers (used for stacks). */
-typedef yytype_uint8 yy_state_t;
+typedef yytype_int8 yy_state_t;
 
 /* State numbers in computations.  */
 typedef int yy_state_fast_t;
@@ -545,19 +487,19 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  2
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   444
+#define YYLAST   60
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  51
+#define YYNTOKENS  16
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  37
+#define YYNNTS  11
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  106
+#define YYNRULES  32
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  238
+#define YYNSTATES  53
 
 /* YYMAXUTOK -- Last valid token kind.  */
-#define YYMAXUTOK   295
+#define YYMAXUTOK   262
 
 
 /* YYTRANSLATE(TOKEN-NUM) -- Symbol number corresponding to TOKEN-NUM
@@ -574,10 +516,10 @@ static const yytype_int8 yytranslate[] =
        0,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,    41,     2,     2,     2,     2,
-      43,    44,    49,    47,    45,    48,    46,    50,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,    42,     2,     2,     2,     2,     2,     2,     2,     2,
+       8,     9,    14,    11,    12,    13,    10,    15,     2,     2,
+       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
+       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -597,27 +539,17 @@ static const yytype_int8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
-       5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
-      15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
-      25,    26,    27,    28,    29,    30,    31,    32,    33,    34,
-      35,    36,    37,    38,    39,    40
+       5,     6,     7
 };
 
 #if YYDEBUG
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
-static const yytype_int16 yyrline[] =
+static const yytype_uint8 yyrline[] =
 {
-       0,    76,    76,    77,    78,    87,    88,    92,    94,    93,
-     125,   125,   151,   152,   153,   154,   155,   156,   158,   159,
-     160,   161,   163,   165,   166,   168,   169,   171,   172,   174,
-     175,   177,   178,   178,   179,   180,   181,   181,   182,   183,
-     183,   184,   188,   189,   193,   194,   195,   196,   200,   201,
-     205,   206,   207,   211,   212,   213,   217,   218,   219,   221,
-     222,   224,   225,   227,   228,   229,   232,   233,   236,   237,
-     242,   241,   277,   276,   311,   333,   332,   368,   367,   402,
-     423,   441,   459,   480,   501,   522,   523,   524,   525,   528,
-     529,   530,   531,   532,   536,   537,   538,   539,   540,   543,
-     544,   545,   546,   549,   550,   551,   552
+       0,    68,    68,    69,    70,    74,    75,    83,    87,    88,
+      89,    93,    96,   102,   103,   104,   105,   109,   118,   127,
+     132,   141,   150,   154,   155,   162,   165,   166,   169,   170,
+     171,   172,   173
 };
 #endif
 
@@ -634,21 +566,9 @@ static const char *yysymbol_name (yysymbol_kind_t yysymbol) YY_ATTRIBUTE_UNUSED;
 static const char *const yytname[] =
 {
   "TOK_YYEOF", "error", "\"invalid token\"", "TOK_ID", "TOK_NUMBER",
-  "TOK_STRING", "TOK_STRING_BRACE", "TOK_IF", "TOK_ELSE", "TOK_ENDIF",
-  "TOK_EQEQ", "TOK_EQLT", "TOK_EQGT", "TOK_GTEQ", "TOK_LTEQ", "TOK_LTGT",
-  "TOK_ASSIGN", "TOK_FALSE", "TOK_TRUE", "TOK_AND", "TOK_NOT", "TOK_OR",
-  "TOK_PARAMETER", "TOK_LOCAL", "TOK_PRIVATE", "TOK_FUNCTION",
-  "TOK_PROCEDURE", "TOK_RETURN", "TOK_SET", "TOK_CLEAR", "TOK_FOR",
-  "TOK_TO", "TOK_ENDFOR", "TOK_CLASS", "TOK_OF", "TOK_ENDCLASS", "TOK_NEW",
-  "TOK_WITH", "TOK_ENDWITH", "TOK_CUSTOM", "TOK_DEFINE", "'#'", "'='",
-  "'('", "')'", "','", "'.'", "'+'", "'-'", "'*'", "'/'", "$accept",
-  "program", "define_macro", "stmt", "$@1", "$@2", "$@3", "$@4", "$@5",
-  "ident_object", "local_object", "param_object", "args_param",
-  "ident_string", "return_merge", "ident_merge", "return_value", "expr",
-  "$@6", "$@7", "term", "$@8", "$@9", "factor", "number", "ident",
-  "if_ident_and_eqeq", "if_ident_and_lteq", "if_ident_and_gteq",
-  "if_ident_and_ltgt", "if_rel", "relation", "if_ident_eqeq",
-  "if_ident_lteq", "if_ident_gteq", "if_ident_ltgt", "if_else_endif", YY_NULLPTR
+  "TOK_STRING", "TOK_PRINT_ONE", "TOK_PRINT_TWO", "'('", "')'", "'.'",
+  "'+'", "','", "'-'", "'*'", "'/'", "$accept", "program", "stmt", "facts",
+  "ident_string", "expr", "term", "factor", "number", "ident", "idents", YY_NULLPTR
 };
 
 static const char *
@@ -658,44 +578,26 @@ yysymbol_name (yysymbol_kind_t yysymbol)
 }
 #endif
 
-#define YYPACT_NINF (-47)
+#define YYPACT_NINF (-11)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
 
-#define YYTABLE_NINF (-78)
+#define YYTABLE_NINF (-1)
 
 #define yytable_value_is_error(Yyn) \
   0
 
 /* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
    STATE-NUM.  */
-static const yytype_int16 yypact[] =
+static const yytype_int8 yypact[] =
 {
-     -47,   379,   -47,   -47,   -47,    24,    24,    24,    24,    45,
-      45,    45,    24,    37,   -26,    87,   -47,    99,   403,   403,
-     403,   403,   -47,   108,    50,   312,    -1,   351,   287,   -47,
-      64,    64,    94,   116,    24,   287,    62,   -47,   -47,   -47,
-      96,     4,   137,    50,   105,   126,    11,   -47,   -47,    15,
-      13,    24,   -47,   -47,   -47,   -47,    19,    19,    19,    19,
-      24,   -47,   121,    24,   -47,   -47,    25,   403,   403,     4,
-      61,    24,    27,   130,    50,   140,    50,   105,   126,   117,
-     -47,   174,   151,   155,   190,   158,   403,   -47,    24,    48,
-     231,   126,   -47,   112,    50,   229,   229,    97,   106,   -13,
-     403,   403,   403,   403,   204,    24,   205,   -47,   168,   224,
-     225,    86,    24,   262,   159,   403,   403,   -47,   105,     4,
-       4,     4,     4,   -47,   403,   124,   403,   231,   -47,   403,
-     403,   403,    24,   -47,   -47,   -47,   -47,   -47,   -47,   -47,
-     -47,   -47,   250,   251,   253,   254,   138,   -47,    38,   403,
-       4,   171,   403,   232,   236,   228,   -47,    11,    11,   -47,
-     -47,   -47,    43,   -47,   -47,   -47,   -47,   -47,   114,   -47,
-     -47,   -47,   -47,    76,   -47,   -47,    71,   185,   226,   227,
-     -47,   403,   223,   -47,   126,    24,   241,   403,   237,   403,
-     403,   163,    19,    19,    19,    19,   -47,   178,   233,   107,
-     195,   195,    71,   -47,   403,   179,   403,   -47,    24,   -47,
-     -47,   403,   -47,   -47,   -47,   -47,   -47,   -47,    50,   105,
-      50,   105,   -47,   247,   242,   -47,   191,   -47,   -47,   403,
-     244,   256,   403,   403,   258,   -47,   403,   -47
+     -11,     9,   -11,   -11,   -11,   -11,    10,     0,   -11,   -11,
+      17,    44,    47,    39,    24,    38,   -11,    48,   -11,    16,
+      20,   -11,   -11,    49,    19,    19,    17,     0,    17,    17,
+      17,    50,     3,   -11,   -11,    39,    30,    39,    30,    38,
+      39,    24,    16,    38,   -11,   -11,   -11,    33,    16,    19,
+       3,    30,    33
 };
 
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -703,211 +605,81 @@ static const yytype_int16 yypact[] =
    means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-       2,     0,     1,     4,    42,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     3,     0,     7,     7,
-       7,     7,    41,     0,    48,     7,    46,     7,     7,    84,
-      50,    50,     0,     0,     0,     7,     0,    83,    53,    54,
-       0,     0,     0,    15,    16,    17,    74,    79,    80,     0,
-       0,     0,   103,   104,   105,   106,     0,     0,     0,     0,
-       0,    24,     0,     0,    22,    23,     0,     7,     7,     0,
-       0,     0,     0,     0,     5,     6,    12,    13,    14,    70,
-      81,     0,     0,     0,     0,     0,     7,    36,     0,    32,
-       7,     8,    39,     0,    43,    89,    89,    89,    89,    89,
-       7,     7,     7,     7,    49,     0,    47,    52,     0,     0,
-       0,    70,     0,     7,     0,     7,     7,    82,    55,     0,
-       0,     0,     0,    35,     7,     0,     7,     7,    34,     7,
-       7,     7,     0,    90,    91,    92,    93,    97,    98,    94,
-      95,    96,     0,     0,     0,     0,     0,    51,    56,     7,
-       0,     0,     7,     0,     0,     0,    28,    71,    73,    76,
-      78,    37,     0,    33,    31,     9,    40,    38,     0,    99,
-     101,   100,   102,     0,    63,    64,    56,    61,    62,    66,
-      69,     7,    65,    25,    10,     0,     0,     7,     0,     7,
-       7,     0,     0,     0,     0,     0,    45,     0,     0,    65,
-       0,     0,    56,    26,     7,     0,     7,    21,     0,    27,
-      30,     7,    85,    87,    86,    88,    44,    68,    57,    58,
-      60,    55,    67,     0,     0,    20,     0,    29,    11,     7,
-       0,     0,     7,     7,     0,    19,     7,    18
+       2,     0,     1,     4,    27,     3,     0,     0,    26,    11,
+       0,     0,     0,     9,    10,    19,    22,    23,    28,     8,
+       0,    23,    24,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,    25,     6,    12,     0,    13,    14,    18,
+      16,    15,    31,    17,    20,    21,     7,    30,    32,     0,
+       0,    15,    29
 };
 
 /* YYPGOTO[NTERM-NUM].  */
-static const yytype_int16 yypgoto[] =
+static const yytype_int8 yypgoto[] =
 {
-     -47,   -47,   -47,   -18,   -47,   -47,   -47,   -47,   -47,   170,
-     235,    66,   265,   -11,    95,   113,   -47,   -10,   -47,   -47,
-     123,   -47,   -47,   125,   263,   234,   -47,   -47,   -47,   -47,
-      98,   -46,   -47,   -47,   -47,   -47,   -47
+     -11,   -11,   -11,   -11,    -5,   -10,    21,    25,    27,    57,
+      -6
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
-static const yytype_uint8 yydefgoto[] =
+static const yytype_int8 yydefgoto[] =
 {
-       0,     1,    15,    16,   129,   204,   126,   124,   130,    17,
-      27,    25,    67,    98,   179,   180,   181,    99,    82,    83,
-      46,    84,    85,    47,    48,    30,   133,   134,   135,   136,
-     137,   100,    18,    19,    20,    21,    22
+       0,     1,     5,    12,    40,    14,    15,    16,    21,    18,
+      42
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
    positive, shift that token.  If negative, reduce the rule whose
    number is the opposite.  If YYTABLE_NINF, syntax error.  */
-static const yytype_int16 yytable[] =
+static const yytype_int8 yytable[] =
 {
-      52,    53,    54,    55,    44,    45,   132,    61,    37,    64,
-      65,   101,   102,   103,    36,    62,     4,    73,     4,    37,
-      38,    39,     4,    37,    38,    39,    75,     4,     4,    77,
-      78,    79,    86,    87,   -72,   -70,    95,    96,    90,    91,
-       4,     4,    37,    38,    39,    51,     4,    41,    29,   109,
-     110,    88,    42,    38,    39,   174,   175,    92,    41,   111,
-     -75,   -77,    41,    42,     4,     4,    37,    42,   123,   107,
-     118,   115,   128,    51,     4,    37,    38,    39,   127,     4,
-      34,   176,   142,   143,   144,   145,    42,   190,   174,   175,
-       4,    37,    38,    39,    51,   153,    51,   155,   156,     4,
-      37,    38,    39,    40,   112,    41,   161,    66,   163,   164,
-      42,   165,   166,   167,    41,    49,   132,   150,    56,    42,
-     196,    57,    58,    59,   192,   132,   104,   193,   194,   195,
-      41,   183,   108,   -72,   186,    42,    69,   178,   182,    41,
-     184,    37,    50,    51,    42,    51,   212,   213,   214,   215,
-      70,   117,    81,    81,    51,   -70,   131,   105,    51,    71,
-      51,   117,    51,   203,   -72,   178,   199,   162,   116,   207,
-      51,   209,   210,   -72,   -70,    23,    24,    26,    28,    38,
-      39,   173,    33,    35,    51,    43,   223,   -72,   225,   219,
-     221,   178,   182,   227,   138,   139,   140,   141,     4,   119,
-      38,    39,   120,   154,    72,    51,    74,   211,   122,    51,
-      76,   231,   147,    60,   234,   235,   185,    51,   237,    89,
-      93,    94,   216,   224,    51,    51,    97,    97,    97,    97,
-      24,    51,   200,    26,     4,   230,    24,    51,     5,   121,
-     113,   114,   157,   158,    31,    32,   159,   160,   132,    60,
-      63,   148,   149,     6,     7,     8,     9,    10,   125,   169,
-     170,    11,   171,   172,    12,     4,   189,   187,    13,     5,
-     188,   -70,    14,   201,   202,   146,   206,   217,    81,   228,
-     208,   229,   151,   232,     6,     7,     8,     9,    10,   198,
-       4,   233,    11,   236,     5,    12,    68,   222,   106,    13,
-       0,   152,   168,    14,     0,    80,     0,     0,    51,     6,
-       7,     8,     9,    10,     0,     4,     0,    11,   177,     5,
-      12,     0,     0,     0,    13,     0,     0,     0,    14,     0,
-       0,     0,   191,    51,     6,     7,     8,     9,    10,     0,
-       0,     0,    11,   197,     0,    12,   177,     0,     0,    13,
-       0,     0,     0,    14,     4,   205,     0,    60,     5,     0,
-       0,     0,    97,    97,    97,    97,     0,     0,     0,     0,
-     218,   220,   177,     6,     7,     8,     9,    10,   226,     2,
-       3,    11,     4,     0,    12,     0,     5,     0,    13,     0,
-       0,     0,    14,     0,     0,     0,    63,     0,     0,     0,
-       0,     6,     7,     8,     9,    10,     4,     0,     0,    11,
-       5,     0,    12,     0,     0,     0,    13,     0,     0,     0,
-      14,     0,     0,     0,     0,     6,     7,     8,     9,    10,
-       0,     0,     0,    11,     0,     0,    12,     0,     0,     0,
-      13,     0,     0,     0,    14
+      20,    19,    13,     4,     8,     9,     4,     8,    10,     2,
+       3,    10,     4,    11,    36,    38,    11,    41,     7,    35,
+      37,     8,    47,     8,     9,    10,    48,    10,    32,    33,
+      11,    26,    11,    28,    17,    26,    27,    28,    22,    51,
+      52,    26,    49,    28,    26,    50,    28,    39,     8,    43,
+      24,    25,    29,    30,    44,    45,    23,    31,     6,    34,
+      46
 };
 
-static const yytype_int16 yycheck[] =
+static const yytype_int8 yycheck[] =
 {
-      18,    19,    20,    21,    15,    15,    19,    25,     4,    27,
-      28,    57,    58,    59,    40,    16,     3,    35,     3,     4,
-       5,     6,     3,     4,     5,     6,    36,     3,     3,    40,
-      40,    41,    17,    18,    47,    48,    17,    18,    49,    49,
-       3,     3,     4,     5,     6,    46,     3,    43,     3,    67,
-      68,    36,    48,     5,     6,    17,    18,    44,    43,    69,
-      49,    50,    43,    48,     3,     3,     4,    48,    86,    44,
-      81,    44,    90,    46,     3,     4,     5,     6,    89,     3,
-      43,    43,   100,   101,   102,   103,    48,    44,    17,    18,
-       3,     4,     5,     6,    46,   113,    46,   115,   116,     3,
-       4,     5,     6,    16,    43,    43,   124,    43,   126,   127,
-      48,   129,   130,   131,    43,    16,    19,    31,    10,    48,
-      44,    13,    14,    15,    10,    19,    60,    13,    14,    15,
-      43,   149,    66,    47,   152,    48,    42,   148,   148,    43,
-     150,     4,    43,    46,    48,    46,   192,   193,   194,   195,
-      34,    44,    47,    47,    46,    48,    44,    36,    46,    43,
-      46,    44,    46,   181,    47,   176,   176,    43,    38,   187,
-      46,   189,   190,    47,    48,     5,     6,     7,     8,     5,
-       6,    43,    12,    13,    46,    15,   204,    47,   206,   200,
-     201,   202,   202,   211,    96,    97,    98,    99,     3,    48,
-       5,     6,    47,    44,    34,    46,    36,    44,    50,    46,
-      40,   229,    44,    45,   232,   233,    45,    46,   236,    49,
-      50,    51,    44,    44,    46,    46,    56,    57,    58,    59,
-      60,    46,    47,    63,     3,    44,    66,    46,     7,    49,
-      70,    71,   119,   120,    10,    11,   121,   122,    19,    45,
-      45,    27,    27,    22,    23,    24,    25,    26,    88,     9,
-       9,    30,     9,     9,    33,     3,    38,    35,    37,     7,
-      34,    48,    41,    47,    47,   105,    35,    44,    47,    32,
-      43,    39,   112,    39,    22,    23,    24,    25,    26,   176,
-       3,    35,    30,    35,     7,    33,    31,   202,    63,    37,
-      -1,    39,   132,    41,    -1,    42,    -1,    -1,    46,    22,
-      23,    24,    25,    26,    -1,     3,    -1,    30,   148,     7,
-      33,    -1,    -1,    -1,    37,    -1,    -1,    -1,    41,    -1,
-      -1,    -1,   162,    46,    22,    23,    24,    25,    26,    -1,
-      -1,    -1,    30,   173,    -1,    33,   176,    -1,    -1,    37,
-      -1,    -1,    -1,    41,     3,   185,    -1,    45,     7,    -1,
-      -1,    -1,   192,   193,   194,   195,    -1,    -1,    -1,    -1,
-     200,   201,   202,    22,    23,    24,    25,    26,   208,     0,
-       1,    30,     3,    -1,    33,    -1,     7,    -1,    37,    -1,
-      -1,    -1,    41,    -1,    -1,    -1,    45,    -1,    -1,    -1,
-      -1,    22,    23,    24,    25,    26,     3,    -1,    -1,    30,
-       7,    -1,    33,    -1,    -1,    -1,    37,    -1,    -1,    -1,
-      41,    -1,    -1,    -1,    -1,    22,    23,    24,    25,    26,
-      -1,    -1,    -1,    30,    -1,    -1,    33,    -1,    -1,    -1,
-      37,    -1,    -1,    -1,    41
+      10,     7,     7,     3,     4,     5,     3,     4,     8,     0,
+       1,     8,     3,    13,    24,    25,    13,    27,     8,    24,
+      25,     4,    32,     4,     5,     8,    32,     8,    12,     9,
+      13,    11,    13,    13,     7,    11,    12,    13,    11,    49,
+      50,    11,    12,    13,    11,    12,    13,    26,     4,    28,
+      11,    12,    14,    15,    29,    30,     9,     9,     1,    10,
+      10
 };
 
 /* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
    state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,    52,     0,     1,     3,     7,    22,    23,    24,    25,
-      26,    30,    33,    37,    41,    53,    54,    60,    83,    84,
-      85,    86,    87,    60,    60,    62,    60,    61,    60,     3,
-      76,    76,    76,    60,    43,    60,    40,     4,     5,     6,
-      16,    43,    48,    60,    64,    68,    71,    74,    75,    16,
-      43,    46,    54,    54,    54,    54,    10,    13,    14,    15,
-      45,    54,    16,    45,    54,    54,    43,    63,    63,    42,
-      34,    43,    60,    54,    60,    68,    60,    64,    68,    68,
-      75,    47,    69,    70,    72,    73,    17,    18,    36,    60,
-      64,    68,    44,    60,    60,    17,    18,    60,    64,    68,
-      82,    82,    82,    82,    62,    36,    61,    44,    62,    54,
-      54,    68,    43,    60,    60,    44,    38,    44,    64,    48,
-      47,    49,    50,    54,    58,    60,    57,    64,    54,    55,
-      59,    44,    19,    77,    78,    79,    80,    81,    81,    81,
-      81,    81,    54,    54,    54,    54,    60,    44,    27,    27,
-      31,    60,    39,    54,    44,    54,    54,    71,    71,    74,
-      74,    54,    43,    54,    54,    54,    54,    54,    60,     9,
-       9,     9,     9,    43,    17,    18,    43,    60,    64,    65,
-      66,    67,    68,    54,    68,    45,    54,    35,    34,    38,
-      44,    60,    10,    13,    14,    15,    44,    60,    66,    68,
-      47,    47,    47,    54,    56,    60,    35,    54,    43,    54,
-      54,    44,    82,    82,    82,    82,    44,    44,    60,    64,
-      60,    64,    65,    54,    44,    54,    60,    54,    32,    39,
-      44,    54,    39,    35,    54,    54,    35,    54
+       0,    17,     0,     1,     3,    18,    25,     8,     4,     5,
+       8,    13,    19,    20,    21,    22,    23,    24,    25,    26,
+      21,    24,    24,     9,    11,    12,    11,    12,    13,    14,
+      15,     9,    12,     9,    10,    20,    21,    20,    21,    22,
+      20,    21,    26,    22,    23,    23,    10,    21,    26,    12,
+      12,    21,    21
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr1[] =
 {
-       0,    51,    52,    52,    52,    53,    53,    54,    55,    54,
-      56,    54,    54,    54,    54,    54,    54,    54,    54,    54,
-      54,    54,    54,    54,    54,    54,    54,    54,    54,    54,
-      54,    54,    57,    54,    54,    54,    58,    54,    54,    59,
-      54,    54,    60,    60,    61,    61,    61,    61,    62,    62,
-      63,    63,    63,    64,    64,    64,    65,    65,    65,    65,
-      65,    65,    65,    65,    65,    65,    66,    66,    67,    67,
-      69,    68,    70,    68,    68,    72,    71,    73,    71,    71,
-      74,    74,    74,    75,    76,    77,    78,    79,    80,    81,
-      81,    81,    81,    81,    82,    82,    82,    82,    82,    83,
-      84,    85,    86,    87,    87,    87,    87
+       0,    16,    17,    17,    17,    18,    18,    18,    19,    19,
+      19,    20,    20,    20,    20,    20,    20,    21,    21,    21,
+      22,    22,    22,    23,    23,    23,    24,    25,    26,    26,
+      26,    26,    26
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr2[] =
 {
-       0,     2,     0,     2,     2,     3,     3,     0,     0,     5,
-       0,     9,     3,     3,     3,     2,     2,     2,    13,    12,
-       8,     7,     3,     3,     3,     6,     7,     7,     5,     8,
-       7,     5,     0,     5,     4,     4,     0,     5,     5,     0,
-       5,     1,     1,     3,     7,     6,     1,     3,     1,     3,
-       0,     3,     2,     1,     1,     3,     0,     3,     3,     3,
-       3,     1,     1,     1,     1,     1,     1,     3,     3,     1,
-       0,     4,     0,     4,     1,     0,     4,     0,     4,     1,
-       1,     2,     3,     1,     1,     4,     4,     4,     4,     0,
-       1,     1,     1,     1,     2,     2,     2,     2,     2,     6,
-       6,     6,     6,     2,     2,     2,     2
+       0,     2,     0,     2,     2,     0,     5,     5,     1,     1,
+       1,     1,     3,     3,     3,     3,     3,     3,     3,     1,
+       3,     3,     1,     1,     2,     3,     1,     1,     1,     3,
+       3,     3,     3
 };
 
 
@@ -1371,584 +1143,217 @@ yyreduce:
   switch (yyn)
     {
   case 2: /* program: %empty  */
-#line 76 "pascalDSLwin32.y"
+#line 68 "pascalDSLwin32.y"
                       { }
-#line 1377 "pascalDSLwin32.tab.c"
+#line 1149 "pascalDSLwin32.tab.c"
     break;
 
   case 3: /* program: program stmt  */
-#line 77 "pascalDSLwin32.y"
-                       { }
-#line 1383 "pascalDSLwin32.tab.c"
+#line 69 "pascalDSLwin32.y"
+                      { }
+#line 1155 "pascalDSLwin32.tab.c"
     break;
 
   case 4: /* program: program error  */
-#line 78 "pascalDSLwin32.y"
-                        {
-		char * buffer = (char *) malloc(1024);
-
-		strcpy ( buffer,"Error in Grammar");
-		yyerror( buffer );
-	}
-#line 1394 "pascalDSLwin32.tab.c"
+#line 70 "pascalDSLwin32.y"
+                      { yyerror( "Error in Grammar" ); }
+#line 1161 "pascalDSLwin32.tab.c"
     break;
 
-  case 7: /* stmt: %empty  */
-#line 92 "pascalDSLwin32.y"
-                            { }
-#line 1400 "pascalDSLwin32.tab.c"
+  case 5: /* stmt: %empty  */
+#line 74 "pascalDSLwin32.y"
+                    { }
+#line 1167 "pascalDSLwin32.tab.c"
     break;
 
-  case 8: /* $@1: %empty  */
-#line 94 "pascalDSLwin32.y"
-        {
-		// -----------------------------
-		// make a ident node to tree
-		// -----------------------------
-		node_new = (struct node *) malloc( sizeof( struct node )    );
-		node_new->token = (char *) malloc( strlen( (yyvsp[-2].node_and_value).name     ) + 1);
-		
-		strcpy(node_new->token, (yyvsp[-2].node_and_value).name   );
-		node_new->token_id = tt_const_ident;
-
-		node_new->prev  = node_prev;
-		node_new->next  = NULL;
-		
-		node_prev = node_new;
-
-
-		// ------------------------------
-		// make a ident expr node to tree
-		// ------------------------------
-		node_new = (struct node *) malloc( sizeof( struct node ) );
-		node_new->token = (char *) malloc( 12 );
-		
-		strcpy(node_new->token, "assign");
-		node_new->token_id = tt_ident_assign;
-
-		node_new->value = (yyvsp[0].node_and_value).value;
-		node_new->prev  = node_prev;
-		node_new->next  = NULL;
-		
-		node_prev = node_new;
-	}
-#line 1436 "pascalDSLwin32.tab.c"
-    break;
-
-  case 10: /* $@2: %empty  */
-#line 125 "pascalDSLwin32.y"
-                                                   {
-		node_new = (struct node *) malloc( sizeof( struct node ) );
-		node_new->token = (char *) malloc( 12 );
-		
-		strcpy(node_new->token, "forloop");
-
-		(yyvsp[-5].node_and_value).node_for = (struct node *) malloc( sizeof( struct node ) );
-		(yyvsp[-5].node_and_value).node_for->token_id = tt_for_loop;
-		(yyvsp[-5].node_and_value).node_for->for_from = (yyvsp[-2].node_and_value).value;
-		(yyvsp[-5].node_and_value).node_for->for_to   = (yyvsp[0].node_and_value).value;
-
-		node_new->prev = (yyvsp[-5].node_and_value).node_for;
-		node_new->next = NULL;
-		node_prev      = node_new;
-
-	}
-#line 1457 "pascalDSLwin32.tab.c"
-    break;
-
-  case 11: /* stmt: TOK_FOR ident '=' expr TOK_TO expr $@2 stmt TOK_ENDFOR  */
-#line 140 "pascalDSLwin32.y"
+  case 6: /* stmt: ident '(' facts ')' '.'  */
+#line 75 "pascalDSLwin32.y"
                                 {
-		node_new = (struct node *) malloc( sizeof( struct node ) );
-		node_new->token = (char *) malloc( 12 );
-		
-		strcpy(node_new->token, "forend");
-		node_new->token_id = (yyvsp[-8].node_and_value).node_for->token_id;
-		
-		node_new->prev = (yyvsp[-8].node_and_value).node_for;
-		node_new->next = NULL;
-		node_prev      = node_new;
-	}
-#line 1473 "pascalDSLwin32.tab.c"
+        AnsiString str1 = "ident: ";
+        str1 += (yyvsp[-4].node_and_value).name;
+        str1 += "\npl: ";
+        str1 += (yyvsp[-2].node_and_value).name;
+        ShowMessage( str1 );
+        add_node_fact( str1.c_str() );
+    }
+#line 1180 "pascalDSLwin32.tab.c"
     break;
 
-  case 12: /* stmt: define_macro TOK_ASSIGN ident_object  */
-#line 151 "pascalDSLwin32.y"
-                                                     { }
-#line 1479 "pascalDSLwin32.tab.c"
+  case 8: /* facts: idents  */
+#line 87 "pascalDSLwin32.y"
+                     { (yyval.node_and_value).name = strdup( (yyvsp[0].node_and_value).name ); }
+#line 1186 "pascalDSLwin32.tab.c"
     break;
 
-  case 13: /* stmt: define_macro TOK_ASSIGN ident_string  */
-#line 152 "pascalDSLwin32.y"
-                                                     { }
-#line 1485 "pascalDSLwin32.tab.c"
+  case 9: /* facts: ident_string  */
+#line 88 "pascalDSLwin32.y"
+                     { (yyval.node_and_value).name = strdup( (yyvsp[0].node_and_value).name ); }
+#line 1192 "pascalDSLwin32.tab.c"
     break;
 
-  case 14: /* stmt: define_macro TOK_ASSIGN expr  */
-#line 153 "pascalDSLwin32.y"
-                                                     { }
-#line 1491 "pascalDSLwin32.tab.c"
+  case 11: /* ident_string: TOK_STRING  */
+#line 93 "pascalDSLwin32.y"
+                   {
+        (yyval.node_and_value).name = strdup( (yyvsp[0].node_and_value).name );
+    }
+#line 1200 "pascalDSLwin32.tab.c"
     break;
 
-  case 15: /* stmt: define_macro ident_object  */
+  case 12: /* ident_string: ident_string '+' ident_string  */
+#line 96 "pascalDSLwin32.y"
+                                      {
+        AnsiString str1  = (yyvsp[-2].node_and_value).name;
+        str1            += (yyvsp[0].node_and_value).name;
+        
+        (yyval.node_and_value).name = strdup( str1.c_str() );
+    }
+#line 1211 "pascalDSLwin32.tab.c"
+    break;
+
+  case 17: /* expr: expr '-' term  */
+#line 109 "pascalDSLwin32.y"
+                    {
+        AnsiString str1 = (yyvsp[-2].node_and_value).name;
+        AnsiString str2 = (yyvsp[0].node_and_value).name;
+        AnsiString str3 = str1;
+        str3 += " - ";
+        str3 += str2 ;
+        
+        (yyval.node_and_value).name = strdup( str3.c_str() );
+    }
+#line 1225 "pascalDSLwin32.tab.c"
+    break;
+
+  case 18: /* expr: expr '+' term  */
+#line 118 "pascalDSLwin32.y"
+                    {
+        AnsiString str1 = (yyvsp[-2].node_and_value).name;
+        AnsiString str2 = (yyvsp[0].node_and_value).name;
+        AnsiString str3 = str1;
+        str3 += " + ";
+        str3 += str2 ;
+
+        (yyval.node_and_value).name = strdup( str3.c_str() );
+    }
+#line 1239 "pascalDSLwin32.tab.c"
+    break;
+
+  case 19: /* expr: term  */
+#line 127 "pascalDSLwin32.y"
+             {
+        (yyval.node_and_value).name = strdup( (yyvsp[0].node_and_value).name );  }
+#line 1246 "pascalDSLwin32.tab.c"
+    break;
+
+  case 20: /* term: term '*' factor  */
+#line 132 "pascalDSLwin32.y"
+                      {
+        AnsiString str1 = (yyvsp[-2].node_and_value).name;
+        AnsiString str2 = (yyvsp[0].node_and_value).name;
+        AnsiString str3 = str1;
+        str3 += " * ";
+        str3 += str2 ;
+
+        (yyval.node_and_value).name = strdup( str3.c_str() );
+    }
+#line 1260 "pascalDSLwin32.tab.c"
+    break;
+
+  case 21: /* term: term '/' factor  */
+#line 141 "pascalDSLwin32.y"
+                      {
+        AnsiString str1 = (yyvsp[-2].node_and_value).name;
+        AnsiString str2 = (yyvsp[0].node_and_value).name;
+        AnsiString str3 = str1;
+        str3 += " / ";
+        str3 += str2 ;
+
+        (yyval.node_and_value).name = strdup( str3.c_str() );
+    }
+#line 1274 "pascalDSLwin32.tab.c"
+    break;
+
+  case 22: /* term: factor  */
+#line 150 "pascalDSLwin32.y"
+               { (yyval.node_and_value).name = strdup( (yyvsp[0].node_and_value).name ); }
+#line 1280 "pascalDSLwin32.tab.c"
+    break;
+
+  case 23: /* factor: number  */
 #line 154 "pascalDSLwin32.y"
-                                                     { }
-#line 1497 "pascalDSLwin32.tab.c"
+                     { (yyval.node_and_value).name = strdup( (yyvsp[0].node_and_value).name ); }
+#line 1286 "pascalDSLwin32.tab.c"
     break;
 
-  case 16: /* stmt: define_macro ident_string  */
+  case 24: /* factor: '-' number  */
 #line 155 "pascalDSLwin32.y"
-                                                     { }
-#line 1503 "pascalDSLwin32.tab.c"
+                     {
+        AnsiString str1 = "-";
+        AnsiString str2 = (yyvsp[0].node_and_value).name;
+        AnsiString str3 = str1 + str2;
+
+        (yyval.node_and_value).name = strdup( str3.c_str() );
+    }
+#line 1298 "pascalDSLwin32.tab.c"
     break;
 
-  case 17: /* stmt: define_macro expr  */
-#line 156 "pascalDSLwin32.y"
-                                                     {
-	}
-#line 1510 "pascalDSLwin32.tab.c"
+  case 25: /* factor: '(' expr ')'  */
+#line 162 "pascalDSLwin32.y"
+                   { (yyval.node_and_value).name = strdup( (yyvsp[-1].node_and_value).name ); }
+#line 1304 "pascalDSLwin32.tab.c"
     break;
 
-  case 21: /* stmt: TOK_CLASS ident_object TOK_OF ident_object stmt TOK_ENDCLASS stmt  */
-#line 161 "pascalDSLwin32.y"
-                                                                                                                                               {
-	}
-#line 1517 "pascalDSLwin32.tab.c"
-    break;
-
-  case 22: /* stmt: TOK_LOCAL local_object stmt  */
-#line 163 "pascalDSLwin32.y"
-                                                      {
-	}
-#line 1524 "pascalDSLwin32.tab.c"
-    break;
-
-  case 23: /* stmt: TOK_PRIVATE ident_object stmt  */
+  case 26: /* number: TOK_NUMBER  */
 #line 165 "pascalDSLwin32.y"
-                                                      { }
-#line 1530 "pascalDSLwin32.tab.c"
+                    { (yyval.node_and_value).name = strdup( (yyvsp[0].node_and_value).name ); }
+#line 1310 "pascalDSLwin32.tab.c"
     break;
 
-  case 24: /* stmt: TOK_PARAMETER param_object stmt  */
+  case 27: /* ident: TOK_ID  */
 #line 166 "pascalDSLwin32.y"
-                                                      {
-	}
-#line 1537 "pascalDSLwin32.tab.c"
+                    { (yyval.node_and_value).name = strdup( (yyvsp[0].node_and_value).name ); }
+#line 1316 "pascalDSLwin32.tab.c"
     break;
 
-  case 26: /* stmt: TOK_FUNCTION ident args_param stmt TOK_RETURN return_value stmt  */
+  case 28: /* idents: ident  */
 #line 169 "pascalDSLwin32.y"
-                                                                                        {
-	}
-#line 1544 "pascalDSLwin32.tab.c"
+                        { (yyval.node_and_value).name = strdup( (yyvsp[0].node_and_value).name ); }
+#line 1322 "pascalDSLwin32.tab.c"
     break;
 
-  case 28: /* stmt: TOK_WITH ident_object stmt TOK_ENDWITH stmt  */
+  case 29: /* idents: expr ',' expr  */
+#line 170 "pascalDSLwin32.y"
+                        { }
+#line 1328 "pascalDSLwin32.tab.c"
+    break;
+
+  case 30: /* idents: idents ',' expr  */
+#line 171 "pascalDSLwin32.y"
+                        { }
+#line 1334 "pascalDSLwin32.tab.c"
+    break;
+
+  case 31: /* idents: expr ',' idents  */
 #line 172 "pascalDSLwin32.y"
-                                                                        {
-	}
-#line 1551 "pascalDSLwin32.tab.c"
+                        { }
+#line 1340 "pascalDSLwin32.tab.c"
     break;
 
-  case 30: /* stmt: ident_object TOK_ASSIGN TOK_NEW ident_object '(' ')' stmt  */
-#line 175 "pascalDSLwin32.y"
-                                                                                        {
-	}
-#line 1558 "pascalDSLwin32.tab.c"
-    break;
+  case 32: /* idents: idents ',' idents  */
+#line 173 "pascalDSLwin32.y"
+                        {
+        AnsiString str1;
+        str1  = (yyvsp[-2].node_and_value).name;
+        str1 += ",";
+        str1 += (yyvsp[0].node_and_value).name;
 
-  case 32: /* $@3: %empty  */
-#line 178 "pascalDSLwin32.y"
-                                                      { }
-#line 1564 "pascalDSLwin32.tab.c"
-    break;
-
-  case 36: /* $@4: %empty  */
-#line 181 "pascalDSLwin32.y"
-                                                               { }
-#line 1570 "pascalDSLwin32.tab.c"
-    break;
-
-  case 39: /* $@5: %empty  */
-#line 183 "pascalDSLwin32.y"
-                                                               { }
-#line 1576 "pascalDSLwin32.tab.c"
-    break;
-
-  case 58: /* return_merge: ident_object '+' ident_string  */
-#line 219 "pascalDSLwin32.y"
-                                          {
-	}
-#line 1583 "pascalDSLwin32.tab.c"
-    break;
-
-  case 60: /* return_merge: ident_string '+' ident_object  */
-#line 222 "pascalDSLwin32.y"
-                                              {
-	}
-#line 1590 "pascalDSLwin32.tab.c"
-    break;
-
-  case 62: /* return_merge: ident_string  */
-#line 225 "pascalDSLwin32.y"
-                             {
-	}
-#line 1597 "pascalDSLwin32.tab.c"
-    break;
-
-  case 70: /* $@6: %empty  */
-#line 242 "pascalDSLwin32.y"
-        {
-		// ----------------------------
-		// make a mul term node to tree
-		// ----------------------------
-		node_new = (struct node *) malloc( sizeof( struct node ) );
-		node_new->token = (char *) malloc( 12 );
-		
-		strcpy(node_new->token, "expr");
-		node_new->token_id = tt_expr_sub;
-
-		node_new->value = (yyvsp[0].node_and_value).value;
-		node_new->prev  = node_prev;
-		node_new->next  = NULL;
-		
-		node_prev = node_new;
-	}
-#line 1618 "pascalDSLwin32.tab.c"
-    break;
-
-  case 71: /* expr: expr $@6 '-' term  */
-#line 259 "pascalDSLwin32.y"
-        {
-		// ----------------------------
-		// make a sub term node to tree
-		// ----------------------------
-		node_new = (struct node *) malloc( sizeof( struct node ) );
-		node_new->token = (char *) malloc( 12 );
-		
-		strcpy(node_new->token, "term");
-		node_new->token_id = tt_term_sub;
-
-		node_new->value = (yyvsp[0].node_and_value).value;
-		node_new->prev  = node_prev;
-		node_new->next  = NULL;
-		
-		node_prev = node_new;
-		(yyval.node_and_value).value = (yyvsp[-3].node_and_value).value - (yyvsp[0].node_and_value).value;
-	}
-#line 1640 "pascalDSLwin32.tab.c"
-    break;
-
-  case 72: /* $@7: %empty  */
-#line 277 "pascalDSLwin32.y"
-        {
-		// ----------------------------
-		// make a mul term node to tree
-		// ----------------------------
-		node_new = (struct node *) malloc( sizeof( struct node ) );
-		node_new->token = (char *) malloc( 12 );
-		
-		strcpy(node_new->token, "expr");
-		node_new->token_id = tt_expr_add;
-
-		node_new->value = (yyvsp[0].node_and_value).value;
-		node_new->prev  = node_prev;
-		node_new->next  = NULL;
-		
-		node_prev = node_new;
-	}
-#line 1661 "pascalDSLwin32.tab.c"
-    break;
-
-  case 73: /* expr: expr $@7 '+' term  */
-#line 294 "pascalDSLwin32.y"
-        {
-		// ----------------------------
-		// make a add term node to tree
-		// ----------------------------
-		node_new = (struct node *) malloc( sizeof( struct node ) );
-		node_new->token = (char *) malloc( 12 );
-		
-		strcpy(node_new->token, "term");
-		node_new->token_id = tt_term_add;
-
-		node_new->value = (yyvsp[0].node_and_value).value;
-		node_new->prev  = node_prev;
-		node_new->next  = NULL;
-		
-		node_prev = node_new;
-		(yyval.node_and_value).value = (yyvsp[-3].node_and_value).value + (yyvsp[0].node_and_value).value;
-	}
-#line 1683 "pascalDSLwin32.tab.c"
-    break;
-
-  case 74: /* expr: term  */
-#line 312 "pascalDSLwin32.y"
-        {
-		// ----------------------------
-		// make a term node to tree:
-		// ----------------------------
-		node_new = (struct node *) malloc( sizeof( struct node ) );
-		node_new->token = (char *) malloc( 12 );
-		
-		strcpy(node_new->token, "term");
-		node_new->token_id = tt_term;
-
-		node_new->value = (yyvsp[0].node_and_value).value;
-		node_new->prev  = node_prev;
-		node_new->next  = NULL;
-		
-		node_prev = node_new;
-		(yyval.node_and_value).value = (yyvsp[0].node_and_value).value;
-	}
-#line 1705 "pascalDSLwin32.tab.c"
-    break;
-
-  case 75: /* $@8: %empty  */
-#line 333 "pascalDSLwin32.y"
-        {
-		// ----------------------------
-		// make a term node to tree:
-		// ----------------------------
-		node_new = (struct node *) malloc( sizeof( struct node ) );
-		node_new->token = (char *) malloc( 12 );
-		
-		strcpy(node_new->token, "term");
-		node_new->token_id = tt_term_mul;
-
-		node_new->value = (yyvsp[0].node_and_value).value;
-		node_new->prev  = node_prev;
-		node_new->next  = NULL;
-		
-		node_prev = node_new;
-	}
-#line 1726 "pascalDSLwin32.tab.c"
-    break;
-
-  case 76: /* term: term $@8 '*' factor  */
-#line 350 "pascalDSLwin32.y"
-        {
-		// ----------------------------
-		// make a mul term node to tree
-		// ----------------------------
-		node_new = (struct node *) malloc( sizeof( struct node ) );
-		node_new->token = (char *) malloc( 12 );
-		
-		strcpy(node_new->token, "factor");
-		node_new->token_id = tt_term_mul;
-
-		node_new->value = (yyvsp[0].node_and_value).value;
-		node_new->prev  = node_prev;
-		node_new->next  = NULL;
-		
-		node_prev = node_new;
-		(yyval.node_and_value).value = (yyvsp[-3].node_and_value).value * (yyvsp[0].node_and_value).value;
-	}
-#line 1748 "pascalDSLwin32.tab.c"
-    break;
-
-  case 77: /* $@9: %empty  */
-#line 368 "pascalDSLwin32.y"
-        {
-		// ----------------------------
-		// make a div node to tree:
-		// ----------------------------
-		node_new = (struct node *) malloc( sizeof( struct node ) );
-		node_new->token = (char *) malloc( 12 );
-		
-		strcpy(node_new->token, "term" );
-		node_new->token_id = tt_term_div;
-
-		node_new->value = (yyvsp[0].node_and_value).value;
-		node_new->prev  = node_prev;
-		node_new->next  = NULL;
-		
-		node_prev = node_new;
-	}
-#line 1769 "pascalDSLwin32.tab.c"
-    break;
-
-  case 78: /* term: term $@9 '/' factor  */
-#line 385 "pascalDSLwin32.y"
-        {
-		// ----------------------------
-		// make a div term node to tree
-		// ----------------------------
-		node_new = (struct node *) malloc( sizeof( struct node ) );
-		node_new->token = (char *) malloc( 12 );
-		
-		strcpy(node_new->token, "factor");
-		node_new->token_id = tt_factor_div;
-
-		node_new->value = (yyvsp[0].node_and_value).value;
-		node_new->prev  = node_prev;
-		node_new->next  = NULL;
-		
-		node_prev = node_new;
-		(yyval.node_and_value).value = (yyvsp[-3].node_and_value).value / (yyvsp[0].node_and_value).value;
-	}
-#line 1791 "pascalDSLwin32.tab.c"
-    break;
-
-  case 79: /* term: factor  */
-#line 403 "pascalDSLwin32.y"
-        {
-		// --------------------------
-		// make a factor node to tree
-		// --------------------------
-		node_new = (struct node *) malloc( sizeof( struct node ) );
-		node_new->token = (char *) malloc( 12 );
-		
-		strcpy(node_new->token, "factor");
-		node_new->token_id = tt_factor;
-
-		node_new->value = (yyvsp[0].node_and_value).value;
-		node_new->prev  = node_prev;
-		node_new->next  = NULL;
-		
-		node_prev = node_new;
-		(yyval.node_and_value) = (yyvsp[0].node_and_value);
-	}
-#line 1813 "pascalDSLwin32.tab.c"
-    break;
-
-  case 80: /* factor: number  */
-#line 424 "pascalDSLwin32.y"
-        {
-		// --------------------------
-		// make a number node to tree
-		// --------------------------
-		node_new = (struct node *) malloc( sizeof( struct node ) );
-		node_new->token = (char *) malloc( 12 );
-		
-		strcpy(node_new->token, "factor");
-		node_new->token_id = tt_factor_number;
-
-		node_new->value = (yyvsp[0].node_and_value).value;
-		node_new->prev  = node_prev;
-		node_new->next  = NULL;
-		
-		node_prev = node_new;
-		(yyval.node_and_value) = (yyvsp[0].node_and_value);
-	}
-#line 1835 "pascalDSLwin32.tab.c"
-    break;
-
-  case 81: /* factor: '-' number  */
-#line 442 "pascalDSLwin32.y"
-        {
-		// -----------------------------------
-		// make a negative number node to tree
-		// -----------------------------------
-		node_new = (struct node *) malloc( sizeof( struct node ) );
-		node_new->token = (char *) malloc( 12 );
-		
-		strcpy(node_new->token, "factor" );
-		node_new->token_id = tt_factor_neg;
-
-		node_new->value = -(yyvsp[0].node_and_value).value;
-		node_new->prev  = node_prev;
-		node_new->next  = NULL;
-		
-		node_prev = node_new;
-		(yyval.node_and_value).value = -(yyvsp[0].node_and_value).value;
-	}
-#line 1857 "pascalDSLwin32.tab.c"
-    break;
-
-  case 82: /* factor: '(' expr ')'  */
-#line 460 "pascalDSLwin32.y"
-        {
-		// ---------------------------------
-		// make a parens number node to tree
-		// ---------------------------------
-		node_new = (struct node *) malloc( sizeof( struct node ) );
-		node_new->token = (char *) malloc( 12 );
-
-		strcpy(node_new->token, "factor"  );
-		node_new->token_id = tt_factor_paren;
-		
-		node_new->value = (yyvsp[-1].node_and_value).value;
-		node_new->prev  = node_prev;
-		node_new->next  = NULL;
-		
-		node_prev = node_new;
-		(yyval.node_and_value) = (yyvsp[-1].node_and_value);
-	}
-#line 1879 "pascalDSLwin32.tab.c"
-    break;
-
-  case 83: /* number: TOK_NUMBER  */
-#line 481 "pascalDSLwin32.y"
-        {
-		// -------------------------
-		// add a number node to tree
-		// -------------------------
-		node_new = (struct node *) malloc( sizeof( struct node ) );
-		node_new->token = (char *) malloc( 12 );
-		
-		node_new->token_id = tt_const_number;
-		strcpy(node_new->token, "const");
-		
-		node_new->value = (yyvsp[0].node_and_value).value;
-		node_new->prev  = node_prev;
-		node_new->next  = NULL;
-		
-		node_prev = node_new;
-		(yyval.node_and_value).value  = (yyvsp[0].node_and_value).value;
-	}
-#line 1901 "pascalDSLwin32.tab.c"
-    break;
-
-  case 84: /* ident: TOK_ID  */
-#line 502 "pascalDSLwin32.y"
-        {
-		// -------------------------
-		// add a ident node to tree
-		// -------------------------
-		node_new = (struct node *) malloc( sizeof( struct node )    );
-
-		node_new->token = (char *) malloc( strlen( (yyvsp[0].node_and_value).name     ) + 1);
-		(yyval.node_and_value).name         = (char *) malloc( strlen( (yyvsp[0].node_and_value).name     ) + 1);
-		strcpy((yyval.node_and_value).name, (yyvsp[0].node_and_value).name );
-
-		node_new->token_id = tt_const_ident;
-		strcpy(node_new->token, (yyvsp[0].node_and_value).name );
-		
-		node_new->prev  = node_prev;
-		node_new->next  = NULL;
-		
-		node_prev = node_new;
-	}
-#line 1924 "pascalDSLwin32.tab.c"
-    break;
-
-  case 103: /* if_else_endif: if_ident_eqeq stmt  */
-#line 549 "pascalDSLwin32.y"
-                                   { }
-#line 1930 "pascalDSLwin32.tab.c"
-    break;
-
-  case 104: /* if_else_endif: if_ident_lteq stmt  */
-#line 550 "pascalDSLwin32.y"
-                                   { }
-#line 1936 "pascalDSLwin32.tab.c"
-    break;
-
-  case 105: /* if_else_endif: if_ident_gteq stmt  */
-#line 551 "pascalDSLwin32.y"
-                                   { }
-#line 1942 "pascalDSLwin32.tab.c"
-    break;
-
-  case 106: /* if_else_endif: if_ident_ltgt stmt  */
-#line 552 "pascalDSLwin32.y"
-                                   { }
-#line 1948 "pascalDSLwin32.tab.c"
+        (yyval.node_and_value).name = strdup( str1.c_str() );
+    }
+#line 1353 "pascalDSLwin32.tab.c"
     break;
 
 
-#line 1952 "pascalDSLwin32.tab.c"
+#line 1357 "pascalDSLwin32.tab.c"
 
       default: break;
     }
@@ -2141,110 +1546,68 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 555 "pascalDSLwin32.y"
+#line 182 "pascalDSLwin32.y"
 
 
-// ----------------------------------------------------------------------------
-// make/add a node to the parse tree ...
-// ----------------------------------------------------------------------------
-struct node *
-mknode(
-	char *fmt,
-	struct node * prev,
-	float         value,
-	char        * token)
+void
+add_node_fact_string( int command, char * str )
 {
-	struct node *
-	newnode = (struct node *) malloc( sizeof( struct node )    );
-	newnode->token = (char *) malloc( strlen( token       ) + 1);
-	newnode->prev  =  prev;
-	newnode->next  =  NULL;
-	
-	strcpy(newnode->token, token);
-	return newnode;
+    Node * nod = new Node( str );
+    
+    nod->SetTokenType( tt_const_fact_string );
+    nod->SetTokenTrace( command );
+    nod->SetData( str );
+
+    rootNodes.push_back( nod );
+    command_reference_counter++;
+}
+void
+add_node_fact_number( char * str )
+{
+    Node * nod = new Node( str );
+
+    nod->SetTokenType( tt_const_fact_number );
+    nod->SetTokenTrace( command_reference_counter++ );
+    nod->SetData( str );
+
+    rootNodes.push_back( nod );
+}
+void
+add_node_fact( char * str )
+{
+    Node * nod = new Node( str );
+
+    nod->SetTokenType( tt_const_fact );
+    nod->SetTokenTrace( command_reference_counter++ );
+    nod->SetData( str );
+
+    rootNodes.push_back( nod );
 }
 
-// ----------------------------------------------------------------------------
-// traverse throug the created parse tree from behind the scenes ...
-// ----------------------------------------------------------------------------
 void
-tree_execute(void)
+add_node_print( int flag )
 {
-	char        * buffer;
-	struct node * ptr = node_new;
-	
-	buffer = (char *) malloc(255);
-	node_prev = ptr;
-	
-	// ---------------------------------------
-	// traverse the parse tree from behind ...
-	// ---------------------------------------
-	while (ptr != NULL) {
-		if (node_prev != NULL) {
-			switch (node_prev->token_id)
-			{
-				case tt_const_ident:
-					sprintf(buffer,"detected ident: %s",
-					ptr->token);
-				break;
-				
-				case tt_const_number:
-					sprintf(buffer,"fetch number: %f",
-					ptr->value);
-				break;
-				
-				case tt_factor_neg:
-					sprintf(buffer,"negate number factor: %f",
-					ptr->value);
-				break;
-				
-				case tt_factor_term:
-					sprintf(buffer,"term factor:  %f ",
-					ptr->value);
-				break;
-				
-				case tt_factor_paren:
-					sprintf(buffer,"parens number factor: ( %f )",
-					ptr->value);
-				break;
-				
-				case tt_factor_number:
-					sprintf(buffer,"simple factor number");
-				break;
-				
-				case tt_term:    break;
-				case tt_factor:  break;
-				
-				case tt_expr_sub: sprintf(buffer, "expr sub" ); break;
-				case tt_expr_add: sprintf(buffer, "expr add" ); break;
-				case tt_expr_mul: sprintf(buffer, "expr mul" ); break;
-				case tt_expr_div: sprintf(buffer, "expr div" ); break;
-				
-				case tt_term_sub: sprintf(buffer, "term sub" ); break;
-				case tt_term_add: sprintf(buffer, "term add" ); break;
-				case tt_term_mul: sprintf(buffer, "term mul" ); break;
-				case tt_term_div: sprintf(buffer, "term div" ); break;
+    if (flag == 1) {
+        Node * nod = new Node( tt_print_one );
+        nod->SetTokenTrace( command_reference_counter++ );
 
-				case tt_factor_sub: sprintf(buffer, "factor sub" ); break;
-				case tt_factor_add: sprintf(buffer, "factor add" ); break;
-				case tt_factor_mul: sprintf(buffer, "factor mul" ); break;
-				case tt_factor_div: sprintf(buffer, "factor div" ); break;
-				
-				case tt_ident_assign:
-					sprintf(buffer,"assign to: '%s' := %f",
-						ptr->token,
-						ptr->value
-					);
-				break;
-				
-				default:
-					sprintf(buffer,"error on fetch type");
-				break;
-			}	MessageBoxA(0,buffer,"DebugInfo",0);
-		}
-		node_prev = ptr->prev;
-		ptr       = ptr->prev;
-	}
-	
-	free(buffer);
+        rootNodes.push_back( nod );
+    }   else {
+        Node * nod = new Node( tt_print_two );
+        nod->SetTokenTrace( command_reference_counter++ );
+
+        rootNodes.push_back( nod );
+    }
+}
+
+void
+add_node_string( char *str )
+{
+    Node * nod = new Node( str );
+
+    nod->SetTokenType ( tt_const_string );
+    nod->SetTokenTrace( command_reference_counter++ );
+    nod->SetData( str );
+
+    rootNodes.push_back( nod );
 }

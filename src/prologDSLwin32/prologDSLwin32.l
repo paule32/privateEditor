@@ -69,16 +69,29 @@ Z           [z|Z]
 [ \t]*                    { /* empty */ }
 [\n|\r\n]                 { yy_col = 1;      yy_row++; }
 
-[0-9]+                    { yylval.node_and_value.value = atof(yytext); return TOK_NUMBER; }
-[0-9]+\.[0-9]+            { yylval.node_and_value.value = atof(yytext); return TOK_NUMBER; }
+[0-9]+                    {
+    yylval.node_and_value.name = new char[ strlen( yytext ) + 1];
+    yylval.node_and_value.name = strcpy  (
+    yylval.node_and_value.name,  yytext );
+
+    return TOK_NUMBER;
+}
+[0-9]+\.[0-9]+            {
+    yylval.node_and_value.name = new char[ strlen( yytext ) + 1];
+    yylval.node_and_value.name = strcpy  (
+    yylval.node_and_value.name,  yytext );
+
+    return TOK_NUMBER;
+}
 
 [a-zA-Z_]+|[a-zA-Z0-9_]+  {
     // -----------------------------------
     // pattern for: identifier's ...
     // -----------------------------------
-    yylval.node_and_value.name = (char*) malloc( strlen( yytext ) + 1); strcpy(
-    yylval.node_and_value.name, yytext);
-	
+    yylval.node_and_value.name = new char[ strlen( yytext ) + 1];
+    yylval.node_and_value.name = strcpy  (
+    yylval.node_and_value.name,  yytext );
+
     return TOK_ID;
 }
 
@@ -87,8 +100,9 @@ Z           [z|Z]
     // pattern for: "Hello World"
     // pattern for: 'Hello World'
     // -----------------------------------
-    yylval.node_and_value.content_str = (char*) malloc( strlen( yytext ) + 1); strcpy(
-    yylval.node_and_value.content_str, yytext ) ;
+    yylval.node_and_value.name = new char[ strlen( yytext ) + 1];
+    yylval.node_and_value.name = strcpy  (
+    yylval.node_and_value.name,  yytext );
 
     return TOK_STRING;
 }
@@ -97,8 +111,9 @@ Z           [z|Z]
     // pattern for: "Hello World"
     // pattern for: 'Hello World'
     // -----------------------------------
-    yylval.node_and_value.content_str = (char*) malloc( strlen( yytext ) + 1); strcpy(
-    yylval.node_and_value.content_str, yytext ) ;
+    yylval.node_and_value.name = new char[ strlen( yytext ) + 1];
+    yylval.node_and_value.name = strcpy  (
+    yylval.node_and_value.name,  yytext );
 
     return TOK_STRING;
 }
@@ -125,9 +140,9 @@ Z           [z|Z]
 \?                      { return TOK_PRINT_ONE; }
 
 .                       {
-    char buffer[200];
-    std::sprintf( buffer, "Unrecognized character: %s\n", yytext );
-    yyerror(buffer);
+    AnsiString str1 = "unrecognized character: ";
+    str1 += yytext;
+    yyerror( str1.c_str() );
 }
 
 <<EOF>>                 { return TOK_YYEOF; }
@@ -137,37 +152,28 @@ int yywrap(void) { return 1; }
 
 void yyerror(const char* m)
 {
-    char * buffer = (char *) malloc(1024);
-    char * number = (char *) malloc( 255);
-
-    itoa(yy_row,number,10);
-
-    strcpy( buffer, "error in line: ");
-    strcat( buffer, number);
-    strcat( buffer, ": ");
-    strcat( buffer, m);
-
-    ShowParserErrorText( buffer );
+    AnsiString str1 = "error in line: ";
+    str1 += StrToInt(yy_row);
+    str1 += ": ";
+    str1 += m;
+    
+    ShowParserErrorText( str1.c_str() );
 }
 
 BOOL EXPORT
-yy_dbase_win32_lex_main(
+yy_prolog_win32_lex_main(
     char* filename,
     char* tempDir )
 {
     BOOL   result = FALSE;
-    char * buffer;
 
     // ------------------------------------------
     // try to open file, saved before ...
     // ------------------------------------------
     if (!(yyin = fopen(filename,"r"))) {
-        buffer = (char*) malloc(100);
-
-        std::sprintf(buffer, "could not open file: %s", filename);
-        ShowParserErrorText(buffer);
-
-        free(buffer);
+        AnsiString buffer = "could not open file: ";
+        buffer += filename;
+        ShowParserErrorText( buffer.c_str() );
         return false;
     }
 

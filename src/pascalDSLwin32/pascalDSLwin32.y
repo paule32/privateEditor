@@ -1,6 +1,6 @@
 %{
 // ----------------------------------------------------------------------------
-// File   : dBaseDSL.yy
+// File   : pascalDSL.y
 // Author : Jens Kallup (c) 2023-07.01
 // License: all rights reserved.
 // ----------------------------------------------------------------------------
@@ -9,62 +9,54 @@
 // ----------------------------------------------------------------------------
 // parser variables and constants:
 // ----------------------------------------------------------------------------
-extern char* data_code;
-extern char* data_text;
-extern char* data_data;
-
 extern char * yytext;
 
-// ----------------------------------------------------------------------------
-// temporary used node symbols/struct:
-// ----------------------------------------------------------------------------
-struct node * node_head = NULL;
-struct node * node_new  = NULL;
-struct node * node_prev = NULL;
+extern void add_node_fact_string ( char * str );
+extern void add_node_fact_number ( char * str );
+extern void add_node_fact        ( char * str );
 
-struct node *
-mknode(
-	char * fmt,
-	struct node * prev ,
-	float         value,
-	char        * token
-);
+extern void add_node_string( int, char* );
+extern void add_node_print ( int, int );
 
-extern void tree_execute(void);
+extern void display_list  ( );
+extern int  yylex();
+
+// ----------------------------------------------------------------------------
+// this variable is important ! - it counts the commands, and is in relation
+// to, and with other command's...
+// ----------------------------------------------------------------------------
+static int command_reference_counter = 1;
+
+// ----------------------------------------------------------------------------
+// the following "export" function is used in Delphi, to call the tree run ...
+// ----------------------------------------------------------------------------
+void EXPORT
+yy_pascal_win32_run_code(void) {
+    display_list();
+}
 %}
 
 %union {
-	struct {
-		float         value;
-		char        * name ;
-		struct node * node_for;
-		struct node * stmt ;
-		struct node * next ;
-		struct node * prev ;
-	}	node_and_value;
-}
+    struct {
+        float         value;
+        char        * name ;
+        char        * content_str;
+        struct node * sub_nodes;
+    }	node_and_value;
+};
 
 %token <node_and_value> TOK_ID
-%token <node_and_value> TOK_NUMBER TOK_STRING TOK_STRING_BRACE
+%token <node_and_value> TOK_NUMBER TOK_STRING
 
-%token <node_and_value> TOK_IF TOK_ELSE TOK_ENDIF
-%token <node_and_value> TOK_EQEQ TOK_EQLT TOK_EQGT TOK_GTEQ TOK_LTEQ TOK_LTGT
-%token <node_and_value> TOK_ASSIGN TOK_FALSE TOK_TRUE TOK_AND TOK_NOT TOK_OR
-%token <node_and_value> TOK_PARAMETER TOK_LOCAL TOK_PRIVATE
-
-%token <node_and_value> TOK_FUNCTION TOK_PROCEDURE TOK_RETURN TOK_SET TOK_CLEAR
-%token <node_and_value> TOK_FOR TOK_TO TOK_ENDFOR
-%token <node_and_value> TOK_CLASS TOK_OF TOK_ENDCLASS TOK_NEW
-%token <node_and_value> TOK_WITH TOK_ENDWITH TOK_CUSTOM
-%token <node_and_value> TOK_DEFINE
+%token <node_and_value> TOK_PRINT_ONE
+%token <node_and_value> TOK_PRINT_TWO
 
 %type  <node_and_value> number
 %type  <node_and_value> factor
 %type  <node_and_value> term
 
-%type  <node_and_value> expr
-%type  <node_and_value> ident
-%type  <node_and_value> stmt if_else_endif ident_object param_object
+%type  <node_and_value> expr ident idents stmt facts
+%type  <node_and_value> ident_string
 
 %token TOK_YYEOF 0
 
@@ -73,588 +65,181 @@ extern void tree_execute(void);
 %%
 
 program
-	: /* empty */ { }
-	| program stmt { }
-	| program error {
-		char * buffer = (char *) malloc(1024);
-
-		strcpy ( buffer,"Error in Grammar");
-		yyerror( buffer );
-	}
-	;
-
-define_macro
-	:	'#' TOK_DEFINE ident_object
-	|	'#' TOK_DEFINE expr
-	;
+    :   /* empty */   { }
+    |   program stmt  { }
+    |   program error { yyerror( "Error in Grammar" ); }
+    ;
 
 stmt
-	:	/* empty */ { }
-	|	ident_object TOK_ASSIGN expr
-	{
-		// -----------------------------
-		// make a ident node to tree
-		// -----------------------------
-		node_new = (struct node *) malloc( sizeof( struct node )    );
-		node_new->token = (char *) malloc( strlen( $1.name     ) + 1);
-		
-		strcpy(node_new->token, $1.name   );
-		node_new->token_id = tt_const_ident;
+    :	/* empty */ { }
+    |   ident '(' facts ')' '.' {
+        AnsiString str1 = "ident: ";
+        str1 += $1.name;
+        str1 += "\npl: ";
+        str1 += $3.name;
+        ShowMessage( str1 );
+        add_node_fact( str1.c_str() );
+    }
+    |   ident '(' number ')' '.'
+    ;
 
-		node_new->prev  = node_prev;
-		node_new->next  = NULL;
-		
-		node_prev = node_new;
-
-
-		// ------------------------------
-		// make a ident expr node to tree
-		// ------------------------------
-		node_new = (struct node *) malloc( sizeof( struct node ) );
-		node_new->token = (char *) malloc( 12 );
-		
-		strcpy(node_new->token, "assign");
-		node_new->token_id = tt_ident_assign;
-
-		node_new->value = $3.value;
-		node_new->prev  = node_prev;
-		node_new->next  = NULL;
-		
-		node_prev = node_new;
-	}	stmt
-	|	TOK_FOR ident '=' expr TOK_TO expr {
-		node_new = (struct node *) malloc( sizeof( struct node ) );
-		node_new->token = (char *) malloc( 12 );
-		
-		strcpy(node_new->token, "forloop");
-
-		$1.node_for = (struct node *) malloc( sizeof( struct node ) );
-		$1.node_for->token_id = tt_for_loop;
-		$1.node_for->for_from = $4.value;
-		$1.node_for->for_to   = $6.value;
-
-		node_new->prev = $1.node_for;
-		node_new->next = NULL;
-		node_prev      = node_new;
-
-	}	stmt TOK_ENDFOR {
-		node_new = (struct node *) malloc( sizeof( struct node ) );
-		node_new->token = (char *) malloc( 12 );
-		
-		strcpy(node_new->token, "forend");
-		node_new->token_id = $1.node_for->token_id;
-		
-		node_new->prev = $1.node_for;
-		node_new->next = NULL;
-		node_prev      = node_new;
-	}
-	|	define_macro TOK_ASSIGN ident_object { }
-	|	define_macro TOK_ASSIGN ident_string { }
-	|	define_macro TOK_ASSIGN expr         { }
-	|	define_macro            ident_object { }
-	|	define_macro            ident_string { }
-	|	define_macro            expr         {
-	}
-	|	TOK_CLASS     ident_object '(' ident_object ')' TOK_OF '(' ident_object                  ')' TOK_CUSTOM stmt TOK_ENDCLASS stmt
-	|	TOK_CLASS     ident_object                      TOK_OF '(' ident_object ',' ident_object ')' TOK_CUSTOM stmt TOK_ENDCLASS stmt
-	|	TOK_CLASS     ident_object                      TOK_OF     ident_object                      TOK_CUSTOM stmt TOK_ENDCLASS stmt
-	|	TOK_CLASS     ident_object                      TOK_OF     ident_object                                 stmt TOK_ENDCLASS stmt {
-	}
-	|	TOK_LOCAL     local_object       stmt {
-	}
-	|	TOK_PRIVATE   ident_object       stmt { }
-	|	TOK_PARAMETER param_object       stmt {
-	}
-	|	TOK_PROCEDURE ident args_param   stmt TOK_RETURN                   stmt
-	|	TOK_FUNCTION  ident args_param   stmt TOK_RETURN   return_value    stmt {
-	}
-	|	TOK_WITH '('  ident_object ')'   stmt TOK_ENDWITH  stmt
-	|	TOK_WITH      ident_object       stmt TOK_ENDWITH  stmt {
-	}
-	|	ident_object  TOK_ASSIGN TOK_NEW ident_object '(' ident_object ')' stmt
-	|	ident_object  TOK_ASSIGN TOK_NEW ident_object '('              ')' stmt {
-	}
-	|	ident_object  TOK_ASSIGN ident_object ident_string  stmt
-	|	ident_object  TOK_ASSIGN ident_object { }           stmt
-	|	ident_object  TOK_ASSIGN              ident_string  stmt
-	|	ident_object  TOK_ASSIGN              TOK_FALSE     stmt
-	|	ident_object  TOK_ASSIGN              TOK_TRUE { }  stmt
-	|	ident_object  '('        ident_object ')'           stmt
-	|	ident_object  '('                     ')'      { }  stmt
-	|	if_else_endif
-	;
-
-ident_object
-	: TOK_ID
-	| ident_object '.' ident_object
-	;
-
-local_object
-	: ident_object TOK_ASSIGN TOK_NEW ident_object '(' ident_object ')'
-	| ident_object TOK_ASSIGN TOK_NEW ident_object '(' ')'
-	| ident_object
-	| local_object ',' local_object
-	;
-	
-param_object
-	: ident_object
-	| param_object ',' param_object
-	;
-
-args_param
-	:	/* empty */
-	|	'(' param_object ')'
-	|	'('              ')'
-	;
+facts
+    :   idents       { $$.name = strdup( $1.name ); }
+    |   ident_string { $$.name = strdup( $1.name ); }
+    |   expr
+    ;
 
 ident_string
-	: TOK_STRING
-	| TOK_STRING_BRACE
-	| ident_string '+' ident_string
-	;
-
-return_merge
-	:	/* empty */
-	|	ident_object '+' ident_object
-	|   ident_object '+' ident_string {
-	}
-	|	ident_string '+' ident_string
-	|	ident_string '+' ident_object {
-	}
-	|	ident_object
-	|	ident_string {
-	}
-	|	TOK_FALSE
-	|	TOK_TRUE
-	|	expr
-	;
-ident_merge
-	:	return_merge
-	|	return_merge '+' return_merge
-	;
-return_value
-	:	'(' ident_merge ')'
-	|	    ident_merge
-	;
+    :   TOK_STRING {
+        $$.name = strdup( $1.name );
+    }
+    |   ident_string '+' ident_string {
+        AnsiString str1  = $1.name;
+        str1            += $3.name;
+        
+        $$.name = strdup( str1.c_str() );
+    }
+    |   ident_string ',' ident_string
+    |   ident_string ',' expr
+    |   expr         ',' expr
+    |   expr         ',' ident_string
+    ;
 
 expr
-	: expr
-	{
-		// ----------------------------
-		// make a mul term node to tree
-		// ----------------------------
-		node_new = (struct node *) malloc( sizeof( struct node ) );
-		node_new->token = (char *) malloc( 12 );
-		
-		strcpy(node_new->token, "expr");
-		node_new->token_id = tt_expr_sub;
+    : expr '-' term {
+        AnsiString str1 = $1.name;
+        AnsiString str2 = $3.name;
+        AnsiString str3 = str1;
+        str3 += " - ";
+        str3 += str2 ;
+        
+        $$.name = strdup( str3.c_str() );
+    }
+    | expr '+' term {
+        AnsiString str1 = $1.name;
+        AnsiString str2 = $3.name;
+        AnsiString str3 = str1;
+        str3 += " + ";
+        str3 += str2 ;
 
-		node_new->value = $1.value;
-		node_new->prev  = node_prev;
-		node_new->next  = NULL;
-		
-		node_prev = node_new;
-	}
-	'-' term
-	{
-		// ----------------------------
-		// make a sub term node to tree
-		// ----------------------------
-		node_new = (struct node *) malloc( sizeof( struct node ) );
-		node_new->token = (char *) malloc( 12 );
-		
-		strcpy(node_new->token, "term");
-		node_new->token_id = tt_term_sub;
+        $$.name = strdup( str3.c_str() );
+    }
+    |   term {
+        $$.name = strdup( $1.name );  }
+    ;
 
-		node_new->value = $4.value;
-		node_new->prev  = node_prev;
-		node_new->next  = NULL;
-		
-		node_prev = node_new;
-		$$.value = $1.value - $4.value;
-	}
-	| expr
-	{
-		// ----------------------------
-		// make a mul term node to tree
-		// ----------------------------
-		node_new = (struct node *) malloc( sizeof( struct node ) );
-		node_new->token = (char *) malloc( 12 );
-		
-		strcpy(node_new->token, "expr");
-		node_new->token_id = tt_expr_add;
-
-		node_new->value = $1.value;
-		node_new->prev  = node_prev;
-		node_new->next  = NULL;
-		
-		node_prev = node_new;
-	}
-	'+' term
-	{
-		// ----------------------------
-		// make a add term node to tree
-		// ----------------------------
-		node_new = (struct node *) malloc( sizeof( struct node ) );
-		node_new->token = (char *) malloc( 12 );
-		
-		strcpy(node_new->token, "term");
-		node_new->token_id = tt_term_add;
-
-		node_new->value = $4.value;
-		node_new->prev  = node_prev;
-		node_new->next  = NULL;
-		
-		node_prev = node_new;
-		$$.value = $1.value + $4.value;
-	}
-	| term
-	{
-		// ----------------------------
-		// make a term node to tree:
-		// ----------------------------
-		node_new = (struct node *) malloc( sizeof( struct node ) );
-		node_new->token = (char *) malloc( 12 );
-		
-		strcpy(node_new->token, "term");
-		node_new->token_id = tt_term;
-
-		node_new->value = $1.value;
-		node_new->prev  = node_prev;
-		node_new->next  = NULL;
-		
-		node_prev = node_new;
-		$$.value = $1.value;
-	}
-	;
-  
 term
-	: term
-	{
-		// ----------------------------
-		// make a term node to tree:
-		// ----------------------------
-		node_new = (struct node *) malloc( sizeof( struct node ) );
-		node_new->token = (char *) malloc( 12 );
-		
-		strcpy(node_new->token, "term");
-		node_new->token_id = tt_term_mul;
+    : term '*' factor {
+        AnsiString str1 = $1.name;
+        AnsiString str2 = $3.name;
+        AnsiString str3 = str1;
+        str3 += " * ";
+        str3 += str2 ;
 
-		node_new->value = $1.value;
-		node_new->prev  = node_prev;
-		node_new->next  = NULL;
-		
-		node_prev = node_new;
-	}
-	'*' factor
-	{
-		// ----------------------------
-		// make a mul term node to tree
-		// ----------------------------
-		node_new = (struct node *) malloc( sizeof( struct node ) );
-		node_new->token = (char *) malloc( 12 );
-		
-		strcpy(node_new->token, "factor");
-		node_new->token_id = tt_term_mul;
+        $$.name = strdup( str3.c_str() );
+    }
+    | term '/' factor {
+        AnsiString str1 = $1.name;
+        AnsiString str2 = $3.name;
+        AnsiString str3 = str1;
+        str3 += " / ";
+        str3 += str2 ;
 
-		node_new->value = $4.value;
-		node_new->prev  = node_prev;
-		node_new->next  = NULL;
-		
-		node_prev = node_new;
-		$$.value = $1.value * $4.value;
-	}
-	| term
-	{
-		// ----------------------------
-		// make a div node to tree:
-		// ----------------------------
-		node_new = (struct node *) malloc( sizeof( struct node ) );
-		node_new->token = (char *) malloc( 12 );
-		
-		strcpy(node_new->token, "term" );
-		node_new->token_id = tt_term_div;
+        $$.name = strdup( str3.c_str() );
+    }
+    |   factor { $$.name = strdup( $1.name ); }
+    ;
 
-		node_new->value = $1.value;
-		node_new->prev  = node_prev;
-		node_new->next  = NULL;
-		
-		node_prev = node_new;
-	}
-	'/' factor
-	{
-		// ----------------------------
-		// make a div term node to tree
-		// ----------------------------
-		node_new = (struct node *) malloc( sizeof( struct node ) );
-		node_new->token = (char *) malloc( 12 );
-		
-		strcpy(node_new->token, "factor");
-		node_new->token_id = tt_factor_div;
-
-		node_new->value = $4.value;
-		node_new->prev  = node_prev;
-		node_new->next  = NULL;
-		
-		node_prev = node_new;
-		$$.value = $1.value / $4.value;
-	}
-	| factor
-	{
-		// --------------------------
-		// make a factor node to tree
-		// --------------------------
-		node_new = (struct node *) malloc( sizeof( struct node ) );
-		node_new->token = (char *) malloc( 12 );
-		
-		strcpy(node_new->token, "factor");
-		node_new->token_id = tt_factor;
-
-		node_new->value = $1.value;
-		node_new->prev  = node_prev;
-		node_new->next  = NULL;
-		
-		node_prev = node_new;
-		$$ = $1;
-	}
-	;
-  
 factor
-	: number
-	{
-		// --------------------------
-		// make a number node to tree
-		// --------------------------
-		node_new = (struct node *) malloc( sizeof( struct node ) );
-		node_new->token = (char *) malloc( 12 );
-		
-		strcpy(node_new->token, "factor");
-		node_new->token_id = tt_factor_number;
+    :   number       { $$.name = strdup( $1.name ); }
+    |   '-' number   {
+        AnsiString str1 = "-";
+        AnsiString str2 = $2.name;
+        AnsiString str3 = str1 + str2;
 
-		node_new->value = $1.value;
-		node_new->prev  = node_prev;
-		node_new->next  = NULL;
-		
-		node_prev = node_new;
-		$$ = $1;
-	}
-	| '-' number
-	{
-		// -----------------------------------
-		// make a negative number node to tree
-		// -----------------------------------
-		node_new = (struct node *) malloc( sizeof( struct node ) );
-		node_new->token = (char *) malloc( 12 );
-		
-		strcpy(node_new->token, "factor" );
-		node_new->token_id = tt_factor_neg;
+        $$.name = strdup( str3.c_str() );
+    }
+    | '(' expr ')' { $$.name = strdup( $2.name ); }
+    ;
 
-		node_new->value = -$2.value;
-		node_new->prev  = node_prev;
-		node_new->next  = NULL;
-		
-		node_prev = node_new;
-		$$.value = -$2.value;
-	}
-	| '(' expr ')'
-	{
-		// ---------------------------------
-		// make a parens number node to tree
-		// ---------------------------------
-		node_new = (struct node *) malloc( sizeof( struct node ) );
-		node_new->token = (char *) malloc( 12 );
+number : TOK_NUMBER { $$.name = strdup( $1.name ); } ;
+ident  : TOK_ID     { $$.name = strdup( $1.name ); } ;
 
-		strcpy(node_new->token, "factor"  );
-		node_new->token_id = tt_factor_paren;
-		
-		node_new->value = $2.value;
-		node_new->prev  = node_prev;
-		node_new->next  = NULL;
-		
-		node_prev = node_new;
-		$$ = $2;
-	}
-	;
-  
-number
-	: TOK_NUMBER
-	{
-		// -------------------------
-		// add a number node to tree
-		// -------------------------
-		node_new = (struct node *) malloc( sizeof( struct node ) );
-		node_new->token = (char *) malloc( 12 );
-		
-		node_new->token_id = tt_const_number;
-		strcpy(node_new->token, "const");
-		
-		node_new->value = $1.value;
-		node_new->prev  = node_prev;
-		node_new->next  = NULL;
-		
-		node_prev = node_new;
-		$$.value  = $1.value;
-	}
-	;
+idents
+    : ident             { $$.name = strdup( $1.name ); }
+    | expr   ',' expr   { }
+    | idents ',' expr   { }
+    | expr   ',' idents { }
+    | idents ',' idents {
+        AnsiString str1;
+        str1  = $1.name;
+        str1 += ",";
+        str1 += $3.name;
 
-ident
-	: TOK_ID
-	{
-		// -------------------------
-		// add a ident node to tree
-		// -------------------------
-		node_new = (struct node *) malloc( sizeof( struct node )    );
-
-		node_new->token = (char *) malloc( strlen( $1.name     ) + 1);
-		$$.name         = (char *) malloc( strlen( $1.name     ) + 1);
-		strcpy($$.name, $1.name );
-
-		node_new->token_id = tt_const_ident;
-		strcpy(node_new->token, $1.name );
-		
-		node_new->prev  = node_prev;
-		node_new->next  = NULL;
-		
-		node_prev = node_new;
-	}
-	;
-
-if_ident_and_eqeq : TOK_AND ident_object TOK_EQEQ relation ;
-if_ident_and_lteq : TOK_AND ident_object TOK_LTEQ relation ;
-if_ident_and_gteq : TOK_AND ident_object TOK_GTEQ relation ;
-if_ident_and_ltgt : TOK_AND ident_object TOK_LTGT relation ;
-
-if_rel
-	:	/* empty */
-	|	if_ident_and_eqeq
-	|	if_ident_and_lteq
-	|	if_ident_and_gteq
-	|	if_ident_and_ltgt
-	;
-
-relation
-	:	ident_object if_rel
-	|	ident_string if_rel
-	|	expr         if_rel
-	|	TOK_FALSE    if_rel
-	|	TOK_TRUE     if_rel
-	;
-
-if_ident_eqeq : TOK_IF ident_object TOK_EQEQ relation stmt TOK_ENDIF ;
-if_ident_lteq : TOK_IF ident_object TOK_LTEQ relation stmt TOK_ENDIF ;
-if_ident_gteq : TOK_IF ident_object TOK_GTEQ relation stmt TOK_ENDIF ;
-if_ident_ltgt : TOK_IF ident_object TOK_LTGT relation stmt TOK_ENDIF ;
-
-if_else_endif
-	:	if_ident_eqeq stmt { }
-	|	if_ident_lteq stmt { }
-	|	if_ident_gteq stmt { }
-	|	if_ident_ltgt stmt { }
-	;
-
+        $$.name = strdup( str1.c_str() );
+    }
+    ;
 %%
 
-// ----------------------------------------------------------------------------
-// make/add a node to the parse tree ...
-// ----------------------------------------------------------------------------
-struct node *
-mknode(
-	char *fmt,
-	struct node * prev,
-	float         value,
-	char        * token)
+void
+add_node_fact_string( int command, char * str )
 {
-	struct node *
-	newnode = (struct node *) malloc( sizeof( struct node )    );
-	newnode->token = (char *) malloc( strlen( token       ) + 1);
-	newnode->prev  =  prev;
-	newnode->next  =  NULL;
-	
-	strcpy(newnode->token, token);
-	return newnode;
+    Node * nod = new Node( str );
+    
+    nod->SetTokenType( tt_const_fact_string );
+    nod->SetTokenTrace( command );
+    nod->SetData( str );
+
+    rootNodes.push_back( nod );
+    command_reference_counter++;
+}
+void
+add_node_fact_number( char * str )
+{
+    Node * nod = new Node( str );
+
+    nod->SetTokenType( tt_const_fact_number );
+    nod->SetTokenTrace( command_reference_counter++ );
+    nod->SetData( str );
+
+    rootNodes.push_back( nod );
+}
+void
+add_node_fact( char * str )
+{
+    Node * nod = new Node( str );
+
+    nod->SetTokenType( tt_const_fact );
+    nod->SetTokenTrace( command_reference_counter++ );
+    nod->SetData( str );
+
+    rootNodes.push_back( nod );
 }
 
-// ----------------------------------------------------------------------------
-// traverse throug the created parse tree from behind the scenes ...
-// ----------------------------------------------------------------------------
 void
-tree_execute(void)
+add_node_print( int flag )
 {
-	char        * buffer;
-	struct node * ptr = node_new;
-	
-	buffer = (char *) malloc(255);
-	node_prev = ptr;
-	
-	// ---------------------------------------
-	// traverse the parse tree from behind ...
-	// ---------------------------------------
-	while (ptr != NULL) {
-		if (node_prev != NULL) {
-			switch (node_prev->token_id)
-			{
-				case tt_const_ident:
-					sprintf(buffer,"detected ident: %s",
-					ptr->token);
-				break;
-				
-				case tt_const_number:
-					sprintf(buffer,"fetch number: %f",
-					ptr->value);
-				break;
-				
-				case tt_factor_neg:
-					sprintf(buffer,"negate number factor: %f",
-					ptr->value);
-				break;
-				
-				case tt_factor_term:
-					sprintf(buffer,"term factor:  %f ",
-					ptr->value);
-				break;
-				
-				case tt_factor_paren:
-					sprintf(buffer,"parens number factor: ( %f )",
-					ptr->value);
-				break;
-				
-				case tt_factor_number:
-					sprintf(buffer,"simple factor number");
-				break;
-				
-				case tt_term:    break;
-				case tt_factor:  break;
-				
-				case tt_expr_sub: sprintf(buffer, "expr sub" ); break;
-				case tt_expr_add: sprintf(buffer, "expr add" ); break;
-				case tt_expr_mul: sprintf(buffer, "expr mul" ); break;
-				case tt_expr_div: sprintf(buffer, "expr div" ); break;
-				
-				case tt_term_sub: sprintf(buffer, "term sub" ); break;
-				case tt_term_add: sprintf(buffer, "term add" ); break;
-				case tt_term_mul: sprintf(buffer, "term mul" ); break;
-				case tt_term_div: sprintf(buffer, "term div" ); break;
+    if (flag == 1) {
+        Node * nod = new Node( tt_print_one );
+        nod->SetTokenTrace( command_reference_counter++ );
 
-				case tt_factor_sub: sprintf(buffer, "factor sub" ); break;
-				case tt_factor_add: sprintf(buffer, "factor add" ); break;
-				case tt_factor_mul: sprintf(buffer, "factor mul" ); break;
-				case tt_factor_div: sprintf(buffer, "factor div" ); break;
-				
-				case tt_ident_assign:
-					sprintf(buffer,"assign to: '%s' := %f",
-						ptr->token,
-						ptr->value
-					);
-				break;
-				
-				default:
-					sprintf(buffer,"error on fetch type");
-				break;
-			}	MessageBoxA(0,buffer,"DebugInfo",0);
-		}
-		node_prev = ptr->prev;
-		ptr       = ptr->prev;
-	}
-	
-	free(buffer);
+        rootNodes.push_back( nod );
+    }   else {
+        Node * nod = new Node( tt_print_two );
+        nod->SetTokenTrace( command_reference_counter++ );
+
+        rootNodes.push_back( nod );
+    }
+}
+
+void
+add_node_string( char *str )
+{
+    Node * nod = new Node( str );
+
+    nod->SetTokenType ( tt_const_string );
+    nod->SetTokenTrace( command_reference_counter++ );
+    nod->SetData( str );
+
+    rootNodes.push_back( nod );
 }

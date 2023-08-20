@@ -104,6 +104,10 @@ enum token_type {
     tt_const_ident  = 6,    // constant letter array A-Z | a-z
     tt_const_string = 7,	// ident letters in qoute
 
+    tt_const_fact_string,   // for prolog fact's:  human(john).
+    tt_const_fact_number,
+    tt_const_fact,
+    
     tt_term,
 
     tt_expr_sub,
@@ -397,6 +401,30 @@ extern int   EXPORT yy_assembler_win32_lex_getlines(void);
 extern BOOL  EXPORT yy_assembler_win32_lex_main(char*,char*);
 
 extern void  EXPORT yy_assembler_win32_fatal_error(char* message);
+
+// ----------------------------------------------------------------------------
+// Prolog dos32 stuff:
+// ----------------------------------------------------------------------------
+extern void  EXPORT prolog_dos32_error(char* m);
+
+extern void  EXPORT yy_prolog_dos32_lex_parser_error(void (*func)(const char*));
+extern void  EXPORT yy_prolog_dos32_lex_close(void);
+extern int   EXPORT yy_prolog_dos32_lex_get_line(void);
+extern int   EXPORT yy_prolog_dos32_lex_getlines(void);
+extern BOOL  EXPORT yy_prolog_dos32_lex_main(char*,char*);
+
+extern void  EXPORT yy_prolog_dos32_fatal_error(char* message);
+// ----------------------------------------------------------------------------
+// Prolog win32 stuff:
+// ----------------------------------------------------------------------------
+extern void EXPORT yy_prolog_win32_run_code(void);
+
+extern void  EXPORT yy_prolog_win32_lex_close(void);
+extern int   EXPORT yy_prolog_win32_lex_get_line(void);
+extern int   EXPORT yy_prolog_win32_lex_getlines(void);
+extern BOOL  EXPORT yy_prolog_win32_lex_main(char*,char*);
+
+extern void  EXPORT yy_prolog_win32_fatal_error(char* message);
 
 #ifdef __cplusplus
 }

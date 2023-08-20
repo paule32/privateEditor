@@ -252,12 +252,9 @@ yy_dbase_win32_lex_main(
     // try to open file, saved before ...
     // ------------------------------------------
     if (!(yyin = fopen(filename,"r"))) {
-        buffer = (char*) malloc(100);
-
-        std::sprintf(buffer, "could not open file: %s", filename);
-        ShowParserErrorText(buffer);
-
-        free(buffer);
+        AnsiString buffer = "could not open file: ";
+        buffer += filename;
+        ShowParserErrorText( buffer.c_str() );
         return false;
     }
 

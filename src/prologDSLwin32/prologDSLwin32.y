@@ -11,6 +11,10 @@
 // ----------------------------------------------------------------------------
 extern char * yytext;
 
+extern void add_node_fact_string ( char * str );
+extern void add_node_fact_number ( char * str );
+extern void add_node_fact        ( char * str );
+
 extern void add_node_string( int, char* );
 extern void add_node_print ( int, int );
 
@@ -27,7 +31,7 @@ static int command_reference_counter = 1;
 // the following "export" function is used in Delphi, to call the tree run ...
 // ----------------------------------------------------------------------------
 void EXPORT
-yy_dbase_win32_run_code(void) {
+yy_prolog_win32_run_code(void) {
     display_list();
 }
 %}
@@ -37,11 +41,7 @@ yy_dbase_win32_run_code(void) {
         float         value;
         char        * name ;
         char        * content_str;
-        struct node * node_for;
-        struct node * node_class;
-        struct node * stmt ;
-        struct node * next ;
-        struct node * prev ;
+        struct node * sub_nodes;
     }	node_and_value;
 };
 
@@ -55,7 +55,7 @@ yy_dbase_win32_run_code(void) {
 %type  <node_and_value> factor
 %type  <node_and_value> term
 
-%type  <node_and_value> expr ident stmt
+%type  <node_and_value> expr ident idents stmt facts
 %type  <node_and_value> ident_string
 
 %token TOK_YYEOF 0
@@ -72,76 +72,173 @@ program
 
 stmt
     :	/* empty */ { }
+    |   ident '(' facts ')' '.' {
+        AnsiString str1 = "ident: ";
+        str1 += $1.name;
+        str1 += "\npl: ";
+        str1 += $3.name;
+        ShowMessage( str1 );
+        add_node_fact( str1.c_str() );
+    }
+    |   ident '(' number ')' '.'
+    ;
+
+facts
+    :   idents       { $$.name = strdup( $1.name ); }
+    |   ident_string { $$.name = strdup( $1.name ); }
+    |   expr
     ;
 
 ident_string
-    :   TOK_STRING
-    {
-        $$.content_str = strdup( $1.content_str );
+    :   TOK_STRING {
+        $$.name = strdup( $1.name );
     }
-    |   ident_string '+' ident_string
-    {
-        AnsiString str1 = $1.content_str;
-        AnsiString str2 = $3.content_str;
+    |   ident_string '+' ident_string {
+        AnsiString str1  = $1.name;
+        str1            += $3.name;
         
-        AnsiString str3 = str1 + str2;
-        
-        $$.content_str = strdup( str3.c_str() );
+        $$.name = strdup( str1.c_str() );
     }
-    | expr
+    |   ident_string ',' ident_string
+    |   ident_string ',' expr
+    |   expr         ',' expr
+    |   expr         ',' ident_string
     ;
 
 expr
-    : expr '-' term { $$.value = $1.value - $3.value; }
-    | expr '+' term { $$.value = $1.value + $3.value; }
-    |          term { $$.value = $1.value;  }
+    : expr '-' term {
+        AnsiString str1 = $1.name;
+        AnsiString str2 = $3.name;
+        AnsiString str3 = str1;
+        str3 += " - ";
+        str3 += str2 ;
+        
+        $$.name = strdup( str3.c_str() );
+    }
+    | expr '+' term {
+        AnsiString str1 = $1.name;
+        AnsiString str2 = $3.name;
+        AnsiString str3 = str1;
+        str3 += " + ";
+        str3 += str2 ;
+
+        $$.name = strdup( str3.c_str() );
+    }
+    |   term {
+        $$.name = strdup( $1.name );  }
     ;
-  
+
 term
-    : term '*' factor { $$.value = $1.value * $3.value; }
-    | term '/' factor { $$.value = $1.value / $3.value; }
-    |          factor { $$ = $1; }
+    : term '*' factor {
+        AnsiString str1 = $1.name;
+        AnsiString str2 = $3.name;
+        AnsiString str3 = str1;
+        str3 += " * ";
+        str3 += str2 ;
+
+        $$.name = strdup( str3.c_str() );
+    }
+    | term '/' factor {
+        AnsiString str1 = $1.name;
+        AnsiString str2 = $3.name;
+        AnsiString str3 = str1;
+        str3 += " / ";
+        str3 += str2 ;
+
+        $$.name = strdup( str3.c_str() );
+    }
+    |   factor { $$.name = strdup( $1.name ); }
     ;
-  
+
 factor
-    : number       { $$ = $1; }
-    | '-' number   { $$.value = -$2.value; }
-    | '(' expr ')' { $$ = $2; }
-    ;
-  
-number
-    : TOK_NUMBER   { $$.value = $1.value;  }
+    :   number       { $$.name = strdup( $1.name ); }
+    |   '-' number   {
+        AnsiString str1 = "-";
+        AnsiString str2 = $2.name;
+        AnsiString str3 = str1 + str2;
+
+        $$.name = strdup( str3.c_str() );
+    }
+    | '(' expr ')' { $$.name = strdup( $2.name ); }
     ;
 
-ident
-    : TOK_ID
-    ;
+number : TOK_NUMBER { $$.name = strdup( $1.name ); } ;
+ident  : TOK_ID     { $$.name = strdup( $1.name ); } ;
 
+idents
+    : ident             { $$.name = strdup( $1.name ); }
+    | expr   ',' expr   { }
+    | idents ',' expr   { }
+    | expr   ',' idents { }
+    | idents ',' idents {
+        AnsiString str1;
+        str1  = $1.name;
+        str1 += ",";
+        str1 += $3.name;
+
+        $$.name = strdup( str1.c_str() );
+    }
+    ;
 %%
 
 void
-add_node_print( int command, int flag )
+add_node_fact_string( int command, char * str )
+{
+    Node * nod = new Node( str );
+    
+    nod->SetTokenType( tt_const_fact_string );
+    nod->SetTokenTrace( command );
+    nod->SetData( str );
+
+    rootNodes.push_back( nod );
+    command_reference_counter++;
+}
+void
+add_node_fact_number( char * str )
+{
+    Node * nod = new Node( str );
+
+    nod->SetTokenType( tt_const_fact_number );
+    nod->SetTokenTrace( command_reference_counter++ );
+    nod->SetData( str );
+
+    rootNodes.push_back( nod );
+}
+void
+add_node_fact( char * str )
+{
+    Node * nod = new Node( str );
+
+    nod->SetTokenType( tt_const_fact );
+    nod->SetTokenTrace( command_reference_counter++ );
+    nod->SetData( str );
+
+    rootNodes.push_back( nod );
+}
+
+void
+add_node_print( int flag )
 {
     if (flag == 1) {
         Node * nod = new Node( tt_print_one );
-        nod->SetTokenTrace( command );
+        nod->SetTokenTrace( command_reference_counter++ );
 
         rootNodes.push_back( nod );
     }   else {
         Node * nod = new Node( tt_print_two );
-        nod->SetTokenTrace( command );
+        nod->SetTokenTrace( command_reference_counter++ );
 
         rootNodes.push_back( nod );
     }
 }
 
 void
-add_node_string( int command, char *str )
+add_node_string( char *str )
 {
     Node * nod = new Node( str );
 
     nod->SetTokenType ( tt_const_string );
-    nod->SetTokenTrace( command );
+    nod->SetTokenTrace( command_reference_counter++ );
     nod->SetData( str );
 
     rootNodes.push_back( nod );
