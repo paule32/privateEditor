@@ -1720,15 +1720,6 @@ object Form1: TForm1
     Left = 417
     Top = 528
   end
-  object SynPasSyn1: TSynPasSyn
-    Options.AutoDetectEnabled = False
-    Options.AutoDetectLineLimit = 0
-    Options.Visible = False
-    CommentAttri.Foreground = clLime
-    DelphiVersion = dvDelphi7
-    Left = 485
-    Top = 280
-  end
   object OpenDialog1: TOpenDialog
     Left = 417
     Top = 120
@@ -2063,7 +2054,7 @@ object Form1: TForm1
     ImageMargin.Bottom = 0
     ImageSize.Height = 0
     ImageSize.Width = 14
-    Left = 61
+    Left = 62
     Top = 312
     object PopupMenu_Edit_Undo: TMenuItem
       Caption = 'Undo'
@@ -5132,11 +5123,9 @@ object Form1: TForm1
     object Internal_FPC_Interpreter_MenuItem: TMenuItem
       Caption = 'Internal Interpreter'
       Checked = True
-      OnClick = Internal_FPC_Interpreter_MenuItemClick
     end
     object InternalCompiler1: TMenuItem
       Caption = 'Internal Compiler'
-      OnClick = InternalCompiler1Click
     end
     object Compile_FPC_MenuItem: TMenuItem
       Caption = 'Compile with FPC'

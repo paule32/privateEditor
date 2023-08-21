@@ -13,7 +13,7 @@ object Frame16: TFrame16
     TabOrder = 0
     object Splitter1: TSplitter
       Left = 0
-      Top = 125
+      Top = 145
       Width = 255
       Height = 7
       Cursor = crVSplit
@@ -23,7 +23,7 @@ object Frame16: TFrame16
     end
     object Splitter2: TSplitter
       Left = 0
-      Top = 330
+      Top = 350
       Width = 255
       Height = 0
       Cursor = crVSplit
@@ -33,7 +33,7 @@ object Frame16: TFrame16
     end
     object Splitter3: TSplitter
       Left = 0
-      Top = 325
+      Top = 345
       Width = 255
       Height = 5
       Cursor = crVSplit
@@ -43,7 +43,7 @@ object Frame16: TFrame16
     end
     object GroupBox2: TGroupBox
       Left = 0
-      Top = 132
+      Top = 152
       Width = 255
       Height = 193
       Align = alTop
@@ -147,9 +147,9 @@ object Frame16: TFrame16
     end
     object GroupBox3: TGroupBox
       Left = 0
-      Top = 330
+      Top = 350
       Width = 255
-      Height = 93
+      Height = 73
       Align = alClient
       Caption = ' Compiler:'
       TabOrder = 2
@@ -184,7 +184,7 @@ object Frame16: TFrame16
       Left = 0
       Top = 0
       Width = 255
-      Height = 125
+      Height = 145
       Align = alTop
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText

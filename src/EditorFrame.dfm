@@ -247,12 +247,13 @@ object Frame19: TFrame19
     Left = 176
     Top = 104
   end
-  object JvInterpreterFm1: TJvInterpreterFm
-    Left = 273
-    Top = 106
-  end
-  object JvInterpreterProgram1: TJvInterpreterProgram
-    Left = 302
-    Top = 107
+  object SynPasSyn1: TSynPasSyn
+    Options.AutoDetectEnabled = False
+    Options.AutoDetectLineLimit = 0
+    Options.Visible = False
+    CommentAttri.Foreground = clLime
+    DelphiVersion = dvDelphi7
+    Left = 205
+    Top = 104
   end
 end

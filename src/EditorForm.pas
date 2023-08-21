@@ -18,7 +18,7 @@ uses
   IdAntiFreezeBase, IdAntiFreeze, JvExComCtrls, JvComCtrls, JvCheckTreeView,
   JvExCheckLst, JvCheckListBox, JvExButtons, JvBitBtn, JvExStdCtrls,
   JvButton, JvCtrls, JvComponentBase, Console, Grids, ValEdit, IniFiles,
-  JvCombobox, JvDesignSurface, JvDesignUtils, JvInspector, JvInterpreter,
+  JvCombobox, JvDesignSurface, JvDesignUtils, JvInspector,
   JvExExtCtrls, JvExtComponent, JvPanel, TntExtCtrls, TntStdCtrls, ChatFrame,
   TntComCtrls, DB, DBTables, JvAppHotKey, JvEdit, JvListBox, JvDriveCtrls,
   IdHTTP, IdFTP, JvTipOfDay, JvCreateProcess, JvDataEmbedded, JvArrowButton,
@@ -29,7 +29,7 @@ uses
   FontColorFrame, ComputerFrame, FormatLayoutFrame, OptionsFrame,
   SimulationLeftPanel,
   JvDesignImp, JclSysInfo, EnvironmentFrame, LeftPanelFrame, SimulationFrame,
-  JvColorCombo, JvInterpreterFm;
+  JvColorCombo;
 
 type
   TMyTableListBox = class(TListBox)
@@ -56,7 +56,6 @@ type
     LeftSplitter: TSplitter;
     EditPanel: TPanel;
     JvGradientCaption1: TJvGradientCaption;
-    SynPasSyn1: TSynPasSyn;
     OpenDialog1: TOpenDialog;
     SaveDialog1: TSaveDialog;
     MenuBarButton_File: TCtrlMenuBarButton;
@@ -200,7 +199,6 @@ type
     Run_MenuItem: TMenuItem;
     Compile_FPC_MenuItem: TMenuItem;
     Translate_TO_gnuCPP: TMenuItem;
-    Internal_FPC_Interpreter_MenuItem: TMenuItem;
     N15: TMenuItem;
     Cut1: TMenuItem;
     Copy1: TMenuItem;
@@ -232,7 +230,6 @@ type
     JvDataEmbedded1: TJvDataEmbedded;
     JvDataEmbedded2: TJvDataEmbedded;
     JvCreateProcess1: TJvCreateProcess;
-    InternalCompiler1: TMenuItem;
     JvDataEmbedded3: TJvDataEmbedded;
     JvDataEmbedded4: TJvDataEmbedded;
     JvDataEmbedded5: TJvDataEmbedded;
@@ -341,14 +338,12 @@ type
     procedure JvApplicationHotKey1HotKey(Sender: TObject);
     procedure FormShortCut(var Msg: TWMKey; var Handled: Boolean);
     procedure Compile_FPC_MenuItemClick(Sender: TObject);
-    procedure Internal_FPC_Interpreter_MenuItemClick(Sender: TObject);
     procedure Help1Click(Sender: TObject);
     procedure Translate_TO_gnuCPPClick(Sender: TObject);
     procedure Run_MenuItemClick(Sender: TObject);
     procedure LeftPageControlChange(Sender: TObject);
     procedure FormResize(Sender: TObject);
     procedure NewProjectPageControlChange(Sender: TObject);
-    procedure InternalCompiler1Click(Sender: TObject);
     procedure Windows32Bit1Click(Sender: TObject);
     procedure Windows64Bit1Click(Sender: TObject);
     procedure MSDOS32Bit1Click(Sender: TObject);
@@ -498,7 +493,7 @@ implementation
 
 {$R *.dfm}
 uses
-  InterpreterClasses, SplashScreen, reinit;
+  SplashScreen, reinit;
 
 const
   ENGLISH = (SUBLANG_ENGLISH_US shl 10) or LANG_ENGLISH;
@@ -573,11 +568,6 @@ end;
 
 procedure TForm1.JvDesignPanelPaint(Sender: TObject);
 begin
-end;
-
-procedure PascalAdapter_WriteLn(var Value: Variant; Args: TJvInterpreterArgs);
-begin
-  Form1.Console1.WriteLn(VarToStr(Args.Values[0]));
 end;
 
 procedure TForm1.AppMessage(var Msg: TMsg; var Handled: Boolean);
@@ -763,9 +753,6 @@ begin
   DFrameEnvOptions.Align   := alClient;
   DFrameEnvOptions.Visible := false;
 
-  // interpreter
-  initInterpreter;
-
   IniFile_IDE_Language := 'ENG';
   LoadIniFile;
 
@@ -819,11 +806,6 @@ begin
 
   MainPageControl.Pages[1].TabVisible := false;
   MainPageControl.Pages[8].TabVisible := false;
-
-  with GlobalJvInterpreterAdapter do
-  begin
-    AddFunction('dummy', 'WriteLn', PascalAdapter_WriteLn, 1, [varString], varString);
-  end;
 
   SplashForm.ProgressBar1.Position := 40;
 
@@ -2047,11 +2029,6 @@ begin
 //  C64ScreenCursor.Y := ypos;
 end;
 
-procedure TGroupBox_Create(var Value: Variant; Args: TJvInterpreterArgs);
-begin
-  Value := O2V(TGroupBox.Create(V2O(Args.Values[0]) as TComponent));
-end;
-
 procedure TForm1.C64ScreenTimerTimer(Sender: TObject);
 begin
   if C64ScreenCursorBlink = 0 then
@@ -2627,14 +2604,6 @@ begin
   Compile_FPC_MenuItem.Checked := true;
 end;
 
-procedure TForm1.Internal_FPC_Interpreter_MenuItemClick(Sender: TObject);
-begin
-  uncheck_run_menues;
-  Run_MenuItem.Caption := 'Run with Interpreter';
-  Run_MenuItem.Tag     := 0;
-  Internal_FPC_Interpreter_MenuItem.Checked := true;
-end;
-
 procedure TForm1.Help1Click(Sender: TObject);
 begin
   ShellExecute(Handle,'open',
@@ -2657,9 +2626,7 @@ procedure TForm1.uncheck_run_menues;
 begin
   Translate_MenuItem.Checked                := false;
   Translate_to_gnuCpp.Checked               := false;
-  Internal_FPC_Interpreter_MenuItem.Checked := false;
   Compile_FPC_MenuItem.Checked              := false;
-  InternalCompiler1.Checked                 := false;
 end;
 
 procedure TForm1.Run_MenuItemClick(Sender: TObject);
@@ -2789,14 +2756,6 @@ begin
     DFrameNewProject.Visible := true;
     DFrameNewProject.NewApplication_ListView.Visible := true;
   end;
-end;
-
-procedure TForm1.InternalCompiler1Click(Sender: TObject);
-begin
-  uncheck_run_menues;
-  Run_MenuItem.Caption := 'Run Internal Compiler';
-  Run_MenuItem.Tag     := 90;
-  InternalCompiler1.Checked := true;
 end;
 
 procedure TForm1.CreateSimpleProgram(AType: myAppType);

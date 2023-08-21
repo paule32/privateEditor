@@ -44,8 +44,7 @@ type
     HighAssembler: TSynGeneralSyn;
     HighCLISP: TSynGeneralSyn;
     HighPas: TSynPasSyn;
-    JvInterpreterFm1: TJvInterpreterFm;
-    JvInterpreterProgram1: TJvInterpreterProgram;
+    SynPasSyn1: TSynPasSyn;
     procedure JvImgBtn1Click(Sender: TObject);
     procedure CopyButtonClick(Sender: TObject);
     procedure PasteButtonClick(Sender: TObject);
@@ -583,11 +582,14 @@ begin
           DateTimeToString(res,'',now);
           Form1.buildListBox.Items.Insert(0,res + ': load pascalDSL.dll: OK.');
 
+          callExecute         := GetProcAddress(Handle,'_yy_pascal_win32_run_code');
           callParser          := GetProcAddress(Handle,'_yy_pascal_win32_lex_main');
           callParserCloseFile := GetProcAddress(Handle,'_yy_pascal_win32_lex_close');
           callParserGetLine   := GetProcAddress(Handle,'_yy_pascal_win32_lex_get_line');
           callParserGetLines  := GetProcAddress(Handle,'_yy_pascal_win32_lex_getlines');
-          export_ShowParserErrorText := GetProcAddress(Handle,'_yy_pascal_win32_lex_parser_error');
+
+          export_ShowParserErrorText := GetProcAddress(Handle,'_import_func_ShowParserErrorText');
+          export_WriteTextToConsole  := GetProcAddress(Handle,'_import_func_WriteTextToConsole');
 
           export_ShowParserErrorText( @ShowParserErrorText );
           export_WriteTextToConsole ( @WriteTextToConsole );
@@ -605,6 +607,8 @@ begin
                 PChar(Form1.DFrameEditor.TabSheet1.Caption),
                 PChar(Form1.IniFile_AsmOutput)
               );
+
+              callExecute;
               InfoBox.Text('Compile OK' + #13#10 +
               'Lines: ' + IntToStr(callParserGetLines-1));
             except
@@ -645,6 +649,7 @@ begin
           DateTimeToString(res,'',now);
           Form1.buildListBox.Items.Insert(0,res + ': load basicDSL.dll: OK.');
 
+          callExecute         := GetProcAddress(Handle,'_yy_basic_win32_run_code');
           callParser          := GetProcAddress(Handle,'_yy_basic_win32_lex_main');
           callParserCloseFile := GetProcAddress(Handle,'_yy_basic_win32_lex_close');
           callParserGetLine   := GetProcAddress(Handle,'_yy_basic_win32_lex_get_line');
@@ -975,15 +980,7 @@ begin
       if JvCheckBox8.Checked then appType  := appType + [atAmiga] ;
     end;
 
-    if (atWin32 in appType) and (atPascal in appType) then
-    begin
-      JvInterpreterProgram1.Source := SynEdit1.Lines.Text;
-      JvInterpreterProgram1.Run;
-    end else
-    begin
-      StartCompile(appType);
-    end;
-
+    StartCompile(appType);
     exit;
   end;
 
