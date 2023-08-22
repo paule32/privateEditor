@@ -72,3 +72,5 @@ Amiga/*
 *.~dfm
 src/pascalDSLwin32/pascalDSLwin32.tab.c
 src/pascalDSLwin32/pascalDSLwin32.tab.h
+*.~bpl
+src/data/temp/ResPackage.bpl
