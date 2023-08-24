@@ -27,7 +27,10 @@ package ResPackage;
 
 requires
   rtl,
-  vcl;
+  vcl,
+  Jcl,
+  JvCore,
+  JvCrypt;
 
 contains
   ResourceFiles in 'ResourceFiles.pas',
@@ -135,6 +138,7 @@ contains
   RF_102 in 'RF_102.pas',
   RF_103 in 'RF_103.pas',
   RF_104 in 'RF_104.pas',
-  RF_105 in 'RF_105.pas';
+  RF_105 in 'RF_105.pas',
+  Interfaces in 'Interfaces.pas';
 
 end.

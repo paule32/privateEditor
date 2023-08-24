@@ -10,11 +10,11 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, ComCtrls, ExtCtrls, JvExControls, JvSpeedButton, ToolWin,
-  SynEdit, JvGradientCaption, Menus, SynEditHighlighter, SynHighlighterPas,
-  CtrlMenuBarButton, JvMenus, StdCtrls, Mask, JvExMask,
+  Dialogs, ComCtrls, ExtCtrls, JvExControls, JvSpeedButton, ToolWin, ComObj,
+  JvGradientCaption, Menus, SynEditHighlighter, SynHighlighterPas,
+  JvMenus, StdCtrls, Mask, JvExMask, JvZLibMultiple, StandardMenuFrame,
   JvSpin, Buttons, CheckLst, ShellApi, ShlObj, ImgList, OleCtrls, SHDocVw,
-  IdComponent, IdTCPConnection, IdTCPClient, IdIRC, IdBaseComponent,
+  IdComponent, IdTCPConnection, IdTCPClient, IdBaseComponent,
   IdAntiFreezeBase, IdAntiFreeze, JvExComCtrls, JvComCtrls, JvCheckTreeView,
   JvExCheckLst, JvCheckListBox, JvExButtons, JvBitBtn, JvExStdCtrls,
   JvButton, JvCtrls, JvComponentBase, Console, Grids, ValEdit, IniFiles,
@@ -29,7 +29,7 @@ uses
   FontColorFrame, ComputerFrame, FormatLayoutFrame, OptionsFrame,
   SimulationLeftPanel,
   JvDesignImp, JclSysInfo, EnvironmentFrame, LeftPanelFrame, SimulationFrame,
-  JvColorCombo;
+  JvColorCombo, SynEdit, CtrlMenuBarButton, IdIRC;
 
 type
   TMyTableListBox = class(TListBox)
@@ -43,11 +43,6 @@ var
 
 type
   TForm1 = class(TForm)
-    CoolBar1: TCoolBar;
-    Panel1: TPanel;
-    Panel2: TPanel;
-    StartCompile: TJvSpeedButton;
-    ModeButton: TJvSpeedButton;
     StatusBar1: TStatusBar;
     statusProgress: TProgressBar;
     LogPanel: TPanel;
@@ -58,32 +53,6 @@ type
     JvGradientCaption1: TJvGradientCaption;
     OpenDialog1: TOpenDialog;
     SaveDialog1: TSaveDialog;
-    MenuBarButton_File: TCtrlMenuBarButton;
-    MenuBarButton_Edit: TCtrlMenuBarButton;
-    MenuBarButton_Tools: TCtrlMenuBarButton;
-    MenuBarButton_Help: TCtrlMenuBarButton;
-    PopupMenu_File: TJvPopupMenu;
-    PopupMenu_File_New: TMenuItem;
-    PopupMenu_File_New_Application: TMenuItem;
-    PopupMenu_File_New_Library: TMenuItem;
-    N7: TMenuItem;
-    PopupMenu_File_New_Other: TMenuItem;
-    PopupMenu_File_Open: TMenuItem;
-    N1: TMenuItem;
-    PopupMenu_File_Save: TMenuItem;
-    PopupMenu_File_SaveAs: TMenuItem;
-    N2: TMenuItem;
-    PopupMenu_File_Exit: TMenuItem;
-    PopupMenu_Edit: TJvPopupMenu;
-    PopupMenu_Edit_Undo: TMenuItem;
-    N3: TMenuItem;
-    PopupMenu_Edit_SelAll: TMenuItem;
-    N5: TMenuItem;
-    PopupMenu_Edit_Cut: TMenuItem;
-    PopupMenu_Edit_Copy: TMenuItem;
-    PopupMenu_Edit_Paste: TMenuItem;
-    N4: TMenuItem;
-    PopupMenu_Edit_Delete: TMenuItem;
     PopupMenu_Help: TJvPopupMenu;
     PopupMenu_Help_Help: TMenuItem;
     N6: TMenuItem;
@@ -91,8 +60,6 @@ type
     PopupMenu_Mode: TJvPopupMenu;
     Pascal1: TMenuItem;
     dBASE1: TMenuItem;
-    PopupMenu_Tools: TJvPopupMenu;
-    CtrlMenuBarButton1: TCtrlMenuBarButton;
     PopupMenu_Project: TJvPopupMenu;
     MenuItem1: TMenuItem;
     PascalC1: TMenuItem;
@@ -105,15 +72,6 @@ type
     N10: TMenuItem;
     AddtoTemplateLibrary1: TMenuItem;
     AddNewProject1: TMenuItem;
-    IDE1: TMenuItem;
-    EnvironmentOptions1: TMenuItem;
-    EditorOptions1: TMenuItem;
-    ConfigureTools1: TMenuItem;
-    N12: TMenuItem;
-    JvSpeedButton1: TJvSpeedButton;
-    JvSpeedButton2: TJvSpeedButton;
-    JvSpeedButton4: TJvSpeedButton;
-    CtrlMenuBarButton2: TCtrlMenuBarButton;
     Splitter5: TSplitter;
     IdAntiFreeze1: TIdAntiFreeze;
     IdIRC1: TIdIRC;
@@ -129,9 +87,6 @@ type
     Button6: TJvImgBtn;
     Button7: TJvImgBtn;
     Button8: TJvImgBtn;
-    heme1: TMenuItem;
-    light1: TMenuItem;
-    dark1: TMenuItem;
     TabSheet22: TTabSheet;
     ConsoleTabSheet: TTabSheet;
     ScrollBox5: TScrollBox;
@@ -161,7 +116,6 @@ type
     MSDOS3: TMenuItem;
     WindowsNT32Bit2: TMenuItem;
     ModeImages: TImageList;
-    MenuBarButton_Window: TCtrlMenuBarButton;
     PopupMenu_Window: TJvPopupMenu;
     MenuItem3: TMenuItem;
     ChatWindow1: TMenuItem;
@@ -182,13 +136,11 @@ type
     ListView6: TListView;
     ListView7: TListView;
     ListView8: TListView;
-    MenuBarButton_DataBase: TCtrlMenuBarButton;
     PopupMenu_DataBase: TJvPopupMenu;
     SQLExplorer1: TMenuItem;
     SQLMonitor1: TMenuItem;
     FormWizard1: TMenuItem;
     N14: TMenuItem;
-    ImageEditor1: TMenuItem;
     Panel21: TPanel;
     Splitter18: TSplitter;
     ProjectNameEdit: TJvEdit;
@@ -208,7 +160,6 @@ type
     N17: TMenuItem;
     Help1: TMenuItem;
     BookMark_Image: TImageList;
-    CtrlMenuBarButton3: TCtrlMenuBarButton;
     JvPopupMenu1: TJvPopupMenu;
     MenuItem2: TMenuItem;
     MenuItem4: TMenuItem;
@@ -236,25 +187,25 @@ type
     ImageList1: TImageList;
 //    ItalicFontSize22: TPanel;
     Panel8: TPanel;
-    Windows32Bit1: TMenuItem;
-    Windows64Bit1: TMenuItem;
-    N18: TMenuItem;
-    MSDOS32Bit1: TMenuItem;
     Panel22: TPanel;
     Splitter19: TSplitter;
     ScrollBox4: TScrollBox;
     Timer1: TTimer;
-    PanelResizer: TPanel;
     SpreadTabSheet: TTabSheet;
     C64Screen: TSynEdit;
     Memo1: TMemo;
-    procedure PopupMenu_File_NewClick(Sender: TObject);
+    Panel3: TPanel;
+    Splitter2: TSplitter;
+
+    PanelResizer1: TPanel;
+    PanelResizer2: TPanel;
+    PanelResizer3: TPanel;
+
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure PopupMenu_File_ExitClick(Sender: TObject);
     procedure Pascal1Click(Sender: TObject);
     procedure dBASE1Click(Sender: TObject);
-    procedure PopupMenu_File_OpenClick(Sender: TObject);
     procedure PopupMenu_File_SaveAsClick(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure PopupMenu_Help_AboutClick(Sender: TObject);
@@ -417,6 +368,8 @@ type
     DFrameSimulation          : TFrame24;
     DFrameSimulationLeftPanel : TFrame25;
 
+    DFrameStdMenu : TFrame26;
+
     DFrameHelpTopic     : TFrame15;
 
     DFrameFoldersLocal  : TFrame9;
@@ -523,7 +476,7 @@ begin
   SHGetSpecialFolderPath(0, PChar(Result), CSIDLFolder, false);
   SetLength(Result, StrLen(PChar(Result)));
   if (Result <> '') then
-    Result  := IncludeTrailingBackslash(Result);
+    Result  := Result;
 end;
 
 procedure GetSubDirectories(const directory : string; list : TStrings) ;
@@ -545,7 +498,7 @@ end;
 
 procedure TForm1.ExpandTopLevel;
 var
-  i: Integer;
+//  i: Integer;
   node: TTreeNode;
 begin
   with DFrameFoldersLocal.UserHomeFolder.Items do
@@ -560,12 +513,6 @@ begin
     EndUpdate;
   end;
 end;
-procedure TForm1.PopupMenu_File_NewClick(Sender: TObject);
-begin
-  DFrameEditor.TabSheet1.Caption := 'Unamed';
-  DFrameEditor.SynEdit1.Lines.Clear;
-end;
-
 procedure TForm1.JvDesignPanelPaint(Sender: TObject);
 begin
 end;
@@ -591,7 +538,7 @@ begin
       end;
     end else
     begin
-      Control := Control.Parent;
+//      Control := Control.Parent;
     end;
   end;
 end;
@@ -600,6 +547,7 @@ procedure TForm1.FormCreate(Sender: TObject);
 var
   I,J       : Integer;
   InspCat   : TJvInspectorCustomCategoryItem;
+  z         : TJvZLibMultiple;
   TableList : TStringList;
   text      : WideString;
   xpos, ypos: Integer;
@@ -707,6 +655,11 @@ begin
   DFrameSimulationLeftPanel.Align   := alClient;
   DFrameSimulationLeftPanel.Visible := false;
 
+  DFrameStdMenu := TFrame26.Create(Panel3);
+  DFrameStdMenu.Parent  := Panel3;
+  DFrameStdMenu.Align   := alClient;
+  DFrameStdMenu.Visible := true;
+
   // help authoring:
   DFrameHelpAuthor := TFrame11.Create(Form1);
   DFrameHelpAuthor.Parent  := Form1;
@@ -715,18 +668,18 @@ begin
   DFrameHelpAuthor.Align   := alClient;
   DFrameHelpAuthor.Visible := false;
   //
-  DFrameFontStyle := TFrame12.Create(Panel2);
-  DFrameFontStyle.Parent  := Panel2;
+  DFrameFontStyle := TFrame12.Create(DFrameStdMenu.Panel3);
+  DFrameFontStyle.Parent  := DFrameStdMenu.Panel3;
   DFrameFontStyle.Align   := alClient;
   DFrameFontStyle.Visible := false;
 
-  DFrameFontColor := TFrame13.Create(Panel2);
-  DFrameFontColor.Parent  := Panel2;
+  DFrameFontColor := TFrame13.Create(DFrameStdMenu.Panel3);
+  DFrameFontColor.Parent  := DFrameStdMenu.Panel3;
   DFrameFontColor.Align   := alClient;
   DFrameFontColor.Visible := false;
 
-  DFrameFontFace := TFrame14.Create(Panel2);
-  DFrameFontFace.Parent  := Panel2;
+  DFrameFontFace := TFrame14.Create(DFrameStdMenu.Panel3);
+  DFrameFontFace.Parent  := DFrameStdMenu.Panel3;
   DFrameFontFace.Align   := alClient;
   DFrameFontFace.Visible := false;
 
@@ -897,15 +850,18 @@ begin
   DFrameSpread.AdvStringGrid1.EndUpdate;
   DFrameSpread.Visible := true;
 
-  PanelResizer.Visible := true;
+  PanelResizer1.Visible := true;
+  PanelResizer2.Visible := true;
+  PanelResizer3.Visible := true;
+  
   tipday := nil;
 
   SplashForm.ProgressBar1.Position := 90;
 end;
 
 procedure TForm1.FormShow(Sender: TObject);
-var
-  I: Integer;
+//var
+//  I: Integer;
 
   function CurrentUserName: String;
   var
@@ -954,6 +910,8 @@ begin
   SplashForm.Hide;
 
   DFrameFormatLayout.Visible := true;
+
+  ShowMessage('11111');
   ProjectNameEdit.SetFocus;
 end;
 
@@ -969,19 +927,14 @@ end;
 
 procedure TForm1.Pascal1Click(Sender: TObject);
 begin
-  ModeButton.Caption := 'Mode: Pascal';
-  ModeButton.Tag     := 1;
+  DFrameStdMenu.ModeButton.Caption := 'Mode: Pascal';
+  DFrameStdMenu.ModeButton.Tag     := 1;
 end;
 
 procedure TForm1.dBASE1Click(Sender: TObject);
 begin
-  ModeButton.Caption := 'Mode: dBASE';
-  ModeButton.Tag     := 2;
-end;
-
-procedure TForm1.PopupMenu_File_OpenClick(Sender: TObject);
-begin
-  JvSpeedButton1Click(Sender);
+  DFrameStdMenu.ModeButton.Caption := 'Mode: dBASE';
+  DFrameStdMenu.ModeButton.Tag     := 2;
 end;
 
 procedure TForm1.PopupMenu_File_SaveAsClick(Sender: TObject);
@@ -1004,7 +957,7 @@ begin
   end;
 
   // Pascal
-  if ModeButton.Tag = 1 then
+  if DFrameStdMenu.ModeButton.Tag = 1 then
   begin
     if not(ExtractFileExt(SaveDialog1.FileName) = 'pas') then
     begin
@@ -1061,10 +1014,10 @@ begin
   TS := TStringList.Create;
   TS.Delimiter := '=';
 
-  IterateMyPopup(PopupMenu_File   .Items,LS);
-  IterateMyPopup(PopupMenu_Edit   .Items,LS);
+  IterateMyPopup(DFrameStdMenu.PopupMenu_File   .Items,LS);
+  IterateMyPopup(DFrameStdMenu.PopupMenu_Edit   .Items,LS);
   IterateMyPopup(PopupMenu_Project.Items,LS);
-  IterateMyPopup(PopupMenu_Tools  .Items,LS);
+  IterateMyPopup(DFrameStdMenu.PopupMenu_Tools  .Items,LS);
   IterateMyPopup(PopupMenu_Help   .Items,LS);
 
   for I := 0 to LS.Count - 1 do
@@ -1267,6 +1220,8 @@ begin
   DFrameEditor.SynEdit1.Modified := false;
 
   MainPageControl.ActivePageIndex := 0;
+
+    ShowMessage('2222');
   DFrameEditor.SynEdit1.SetFocus;
 
 end;
@@ -1432,8 +1387,14 @@ end;
 
 procedure TForm1.MainPageControlChange(Sender: TObject);
 begin
-  PanelResizer.Align := alClient;
-  PanelResizer.Visible := true;
+  PanelResizer1.Align := alClient;
+  PanelResizer1.Visible := true;
+  //
+  PanelResizer2.Align := alClient;
+  PanelResizer2.Visible := true;
+  //
+  PanelResizer3.Align := alClient;
+  PanelResizer3.Visible := true;
 
   C64ScreenTimer.Enabled := false;
   DFrameC64KeyBoard.Visible := false;
@@ -1449,7 +1410,7 @@ begin
   DFrameLeftPanel.LeftPageControl.Pages[2].TabVisible := true;
 
   Splitter5.Visible := true;
-  ModeButton.Visible := false;
+  DFrameStdMenu.ModeButton.Visible := false;
 
   DFrameFontStyle.Visible := false;
 
@@ -1490,7 +1451,7 @@ begin
     DFrameC64Config.Visible := true;
     DFrameC64Drives.Visible := true;
 
-    ModeButton.Visible := false;
+    DFrameStdMenu.ModeButton.Visible := false;
     DFrameComputerOS.Visible := false;
 
   end else
@@ -1514,7 +1475,7 @@ begin
     DFrameMembers.Visible := true;
     DFrameMembers.ListBox1.Visible := true;
 
-    ModeButton.Visible := false;
+    DFrameStdMenu.ModeButton.Visible := false;
     LogPanel.Visible := true;
 
     DFrameEdit.PageControl3.Visible := false;
@@ -1536,7 +1497,7 @@ begin
     DFrameEdit.Visible := true;
     DFrameEdit.PageControl2.ActivePageIndex := 0;
 
-    ModeButton.Visible := true;
+    DFrameStdMenu.ModeButton.Visible := true;
     LogPanel.Visible := true;
 
     DFrameComputerOS.Visible := false;
@@ -1574,7 +1535,7 @@ begin
 
       DFrameEdit.Visible := true;
 
-      ModeButton.Visible := true;
+      DFrameStdMenu.ModeButton.Visible := true;
       LogPanel.Visible := true;
     end;
     DFrameComputerOS.Visible := false;
@@ -1604,14 +1565,16 @@ begin
     DFrameHelpAuthor.Visible := true;
     DFrameFontStyle .Visible := true;
 
-    ModeButton.Visible := false;
+    DFrameStdMenu.ModeButton.Visible := false;
     DFrameLeftPanel.LeftPageControl.Visible := false;
     DFrameHelpTopic.Visible := true;
 
     DFrameComputerOS.Visible := false;
   end;
 
-  PanelResizer.Visible := false;
+  PanelResizer1.Visible := false;
+  PanelResizer2.Visible := false;
+  PanelResizer3.Visible := false;
 end;
 
 procedure TForm1.Options1Click(Sender: TObject);
@@ -1623,9 +1586,9 @@ end;
 procedure TForm1.ircConnectButtonClick(Sender: TObject);
 var
   ares: array [0..10] of SmallInt;
-var
-  I: Integer;
-  S1: String;
+//var
+//  I: Integer;
+//  S1: String;
 begin
   try
     DFrameChat.ircConnectButton.Enabled := false;
@@ -1715,24 +1678,24 @@ end;
 procedure TForm1.dark1Click(Sender: TObject);
 begin
   Form1.Color := clGray;
-  CoolBar1.Color := clGray;
+  DFrameStdMenu.CoolBar1.Color := clGray;
 
-  MenuBarButton_File .Font.Color := clWhite;
-  MenuBarButton_Edit .Font.Color := clWhite;
-  MenuBarButton_Tools.Font.Color := clWhite;
-  MenuBarButton_Help .Font.Color := clWhite;
-  CtrlMenuBarButton1 .Font.Color := clWhite;
+  DFrameStdMenu.MenuBarButton_File .Font.Color := clWhite;
+  DFrameStdMenu.MenuBarButton_Edit .Font.Color := clWhite;
+  DFrameStdMenu.MenuBarButton_Tools.Font.Color := clWhite;
+  DFrameStdMenu.MenuBarButton_Help .Font.Color := clWhite;
+  DFrameStdMenu.CtrlMenuBarButton1 .Font.Color := clWhite;
 
-  Panel1  .Color := clGray;
-  Panel2  .Color := clGray;
+  DFrameStdMenu.Panel1  .Color := clGray;
+  DFrameStdMenu.Panel2  .Color := clGray;
   LogPanel.Color := clGray;
   Panel8  .Color := clGray;
   Panel12 .Color := clGray;
 
-  JvSpeedButton1.Color := clGray;
-  JvSpeedButton2.Color := clGray;
-  JvSpeedButton4.Color := clGray;
-  StartCompile.Color := clGray;
+  DFrameStdMenu.JvSpeedButton1.Color := clGray;
+  DFrameStdMenu.JvSpeedButton2.Color := clGray;
+  DFrameStdMenu.JvSpeedButton3.Color := clGray;
+  DFrameStdMenu.StartCompile.Color := clGray;
   StatusBar1.Color := clGray;
 
   PageControl1.Color := clGray;
@@ -1808,24 +1771,24 @@ end;
 procedure TForm1.light1Click(Sender: TObject);
 begin
   Form1.Color := clBtnFace;
-  CoolBar1.Color := clBtnFace;
+  DFrameStdMenu.CoolBar1.Color := clBtnFace;
 
-  MenuBarButton_File .Font.Color := clBlack;
-  MenuBarButton_Edit .Font.Color := clBlack;
-  MenuBarButton_Tools.Font.Color := clBlack;
-  MenuBarButton_Help .Font.Color := clBlack;
-  CtrlMenuBarButton1 .Font.Color := clBlack;
+  DFrameStdMenu.MenuBarButton_File .Font.Color := clBlack;
+  DFrameStdMenu.MenuBarButton_Edit .Font.Color := clBlack;
+  DFrameStdMenu.MenuBarButton_Tools.Font.Color := clBlack;
+  DFrameStdMenu.MenuBarButton_Help .Font.Color := clBlack;
+  DFrameStdMenu.CtrlMenuBarButton1 .Font.Color := clBlack;
 
-  Panel1  .Color := clBtnFace;
-  Panel2  .Color := clBtnFace;
+  DFrameStdMenu.Panel1  .Color := clBtnFace;
+  DFrameStdMenu.Panel2  .Color := clBtnFace;
   LogPanel.Color := clBtnFace;
   Panel8  .Color := clBtnFace;
   Panel12 .Color := clBtnFace;
 
-  JvSpeedButton1.Color := clBtnFace;
-  JvSpeedButton2.Color := clBtnFace;
-  JvSpeedButton4.Color := clBtnFace;
-  StartCompile  .Color := clBtnFace;
+  DFrameStdMenu.JvSpeedButton1.Color := clBtnFace;
+  DFrameStdMenu.JvSpeedButton2.Color := clBtnFace;
+  DFrameStdMenu.JvSpeedButton3.Color := clBtnFace;
+  DFrameStdMenu.StartCompile  .Color := clBtnFace;
 
   StatusBar1.Color := clBtnFace;
 
@@ -1953,13 +1916,14 @@ end;
 function TForm1.PutToC64Screen(X,Y: Integer; AChar: Char): Integer;
 begin
   C64ScreenMap[X,Y] := WideChar($E000 + Ord(AChar));
+  result := 0;
 end;
 
 function TForm1.WriteToC64Screen(X,Y: Integer; AString: WideString): Integer;
 var
   text: WideString;
-  neu : WideString;
-  I,J   : Integer;
+//  neu : WideString;
+  I   : Integer;
   xpos,ypos : Integer;
   row, col: Integer;
 
@@ -2027,6 +1991,8 @@ begin
 
 //  C64ScreenCursor.X := xpos;
 //  C64ScreenCursor.Y := ypos;
+
+result := 0;
 end;
 
 procedure TForm1.C64ScreenTimerTimer(Sender: TObject);
@@ -2120,51 +2086,51 @@ end;
 
 procedure TForm1.MSDOS3Click(Sender: TObject);
 begin
-  ModeButton.Caption := 'Mode: Pascal - MS-DOS';
-  ModeButton.Tag     := 10;
+  DFrameStdMenu.ModeButton.Caption := 'Mode: Pascal - MS-DOS';
+  DFrameStdMenu.ModeButton.Tag     := 10;
 
 end;
 
 procedure TForm1.WindowsNT32Bit2Click(Sender: TObject);
 begin
-  ModeButton.Caption := 'Mode: Pascal - Windows';
-  ModeButton.Tag     := 11;
+  DFrameStdMenu.ModeButton.Caption := 'Mode: Pascal - Windows';
+  DFrameStdMenu.ModeButton.Tag     := 11;
 end;
 
 procedure TForm1.MSDOS2Click(Sender: TObject);
 begin
-  ModeButton.Caption := 'Mode: dBASE - MS-DOS';
-  ModeButton.Tag     := 20;
+  DFrameStdMenu.ModeButton.Caption := 'Mode: dBASE - MS-DOS';
+  DFrameStdMenu.ModeButton.Tag     := 20;
 end;
 
 procedure TForm1.Windows3111Click(Sender: TObject);
 begin
-  ModeButton.Caption := 'Mode: dBASE - Win 3.11';
-  ModeButton.Tag     := 21;
+  DFrameStdMenu.ModeButton.Caption := 'Mode: dBASE - Win 3.11';
+  DFrameStdMenu.ModeButton.Tag     := 21;
 end;
 
 procedure TForm1.WindowsNT32Bit1Click(Sender: TObject);
 begin
-  ModeButton.Caption := 'Mode: dBASE - Win32 NT';
-  ModeButton.Tag     := 22
+  DFrameStdMenu.ModeButton.Caption := 'Mode: dBASE - Win32 NT';
+  DFrameStdMenu.ModeButton.Tag     := 22
 end;
 
 procedure TForm1.C64BASIC1Click(Sender: TObject);
 begin
-  ModeButton.Caption := 'Mode: BASIC';
-  ModeButton.Tag     := 3;
+  DFrameStdMenu.ModeButton.Caption := 'Mode: BASIC';
+  DFrameStdMenu.ModeButton.Tag     := 3;
 end;
 
 procedure TForm1.C64BASIC2Click(Sender: TObject);
 begin
-  ModeButton.Caption := 'Mode: BASIC C-64';
-  ModeButton.Tag     := 30;
+  DFrameStdMenu.ModeButton.Caption := 'Mode: BASIC C-64';
+  DFrameStdMenu.ModeButton.Tag     := 30;
 end;
 
 procedure TForm1.MSDOS1Click(Sender: TObject);
 begin
-  ModeButton.Caption := 'Mode: BASIC MS-DOS';
-  ModeButton.Tag     := 31;
+  DFrameStdMenu.ModeButton.Caption := 'Mode: BASIC MS-DOS';
+  DFrameStdMenu.ModeButton.Tag     := 31;
 end;
 
 procedure TForm1.ChatWindow2Click(Sender: TObject);
@@ -2418,12 +2384,12 @@ end;
 procedure TForm1.FormShortCut(var Msg: TWMKey; var Handled: Boolean);
 var
   sl: TStrings;
-  Node, Child: TTreeNode;
-  sheet: TTabSheet;
-  I, J, K, num: Integer;
+  Node: TTreeNode;
+//  sheet: TTabSheet;
+  J, K, num: Integer;
   image: TImage;
   key : Char;
-  S: String;
+//  S: String;
 begin
   // C64 input:
   if MainPageControl.ActivePage = C64TabSheet then
@@ -2734,14 +2700,30 @@ begin
   if tipday <> nil then
   begin
     Timer1.Enabled := true;
-    PanelResizer.BringToFront;
-    PanelResizer.Align := alClient;
-    PanelResizer.Visible := true;
+    PanelResizer1.BringToFront;
+    PanelResizer1.Align := alClient;
+    PanelResizer1.Visible := true;
+    //
+    PanelResizer2.BringToFront;
+    PanelResizer2.Align := alClient;
+    PanelResizer2.Visible := true;
+    //
+    PanelResizer3.BringToFront;
+    PanelResizer3.Align := alClient;
+    PanelResizer3.Visible := true;
+
     exit;
   end;
 
-  PanelResizer.BringToFront;
-  PanelResizer.Visible := true;
+  PanelResizer1.BringToFront;
+  PanelResizer1.Visible := true;
+
+  PanelResizer2.BringToFront;
+  PanelResizer2.Visible := true;
+
+  PanelResizer3.BringToFront;
+  PanelResizer3.Visible := true;
+
 end;
 
 procedure TForm1.NewProjectPageControlChange(Sender: TObject);
@@ -3234,7 +3216,9 @@ end;
 
 procedure TForm1.Timer1Timer(Sender: TObject);
 begin
-  PanelResizer.Visible := false;
+  PanelResizer1.Visible := false;
+  PanelResizer2.Visible := false;
+  PanelResizer3.Visible := false;
 end;
 
 procedure TForm1.FormClose(Sender: TObject; var Action: TCloseAction);

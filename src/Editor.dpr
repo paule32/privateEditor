@@ -27,7 +27,6 @@ uses
   FontFaceFrame in 'FontFaceFrame.pas' {Frame14: TFrame},
   HelpTopicFrame in 'HelpTopicFrame.pas' {Frame15: TFrame},
   ComputerFrame in 'ComputerFrame.pas' {Frame16: TFrame},
-  InterpreterClasses in 'InterpreterClasses.pas',
   FormatLayoutFrame in 'FormatLayoutFrame.pas' {Frame17: TFrame},
   SpreadFrame in 'SpreadFrame.pas' {Frame18: TFrame},
   SplashScreen in 'SplashScreen.pas' {SplashForm},
@@ -40,7 +39,8 @@ uses
   SimulationLeftPanel in 'SimulationLeftPanel.pas' {Frame25: TFrame},
   reinit in 'reinit.pas',
   SimulationPartA in 'SimulationPartA.pas',
-  SQLparser in 'SQLparser.pas';
+  SQLparser in 'SQLparser.pas',
+  StandardMenuFrame in 'StandardMenuFrame.pas' {Frame26: TFrame};
 
 {$R *.res}
 

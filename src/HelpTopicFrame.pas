@@ -337,7 +337,7 @@ begin
 
   Form1.EditPanel .Visible := true;
   Form1.LogPanel  .Visible := true;
-  Form1.ModeButton.Visible := true;
+  Form1.DFrameStdMenu.ModeButton.Visible := true;
 
   Form1.DFrameHelpTopic.Visible := false;
   Form1.DFrameLeftPanel.LeftPageControl.Visible := true;
