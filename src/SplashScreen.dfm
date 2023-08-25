@@ -1687,7 +1687,7 @@ object SplashForm: TSplashForm
   end
   object Timer1: TTimer
     Enabled = False
-    Interval = 2000
+    Interval = 1800
     OnTimer = Timer1Timer
     Left = 32
     Top = 104

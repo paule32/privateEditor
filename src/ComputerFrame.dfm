@@ -185,6 +185,7 @@ object Frame16: TFrame16
       Top = 0
       Width = 255
       Height = 145
+      VertScrollBar.Position = 51
       Align = alTop
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -196,7 +197,7 @@ object Frame16: TFrame16
       TabOrder = 0
       object GroupBox4: TGroupBox
         Left = 0
-        Top = 0
+        Top = -51
         Width = 177
         Height = 192
         Caption = ' Language: '

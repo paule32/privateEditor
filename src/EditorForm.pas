@@ -29,7 +29,7 @@ uses
   FontColorFrame, ComputerFrame, FormatLayoutFrame, OptionsFrame,
   SimulationLeftPanel,
   JvDesignImp, JclSysInfo, EnvironmentFrame, LeftPanelFrame, SimulationFrame,
-  JvColorCombo, SynEdit, CtrlMenuBarButton, IdIRC;
+  JvColorCombo, SynEdit, CtrlMenuBarButton, IdIRC, JvBalloonHint;
 
 type
   TMyTableListBox = class(TListBox)
@@ -159,7 +159,6 @@ type
     N16: TMenuItem;
     N17: TMenuItem;
     Help1: TMenuItem;
-    BookMark_Image: TImageList;
     JvPopupMenu1: TJvPopupMenu;
     MenuItem2: TMenuItem;
     MenuItem4: TMenuItem;
@@ -194,12 +193,14 @@ type
     SpreadTabSheet: TTabSheet;
     C64Screen: TSynEdit;
     Memo1: TMemo;
-    Panel3: TPanel;
+
     Splitter2: TSplitter;
+    Panel3: TPanel;
 
     PanelResizer1: TPanel;
     PanelResizer2: TPanel;
     PanelResizer3: TPanel;
+    JvBalloonHint1: TJvBalloonHint;
 
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -313,6 +314,7 @@ type
     procedure C64ScreenKeyPress(Sender: TObject; var Key: WideChar);
     procedure EnvironmentOptions1Click(Sender: TObject);
     procedure xx1Click(Sender: TObject);
+    procedure SaveDialog1CanClose(Sender: TObject; var CanClose: Boolean);
   public
     Cv1: TCanvas;
     ircListLimit: Integer;
@@ -910,8 +912,6 @@ begin
   SplashForm.Hide;
 
   DFrameFormatLayout.Visible := true;
-
-  ShowMessage('11111');
   ProjectNameEdit.SetFocus;
 end;
 
@@ -1045,45 +1045,146 @@ end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
 begin
+  SplashForm.isExit := true;
+  SplashForm.BringToFront;
+  SplashForm.ProgressBar1.Position := 1;
+  SplashForm.Caption := 'Free Memory ...';
+  SplashForm.Show;
+  SplashForm.Height := 64;
+  SplashForm.ProgressBar1.Align := alNone;
+  SplashForm.ProgressBar1.Top := 2;
+  SplashForm.Image1.Show;
+
   Timer1.Enabled := false;
   C64ScreenTimer.Enabled := false;
-  
-  SaveIniFile;
-  C64KeyImage.Free;
 
-  DFrame.Free;
-  DFrameTeamServer.Free;
-  DFrameEdit.Free;
-  DFrameMembers.Free;
-
-  DFrameC64KeyBoard.Free;
-  DFrameC64Config.Free;
-  DFrameC64Drives.Free;
-
-  SplashForm.ProgressBar1.Position := 30;
-
-  DFrameFoldersLocal.Free;
-  DFrameFoldersRemote.Free;
-
-  dropList.Clear;
-  dropList.Free;
-
-  Cv1.Free;
-  Cv1 := nil;
-
-  Database1.Close;
-  Database1.Free;
-
+  Form1.Visible := false;
+  SplashForm.ProgressBar1.Position := 1;
   Session1.Close;
   Session1.Free;
+  Sleep(20);
 
-  SplashForm.ProgressBar1.Position := 50;
+  SplashForm.ProgressBar1.Position := 2;
+  SaveIniFile;
+  C64KeyImage.Free;
+  Sleep(20);
 
+  SplashForm.ProgressBar1.Position := 2;
+  DFrame.Free;
+  Sleep(20);
+
+  SplashForm.ProgressBar1.Position := 4;
+  DFrameEdit.Free;
+  Sleep(20);
+
+  SplashForm.ProgressBar1.Position := 6;
+  DFrameNewProject.Free;
+  Sleep(20);
+
+  SplashForm.ProgressBar1.Position := 8;
+  DFrameHelpAuthor.Free;
+  Sleep(20);
+
+  SplashForm.ProgressBar1.Position := 10;
+  DFrameFontStyle.Free;
+  Sleep(20);
+
+  SplashForm.ProgressBar1.Position := 12;
+  DFrameFontColor.Free;
+  Sleep(20);
+
+  SplashForm.ProgressBar1.Position := 14;
+  DFrameFontFace.Free;
+  Sleep(20);
+
+  SplashForm.ProgressBar1.Position := 16;
+  DFrameComputerOS.Free;
+  Sleep(20);
+
+  SplashForm.ProgressBar1.Position := 18;
+  DFrameFormatLayout.Free;
+  Sleep(20);
+
+  SplashForm.ProgressBar1.Position := 20;
+  DFrameSpread.Free;
+  Sleep(20);
+
+  SplashForm.ProgressBar1.Position := 22;
+  DFrameEditor.Free;
+  Sleep(20);
+
+  SplashForm.ProgressBar1.Position := 24;
+  DFrameChat.Free;
+  Sleep(20);
+
+  SplashForm.ProgressBar1.Position := 26;
+  DFrameEditOptions.Free;
+  Sleep(20);
+
+  SplashForm.ProgressBar1.Position := 28;
+  DFrameEnvOptions.Free;
+  Sleep(20);
+
+  SplashForm.ProgressBar1.Position := 30;
+  DFrameLeftPanel.Free;
+  Sleep(20);
+
+  SplashForm.ProgressBar1.Position := 32;
+  DFrameSimulation.Free;
+  Sleep(20);
+
+  SplashForm.ProgressBar1.Position := 34;
+  DFrameSimulationLeftPanel.Free;
+  Sleep(20);
+
+  SplashForm.ProgressBar1.Position := 36;
+  DFrameStdMenu.Free;
+  Sleep(20);
+
+  SplashForm.ProgressBar1.Position := 38;
+  DFrameHelpTopic.Free;
+  Sleep(20);
+
+  SplashForm.ProgressBar1.Position := 44;
+  DFrameTeamServer.Free;
+  Sleep(20);
+
+  SplashForm.ProgressBar1.Position := 46;
+  DFrameMembers.Free;
+  Sleep(20);
+
+  SplashForm.ProgressBar1.Position := 52;
+  DFrameC64Drives.Free;
+  Sleep(20);
+
+  SplashForm.ProgressBar1.Position := 58;
+  dropList.Clear;
+  dropList.Free;
+  Sleep(20);
+
+  SplashForm.ProgressBar1.Position := 60;
+  Cv1.Free;
+  Cv1 := nil;
+  Sleep(20);
+
+  SplashForm.ProgressBar1.Position := 62;
+  Database1.Close;
+  Database1.Free;
+  Sleep(20);
+
+  SplashForm.ProgressBar1.Position := 66;
   ErrorBox.Free;
+  Sleep(20);
+
+  SplashForm.ProgressBar1.Position := 68;
   InfoBox.Free;
+  Sleep(20);
 
   SplashForm.ProgressBar1.Position := 70;
-  SplashForm.Free;
+  SplashForm.isExit := true;
+  Sleep(20);
+
+  Application.Terminate;
 end;
 
 procedure TForm1.PopupMenu_Help_AboutClick(Sender: TObject);
@@ -3130,16 +3231,73 @@ begin
 end;
 
 procedure TForm1.CreateNewButtonClick(Sender: TObject);
+var
+  S1,S2,S3,S4 : String;
+  ini: TIniFile;
 begin
   if Length(Trim(ProjectNameEdit.Text)) < 1 then
   begin
     ProjectNameEdit.Color := clRed;
     ProjectNameEdit.Font.Color := clYellow;
 
-    ErrorBox.Text('Error: No projectname given.');
-    ErrorBox.BringToFront;
-    ErrorBox.Show;
+    S1 := ExtractFilePath(Application.ExeName);
 
+    with SaveDialog1 do
+    begin
+      Options     := [ofFileMustExist];
+      Filter      := 'Project files (*.pro)|All files (*.*)';
+      FilterIndex := 0;
+      DefaultExt  := '*.pro';
+      InitialDir  := S1;
+    end;
+
+    if not SaveDialog1.Execute then
+    begin
+      InfoBox.Text('Information:' +
+      #10 + 'Error during save project.');
+      InfoBox.BringToFront;
+      InfoBox.Show;
+      exit;
+    end;
+
+    if not(ExtractFileExt( LowerCase( SaveDialog1.FileName )) = '.pro') then
+    begin
+      ErrorBox.Text('Information:' +
+      #10 + 'File must have .pro Extension.');
+      ErrorBox.BringToFront;
+      ErrorBox.Show;
+      exit;
+    end;
+
+    ini := TIniFile.Create(SaveDialog1.FileName);
+    try
+      S1 := ExtractFileName(SaveDialog1.FileName);
+      S2 := ChangeFileExt(S1,'.exe');
+
+      with DFrameComputerOS do
+      begin
+        S3 := 'common';
+        S4 := 'os';
+        if JvCheckBox5.Checked then ini.WriteString(S3,S4,'win32') else
+        if JvCheckBox6.Checked then ini.WriteString(S3,S4,'msdos') else
+        if JvCheckBox7.Checked then ini.WriteString(S3,S4,'linux') else
+        if JvCheckBox8.Checked then ini.WriteString(S3,S4,'amiga');
+
+        S4 := 'type';
+        if JvCheckBox10.Checked then ini.WriteString(S3,S4,'pascal') else
+        if JvCheckBox11.Checked then ini.WriteString(S3,S4,'basic') else
+        if JvCheckBox12.Checked then ini.WriteString(S3,S4,'dbase') else
+        if JvCheckBox15.Checked then ini.WriteString(S3,S4,'prolog') else
+        if JvCheckBox13.Checked then ini.WriteString(S3,S4,'clisp') else
+        if JvCheckBox14.Checked then ini.WriteString(S3,S4,'assembler');
+      end;
+
+      ini.WriteString(S3,'exe', S2);
+      ini.WriteString(S3,'main',ChangeFileExt(S1,''));
+      ini.WriteString(S3,'workdir',ExtractFilePath(SaveDialog1.FileName));
+    finally
+      ini.Free;
+    end;
     exit;
   end else
 
@@ -3224,17 +3382,9 @@ end;
 procedure TForm1.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   Hide;
-
-  SplashForm.BringToFront;
-  SplashForm.ProgressBar1.Position := 20;
-  SplashForm.Caption := 'Free Memory ...';
   SplashForm.Show;
-
-  Application.ProcessMessages;
-  Sleep(2500);
-
+  FormDestroy(Sender);
   Action := caFree;
-  Application.Terminate;
 end;
 
 procedure TForm1.C64ScreenKeyPress(Sender: TObject; var Key: WideChar);
@@ -3256,6 +3406,23 @@ end;
 procedure TForm1.xx1Click(Sender: TObject);
 begin
 //  SetUIToGerman;
+end;
+
+procedure TForm1.SaveDialog1CanClose(
+  Sender: TObject;
+  var CanClose: Boolean);
+  var S: String;
+begin
+  CanClose := false;
+  S := LowerCase(ExtractFileExt(SaveDialog1.FileName));
+  if (S = '') or (S <> '.pro') then
+  begin
+    InfoBox.Text('Error:' +
+    #10 + 'Extension is wrong');
+    InfoBox.Show;
+    exit;
+  end;
+  CanClose := true;
 end;
 
 end.

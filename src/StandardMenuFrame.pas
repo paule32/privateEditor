@@ -72,6 +72,7 @@ type
     procedure light1Click(Sender: TObject);
     procedure dark1Click(Sender: TObject);
     procedure ImageEditor1Click(Sender: TObject);
+    procedure PopupMenu_File_New_OtherClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -129,6 +130,11 @@ end;
 procedure TFrame26.ImageEditor1Click(Sender: TObject);
 begin
   Form1.ImageEditor1Click(Sender);
+end;
+
+procedure TFrame26.PopupMenu_File_New_OtherClick(Sender: TObject);
+begin
+  Form1.PopupMenu_File_New_OtherClick(Sender);
 end;
 
 end.

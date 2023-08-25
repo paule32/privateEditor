@@ -2,7 +2,7 @@ object Frame26: TFrame26
   Left = 0
   Top = 0
   Width = 928
-  Height = 149
+  Height = 112
   TabOrder = 0
   object Panel1: TPanel
     Left = 0
@@ -1191,6 +1191,7 @@ object Frame26: TFrame26
       end
       object PopupMenu_File_New_Other: TMenuItem
         Caption = 'Other ...'
+        OnClick = PopupMenu_File_New_OtherClick
       end
     end
     object PopupMenu_File_Open: TMenuItem

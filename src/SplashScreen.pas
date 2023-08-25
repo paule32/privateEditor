@@ -25,6 +25,7 @@ type
     { Private declarations }
   public
     isinit: Boolean;
+    isExit: Boolean;
   end;
 
 var
@@ -38,15 +39,12 @@ uses
 
 procedure TSplashForm.FormShow(Sender: TObject);
 begin
-  if isinit then
+  if isExit = false then
   begin
     Timer1.Enabled := true;
 
     Width := Width + 1;
     Width := Width - 1;
-  end else
-  begin
-    isinit := false;
   end;
 end;
 
@@ -62,6 +60,7 @@ procedure TSplashForm.FormCreate(Sender: TObject);
 begin
   JvGradientCaption1.Active := true;
   isinit := true;
+  isExit := false;
 end;
 
 end.

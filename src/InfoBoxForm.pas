@@ -42,7 +42,6 @@ procedure TInfoBox.Text(txt: String);
 begin
   Memo1.Lines.Clear;
   Memo1.Lines.Add(txt);
-  ShowModal;
 end;
 
 procedure TInfoBox.JvImgBtn1Click(Sender: TObject);
