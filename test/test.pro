@@ -2,5 +2,5 @@
 os=win32
 type=pascal
 exe=test.exe
-main=test
+main=test.pas
 workdir=E:\Projekte\SWIPL\SWIPEL_ZWAP\src\lang\test\

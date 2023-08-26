@@ -88,6 +88,7 @@ end;
 procedure TFrame19.CopyButtonClick(Sender: TObject);
 begin
   SynEdit1.CopyToClipboard;
+  SynEdit1.PasteFromClipboard;
 end;
 
 procedure TFrame19.PasteButtonClick(Sender: TObject);
@@ -984,15 +985,16 @@ begin
     exit;
   end;
 
-  if ssCtrl in Shift then
+  if [ssCtrl] = Shift then
   begin
-    if key = Ord('O') then begin OpenButtonClick(Sender);  exit; end else
-    if key = Ord('S') then begin SaveButtonClick(Sender);  exit; end else
-    if key = Ord('C') then begin CopyButtonClick(Sender);  exit; end else
-    if key = Ord('A') then begin SynEdit1.SelectAll;       exit; end else
-    if key = Ord('R') then begin SynEdit1.Redo;            exit; end else
-    if key = Ord('U') then begin SynEdit1.Undo;            exit; end else
-    if key = Ord('V') then begin PasteButtonClick(Sender); exit; end
+    if key = Ord('O') then begin OpenButtonClick(Sender);  end else
+    if key = Ord('S') then begin SaveButtonClick(Sender);  end else
+    if key = Ord('C') then begin ShowMessage('ooo');CopyButtonClick(Sender);  end else
+    if key = Ord('A') then begin SynEdit1.SelectAll;       end else
+    if key = Ord('R') then begin SynEdit1.Redo;            end else
+    if key = Ord('U') then begin SynEdit1.Undo;            end else
+    if key = Ord('V') then begin PasteButtonClick(Sender); end ;
+    key := 0;
   end;
 end;
 

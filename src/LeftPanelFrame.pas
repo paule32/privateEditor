@@ -104,6 +104,10 @@ type
     RemoteFoldersScrollBox: TScrollBox;
     ImageList1: TImageList;
     ColorDialog1: TColorDialog;
+    TabSheet23: TTabSheet;
+    PageControl5: TPageControl;
+    TabSheet24: TTabSheet;
+    TreeView6: TTreeView;
     procedure DesignerIconListView_StandardMouseDown(Sender: TObject;
       Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure JvInspector1BeforeEdit(Sender: TObject;

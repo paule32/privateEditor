@@ -47,6 +47,7 @@ object Form1: TForm1
     Height = 7
     Cursor = crVSplit
     Align = alTop
+    Beveled = True
   end
   object StatusBar1: TStatusBar
     Left = 0
@@ -199,7 +200,7 @@ object Form1: TForm1
       Color = clSilver
       ParentColor = False
     end
-    object ItalicFontSize22: TPanel
+    object UpperPanel: TPanel
       Left = 1
       Top = 1
       Width = 908

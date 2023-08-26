@@ -9,7 +9,7 @@ object Frame23: TFrame23
     Top = 0
     Width = 306
     Height = 566
-    ActivePage = TabSheet1
+    ActivePage = TabSheet23
     Align = alClient
     Font.Charset = ANSI_CHARSET
     Font.Color = clBlack
@@ -996,6 +996,31 @@ object Frame23: TFrame23
             Width = 290
             Height = 495
             Align = alClient
+            TabOrder = 0
+          end
+        end
+      end
+    end
+    object TabSheet23: TTabSheet
+      Caption = 'Project'
+      ImageIndex = 3
+      object PageControl5: TPageControl
+        Left = 0
+        Top = 0
+        Width = 298
+        Height = 532
+        ActivePage = TabSheet24
+        Align = alClient
+        TabOrder = 0
+        object TabSheet24: TTabSheet
+          Caption = 'Files'
+          object TreeView6: TTreeView
+            Left = 0
+            Top = 0
+            Width = 290
+            Height = 498
+            Align = alClient
+            Indent = 21
             TabOrder = 0
           end
         end

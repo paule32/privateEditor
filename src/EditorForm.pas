@@ -200,7 +200,9 @@ type
     PanelResizer1: TPanel;
     PanelResizer2: TPanel;
     PanelResizer3: TPanel;
+    
     JvBalloonHint1: TJvBalloonHint;
+    UpperPanel: TPanel;
 
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -428,6 +430,11 @@ type
     procedure CreateSimpleWin32cLispProgram    ;
     procedure CreateSimpleWin32AssemblerProgram;
 
+    procedure setResizerTrue;
+    procedure setResizerFalse;
+    procedure setFramesFalse;
+
+    procedure setMiscEditor;
     procedure DblClickConsole;
 
     procedure AppMessage(var Msg: TMsg; var Handled: Boolean);
@@ -561,6 +568,11 @@ var
   rect: TRect;
 begin
   SplashForm.ProgressBar1.Position := 10;
+
+  PanelResizer1.Align := alClient;
+  PanelResizer2.Align := alClient;
+  PanelResizer3.Align := alClient;
+
 
   Form1.DoubleBuffered := True;
   has_errors := false;
@@ -852,10 +864,7 @@ begin
   DFrameSpread.AdvStringGrid1.EndUpdate;
   DFrameSpread.Visible := true;
 
-  PanelResizer1.Visible := true;
-  PanelResizer2.Visible := true;
-  PanelResizer3.Visible := true;
-  
+  setResizerTrue;
   tipday := nil;
 
   SplashForm.ProgressBar1.Position := 90;
@@ -892,8 +901,8 @@ begin
 
   DFrameComputerOS.Visible := true;
 
-  DFrameEditor.TabSheet1.Caption := 'Unamed';
-  DFrameLeftPanel.TabSheet3 .Caption := 'Project';
+//  DFrameEditor.TabSheet1.Caption := 'Unamed';
+//  DFrameLeftPanel.TabSheet4 .Caption := 'Project';
 
   WriteToC64Screen(5,2,'**** COMMODORE 64 BASIC V2 ****');
   WriteToC64Screen(2,4,'64K RAM SYSTEM  38911 BASIC BYTES FREE');
@@ -1486,16 +1495,59 @@ begin
   ExpandTopLevel;
 end;
 
-procedure TForm1.MainPageControlChange(Sender: TObject);
+procedure TForm1.setResizerTrue;
 begin
-  PanelResizer1.Align := alClient;
   PanelResizer1.Visible := true;
-  //
-  PanelResizer2.Align := alClient;
   PanelResizer2.Visible := true;
-  //
-  PanelResizer3.Align := alClient;
   PanelResizer3.Visible := true;
+
+  PanelResizer1.BringToFront;
+  PanelResizer2.BringToFront;
+  PanelResizer3.BringToFront;
+end;
+
+procedure TForm1.setResizerFalse;
+begin
+  PanelResizer1.Visible := false;
+  PanelResizer2.Visible := false;
+  PanelResizer3.Visible := false;
+end;
+
+procedure TForm1.setMiscEditor;
+begin
+    DFrameLeftPanel.LeftPageControl.ActivePageIndex := 1;
+
+    DFrameC64Config.Visible := false;
+    DFrameC64Drives.Visible := false;
+
+    DFrameFoldersLocal.Visible := true;
+    DFrameFoldersRemote.Visible := true;
+
+    DFrameEdit.Visible := true;
+    DFrameEdit.PageControl2.ActivePageIndex := 0;
+
+    DFrameStdMenu.ModeButton.Visible := true;
+    LogPanel.Visible := true;
+
+    DFrameComputerOS.Visible := false;
+    DFrameFormatLayout.Visible := false;
+    Panel22.Visible := false;
+
+    DFrameEdit.PageControl2.Align := alLeft;
+    DFrameEdit.PageControl2.Width := 400;
+    DFrameEdit.PageControl2.Visible := true;
+    DFrameEdit.Splitter1.Align := alLeft;
+
+    MainPageControl.ActivePageIndex := 0;
+    DFrameEdit.PageControl3.Visible := true;
+    DFrameEditor.Visible := true;
+    DFrameEditor.SynEdit1.SetFocus;
+end;
+
+procedure TForm1.setFramesFalse;
+begin
+  Frame_Panel.Visible := true;
+  UpperPanel.Height := 432;
 
   C64ScreenTimer.Enabled := false;
   DFrameC64KeyBoard.Visible := false;
@@ -1509,6 +1561,7 @@ begin
   DFrameLeftPanel.LeftPageControl.Pages[0].TabVisible := true;
   DFrameLeftPanel.LeftPageControl.Pages[1].TabVisible := true;
   DFrameLeftPanel.LeftPageControl.Pages[2].TabVisible := true;
+  DFrameLeftPanel.LeftPageControl.Pages[3].TabVisible := true;
 
   Splitter5.Visible := true;
   DFrameStdMenu.ModeButton.Visible := false;
@@ -1530,6 +1583,12 @@ begin
   Panel22   .Visible := true;
   Splitter19.Visible := true;
   Splitter19.Left    := 650;
+end;
+
+procedure TForm1.MainPageControlChange(Sender: TObject);
+begin
+  setResizerTrue;
+  setFramesFalse;
 
   if MainPageControl.ActivePage.Caption = 'C-64 Display' then
   begin
@@ -1555,6 +1614,7 @@ begin
     DFrameStdMenu.ModeButton.Visible := false;
     DFrameComputerOS.Visible := false;
 
+    setResizerFalse;
   end else
   if MainPageControl.ActivePage.Caption = 'SQL-Builder' then
   begin
@@ -1584,40 +1644,21 @@ begin
     DFrameEdit.PageControl2.Align := alClient;
 
     DFrameComputerOS.Visible := false;
+
   end else
   if MainPageControl.ActivePage.Caption = 'Editor' then
   begin
-    DFrameLeftPanel.LeftPageControl.ActivePageIndex := 1;
-
-    DFrameC64Config.Visible := false;
-    DFrameC64Drives.Visible := false;
-
-    DFrameFoldersLocal.Visible := true;
-    DFrameFoldersRemote.Visible := true;
-
-    DFrameEdit.Visible := true;
-    DFrameEdit.PageControl2.ActivePageIndex := 0;
-
-    DFrameStdMenu.ModeButton.Visible := true;
-    LogPanel.Visible := true;
-
-    DFrameComputerOS.Visible := false;
-
-
-
-    DFrameEdit.PageControl2.Align := alLeft;
-    DFrameEdit.PageControl2.Width := 400;
-    DFrameEdit.PageControl2.Visible := true;
-    DFrameEdit.Splitter1.Align := alLeft;
-
-    DFrameEdit.PageControl3.Visible := true;
-    DFrameEditor.Visible := true;
-    DFrameEditor.SynEdit1.SetFocus;
+    setMiscEditor;
+    DFrameLeftPanel.LeftPageControl.Pages[3].TabVisible := true;
+    DFrameLeftPanel.LeftPageControl.ActivePageIndex := 3;
   end else
   if MainPageControl.ActivePage.Caption = 'Designer' then
   begin
     DFrameC64Config.Visible := false;
     DFrameC64Drives.Visible := false;
+
+    DFrameFormatLayout.Visible := false;
+    Panel22.Visible := false;
 
     // invisible gadget panel
     if GetKeyState(VK_CONTROL) then
@@ -1629,6 +1670,7 @@ begin
       DFrameSimulationLeftPanel.Visible := true;
     end else
     begin
+      DFrameLeftPanel.LeftPageControl.Pages[0].TabVisible := true;
       DFrameLeftPanel.LeftPageControl.ActivePageIndex := 0;
 
       DFrameFoldersLocal.Visible := true;
@@ -1640,6 +1682,7 @@ begin
       LogPanel.Visible := true;
     end;
     DFrameComputerOS.Visible := false;
+
   end else
   if MainPageControl.ActivePage.Caption = 'Console' then
   begin
@@ -1673,9 +1716,7 @@ begin
     DFrameComputerOS.Visible := false;
   end;
 
-  PanelResizer1.Visible := false;
-  PanelResizer2.Visible := false;
-  PanelResizer3.Visible := false;
+  SetResizerFalse;
 end;
 
 procedure TForm1.Options1Click(Sender: TObject);
@@ -2799,32 +2840,9 @@ end;
 procedure TForm1.FormResize(Sender: TObject);
 begin
   if tipday <> nil then
-  begin
-    Timer1.Enabled := true;
-    PanelResizer1.BringToFront;
-    PanelResizer1.Align := alClient;
-    PanelResizer1.Visible := true;
-    //
-    PanelResizer2.BringToFront;
-    PanelResizer2.Align := alClient;
-    PanelResizer2.Visible := true;
-    //
-    PanelResizer3.BringToFront;
-    PanelResizer3.Align := alClient;
-    PanelResizer3.Visible := true;
+  Timer1.Enabled := true;
 
-    exit;
-  end;
-
-  PanelResizer1.BringToFront;
-  PanelResizer1.Visible := true;
-
-  PanelResizer2.BringToFront;
-  PanelResizer2.Visible := true;
-
-  PanelResizer3.BringToFront;
-  PanelResizer3.Visible := true;
-
+  setResizerTrue;
 end;
 
 procedure TForm1.NewProjectPageControlChange(Sender: TObject);
@@ -3057,6 +3075,7 @@ begin
   DFrameEdit.Visible := true;
 
   DFrameLeftPanel.LeftPageControl.Visible := true;
+  DFrameLeftPanel.LeftPageControl.ActivePageIndex := 3;
   MainPageControl.ActivePageIndex := 0;
   DFrameEditor.SynEdit1.SetFocus;
 end;
@@ -3248,6 +3267,7 @@ begin
       Filter      := 'Project files (*.pro)|All files (*.*)';
       FilterIndex := 0;
       DefaultExt  := '*.pro';
+      FileName    := '*.pro';
       InitialDir  := S1;
     end;
 
@@ -3284,7 +3304,12 @@ begin
         if JvCheckBox8.Checked then ini.WriteString(S3,S4,'amiga');
 
         S4 := 'type';
-        if JvCheckBox10.Checked then ini.WriteString(S3,S4,'pascal') else
+        if JvCheckBox10.Checked then
+        begin
+          ini.WriteString(S3,S4,'pascal');
+          DFrameEditor.TabSheet1.Caption := ChangeFileExt(S1,'.pas');
+          CreateSimpleWin32PascalProgram;
+        end else
         if JvCheckBox11.Checked then ini.WriteString(S3,S4,'basic') else
         if JvCheckBox12.Checked then ini.WriteString(S3,S4,'dbase') else
         if JvCheckBox15.Checked then ini.WriteString(S3,S4,'prolog') else
@@ -3293,8 +3318,17 @@ begin
       end;
 
       ini.WriteString(S3,'exe', S2);
-      ini.WriteString(S3,'main',ChangeFileExt(S1,''));
+      ini.WriteString(S3,'main',ChangeFileExt(S1,'.pas'));
       ini.WriteString(S3,'workdir',ExtractFilePath(SaveDialog1.FileName));
+
+      setFramesFalse;
+      setResizerTrue;
+
+      setMiscEditor;
+      setResizerFalse;
+
+      DFrameLeftPanel.LeftPageControl.Pages[3].TabVisible := true;
+      DFrameLeftPanel.LeftPageControl.ActivePageIndex := 3;
     finally
       ini.Free;
     end;
@@ -3374,9 +3408,7 @@ end;
 
 procedure TForm1.Timer1Timer(Sender: TObject);
 begin
-  PanelResizer1.Visible := false;
-  PanelResizer2.Visible := false;
-  PanelResizer3.Visible := false;
+  setResizerFalse;
 end;
 
 procedure TForm1.FormClose(Sender: TObject; var Action: TCloseAction);

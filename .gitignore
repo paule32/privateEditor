@@ -80,3 +80,5 @@ src/data/temp/ResPackage.bpl
 *.dcp
 *.dcp
 src/data/temp/ResPackage.dcp
+
+src/plugins/*
