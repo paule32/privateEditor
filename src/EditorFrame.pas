@@ -190,8 +190,8 @@ procedure WriteToMyConsole(m: PChar);
 begin
   ShowMessage('---> ' + string(m));
 end;
-var
-  export_WriteToMyConsole: procedure(callback: TWriteTextToConsole); cdecl;
+//var
+//  export_WriteToMyConsole: procedure(callback: TWriteTextToConsole); cdecl;
 
 procedure StartCompile(aType: myAppType);
 var
@@ -317,7 +317,7 @@ begin
         end;
       finally
         FreeLibrary(Handle);
-        Handle := 0;
+//        Handle := 0;
       end;
     end else
     if atBASIC in aType then
@@ -379,7 +379,7 @@ begin
         end;
       finally
         FreeLibrary(Handle);
-        Handle := 0;
+//        Handle := 0;
       end;
     end else
     if atdBASE in aType then
@@ -443,7 +443,7 @@ begin
         end;
       finally
         FreeLibrary(Handle);
-        Handle := 0;
+//        Handle := 0;
       end;
     end else
     if atcLisp in aType then
@@ -502,7 +502,7 @@ begin
         end;
       finally
         FreeLibrary(Handle);
-        Handle := 0;
+//        Handle := 0;
       end;
     end else
     if atAssembler in aType then
@@ -563,7 +563,7 @@ begin
         end;
       finally
         FreeLibrary(Handle);
-        Handle := 0;
+//        Handle := 0;
       end;
     end;
   end else
@@ -633,7 +633,7 @@ begin
         end;
       finally
         FreeLibrary(Handle);
-        Handle := 0;
+//        Handle := 0;
       end;
     end else
     if atBASIC in aType then
@@ -696,7 +696,7 @@ begin
         end;
       finally
         FreeLibrary(Handle);
-        Handle := 0;
+//        Handle := 0;
       end;
     end else
     if atdBASE in aType then
@@ -763,7 +763,7 @@ begin
         end;
       finally
         FreeLibrary(Handle);
-        Handle := 0;
+//        Handle := 0;
       end;
     end else
     if atProlog in aType then
@@ -830,7 +830,7 @@ showmessage('start');
         end;
       finally
         FreeLibrary(Handle);
-        Handle := 0;
+//        Handle := 0;
       end;
     end else
     if atcLisp in aType then
@@ -889,7 +889,7 @@ showmessage('start');
         end;
       finally
         FreeLibrary(Handle);
-        Handle := 0;
+//        Handle := 0;
       end;
     end else
     if atAssembler in aType then
@@ -950,7 +950,7 @@ showmessage('start');
         end;
       finally
         FreeLibrary(Handle);
-        Handle := 0;
+//        Handle := 0;
       end;
     end;
   end;

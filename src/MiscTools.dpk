@@ -32,6 +32,8 @@ requires
 
 contains
   Console in 'Console.pas',
-  Project1_TLB in '..\..\..\..\..\..\Program Files (x86)\Borland\Delphi7\Imports\Project1_TLB.pas';
+  Unit3 in '..\..\..\..\..\..\Program Files (x86)\Borland\Delphi7\Projects\COMservices\test2\Unit3.pas',
+  Project1_TLB in '..\..\..\..\..\..\Program Files (x86)\Borland\Delphi7\Projects\COMservices\test2\Project1_TLB.pas',
+  MyButton in '..\..\..\..\..\..\Program Files (x86)\Borland\Delphi7\Projects\COMservices\demo3\MyButton.pas';
 
 end.

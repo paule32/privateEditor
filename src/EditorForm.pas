@@ -25,9 +25,9 @@ uses
   ErrorBoxForm, InfoBoxForm, AboutBox, InputBox, DesignerFrame, EditorFrame,
   TeamServerFrame, EditFrame, C64KeyBoard, C64ConfigFrame, MembersFrame,
   C64DrivesFrame, NewProjectFrame, FoldersLocal, FoldersRemote, SpreadFrame,
-  HelpTopicFrame, HelpAuthorFrame, FontStyleFrame, FontFaceFrame,
+  HelpTopicFrame, HelpAuthorFrame, FontStyleFrame, FontFaceFrame, AboutFrame,
   FontColorFrame, ComputerFrame, FormatLayoutFrame, OptionsFrame,
-  SimulationLeftPanel,
+  SimulationLeftPanel, ProfileIconsFrame, ProfileSettings, TeamServerSettings,
   JvDesignImp, JclSysInfo, EnvironmentFrame, LeftPanelFrame, SimulationFrame,
   JvColorCombo, SynEdit, CtrlMenuBarButton, IdIRC, JvBalloonHint;
 
@@ -207,8 +207,6 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure PopupMenu_File_ExitClick(Sender: TObject);
-    procedure Pascal1Click(Sender: TObject);
-    procedure dBASE1Click(Sender: TObject);
     procedure PopupMenu_File_SaveAsClick(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure PopupMenu_Help_AboutClick(Sender: TObject);
@@ -258,14 +256,6 @@ type
     procedure PaintBox1DragDrop(Sender, Source: TObject; X, Y: Integer);
     procedure PaintBox1DragOver(Sender, Source: TObject; X, Y: Integer;
       State: TDragState; var Accept: Boolean);
-    procedure MSDOS3Click(Sender: TObject);
-    procedure WindowsNT32Bit2Click(Sender: TObject);
-    procedure MSDOS2Click(Sender: TObject);
-    procedure Windows3111Click(Sender: TObject);
-    procedure WindowsNT32Bit1Click(Sender: TObject);
-    procedure C64BASIC1Click(Sender: TObject);
-    procedure C64BASIC2Click(Sender: TObject);
-    procedure MSDOS1Click(Sender: TObject);
     procedure ChatWindow2Click(Sender: TObject);
     procedure PopupMenu_File_New_OtherClick(Sender: TObject);
     procedure SQLExplorer1Click(Sender: TObject);
@@ -369,6 +359,13 @@ type
     DFrameEnvOptions    : TFrame22;
     DFrameLeftPanel     : TFrame23;
 
+    DFrameProfileIcons  : TFrame27;
+    DFrameProfile       : TFrame28;
+
+    DFrameTeamServerSettings : TFrame30;
+
+    DFrameAbout : TFrame29;
+
     DFrameSimulation          : TFrame24;
     DFrameSimulationLeftPanel : TFrame25;
 
@@ -404,6 +401,8 @@ type
 
     procedure uncheck_run_menues;
     procedure SetEditMisc;
+
+    procedure HideAllSetPages;
 
     procedure ModifyControl(const AControl: TControl; LS: TStrings);
     procedure ExpandTopLevel;
@@ -864,6 +863,31 @@ begin
   DFrameSpread.AdvStringGrid1.EndUpdate;
   DFrameSpread.Visible := true;
 
+  SplashForm.ProgressBar1.Position := 85;
+
+  // Profiles
+  DFrameProfileIcons := TFrame27.Create(LeftPanel);
+  DFrameProfileIcons.Parent  := LeftPanel;
+  DFrameProfileIcons.Align   := alClient;
+  DFrameProfileIcons.Visible := false;
+
+  DFrameProfile := TFrame28.Create(EditPanel);
+  DFrameProfile.Parent  := EditPanel;
+  DFrameProfile.Align   := alClient;
+  DFrameProfile.Visible := false;
+
+  DFrameAbout := TFrame29.Create(EditPanel);
+  DFrameAbout.Parent   := EditPanel;
+  DFrameAbout.Align    := alClient;
+  DFrameAbout.Visible  := false;
+
+  SplashForm.ProgressBar1.Position := 87;
+
+  DFrameTeamServerSettings := TFrame30.Create(EditPanel);
+  DFrameTeamServerSettings.Parent  := EditPanel;
+  DFrameTeamServerSettings.Align   := alClient;
+  DFrameTeamServerSettings.Visible := false;
+
   setResizerTrue;
   tipday := nil;
 
@@ -934,18 +958,6 @@ begin
   Close;
 end;
 
-procedure TForm1.Pascal1Click(Sender: TObject);
-begin
-  DFrameStdMenu.ModeButton.Caption := 'Mode: Pascal';
-  DFrameStdMenu.ModeButton.Tag     := 1;
-end;
-
-procedure TForm1.dBASE1Click(Sender: TObject);
-begin
-  DFrameStdMenu.ModeButton.Caption := 'Mode: dBASE';
-  DFrameStdMenu.ModeButton.Tag     := 2;
-end;
-
 procedure TForm1.PopupMenu_File_SaveAsClick(Sender: TObject);
 begin
   if not(SaveDialog1.Execute) then
@@ -965,17 +977,6 @@ begin
     exit;
   end;
 
-  // Pascal
-  if DFrameStdMenu.ModeButton.Tag = 1 then
-  begin
-    if not(ExtractFileExt(SaveDialog1.FileName) = 'pas') then
-    begin
-      ErrorBox.Text('only .pas files allowed.');
-      ErrorBox.BringToFront;
-      ErrorBox.Show;
-      exit;
-    end;
-  end;
 end;
 
 procedure TForm1.ModifyControl(const AControl: TControl; LS: TStrings);
@@ -1526,7 +1527,6 @@ begin
     DFrameEdit.Visible := true;
     DFrameEdit.PageControl2.ActivePageIndex := 0;
 
-    DFrameStdMenu.ModeButton.Visible := true;
     LogPanel.Visible := true;
 
     DFrameComputerOS.Visible := false;
@@ -1564,7 +1564,6 @@ begin
   DFrameLeftPanel.LeftPageControl.Pages[3].TabVisible := true;
 
   Splitter5.Visible := true;
-  DFrameStdMenu.ModeButton.Visible := false;
 
   DFrameFontStyle.Visible := false;
 
@@ -1611,7 +1610,6 @@ begin
     DFrameC64Config.Visible := true;
     DFrameC64Drives.Visible := true;
 
-    DFrameStdMenu.ModeButton.Visible := false;
     DFrameComputerOS.Visible := false;
 
     setResizerFalse;
@@ -1636,7 +1634,6 @@ begin
     DFrameMembers.Visible := true;
     DFrameMembers.ListBox1.Visible := true;
 
-    DFrameStdMenu.ModeButton.Visible := false;
     LogPanel.Visible := true;
 
     DFrameEdit.PageControl3.Visible := false;
@@ -1678,7 +1675,6 @@ begin
 
       DFrameEdit.Visible := true;
 
-      DFrameStdMenu.ModeButton.Visible := true;
       LogPanel.Visible := true;
     end;
     DFrameComputerOS.Visible := false;
@@ -1709,7 +1705,6 @@ begin
     DFrameHelpAuthor.Visible := true;
     DFrameFontStyle .Visible := true;
 
-    DFrameStdMenu.ModeButton.Visible := false;
     DFrameLeftPanel.LeftPageControl.Visible := false;
     DFrameHelpTopic.Visible := true;
 
@@ -1721,8 +1716,16 @@ end;
 
 procedure TForm1.Options1Click(Sender: TObject);
 begin
-  TabSheet_Options.Visible   := true;
-  MainPageControl.ActivePage := TabSheet_Options;
+//  TabSheet_Options.Visible   := true;
+//  MainPageControl.ActivePage := TabSheet_Options;
+
+  Frame_Panel.Visible := false;
+  UpperPanel .Visible := false;
+
+  DFrameLeftPanel.Visible := false;
+
+  DFrameProfileIcons.Visible := true;
+  DFrameProfile     .Visible := true;
 end;
 
 procedure TForm1.ircConnectButtonClick(Sender: TObject);
@@ -2224,55 +2227,6 @@ procedure TForm1.TableListBox_MouseDown(
   X,  Y : Integer);
 begin
   TableListBox.BeginDrag(false);
-end;
-
-procedure TForm1.MSDOS3Click(Sender: TObject);
-begin
-  DFrameStdMenu.ModeButton.Caption := 'Mode: Pascal - MS-DOS';
-  DFrameStdMenu.ModeButton.Tag     := 10;
-
-end;
-
-procedure TForm1.WindowsNT32Bit2Click(Sender: TObject);
-begin
-  DFrameStdMenu.ModeButton.Caption := 'Mode: Pascal - Windows';
-  DFrameStdMenu.ModeButton.Tag     := 11;
-end;
-
-procedure TForm1.MSDOS2Click(Sender: TObject);
-begin
-  DFrameStdMenu.ModeButton.Caption := 'Mode: dBASE - MS-DOS';
-  DFrameStdMenu.ModeButton.Tag     := 20;
-end;
-
-procedure TForm1.Windows3111Click(Sender: TObject);
-begin
-  DFrameStdMenu.ModeButton.Caption := 'Mode: dBASE - Win 3.11';
-  DFrameStdMenu.ModeButton.Tag     := 21;
-end;
-
-procedure TForm1.WindowsNT32Bit1Click(Sender: TObject);
-begin
-  DFrameStdMenu.ModeButton.Caption := 'Mode: dBASE - Win32 NT';
-  DFrameStdMenu.ModeButton.Tag     := 22
-end;
-
-procedure TForm1.C64BASIC1Click(Sender: TObject);
-begin
-  DFrameStdMenu.ModeButton.Caption := 'Mode: BASIC';
-  DFrameStdMenu.ModeButton.Tag     := 3;
-end;
-
-procedure TForm1.C64BASIC2Click(Sender: TObject);
-begin
-  DFrameStdMenu.ModeButton.Caption := 'Mode: BASIC C-64';
-  DFrameStdMenu.ModeButton.Tag     := 30;
-end;
-
-procedure TForm1.MSDOS1Click(Sender: TObject);
-begin
-  DFrameStdMenu.ModeButton.Caption := 'Mode: BASIC MS-DOS';
-  DFrameStdMenu.ModeButton.Tag     := 31;
 end;
 
 procedure TForm1.ChatWindow2Click(Sender: TObject);
@@ -3455,6 +3409,12 @@ begin
     exit;
   end;
   CanClose := true;
+end;
+
+procedure TForm1.HideAllSetPages;
+begin
+  DFrameAbout.Visible := false;
+  DFrameTeamServerSettings.Visible := false;
 end;
 
 end.

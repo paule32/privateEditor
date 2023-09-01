@@ -8,11 +8,7 @@
   resources were bound to the produced executable.
 */
 
-#define Project1_TLB_dtlServerPage 65520
-#define Project1_TLB_dtlOcxPage 65521
 STRINGTABLE
 BEGIN
-	Project1_TLB_dtlServerPage,	"COM+"
-	Project1_TLB_dtlOcxPage,	"COM+"
 END
 

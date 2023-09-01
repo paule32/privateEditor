@@ -39,379 +39,106 @@ object Frame26: TFrame26
         Height = 34
         Align = alClient
         AutoSize = True
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -16
+        Font.Name = 'Consolas'
+        Font.Style = []
         ParentColor = True
+        ParentFont = False
         TabOrder = 0
-        object MenuBarButton_File: TCtrlMenuBarButton
+        object MenuBarButton_File: TJvImgBtn
           Left = 1
           Top = 1
           Width = 56
           Height = 32
-          Align = alLeft
           Caption = 'File '
+          TabOrder = 0
           DropDownMenu = PopupMenu_File
           Flat = True
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -16
-          Font.Name = 'Consolas'
-          Font.Style = []
-          HotTrack = True
-          HotTrackFont.Charset = DEFAULT_CHARSET
-          HotTrackFont.Color = clBlack
-          HotTrackFont.Height = -16
-          HotTrackFont.Name = 'Consolas'
-          HotTrackFont.Style = []
-          HotTrackOptions.Enabled = True
-          HotTrackOptions.Color = clSilver
-          HotTrackOptions.FrameVisible = True
-          MarkDropDown = False
-          ParentFont = False
-          Transparent = True
         end
-        object MenuBarButton_Edit: TCtrlMenuBarButton
+        object MenuBarButton_Edit: TJvImgBtn
           Left = 57
           Top = 1
           Width = 56
           Height = 32
-          Align = alLeft
           Caption = 'Edit'
+          TabOrder = 1
           DropDownMenu = PopupMenu_Edit
           Flat = True
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -16
-          Font.Name = 'Consolas'
-          Font.Style = []
-          HotTrack = True
-          HotTrackFont.Charset = DEFAULT_CHARSET
-          HotTrackFont.Color = clBlack
-          HotTrackFont.Height = -16
-          HotTrackFont.Name = 'Consolas'
-          HotTrackFont.Style = []
-          HotTrackOptions.Enabled = True
-          HotTrackOptions.Color = clSilver
-          HotTrackOptions.FrameVisible = True
-          MarkDropDown = False
-          ParentFont = False
-          Transparent = True
         end
-        object CtrlMenuBarButton1: TCtrlMenuBarButton
+        object CtrlMenuBarButton1: TJvImgBtn
           Left = 113
           Top = 1
           Width = 80
           Height = 32
-          Align = alLeft
           Caption = 'Project'
+          TabOrder = 2
           DropDownMenu = Form1.PopupMenu_Project
           Flat = True
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -16
-          Font.Name = 'Consolas'
-          Font.Style = []
-          HotTrack = True
-          HotTrackFont.Charset = DEFAULT_CHARSET
-          HotTrackFont.Color = clBlack
-          HotTrackFont.Height = -16
-          HotTrackFont.Name = 'Consolas'
-          HotTrackFont.Style = []
-          HotTrackOptions.Enabled = True
-          HotTrackOptions.Color = clSilver
-          HotTrackOptions.FrameVisible = True
-          MarkDropDown = False
-          ParentFont = False
-          Transparent = True
         end
-        object MenuBarButton_Tools: TCtrlMenuBarButton
+        object MenuBarButton_Tools: TJvImgBtn
           Left = 193
           Top = 1
           Width = 64
           Height = 32
-          Align = alLeft
           Caption = 'Tools'
+          TabOrder = 3
           DropDownMenu = PopupMenu_Tools
           Flat = True
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -16
-          Font.Name = 'Consolas'
-          Font.Style = []
-          HotTrack = True
-          HotTrackFont.Charset = DEFAULT_CHARSET
-          HotTrackFont.Color = clBlack
-          HotTrackFont.Height = -16
-          HotTrackFont.Name = 'Consolas'
-          HotTrackFont.Style = []
-          HotTrackOptions.Enabled = True
-          HotTrackOptions.Color = clSilver
-          HotTrackOptions.FrameVisible = True
-          MarkDropDown = False
-          ParentFont = False
-          Transparent = True
         end
-        object MenuBarButton_Help: TCtrlMenuBarButton
+        object MenuBarButton_Help: TJvImgBtn
           Left = 490
           Top = 1
           Width = 56
           Height = 32
-          Align = alLeft
           Caption = 'Help'
+          TabOrder = 4
           DropDownMenu = Form1.PopupMenu_Help
           Flat = True
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -16
-          Font.Name = 'Consolas'
-          Font.Style = []
-          HotTrack = True
-          HotTrackFont.Charset = DEFAULT_CHARSET
-          HotTrackFont.Color = clBlack
-          HotTrackFont.Height = -16
-          HotTrackFont.Name = 'Consolas'
-          HotTrackFont.Style = []
-          HotTrackOptions.Enabled = True
-          HotTrackOptions.Color = clSilver
-          HotTrackOptions.FrameVisible = True
-          MarkDropDown = False
-          ParentFont = False
-          Transparent = True
         end
-        object CtrlMenuBarButton2: TCtrlMenuBarButton
+        object CtrlMenuBarButton2: TJvImgBtn
           Left = 867
           Top = 1
           Width = 41
           Height = 32
-          Align = alRight
-          Flat = True
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -16
           Font.Name = 'Consolas'
           Font.Style = []
-          Glyph.Data = {
-            36100000424D3610000000000000360000002800000020000000200000000100
-            20000000000000100000130B0000130B00000000000000000000000000000000
-            0000000000000000000000000000000000000000000000000000000000000000
-            0000000000000000000000000000000000000000000000000000000000000000
-            0000000000000000000000000000000000000000000000000000000000000000
-            0000000000000000000000000000000000000000000000000000000000000000
-            0000000000000000000000000000000000000000000000000000000000000000
-            0000000000000000000000000000000000000000000000000000000000000000
-            0000000000000000000000000000000000000000000000000000000000000000
-            0000000000000000000000000000000000000000000000000000000000000000
-            0000000000000000000000000000000000000000000000000000000000000000
-            0000000000000000000000000000000000000000000000000000000000000000
-            0000000000000000000000000000000000000000000000000000000000000000
-            0000000000000000000000000000000000000000000000000000000000000000
-            0000000000000000000000000000000000000000000000000000000000000000
-            0000000000000000000000000000000000000000000000000000000000000000
-            0000000000000000000000000000000000000000000000000000000000000000
-            0000000000000000000000000000000000000000000000000000000000000000
-            0000000000000000000000000000000000000000000000000000000000000000
-            0000000000000000000000000000000000000000000000000000000000000000
-            0000000000000000000000000000000000000000000000000000000000000000
-            0000000000000000000000000000000000000000000000000000000000000000
-            0000000000000000000000000000000000000000000000000000246D910E2A64
-            83592B637F762B637F762B637F762B637F762B637F762B637F762B637F762B63
-            7F762B637F762B637F762B637F762B637F7629668468296E9025000000000000
-            0000000000000000000000000000000000000000000000000000000000000000
-            00000000000000000000000000000000000000000000295871AD2A4F62FA2871
-            93FF277DA6FF277DA6FF277DA6FF277DA6FF277DA6FF277DA6FF277DA6FF277D
-            A6FF277DA6FF277DA6FF277DA6FF277DA6FF27799EFF2A5D74FE2B4F60DB2F67
-            8D1B000000000000000000000000000000000000000000000000000000000000
-            000000000000000000000000000000000000295871AD28769BFF22B7FAFF228E
-            BFFF2187B5FF22A1DCFF22A0D9FF22B8FBFF22B8FBFF22B8FBFF22B8FBFF22B7
-            F9FF22A1DAFF2293C7FF21A3DFFF2190C3FF2285B4FF22B0EFFF249CD2FF2A4B
-            5BEA007F7F020000000000000000000000000000000000000000000000000000
-            0000000000000000000000000000246D910E294F63FA22B7FAFF217AA5FF22AC
-            E9FF22B8FBFF22B8FBFF22B8FBFF22B8FBFF22B8FBFF5088A3FF4F89A3FF22B8
-            FBFF22B8FBFF22B8FBFF22B8FBFF22B8FBFF22B6F8FF217FABFF22A8E5FF2878
-            9DFF27647F7A0000000000000000000000000000000000000000000000000000
-            00000000000000000000000000002A65825A297194FF228EBFFF22ACEAFF22B8
-            FBFF22B8FBFF22B8FBFF22B8FBFF22B8FBFF24B2F0FF447B96FF437B96FF24B2
-            F0FF22B8FBFF22B8FBFF22B8FBFF22B8FBFF22B8FBFF22B8FBFF2181ADFF24A0
-            D8FF28566BC30000000000000000000000000000000000000000000000000000
-            00000000000000000000000000002864836B277DA6FF2187B5FF22B8FBFF22B8
-            FBFF22B8FBFF22B8FBFF22B8FBFF22B8FBFF26A0D7FF528DA8FF528DA8FF26A1
-            D8FF22B8FBFF22B8FBFF22B8FBFF22B8FBFF22B8FBFF22B8FBFF2187B5FF23AD
-            EAFF2A5267CD0000000000000000000000000000000000000000000000000000
-            00000000000000000000000000002864836B277DA6FF2187B5FF22B8FBFF22B8
-            FBFF22B8FBFF22B8FBFF22B8FBFF22B8FBFF4A768CFF5A7A89FF5A7A89FF4977
-            8DFF22B8FBFF22B8FBFF22B8FBFF22B8FBFF22B8FBFF22B8FBFF22A2DDFF23AD
-            EAFF2A5267CD0000000000000000000000000000000000000000000000000000
-            00000000000000000000000000002864836B277DA6FF2187B5FF22B8FBFF22B8
-            FBFF22B8FBFF22B8FBFF22B8FBFF22B8FBFF4695BBFF7CA3B5FF7CA3B5FF4695
-            BBFF22B8FBFF22B8FBFF22B8FBFF22B8FBFF22B8FBFF22B8FBFF22B2F2FF23AD
-            EAFF2A5267CD0000000000000000000000000000000000000000000000000000
-            00000000000000000000000000002864836B277DA6FF2187B5FF22B8FBFF22B8
-            FBFF22B8FBFF22B8FBFF22B8FBFF22B8FBFF739FB1FF80A6B6FF80A6B6FF739F
-            B1FF22B8FBFF22B8FBFF22B8FBFF22B8FBFF22B8FBFF22B8FBFF2188B7FF23AD
-            EAFF2A5267CD0000000000000000000000000000000000000000000000000000
-            00000000000000000000000000002864836B277DA6FF2187B5FF22B8FBFF22B8
-            FBFF22B8FBFF22B8FBFF22B8FBFF3A94BCFFD4E2E6FF699FB6FF699FB6FFD6E5
-            E8FF3A94BCFF22B8FBFF22B8FBFF22B8FBFF22B8FBFF22B8FBFF22AEEBFF23AD
-            EAFF2A5267CD0000000000000000000000000000000000000000000000000000
-            00000000000000000000000000002864836B277DA6FF2187B5FF22B8FBFF22B8
-            FBFF22B8FBFF22B8FBFF2EA1D5FFA8C2CAFFEFFDFEFF699FB6FF699FB6FFEFFD
-            FEFFAEC6CEFF2FA0D3FF22B8FBFF22B8FBFF22B8FBFF22B8FBFF2187B5FF23AD
-            EAFF2A5267CD0000000000000000000000000000000000000000000000000000
-            00000000000000000000000000002864836B277DA6FF2187B5FF22B8FBFF22B8
-            FBFF22B8FBFF22B1F0FF83A7B6FFEFFDFEFFEFFDFEFF699FB6FF699FB6FFEFFD
-            FEFFEFFDFEFF7CA1B1FF22B3F4FF22B8FBFF22B8FBFF22B8FBFF2187B5FF23AD
-            EAFF2A5267CD0000000000000000000000000000000000000000000000000000
-            00000000000000000000000000002864836B277DA6FF2187B5FF22B8FBFF22B8
-            FBFF22B8FBFF4794B7FFECFAFBFFE7F4F5FF88A7B5FF4E87A2FF4E87A2FF88A7
-            B5FFE7F4F5FFE9F7F8FF4292B6FF22B8FBFF22B8FBFF22B8FBFF2187B5FF23AD
-            EAFF2A5267CD0000000000000000000000000000000000000000000000000000
-            00000000000000000000000000002864836B277DA6FF2187B5FF22B8FBFF22B8
-            FBFF22B8FBFF6998ABFFEFFDFEFFCAD9DCFF448AA9FF4691B4FF4691B4FF458B
-            AAFFCADADDFFEFFDFEFF6CA0B6FF22B8FBFF22B8FBFF22B8FBFF2187B5FF23AD
-            EAFF2A5267CD0000000000000000000000000000000000000000000000000000
-            00000000000000000000000000002864836B277DA6FF2187B5FF22B8FBFF22B8
-            FBFF22B8FBFF75A2B5FFEFFDFEFFEFFDFEFFEFFDFEFFEFFDFEFFEFFDFEFFEFFD
-            FEFFEFFDFEFFEFFDFEFF71A2B7FF22B8FBFF22B8FBFF22B8FBFF2187B5FF23AD
-            EAFF2A5267CD0000000000000000000000000000000000000000000000000000
-            00000000000000000000000000002864836B277DA6FF2187B5FF22B8FBFF22B8
-            FBFF22B8FBFF5897B5FFEFFDFEFFEFFDFEFFEFFDFEFFEFFDFEFFEFFDFEFFEFFD
-            FEFFEFFDFEFFEFFDFEFF5698B7FF22B8FBFF22B8FBFF22B8FBFF22B5F6FF23AD
-            EAFF2A5267CD0000000000000000000000000000000000000000000000000000
-            00000000000000000000000000002864836B277DA6FF2187B5FF22B8FBFF22B8
-            FBFF22B8FBFF2FA0D3FFBDD1D8FFEFFDFEFFEFFDFEFFEFFDFEFFEFFDFEFFEFFD
-            FEFFEFFDFEFFBAD0D7FF299FD5FF22B8FBFF22B8FBFF22B8FBFF22B8FBFF23AD
-            EAFF2A5267CD0000000000000000000000000000000000000000000000000000
-            00000000000000000000000000002A64806527799EFF2285B4FF22B7F9FF22B8
-            FBFF22B8FBFF22B8FBFF4695BBFFC8DCE1FFEFFDFEFFEFFDFEFFEFFDFEFFEFFD
-            FEFFC6D9DDFF4294B9FF22B8FBFF22B8FBFF22B8FBFF22B8FBFF22B8FBFF23A7
-            E2FF285468C90000000000000000000000000000000000000000000000000000
-            00000000000000000000000000002C6C8C282A5E76FE22AFEEFF2281ADFF22B8
-            FBFF22B8FBFF22B8FBFF22B8FBFF349AC8FF6E9FB5FF92ACB6FF94ADB6FF709E
-            B1FF379BC9FF22B8FBFF22B8FBFF22B8FBFF22B8FBFF22B8FBFF22B8FBFF268A
-            B8FF295C74A00000000000000000000000000000000000000000000000000000
-            0000000000000000000000000000000000002B4C5DDF259CD3FF22A7E3FF2281
-            ADFF218CBDFF22A7E3FF228FC1FF229CD3FF22B8FBFF22B8FBFF22B8FBFF22B8
-            FBFF22B8FBFF22B8FBFF22B8FBFF22B8FBFF22B8FBFF22B8FBFF22B4F5FF2B49
-            5BF92F678D1B0000000000000000000000000000000000000000000000000000
-            0000000000000000000000000000000000002B698C1D2C4958EC27799FFF25A0
-            D9FF23AFECFF23AFECFF23AFECFF23AFECFF23AFECFF23AFECFF23AFECFF23AF
-            ECFF23AFECFF23AFECFF23AFECFF23AFECFF23A8E3FF268BB8FF2B495BF92765
-            8262000000000000000000000000000000000000000000000000000000000000
-            00000000000000000000000000000000000000000000007F7F0229617D802856
-            6BC32A546AC72A546AC72A546AC72A546AC72A546AC72A546AC72A546AC72A54
-            6AC72A546AC72A546AC72A546AC72A546AC72A546AC7295C74A02F678D1B0000
-            0000000000000000000000000000000000000000000000000000000000000000
-            0000000000000000000000000000000000000000000000000000000000000000
-            0000000000000000000000000000000000000000000000000000000000000000
-            0000000000000000000000000000000000000000000000000000000000000000
-            0000000000000000000000000000000000000000000000000000000000000000
-            0000000000000000000000000000000000000000000000000000000000000000
-            0000000000000000000000000000000000000000000000000000000000000000
-            0000000000000000000000000000000000000000000000000000000000000000
-            0000000000000000000000000000000000000000000000000000000000000000
-            0000000000000000000000000000000000000000000000000000000000000000
-            0000000000000000000000000000000000000000000000000000000000000000
-            0000000000000000000000000000000000000000000000000000000000000000
-            0000000000000000000000000000000000000000000000000000000000000000
-            0000000000000000000000000000000000000000000000000000000000000000
-            0000000000000000000000000000000000000000000000000000000000000000
-            0000000000000000000000000000000000000000000000000000000000000000
-            0000000000000000000000000000000000000000000000000000000000000000
-            0000000000000000000000000000000000000000000000000000000000000000
-            0000000000000000000000000000000000000000000000000000000000000000
-            0000000000000000000000000000000000000000000000000000000000000000
-            0000000000000000000000000000000000000000000000000000}
-          GrayedInactive = False
-          HotTrack = True
-          HotTrackFont.Charset = DEFAULT_CHARSET
-          HotTrackFont.Color = clBlack
-          HotTrackFont.Height = -16
-          HotTrackFont.Name = 'Consolas'
-          HotTrackFont.Style = []
-          HotTrackOptions.Enabled = True
-          HotTrackOptions.Color = clSilver
-          HotTrackOptions.FrameVisible = True
-          MarkDropDown = False
           ParentFont = False
-          Transparent = True
+          TabOrder = 5
+          Flat = True
         end
-        object MenuBarButton_Window: TCtrlMenuBarButton
+        object MenuBarButton_Window: TJvImgBtn
           Left = 410
           Top = 1
           Width = 80
           Height = 32
-          Align = alLeft
           Caption = 'Window'
+          TabOrder = 6
           DropDownMenu = Form1.PopupMenu_Window
           Flat = True
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -16
-          Font.Name = 'Consolas'
-          Font.Style = []
-          HotTrack = True
-          HotTrackFont.Charset = DEFAULT_CHARSET
-          HotTrackFont.Color = clBlack
-          HotTrackFont.Height = -16
-          HotTrackFont.Name = 'Consolas'
-          HotTrackFont.Style = []
-          HotTrackOptions.Enabled = True
-          HotTrackOptions.Color = clSilver
-          HotTrackOptions.FrameVisible = True
-          MarkDropDown = False
-          ParentFont = False
-          Transparent = True
         end
-        object MenuBarButton_DataBase: TCtrlMenuBarButton
+        object MenuBarButton_DataBase: TJvImgBtn
           Left = 257
           Top = 1
           Width = 96
           Height = 32
-          Align = alLeft
           Caption = 'DataBase'
+          TabOrder = 7
           DropDownMenu = Form1.PopupMenu_DataBase
           Flat = True
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -16
-          Font.Name = 'Consolas'
-          Font.Style = []
-          HotTrack = True
-          HotTrackFont.Charset = DEFAULT_CHARSET
-          HotTrackFont.Color = clBlack
-          HotTrackFont.Height = -16
-          HotTrackFont.Name = 'Consolas'
-          HotTrackFont.Style = []
-          HotTrackOptions.Enabled = True
-          HotTrackOptions.Color = clSilver
-          HotTrackOptions.FrameVisible = True
-          MarkDropDown = False
-          ParentFont = False
-          Transparent = True
         end
-        object CtrlMenuBarButton3: TCtrlMenuBarButton
+        object CtrlMenuBarButton3: TJvImgBtn
           Left = 353
           Top = 1
           Width = 57
           Height = 32
-          Align = alLeft
           Caption = 'Team'
+          TabOrder = 8
           Flat = True
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -16
-          Font.Name = 'Consolas'
-          Font.Style = []
-          HotTrack = True
-          HotTrackFont.Charset = DEFAULT_CHARSET
-          HotTrackFont.Color = clBlack
-          HotTrackFont.Height = -16
-          HotTrackFont.Name = 'Consolas'
-          HotTrackFont.Style = []
-          HotTrackOptions.Enabled = True
-          HotTrackOptions.Color = clSilver
-          HotTrackOptions.FrameVisible = True
-          MarkDropDown = False
-          ParentFont = False
-          Transparent = True
         end
       end
       object Panel3: TPanel
@@ -571,33 +298,6 @@ object Frame26: TFrame26
           HotTrackOptions.Enabled = True
           HotTrackOptions.FrameVisible = True
           ParentFont = False
-        end
-        object ModeButton: TJvSpeedButton
-          Left = 692
-          Top = 1
-          Width = 216
-          Height = 40
-          Align = alRight
-          Caption = 'Mode: Pascal'
-          DropDownMenu = Form1.PopupMenu_Mode
-          Flat = True
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -16
-          Font.Name = 'Consolas'
-          Font.Style = []
-          HotTrack = True
-          HotTrackFont.Charset = DEFAULT_CHARSET
-          HotTrackFont.Color = clBlack
-          HotTrackFont.Height = -16
-          HotTrackFont.Name = 'Consolas'
-          HotTrackFont.Style = []
-          HotTrackOptions.Enabled = True
-          HotTrackOptions.Color = clSilver
-          HotTrackOptions.FrameVisible = True
-          MarkDropDown = False
-          ParentFont = False
-          Transparent = True
         end
         object JvSpeedButton1: TJvSpeedButton
           Left = 1

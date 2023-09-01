@@ -12,7 +12,7 @@
     <DEFFILE value=""/>
     <RESDEPEN value="$(RESFILES) FormTemplate.dfm"/>
     <LIBFILES value=""/>
-    <LIBRARIES value=""/>
+    <LIBRARIES value="rtl.lib vcl.lib"/>
     <SPARELIBS value="vcl.lib rtl.lib"/>
     <PACKAGES value="vcl.bpi rtl.bpi dbrtl.bpi adortl.bpi vcldb.bpi vclx.bpi bdertl.bpi 
       vcldbx.bpi ibxpress.bpi dsnap.bpi cds.bpi bdecds.bpi qrpt.bpi teeui.bpi 
@@ -29,7 +29,7 @@
     <RELEASELIBPATH value="$(BCB)\lib\release"/>
     <LINKER value="ilink32"/>
     <USERDEFINES value=""/>
-    <SYSDEFINES value="NO_STRICT;_NO_VCL;_RTLDLL;USEPACKAGES"/>
+    <SYSDEFINES value="NO_STRICT;_NO_VCL;_RTLDLL"/>
     <MAINSOURCE value="DSLwin32Pascal.bpf"/>
     <INCLUDEPATH value="E:\Projekte\SWIPL\SWIPEL_ZWAP\src\lang\src\pascalDSLwin32;&quot;E:\Program Files (x86)\Borland\CBuilder6\Include&quot;;&quot;E:\Program Files (x86)\Borland\CBuilder6\Include\Vcl&quot;;&quot;E:\Program Files (x86)\Borland\CBuilder6\Projects&quot;;&quot;E:\Program Files (x86)\Borland\CBuilder6\Projects\Lib&quot;;E:\Projekte\jedi\jcl\jcl\lib\c6;E:\Projekte\jedi\jcl\jcl\packages\c6;E:\Projekte\jedi\jcl\jcl\source;E:\Projekte\jedi\jcl\jcl\source\common;E:\Projekte\jedi\jcl\jcl\source\include;E:\Projekte\jedi\jcl\jcl\source\include\jedi;E:\Projekte\jedi\jcl\jcl\source\vcl;E:\Projekte\jedi\jcl\jcl\source\windows;E:\Projekte\jedi\jcl\jcl\packages;E:\Projekte\jedi\jvcl\jvcl\common;E:\Projekte\jedi\jvcl\jvcl\packages\c6;E:\Projekte\jedi\jvcl\jvcl\resources;E:\Projekte\jedi\jvcl\jvcl\include"/>
     <LIBPATH value="E:\Projekte\SWIPL\SWIPEL_ZWAP\src\lang\src\pascalDSLwin32;&quot;E:\Program Files (x86)\Borland\CBuilder6\Lib\Obj&quot;;&quot;E:\Program Files (x86)\Borland\CBuilder6\Lib&quot;;&quot;E:\Program Files (x86)\Borland\CBuilder6\Projects\Lib&quot;;&quot;E:\Program Files (x86)\Borland\CBuilder6\Projects\Bpl&quot;"/>
@@ -60,7 +60,7 @@
     <OTHERFILES value=""/>
   </OPTIONS>
   <LINKER>
-    <ALLOBJ value="c0d32.obj $(PACKAGES) $(OBJFILES)"/>
+    <ALLOBJ value="c0d32.obj $(OBJFILES)"/>
     <ALLRES value="$(RESFILES)"/>
     <ALLLIB value="$(LIBFILES) $(LIBRARIES) import32.lib cw32i.lib"/>
     <OTHERFILES value=""/>

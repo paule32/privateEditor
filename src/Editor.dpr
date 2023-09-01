@@ -40,7 +40,11 @@ uses
   reinit in 'reinit.pas',
   SimulationPartA in 'SimulationPartA.pas',
   SQLparser in 'SQLparser.pas',
-  StandardMenuFrame in 'StandardMenuFrame.pas' {Frame26: TFrame};
+  StandardMenuFrame in 'StandardMenuFrame.pas' {Frame26: TFrame},
+  ProfileIconsFrame in 'ProfileIconsFrame.pas' {Frame27: TFrame},
+  ProfileSettings in 'ProfileSettings.pas' {Frame28: TFrame},
+  AboutFrame in 'AboutFrame.pas' {Frame29: TFrame},
+  TeamServerSettings in 'TeamServerSettings.pas' {Frame30: TFrame};
 
 {$R *.res}
 

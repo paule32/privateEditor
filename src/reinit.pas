@@ -53,7 +53,6 @@ function LoadNewResourceModule(Locale: LCID): Longint;
 var
   FileName: array [0..260] of char;
   res : DWORD;
-  P: PChar;
   LocaleName: array[0..4] of Char;
 begin
   res := GetModuleFileName(0, FileName, sizeof(FileName));
@@ -62,7 +61,6 @@ begin
     GetLocaleInfo(Locale, LOCALE_SABBREVLANGNAME, LocaleName, SizeOf(LocaleName));
 
     NewInst := 0;
-    Result  := 0;
 
     if Length(LocaleName) > 0 then
     begin
@@ -83,12 +81,12 @@ end;
 
 function InternalReloadComponentRes(const ResName: string; HInst: THandle; var Instance: TComponent): Boolean;
 var
-  hr: HRSRC;
+//  hr: HRSRC;
   ResStream: TResourceStream;
   AsInheritedReader: TAsInheritedReader;
 begin
   try
-    hr := FindResource(newInst, PChar(ResName), RT_RCDATA);
+    //hr := FindResource(newInst, PChar(ResName), RT_RCDATA);
     ResStream := TResourceStream.Create(newInst, ResName, RT_RCDATA);
     try
       // wird nie erreicht !
@@ -116,6 +114,8 @@ function ReloadInheritedComponent(Instance: TComponent; RootAncestor: TClass): B
 
   function InitComponent(ClassType: TClass): Boolean;
   begin
+    Result := true;
+
     if ClassType.ClassParent = nil then
     begin
       Result := False;
@@ -132,7 +132,7 @@ end;
 
 procedure ReinitializeForms;
 var
-  Count: Integer;
+//  Count: Integer;
   I: Integer;
 begin
   Form1.Memo1.Lines.Clear;

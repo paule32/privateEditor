@@ -5,25 +5,25 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, 
   Dialogs, JvExControls, JvSpeedButton, CtrlMenuBarButton, ToolWin,
-  ComCtrls, ExtCtrls, Menus, JvMenus;
+  ComCtrls, ExtCtrls, Menus, JvMenus, JvArrowButton, StdCtrls,
+  JvExStdCtrls, JvButton, JvCtrls;
 
 type
   TFrame26 = class(TFrame)
     Panel1: TPanel;
     CoolBar1: TCoolBar;
     Panel2: TPanel;
-    MenuBarButton_File: TCtrlMenuBarButton;
-    MenuBarButton_Edit: TCtrlMenuBarButton;
-    CtrlMenuBarButton1: TCtrlMenuBarButton;
-    MenuBarButton_Tools: TCtrlMenuBarButton;
-    MenuBarButton_Help: TCtrlMenuBarButton;
-    CtrlMenuBarButton2: TCtrlMenuBarButton;
-    MenuBarButton_Window: TCtrlMenuBarButton;
-    MenuBarButton_DataBase: TCtrlMenuBarButton;
-    CtrlMenuBarButton3: TCtrlMenuBarButton;
+    MenuBarButton_File: TJvImgBtn;
+    MenuBarButton_Edit: TJvImgBtn;
+    CtrlMenuBarButton1: TJvImgBtn;
+    MenuBarButton_Tools: TJvImgBtn;
+    MenuBarButton_Help: TJvImgBtn;
+    CtrlMenuBarButton2: TJvImgBtn;
+    MenuBarButton_Window: TJvImgBtn;
+    MenuBarButton_DataBase: TJvImgBtn;
+    CtrlMenuBarButton3: TJvImgBtn;
     Panel3: TPanel;
     StartCompile: TJvSpeedButton;
-    ModeButton: TJvSpeedButton;
     JvSpeedButton1: TJvSpeedButton;
     JvSpeedButton2: TJvSpeedButton;
     JvSpeedButton3: TJvSpeedButton;

@@ -46,7 +46,7 @@ uses
 
 function TFrame11.CurrText: TTextAttributes;
 begin
-
+result := nil;
 end;
 
 procedure TFrame11.CloseTabClick(Sender: TObject);
