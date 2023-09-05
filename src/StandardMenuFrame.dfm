@@ -2,7 +2,8 @@ object Frame26: TFrame26
   Left = 0
   Top = 0
   Width = 928
-  Height = 112
+  Height = 88
+  VertScrollBar.Visible = False
   TabOrder = 0
   object Panel1: TPanel
     Left = 0
@@ -10,32 +11,33 @@ object Frame26: TFrame26
     Width = 928
     Height = 97
     Align = alTop
+    BevelOuter = bvNone
     Caption = 'Panel1'
     TabOrder = 0
     object CoolBar1: TCoolBar
-      Left = 1
-      Top = 1
-      Width = 926
+      Left = 0
+      Top = 0
+      Width = 928
       Height = 89
       Bands = <
         item
           Control = Panel2
           ImageIndex = -1
           MinHeight = 34
-          Width = 922
+          Width = 924
         end
         item
           Control = Panel3
           HorizontalOnly = True
           ImageIndex = -1
           MinHeight = 42
-          Width = 922
+          Width = 924
         end>
       FixedSize = True
       object Panel2: TPanel
         Left = 9
         Top = 4
-        Width = 909
+        Width = 911
         Height = 34
         Align = alClient
         AutoSize = True
@@ -144,7 +146,7 @@ object Frame26: TFrame26
       object Panel3: TPanel
         Left = 9
         Top = 44
-        Width = 909
+        Width = 911
         Height = 42
         ParentColor = True
         TabOrder = 1

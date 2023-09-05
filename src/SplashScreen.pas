@@ -10,7 +10,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, ComCtrls, ExtCtrls, LMDPNGImage, JvGradientCaption;
+  Dialogs, ComCtrls, ExtCtrls, JvGradientCaption, madExceptVcl, JvAppInst;
 
 type
   TSplashForm = class(TForm)
@@ -18,14 +18,19 @@ type
     ProgressBar1: TProgressBar;
     Timer1: TTimer;
     JvGradientCaption1: TJvGradientCaption;
+    MadExceptionHandler1: TMadExceptionHandler;
+    JvAppInstances1: TJvAppInstances;
     procedure FormShow(Sender: TObject);
-    procedure Timer1Timer(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure Timer1Timer(Sender: TObject);
+    procedure JvAppInstances1InstanceCreated(Sender: TObject;
+      ProcessId: Cardinal);
   private
     { Private declarations }
   public
     isinit: Boolean;
     isExit: Boolean;
+    isMemE: Boolean;
   end;
 
 var
@@ -50,10 +55,13 @@ end;
 
 procedure TSplashForm.Timer1Timer(Sender: TObject);
 begin
-  Timer1.Enabled := false;
-  Application.CreateForm(TForm1, Form1);
-  Form1.Show;
-  Hide;
+  try
+    Timer1.Enabled := false;
+    Application.CreateForm(TForm1, Form1);
+    Form1.Show;
+    Hide;
+  except
+  end;
 end;
 
 procedure TSplashForm.FormCreate(Sender: TObject);
@@ -61,6 +69,20 @@ begin
   JvGradientCaption1.Active := true;
   isinit := true;
   isExit := false;
+
+  // be fair...
+  JvAppInstances1.AutoActivate := true;
+  JvAppInstances1.Active := true;
+end;
+
+procedure TSplashForm.JvAppInstances1InstanceCreated(
+  Sender   : TObject;
+  ProcessId: Cardinal);
+begin
+  if GetCurrentProcessId <> ProcessId then
+  begin
+    Close;
+  end;
 end;
 
 end.

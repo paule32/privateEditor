@@ -92,17 +92,14 @@ object Frame5: TFrame5
       Height = 183
       Align = alLeft
       TabOrder = 0
-      object ListBox2: TTntListBox
+      object ListBox2: TListBox
         Left = 1
         Top = 1
         Width = 134
         Height = 181
-        Style = lbOwnerDrawVariable
         Align = alClient
-        ItemHeight = 27
+        ItemHeight = 19
         TabOrder = 0
-        OnDrawItem = ListBox2DrawItem
-        OnMeasureItem = ListBox2MeasureItem
       end
     end
     object ValueListEditor1: TValueListEditor

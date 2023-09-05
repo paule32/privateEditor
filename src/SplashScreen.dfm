@@ -1,6 +1,6 @@
 object SplashForm: TSplashForm
-  Left = 1256
-  Top = 216
+  Left = 852
+  Top = 750
   BorderIcons = []
   BorderStyle = bsSingle
   Caption = 'Loading ...'
@@ -23,8 +23,8 @@ object SplashForm: TSplashForm
     Left = 0
     Top = 0
     Width = 321
-    Height = 200
-    Align = alTop
+    Height = 204
+    Align = alClient
     AutoSize = True
     Picture.Data = {
       07544269746D617042E80300424D42E803000000000042000000280000004001
@@ -8034,15 +8034,15 @@ object SplashForm: TSplashForm
   end
   object ProgressBar1: TProgressBar
     Left = 0
-    Top = 200
+    Top = 204
     Width = 321
     Height = 20
-    Align = alTop
+    Align = alBottom
     TabOrder = 0
   end
   object Timer1: TTimer
     Enabled = False
-    Interval = 1800
+    Interval = 1500
     OnTimer = Timer1Timer
     Left = 32
     Top = 104
@@ -8073,5 +8073,16 @@ object SplashForm: TSplashForm
     EndColor = clYellow
     Left = 417
     Top = 528
+  end
+  object MadExceptionHandler1: TMadExceptionHandler
+    Left = 48
+    Top = 32
+  end
+  object JvAppInstances1: TJvAppInstances
+    Active = False
+    AutoActivate = False
+    OnInstanceCreated = JvAppInstances1InstanceCreated
+    Left = 80
+    Top = 32
   end
 end

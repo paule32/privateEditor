@@ -16,6 +16,7 @@ uses
 
 var
   InterArgs: TJvInterpreterArgs;
+  InterpreterInitialized: Boolean = false;
 
   procedure RegisterJvInterpreterAdapter(JvInterpreterAdapter: TJvInterpreterAdapter);
   procedure initInterpreter;
@@ -54,7 +55,7 @@ begin
   JvInterpreter_ExtCtrls.RegisterJvInterpreterAdapter(GlobalJvInterpreterAdapter);
   JvInterpreter_Forms.RegisterJvInterpreterAdapter(GlobalJvInterpreterAdapter);
   JvInterpreter_Dialogs.RegisterJvInterpreterAdapter(GlobalJvInterpreterAdapter);
-  JvInterpreter_Menus .RegisterJvInterpreterAdapter(GlobalJvInterpreterAdapter);
+  JvInterpreter_Menus.RegisterJvInterpreterAdapter(GlobalJvInterpreterAdapter);
 
   JvInterpreterFm.RegisterJvInterpreterAdapter(GlobalJvInterpreterAdapter);
 

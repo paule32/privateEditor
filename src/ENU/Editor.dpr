@@ -5,6 +5,7 @@ library Editor;
 {$R *.RES}
 {ITE} {LCID:00000409:00000409} {}
 {ITE} {DFMFileType} {AboutBox.dfm}
+{ITE} {DFMFileType} {AboutFrame.dfm}
 {ITE} {DFMFileType} {C64ConfigFrame.dfm}
 {ITE} {DFMFileType} {C64DrivesFrame.dfm}
 {ITE} {DFMFileType} {C64KeyBoard.dfm}
@@ -30,14 +31,21 @@ library Editor;
 {ITE} {DFMFileType} {MembersFrame.dfm}
 {ITE} {DFMFileType} {NewProjectFrame.dfm}
 {ITE} {DFMFileType} {OptionsFrame.dfm}
+{ITE} {DFMFileType} {ProfileIconsFrame.dfm}
+{ITE} {DFMFileType} {ProfileSettings.dfm}
 {ITE} {DFMFileType} {SimulationFrame.dfm}
 {ITE} {DFMFileType} {SimulationLeftPanel.dfm}
 {ITE} {DFMFileType} {SplashScreen.dfm}
 {ITE} {DFMFileType} {SpreadFrame.dfm}
+{ITE} {DFMFileType} {StandardMenuFrame.dfm}
 {ITE} {DFMFileType} {TeamServerFrame.dfm}
+{ITE} {DFMFileType} {TeamServerSettings.dfm}
+{ITE} {DFMFileType} {TimeLine.dfm}
+{ITE} {DFMFileType} {EditorForm.dfm}
 {ITE} {RCFileType} {Editor_DRC.rc}
 
 {$R 'AboutBox.dfm' OKRightDlg:TForm}
+{$R 'AboutFrame.dfm' Frame29:TFrame}
 {$R 'C64ConfigFrame.dfm' Frame5:TFrame}
 {$R 'C64DrivesFrame.dfm' Frame7:TFrame}
 {$R 'C64KeyBoard.dfm' Frame4:TFrame}
@@ -63,11 +71,17 @@ library Editor;
 {$R 'MembersFrame.dfm' Frame6:TFrame}
 {$R 'NewProjectFrame.dfm' Frame8:TFrame}
 {$R 'OptionsFrame.dfm' Frame21:TFrame}
+{$R 'ProfileIconsFrame.dfm' Frame27:TFrame}
+{$R 'ProfileSettings.dfm' Frame28:TFrame}
 {$R 'SimulationFrame.dfm' Frame24:TFrame}
 {$R 'SimulationLeftPanel.dfm' Frame25:TFrame}
 {$R 'SplashScreen.dfm' SplashForm:TForm}
 {$R 'SpreadFrame.dfm' Frame18:TFrame}
+{$R 'StandardMenuFrame.dfm' Frame26:TFrame}
 {$R 'TeamServerFrame.dfm' Frame2:TFrame}
+{$R 'TeamServerSettings.dfm' Frame30:TFrame}
+{$R 'TimeLine.dfm' Frame31:TFrame}
+{$R 'EditorForm.dfm' Form1:TForm}
 {$R 'Editor_DRC.res' 'Editor_DRC.rc'}
 
 {$E ENU}

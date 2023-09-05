@@ -1,14 +1,14 @@
 object Frame27: TFrame27
   Left = 0
   Top = 0
-  Width = 233
+  Width = 271
   Height = 337
   TabOrder = 0
   OnResize = FrameResize
   object ScrollBox1: TScrollBox
     Left = 0
     Top = 0
-    Width = 233
+    Width = 271
     Height = 337
     Align = alClient
     Font.Charset = DEFAULT_CHARSET
@@ -83,12 +83,6 @@ object Frame27: TFrame27
               OnClick = JvOutlookBar1Pages1Buttons0Click
             end
             item
-              Caption = 'Types'
-              ImageIndex = 0
-              Tag = 0
-              AutoToggle = False
-            end
-            item
               Caption = 'Permissions'
               ImageIndex = 0
               Tag = 0
@@ -99,6 +93,7 @@ object Frame27: TFrame27
               ImageIndex = 0
               Tag = 0
               AutoToggle = False
+              OnClick = JvOutlookBar1Pages1Buttons2Click
             end>
           ButtonSize = olbsLarge
           Caption = 'People'
@@ -141,16 +136,18 @@ object Frame27: TFrame27
         item
           Buttons = <
             item
-              Caption = 'Setup Site'
+              Caption = 'Setup Server'
               ImageIndex = 0
               Tag = 0
               AutoToggle = False
+              OnClick = JvOutlookBar1Pages3Buttons0Click
             end
             item
               Caption = 'Configure Hosts'
               ImageIndex = 0
               Tag = 0
               AutoToggle = False
+              OnClick = JvOutlookBar1Pages3Buttons1Click
             end>
           ButtonSize = olbsLarge
           Caption = 'Web Site Settings'
@@ -168,7 +165,6 @@ object Frame27: TFrame27
           TopButtonIndex = 0
         end>
       PageButtonHeight = 24
-      ActivePageIndex = 1
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -19

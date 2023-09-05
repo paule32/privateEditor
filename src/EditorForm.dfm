@@ -32,9 +32,9 @@ object Form1: TForm1
   end
   object LeftSplitter: TSplitter
     Left = 257
-    Top = 122
+    Top = 94
     Width = 6
-    Height = 584
+    Height = 612
     AutoSnap = False
     Color = clSilver
     MinSize = 42
@@ -42,12 +42,11 @@ object Form1: TForm1
   end
   object Splitter2: TSplitter
     Left = 0
-    Top = 105
+    Top = 87
     Width = 1173
     Height = 7
     Cursor = crVSplit
     Align = alTop
-    Beveled = True
   end
   object StatusBar1: TStatusBar
     Left = 0
@@ -61,17 +60,11 @@ object Form1: TForm1
         Width = 64
       end
       item
+        Width = 140
+      end
+      item
         Width = 50
       end>
-  end
-  object statusProgress: TProgressBar
-    Left = 0
-    Top = 112
-    Width = 1173
-    Height = 10
-    Align = alTop
-    Position = 20
-    TabOrder = 1
   end
   object LogPanel: TPanel
     Left = 0
@@ -79,7 +72,7 @@ object Form1: TForm1
     Width = 1173
     Height = 102
     Align = alBottom
-    TabOrder = 2
+    TabOrder = 1
     DesignSize = (
       1173
       102)
@@ -166,12 +159,12 @@ object Form1: TForm1
   end
   object LeftPanel: TPanel
     Left = 0
-    Top = 122
+    Top = 94
     Width = 257
-    Height = 584
+    Height = 612
     Align = alLeft
     Caption = 'LeftPanel'
-    TabOrder = 3
+    TabOrder = 2
     object PanelResizer2: TPanel
       Left = 15
       Top = 32
@@ -183,16 +176,16 @@ object Form1: TForm1
   end
   object EditPanel: TPanel
     Left = 263
-    Top = 122
+    Top = 94
     Width = 910
-    Height = 584
+    Height = 612
     Align = alClient
     Anchors = [akLeft, akTop, akRight]
     Caption = 'EditPanel'
-    TabOrder = 4
+    TabOrder = 3
     object Splitter3: TSplitter
       Left = 1
-      Top = 393
+      Top = 421
       Width = 908
       Height = 7
       Cursor = crVSplit
@@ -204,7 +197,7 @@ object Form1: TForm1
       Left = 1
       Top = 1
       Width = 908
-      Height = 392
+      Height = 420
       Align = alTop
       Anchors = [akLeft, akTop, akRight, akBottom]
       Caption = 'Size: 22'
@@ -214,7 +207,7 @@ object Form1: TForm1
         Left = 681
         Top = 1
         Width = 6
-        Height = 390
+        Height = 418
         Color = clSilver
         ParentColor = False
       end
@@ -222,7 +215,7 @@ object Form1: TForm1
         Left = 1
         Top = 1
         Width = 680
-        Height = 390
+        Height = 418
         ActivePage = TabSheet_Options
         Align = alLeft
         Anchors = [akLeft, akTop, akRight, akBottom]
@@ -252,7 +245,7 @@ object Form1: TForm1
             Left = 0
             Top = 0
             Width = 672
-            Height = 356
+            Height = 384
             ActivePage = TabSheet32
             Align = alClient
             TabOrder = 0
@@ -424,7 +417,7 @@ object Form1: TForm1
             Left = 0
             Top = 0
             Width = 672
-            Height = 356
+            Height = 384
             ActivePage = TabSheet30
             Align = alClient
             MultiLine = True
@@ -463,7 +456,7 @@ object Form1: TForm1
             Left = 0
             Top = 0
             Width = 672
-            Height = 356
+            Height = 384
             ActivePage = TabSheet36
             Align = alClient
             MultiLine = True
@@ -474,7 +467,7 @@ object Form1: TForm1
               Caption = 'Application'
               object Splitter18: TSplitter
                 Left = 0
-                Top = 252
+                Top = 280
                 Width = 664
                 Height = 7
                 Cursor = crVSplit
@@ -484,7 +477,7 @@ object Form1: TForm1
               end
               object Panel21: TPanel
                 Left = 0
-                Top = 259
+                Top = 287
                 Width = 664
                 Height = 30
                 Align = alBottom
@@ -524,7 +517,7 @@ object Form1: TForm1
                 Left = 0
                 Top = 0
                 Width = 664
-                Height = 252
+                Height = 280
                 Align = alClient
                 TabOrder = 1
               end
@@ -536,7 +529,7 @@ object Form1: TForm1
                 Left = 0
                 Top = 0
                 Width = 664
-                Height = 289
+                Height = 317
                 Align = alClient
                 Columns = <>
                 TabOrder = 0
@@ -549,7 +542,7 @@ object Form1: TForm1
                 Left = 0
                 Top = 0
                 Width = 664
-                Height = 289
+                Height = 317
                 Align = alClient
                 Columns = <>
                 TabOrder = 0
@@ -562,7 +555,7 @@ object Form1: TForm1
                 Left = 0
                 Top = 0
                 Width = 664
-                Height = 289
+                Height = 317
                 Align = alClient
                 Columns = <>
                 TabOrder = 0
@@ -575,7 +568,7 @@ object Form1: TForm1
                 Left = 0
                 Top = 0
                 Width = 664
-                Height = 289
+                Height = 317
                 Align = alClient
                 Columns = <>
                 TabOrder = 0
@@ -588,7 +581,7 @@ object Form1: TForm1
                 Left = 0
                 Top = 0
                 Width = 664
-                Height = 289
+                Height = 317
                 Align = alClient
                 Columns = <>
                 TabOrder = 0
@@ -601,7 +594,7 @@ object Form1: TForm1
                 Left = 0
                 Top = 0
                 Width = 664
-                Height = 289
+                Height = 317
                 Align = alClient
                 Columns = <>
                 TabOrder = 0
@@ -618,14 +611,14 @@ object Form1: TForm1
         Left = 687
         Top = 1
         Width = 220
-        Height = 390
+        Height = 418
         Align = alClient
         TabOrder = 1
       end
     end
     object Frame_Panel: TPanel
       Left = 1
-      Top = 400
+      Top = 428
       Width = 908
       Height = 183
       Cursor = crVSplit
@@ -664,16 +657,17 @@ object Form1: TForm1
     Width = 146
     Height = 121
     Caption = 'PanelResizer1'
-    TabOrder = 5
+    TabOrder = 4
   end
   object Panel3: TPanel
     Left = 0
     Top = 0
     Width = 1173
-    Height = 105
+    Height = 87
     Align = alTop
+    BevelOuter = bvNone
     Caption = 'Panel3'
-    TabOrder = 6
+    TabOrder = 5
   end
   object JvGradientCaption1: TJvGradientCaption
     Active = False
@@ -1341,7 +1335,7 @@ object Form1: TForm1
     Left = 856
     Top = 56
     Bitmap = {
-      494C010106000900040026002600FFFFFFFFFF00FFFFFFFFFFFFFFFF424D3600
+      494C010106000900040026002600FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000098000000720000000100200000000000C00E
       0100000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -3582,7 +3576,8 @@ object Form1: TForm1
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
-      000000000000000000000000000000000000000000000000}
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000}
   end
   object PopupMenu_Window: TJvPopupMenu
     Style = msOffice
@@ -6190,5 +6185,9 @@ object Form1: TForm1
     UseBalloonAsApplicationHint = True
     Left = 328
     Top = 571
+  end
+  object MadExceptionHandler1: TMadExceptionHandler
+    Left = 341
+    Top = 170
   end
 end

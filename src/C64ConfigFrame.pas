@@ -26,7 +26,7 @@ type
     Splitter2: TSplitter;
     ValueListEditor1: TValueListEditor;
     ImageList1: TImageList;
-    ListBox2: TTntListBox;
+    ListBox2: TListBox;
     procedure ListBox1ClickCheck(Sender: TObject);
     procedure ListBox1Click(Sender: TObject);
     procedure ListBox2MeasureItem(Control: TWinControl; Index: Integer;

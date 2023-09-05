@@ -256,4 +256,8 @@ object Frame19: TFrame19
     Left = 205
     Top = 104
   end
+  object JvInterpreterFm1: TJvInterpreterFm
+    Left = 344
+    Top = 72
+  end
 end

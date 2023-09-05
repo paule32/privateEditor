@@ -23,7 +23,6 @@ type
     BitBtn1: TBitBtn;
     ScrollBox1: TScrollBox;
     JvPopupMenu1: TJvPopupMenu;
-    DeleteItem1: TMenuItem;
     procedure ScrollBox1DragOver(Sender, Source: TObject; X, Y: Integer;
       State: TDragState; var Accept: Boolean);
     procedure ScrollBox1DragDrop(Sender, Source: TObject; X, Y: Integer);

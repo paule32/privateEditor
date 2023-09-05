@@ -14,6 +14,9 @@ type
     procedure JvOutlookBar1Pages0Buttons4Click(Sender: TObject);
     procedure JvOutlookBar1Pages0Buttons2Click(Sender: TObject);
     procedure JvOutlookBar1Pages1Buttons0Click(Sender: TObject);
+    procedure JvOutlookBar1Pages1Buttons2Click(Sender: TObject);
+    procedure JvOutlookBar1Pages3Buttons0Click(Sender: TObject);
+    procedure JvOutlookBar1Pages3Buttons1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -48,7 +51,25 @@ end;
 procedure TFrame27.JvOutlookBar1Pages1Buttons0Click(Sender: TObject);
 begin
   Form1.HideAllSetPages;
-  Form1.DFrameTeamServerSettings.Visible := true;
+  Form1.DFrameProfile.Visible := true;
+end;
+
+procedure TFrame27.JvOutlookBar1Pages1Buttons2Click(Sender: TObject);
+begin
+  Form1.HideAllSetPages;
+  Form1.DFrameTimeLine.Visible := true;
+end;
+
+procedure TFrame27.JvOutlookBar1Pages3Buttons0Click(Sender: TObject);
+begin
+  Form1.HideAllSetPages;
+  Form1.DFrameWebSiteSetup.Visible := true;
+end;
+
+procedure TFrame27.JvOutlookBar1Pages3Buttons1Click(Sender: TObject);
+begin
+  Form1.HideAllSetPages;
+  Form1.DFrameWebServerUser.Visible := true;
 end;
 
 end.

@@ -1,6 +1,11 @@
 program Editor;
 
 uses
+  madExcept,
+  madLinkDisAsm,
+  madListHardware,
+  madListProcesses,
+  madListModules,
   Forms,
   Dialogs,
   Windows,
@@ -44,7 +49,11 @@ uses
   ProfileIconsFrame in 'ProfileIconsFrame.pas' {Frame27: TFrame},
   ProfileSettings in 'ProfileSettings.pas' {Frame28: TFrame},
   AboutFrame in 'AboutFrame.pas' {Frame29: TFrame},
-  TeamServerSettings in 'TeamServerSettings.pas' {Frame30: TFrame};
+  TeamServerSettings in 'TeamServerSettings.pas' {Frame30: TFrame},
+  TimeLine in 'TimeLine.pas' {Frame31: TFrame},
+  InterpreterClasses in 'InterpreterClasses.pas',
+  SetupHttpServer in 'SetupHttpServer.pas' {Frame32: TFrame},
+  WebServerUser in 'WebServerUser.pas' {Frame33: TFrame};
 
 {$R *.res}
 

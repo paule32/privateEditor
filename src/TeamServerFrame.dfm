@@ -2,20 +2,20 @@ object Frame2: TFrame2
   Left = 0
   Top = 0
   Width = 810
-  Height = 191
+  Height = 203
   TabOrder = 0
   object Project_Panel: TPanel
     Left = 0
     Top = 0
     Width = 810
-    Height = 191
+    Height = 203
     Align = alClient
     TabOrder = 0
     object ScrollBox1: TScrollBox
       Left = 1
       Top = 1
       Width = 808
-      Height = 189
+      Height = 201
       HorzScrollBar.Style = ssFlat
       VertScrollBar.Style = ssFlat
       Align = alClient
@@ -130,17 +130,25 @@ object Frame2: TFrame2
         Left = 472
         Top = 32
         Width = 273
-        Height = 121
+        Height = 145
         ItemHeight = 19
         TabOrder = 5
       end
       object CheckBox1: TCheckBox
-        Left = 472
+        Left = 320
         Top = 160
-        Width = 273
+        Width = 153
         Height = 17
         Caption = 'Round Robbin'
         TabOrder = 6
+      end
+      object CheckBox2: TCheckBox
+        Left = 320
+        Top = 136
+        Width = 137
+        Height = 17
+        Caption = 'Act as Server'
+        TabOrder = 7
       end
     end
   end

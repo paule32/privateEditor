@@ -13,7 +13,7 @@ uses
   Dialogs, StdCtrls, JvExStdCtrls, JvButton, JvCtrls, ExtCtrls, SynEdit,
   ComCtrls, Menus, JvMenus, JvExComCtrls, SynEditHighlighter,
   SynHighlighterGeneral, SynHighlighterPas, JvComponentBase, JvInterpreter,
-  JvInterpreterFm;
+  JvInterpreterFm, InterpreterClasses;
 
 type
   TFrame19 = class(TFrame)
@@ -45,6 +45,7 @@ type
     HighCLISP: TSynGeneralSyn;
     HighPas: TSynPasSyn;
     SynPasSyn1: TSynPasSyn;
+    JvInterpreterFm1: TJvInterpreterFm;
     procedure JvImgBtn1Click(Sender: TObject);
     procedure CopyButtonClick(Sender: TObject);
     procedure PasteButtonClick(Sender: TObject);
@@ -739,9 +740,20 @@ begin
                 PChar(Form1.IniFile_AsmOutput)
               );
 
-              callExecute;
+//              callExecute;
               InfoBox.Text('Compile OK' + #13#10 +
               'Lines: ' + IntToStr(callParserGetLines-1));
+
+              if not(InterpreterInitialized) then
+              begin
+                initInterpreter;
+                InterpreterInitialized := true;
+              end;
+
+              if not(Assigned(InterpreterProgram)) then
+              InterpreterProgram := TJvInterpreterProgram.Create(nil);
+              InterpreterProgram.Pas.Clear;
+              InterpreterProgram.Run;
             except
               on E: Exception do
               begin
@@ -762,8 +774,15 @@ begin
           end;
         end;
       finally
+        if Assigned(InterpreterProgram) then
+        begin
+          InterpreterProgram.Pas.Clear;
+          InterpreterProgram.Free;
+        end;
+
+        // close dll handle
         FreeLibrary(Handle);
-//        Handle := 0;
+        Handle := 0;
       end;
     end else
     if atProlog in aType then
