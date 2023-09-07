@@ -19,7 +19,7 @@ uses
   IdFTP, DBTables, DB, IdIRC, IdAntiFreeze, JvExStdCtrls, JclDebug,
   JvEdit, SynEdit, Console, JvButton, JvCtrls, JvExComCtrls, JvComCtrls,
   IdAntiFreezeBase, JvCheckTreeView, JvExCheckLst, JvCheckListBox, JvExButtons,
-  JvBitBtn, Grids, ValEdit, IniFiles, JvCombobox, JvDesignSurface,
+  JvBitBtn, Grids, ValEdit, IniFiles, JvCombobox, JvDesignSurface, IBIntf,
   JvDesignUtils, JvInspector, TimeLine, JvExExtCtrls, JvExtComponent, JvPanel,
   TntExtCtrls, TntStdCtrls, ChatFrame, TntComCtrls, JvAppHotKey, JvListBox,
   JvDriveCtrls, JvTipOfDay, JvArrowButton, ErrorBoxForm, InfoBoxForm, AboutBox,
@@ -30,7 +30,8 @@ uses
   FormatLayoutFrame, OptionsFrame, SimulationLeftPanel, ProfileIconsFrame,
   ProfileSettings, TeamServerSettings, JvDesignImp, JclSysInfo, JvColorCombo,
   EnvironmentFrame, LeftPanelFrame, SimulationFrame, CtrlMenuBarButton,
-  madExceptVcl, DBIProcs, DBITypes, SetupHttpServer, WebServerUser;
+  madExceptVcl, DBIProcs, DBITypes, SetupHttpServer, WebServerUser,
+  SelectDataBase;
 
 type
   TMyTableListBox = class(TListBox)
@@ -42,34 +43,38 @@ var
   'code1','code2','code3','code4','code5','code6','code7','code8','code9','code10'
   );
 
+type
+  TdataBaseType = (dbBorland, dbInterBase, dbMySQL);
+
 // -------------------------------------------------------------
 // rs_xxx are the Locale's .ENU, .DEU files. default is: ENU ...
 // -------------------------------------------------------------
 resourcestring
-  rs_Internal_Error   = 'internal error.';
-  rs_BDE_notInstalled = 'No BDE Installation found !';
-  rs_BDE_Error        = 'BDE Error:';
-  rs_BDE_AppStart_Rej = 'Aborted start.';
-  rs_App_First_Run    = 'You run this Application at first race !' + #13#10 +
-                        'Would You do a Setup of needed Stuff ?';
-  rs_App_User_Mode    = 'You run this Application with User rights !'      + #13#10 +
-                        'If You confirm this Dialog with "Yes", it can be' + #13#10 +
-                        'that the Application does not work.'              + #13#10 +
-                        '' + #13#10 +
-                        'Would You start the Application without Admin rights ?';
-  rs_ClassName        = 'Class-Name: ';
-  rs_Message          = 'Message: ';
-  rs_Exception_Error  = 'Exception Error:';
-  rs_File_Exists      = 'The file already exists !' + #13#10  +
-                        'Would you override the old Version ?';
+  rs_Internal_Error    = 'internal error.';
+  rs_IB_notInstalled   = 'No InterBase installation found !';
+  rs_BDE_notInstalled  = 'No BDE Installation found !';
+  rs_BDE_Error         = 'BDE Error:';
+  rs_BDE_AppStart_Rej  = 'Aborted start.';
+  rs_App_First_Run     = 'You run this Application at first race !' + #13#10 +
+                         'Would You do a Setup of needed Stuff ?';
+  rs_App_User_Mode     = 'You run this Application with User rights !'      + #13#10 +
+                         'If You confirm this Dialog with "Yes", it can be' + #13#10 +
+                         'that the Application does not work.'              + #13#10 +
+                         '' + #13#10 +
+                         'Would You start the Application without Admin rights ?';
+  rs_ClassName         = 'Class-Name: ';
+  rs_Message           = 'Message: ';
+  rs_Exception_Error   = 'Exception Error:';
+  rs_File_Exists       = 'The file already exists !' + #13#10  +
+                         'Would you override the old Version ?';
 
-  rs_BDE_EClassName   = 'Error-Class: ';
-  rs_BDE_ECode        = 'Error-Code: ';
-  rs_BDE_EMessage     = 'Error-Message: ';
-  rs_BDE_EFile        = 'Error-File: ';
-  rs_BDE_EModule      = 'Error-Module: ';
-  rs_BDE_EProc        = 'Error-Proc: ';
-  rs_BDE_ELine        = 'Error-Line: ';
+  rs_BDE_EClassName    = 'Error-Class: ';
+  rs_BDE_ECode         = 'Error-Code: ';
+  rs_BDE_EMessage      = 'Error-Message: ';
+  rs_BDE_EFile         = 'Error-File: ';
+  rs_BDE_EModule       = 'Error-Module: ';
+  rs_BDE_EProc         = 'Error-Proc: ';
+  rs_BDE_ELine         = 'Error-Line: ';
 
   rs_BDE_Error_TableDontExists = 'Table does not exists.';
   rs_Win32_Registry_Error      = 'Win32-Registry Error:';
@@ -425,6 +430,8 @@ type
     msdosapp  : Boolean;
     dbaseapp  : Boolean;
 
+    usedDataBase : TdataBaseType;
+
     tipday: TJvTipOfDay;
 
     procedure TableListBox_MouseDown(
@@ -707,17 +714,17 @@ begin
   // one step is, to locate the BDE Win32 Registry key
   // second step, try to locate per path.
   // -------------------------------------------------
-  BDE_found := true;
   reg := Tregistry.Create;
   try
     try
-      reg.RootKey := HKEY_LOCAL_MACHINE;
+      usedDataBase := dbBorland;
+      BDE_found := true;
+      reg.RootKey  := HKEY_LOCAL_MACHINE;
       B := reg.OpenKeyReadOnly('SOFTWARE\Borland\Database Engine');
       if not(B) then
       begin
         GetSystemDirectory(buffer, SizeOf(buffer));
         SystemFolder := StrPas(buffer);
-
         for I := Low(BDE_DLLs) to High(BDE_DLLs) do
         begin
           if not FileExists(SystemFolder + '\' + BDE_DLLs[I]) then
@@ -726,27 +733,51 @@ begin
             break;
           end;
         end;
-      end
+      end;
     except
       on E: Exception do
       begin
+        BDE_found := false;
         ShowMessage(rs_Win32_Registry_Error
         + #13#10 + rs_ClassName + E.ClassName
         + #13#10 + rs_Message   + E.Message);
-        FreeBDESetup;
-        Close;
+      end;
+    end;
+
+    // ----------------------------------
+    // if no BDE found, try next DataBase
+    // interbase, raise exception if fail
+    // ----------------------------------
+    if not(BDE_found) then
+    begin
+      try
+        usedDataBase := dbInterBase;
+        BDE_found := true;
+        IBIntf.CheckIBInstallLoaded;
+        IBIntf.CheckIBLoaded;
+        showmessage('111');
+      except
+        on E: Exception do
+        begin
+          BDE_found := false;
+          ShowMessage(
+          rs_IB_notInstalled + #13#10 +
+          rs_BDE_EClassName  + E.ClassName + #13#10 +
+          rs_BDE_EMessage    + E.Message);
+        end;
       end;
     end;
   finally
-    FreeBDESetup;
-
     if not(BDE_found) then
     begin
       ShowMessage(
       rs_BDE_notInstalled + #13#10 +
       rs_BDE_AppStart_Rej);
+      FreeBDESetup;
       Close;
     end;
+
+    FreeBDESetup;
   end;
 
   SplashForm.ProgressBar1.Position := 10;
@@ -1092,223 +1123,233 @@ begin
 
   SplashForm.ProgressBar1.Position := 92;
 
+  // ------------------------------------------
+  // check if application at started first time
+  // ------------------------------------------
+  S := ExtractFilePath(Application.ExeName);
+  S := S + 'data';
+
+  // -----------------------------------------
+  // warn the user, if run with admin rights
+  // if true then check data + password, else
+  // continue as normal user.
+  // -----------------------------------------
+  if not(DirectoryExists(S)) then
+  begin
+    I := MessageDlg(rs_App_First_Run,
+    mtWarning,[mbYes, mbNo],0);
+    if I = mrNo then
+    begin
+      Close;
+    end;
+    if not(isAdmin) then
+    begin
+      I := MessageDlg(rs_App_User_Mode,
+      mtWarning,[mbYes, mbNo],0);
+      if I = mrNo then
+      begin
+        Close;
+      end;
+    end;
+
+    Application.CreateForm(TForm2, Form2);
+    Form2.ShowModal;
+    
+    CreateDir(S);
+  end;
+
   // ------------------------------------
   // look, if database is present, if not
   // than try to create it ...
   // ------------------------------------
-  BDEAdmin  := TDataBase.Create(nil);
-  BDE_found := false;
-  try
+  if usedDataBase = dbInterBase then
+  begin
+  end else
+  if usedDataBase = dbBorland then
+  begin
+  showmessage('2222');
+    BDEAdmin  := TDataBase.Create(nil);
+    BDE_found := false;
+    // --------------------------------
+    // check, if 'databasename' exists
+    // --------------------------------
+    if not(Assigned(BDEList)) then
+    BDEList := TStringList.Create;
+    BDEList.Clear;
+
+    BDESession := TSession.Create(nil);
+    BDESession.SessionName := BDEAlias;
+
+    // no, then create it
+    if BDEList.IndexOf(BDEAlias) < 0 then
+    begin
+      DBIInit(nil);
+      DBIStartSession('dummy',h,'');
+      DBIAddAlias(nil,
+      PChar(BDEAlias),
+      PChar('DBASE'),
+      PChar('PATH=' + S),
+      true);
+      DBICloseSession(h);
+      DBIExit;
+      h := nil;
+    end;
+
+    // -------------------------------
+    // sanity check ...
+    // -------------------------------
+    BDESession.Open;
+    BDESession.GetDatabaseNames(BDEList);
+
+    if BDEList.IndexOf(BDEAlias) < 0 then
+    raise Exception.Create(
+    'BDE Error:'   + #13#10 +
+    'internal Error.');
+
+    if not(Assigned(BDEAdmin)) then
+    BDEAdmin := TDataBase.Create(nil);
+    BDEAdmin.DatabaseName := BDEAlias;
+    BDEAdmin.Directory    := S;
+    BDEAdmin.Open;
+
+    // -------------------------------
+    // check, if data table exists ...
+    // -------------------------------
     try
-      S := ExtractFilePath(Application.ExeName);
-      S := S + 'data';
+      BDEQuery := TQuery.Create(nil);
+      BDEQuery.DatabaseName := BDEAlias;
+      BDEQuery.SQL.Text :=
 
-      // -----------------------------------------
-      // warn the user, if run with admin rights
-      // if true then check data + password, else
-      // continue as normal user.
-      // -----------------------------------------
-      if not(DirectoryExists(S)) then
-      begin
-        I := MessageDlg(rs_App_First_Run,
-        mtWarning,[mbYes, mbNo],0);
-        if I = mrNo then
-        begin
-          Close;
-        end;
-        if not(isAdmin) then
-        begin
-          I := MessageDlg(rs_App_User_Mode,
-          mtWarning,[mbYes, mbNo],0);
-          if I = mrNo then
-          begin
-            Close;
-          end;
-        end;
+      'SELECT COUNT(*) AS TableCount ' +
+      'FROM SYSALIASES A ' +
+      'INNER JOIN TABLES T ON A.PATH = T.PATH  ' +
+      'WHERE A.ALIASNAME = ''' + BDEAlias + '''' + ' ' +
+      'AND   T.TBLNAME   = ''' + S + '\'  + BDECoTbl + '''' ;
 
-        CreateDir(S);
-      end;
-
-      // --------------------------------
-      // check, if 'databasename' exists
-      // --------------------------------
-      if not(Assigned(BDEList)) then
-      BDEList := TStringList.Create;
-      BDEList.Clear;
-
-      BDESession := TSession.Create(nil);
-      BDESession.SessionName := BDEAlias;
-
-      // no, then create it
-      if BDEList.IndexOf(BDEAlias) < 0 then
-      begin
-        DBIInit(nil);
-        DBIStartSession('dummy',h,'');
-        DBIAddAlias(nil,
-        PChar(BDEAlias),
-        PChar('DBASE'),
-        PChar('PATH=' + S),
-        true);
-        DBICloseSession(h);
-        DBIExit;
-        h := nil;
-      end;
-
-      // -------------------------------
-      // sanity check ...
-      // -------------------------------
-      BDESession.Open;
-      BDESession.GetDatabaseNames(BDEList);
-
-      if BDEList.IndexOf(BDEAlias) < 0 then
-      raise Exception.Create(
-      'BDE Error:'   + #13#10 +
-      'internal Error.');
-
-      if not(Assigned(BDEAdmin)) then
-      BDEAdmin := TDataBase.Create(nil);
-      BDEAdmin.DatabaseName := BDEAlias;
-      BDEAdmin.Directory    := S;
-      BDEAdmin.Open;
-
-      try
-        // -------------------------------
-        // check, if data table exists ...
-        // -------------------------------
-        BDEQuery := TQuery.Create(nil);
-        BDEQuery.DatabaseName := BDEAlias;
-        BDEQuery.SQL.Text :=
-        'SELECT COUNT(*) AS TableCount ' +
-        'FROM SYSALIASES A ' +
-        'INNER JOIN TABLES T ON A.PATH = T.PATH  ' +
-        'WHERE A.ALIASNAME = ''' + BDEAlias + '''' + ' ' +
-        'AND   T.TBLNAME   = ''' + S + '\'  + BDECoTbl + '''' ;
-
-        BDEQuery.Open;
-      except
-        on E: EDBEngineError do
-        begin
-          BDE_found := true;
-          for I := 0 to E.ErrorCount - 1 do
-          begin
-            // table does not exists...
-            if E.Errors[I].ErrorCode = 10024 then
-            begin
-              BDE_found := false;
-              break;
-            end;
-          end;
-
-          if not(BDE_found) then
-          begin
-            try
-              BDEQuery.Close;
-
-              BDEQuery.SQL.Clear;
-              BDEQuery.SQL.Text :=
-              'CREATE TABLE ''' + S + '\' + BDECoTbl + ''' (' +
-              'COL1 int,' +
-              'COL2 int)';
-
-              BDEQuery.ExecSQL;
-            except
-              on E: EDBEngineError do
-              begin
-                for I := 0 to E.ErrorCount - 1 do
-                begin
-                  case E.Errors[I].ErrorCode of
-                    0:
-                    begin
-                      // no error
-                      break;
-                    end;
-                    10024,
-                    13057:
-                    begin
-                      // table exists
-                      break;
-                    end else
-                    begin
-                      ShowMessage(rs_BDE_Error
-                      + #13#10 + rs_BDE_EClassName + E.ClassName
-                      + #13#10 + rs_BDE_ECode      + IntToStr(E.Errors[i].ErrorCode)
-                      + #13#10 + rs_BDE_EMessage   + E.Errors[i].Message
-                      + #13#10 + rs_BDE_EFile      + FileByLevel  (BDELevel)
-                      + #13#10 + rs_BDE_EModule    + ModuleByLevel(BDELevel)
-                      + #13#10 + rs_BDE_EProc      + ProcByLevel  (BDELevel)
-                      + #13#10 + rs_BDE_ELine      + IntToStr(LineByLevel(BDELevel)));
-
-                      FreeBDESetup;
-                      Close;
-                    end;
-                  end;
-                end;
-              end;
-            end
-          end;
-        end;
-      end;
-
-      // -------------------------------
-      // sanity check ...
-      // -------------------------------
-      BDEList.Clear;
-
-      BDEAdmin.DatabaseName := BDEAlias;
-      BDEAdmin.Connected := true;
-
-      if not(Assigned(BDESession)) then
-      begin
-        BDESession := TSession.Create(nil);
-        BDESession.SessionName := BDEAlias;
-      end;
-
-      if not(Assigned(BDETable)) then
-      BDETable := TTable.Create(nil);
-      BDETable.DatabaseName := BDEAdmin .DatabaseName;
-      BDETable.SessionName  := BDESession.SessionName;
-      BDETable.TableName    := S + '\test.dbf';
-
+      BDEQuery.Open;
     except
       on E: EDBEngineError do
       begin
-        for i := 0 to E.ErrorCount - 1 do
+        BDE_found := true;
+        for I := 0 to E.ErrorCount - 1 do
         begin
-          case E.Errors[i].ErrorCode of
-            0: begin {no error} BDE_found := true; end;
-            else begin
-              ShowMessage(rs_BDE_Error
-              + #13#10 + rs_BDE_EClassName + E.ClassName
-              + #13#10 + rs_BDE_ECode      + IntToStr(E.Errors[i].ErrorCode)
-              + #13#10 + rs_BDE_EMessage   + E.Errors[i].Message
-              + #13#10 + rs_BDE_EFile      + FileByLevel  (BDELevel)
-              + #13#10 + rs_BDE_EModule    + ModuleByLevel(BDELevel)
-              + #13#10 + rs_BDE_EProc      + ProcByLevel  (BDELevel)
-              + #13#10 + rs_BDE_ELine      + IntToStr(LineByLevel(BDELevel)));
+          // table does not exists...
+          if E.Errors[I].ErrorCode = 10024 then
+          begin
+            BDE_found := false;
+            break;
+          end;
+        end;
+
+        if not(BDE_found) then
+        begin
+          try
+            BDEQuery.Close;
+
+            BDEQuery.SQL.Clear;
+            BDEQuery.SQL.Text :=
+            'CREATE TABLE ''' + S + '\' + BDECoTbl + ''' (' +
+            'COL1 int,' +
+            'COL2 int)';
+
+            BDEQuery.ExecSQL;
+          except
+            on E: EDBEngineError do
+            begin
+              for I := 0 to E.ErrorCount - 1 do
+              begin
+                case E.Errors[I].ErrorCode of
+                  0:
+                  begin
+                    // no error
+                    break;
+                  end;
+                  10024,
+                  13057:
+                  begin
+                    // table exists
+                    break;
+                  end else
+                  begin
+                    ShowMessage(rs_BDE_Error
+                    + #13#10 + rs_BDE_EClassName + E.ClassName
+                    + #13#10 + rs_BDE_ECode      + IntToStr(E.Errors[i].ErrorCode)
+                    + #13#10 + rs_BDE_EMessage   + E.Errors[i].Message
+                    + #13#10 + rs_BDE_EFile      + FileByLevel  (BDELevel)
+                    + #13#10 + rs_BDE_EModule    + ModuleByLevel(BDELevel)
+                    + #13#10 + rs_BDE_EProc      + ProcByLevel  (BDELevel)
+                    + #13#10 + rs_BDE_ELine      + IntToStr(LineByLevel(BDELevel)));
+
+                    FreeBDESetup;
+                    Close;
+                  end;
+                end;
+              end;
             end;
           end;
         end;
 
-        FreeBDESetup;
-        Close;
-      end;
-      on E: Exception do
-      begin
-        ShowMessage(rs_Exception_Error
-        + #13#10 + rs_BDE_EClassName + E.ClassName
-        + #13#10 + rs_BDE_EMessage   + E.Message
-        + #13#10 + rs_BDE_EFile      + FileByLevel  (BDELevel)
-        + #13#10 + rs_BDE_EModule    + ModuleByLevel(BDELevel)
-        + #13#10 + rs_BDE_EProc      + ProcByLevel  (BDELevel)
-        + #13#10 + rs_BDE_ELine      + IntToStr(LineByLevel(BDELevel)));
+        // -------------------------------
+        // sanity check ...
+        // -------------------------------
+        try
+          BDEList.Clear;
+          BDEAdmin.DatabaseName := BDEAlias;
+          BDEAdmin.Connected := true;
 
-        Close;
-        exit;
+          if not(Assigned(BDESession)) then
+          begin
+            BDESession := TSession.Create(nil);
+            BDESession.SessionName := BDEAlias;
+          end;
+
+          if not(Assigned(BDETable)) then
+          BDETable := TTable.Create(nil);
+          BDETable.DatabaseName := BDEAdmin .DatabaseName;
+          BDETable.SessionName  := BDESession.SessionName;
+          BDETable.TableName    := S + '\test.dbf';
+
+        except
+          on E: EDBEngineError do
+          begin
+            for i := 0 to E.ErrorCount - 1 do
+            begin
+              case E.Errors[i].ErrorCode of
+                0: begin {no error} BDE_found := true; end;
+                else begin
+                  ShowMessage(rs_BDE_Error
+                  + #13#10 + rs_BDE_EClassName + E.ClassName
+                  + #13#10 + rs_BDE_ECode      + IntToStr(E.Errors[i].ErrorCode)
+                  + #13#10 + rs_BDE_EMessage   + E.Errors[i].Message
+                  + #13#10 + rs_BDE_EFile      + FileByLevel  (BDELevel)
+                  + #13#10 + rs_BDE_EModule    + ModuleByLevel(BDELevel)
+                  + #13#10 + rs_BDE_EProc      + ProcByLevel  (BDELevel)
+                  + #13#10 + rs_BDE_ELine      + IntToStr(LineByLevel(BDELevel)));
+
+                  FreeBDESetup;
+                  Close;
+                end;
+              end;
+            end;
+          end;
+          on E: Exception do
+          begin
+            ShowMessage(rs_Exception_Error
+            + #13#10 + rs_BDE_EClassName + E.ClassName
+            + #13#10 + rs_BDE_EMessage   + E.Message
+            + #13#10 + rs_BDE_EFile      + FileByLevel  (BDELevel)
+            + #13#10 + rs_BDE_EModule    + ModuleByLevel(BDELevel)
+            + #13#10 + rs_BDE_EProc      + ProcByLevel  (BDELevel)
+            + #13#10 + rs_BDE_ELine      + IntToStr(LineByLevel(BDELevel)));
+
+            FreeBDESetup;
+            Close;
+          end;
+        end;
       end;
-    end
-  finally
-    FreeBDESetup;
+    end;
   end;
+  FreeBDESetup;
 
   setResizerTrue;
   tipday := nil;

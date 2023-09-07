@@ -53,7 +53,8 @@ uses
   TimeLine in 'TimeLine.pas' {Frame31: TFrame},
   InterpreterClasses in 'InterpreterClasses.pas',
   SetupHttpServer in 'SetupHttpServer.pas' {Frame32: TFrame},
-  WebServerUser in 'WebServerUser.pas' {Frame33: TFrame};
+  WebServerUser in 'WebServerUser.pas' {Frame33: TFrame},
+  SelectDataBase in 'SelectDataBase.pas' {Form2};
 
 {$R *.res}
 

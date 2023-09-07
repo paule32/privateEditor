@@ -110,6 +110,10 @@ enum token_type {
     
     tt_term,
 
+    tt_tri_cos_number,      // cosinus
+    tt_tri_sin_number,      // sinus
+    tt_tri_tan_number,      // tangens
+    
     tt_expr_sub,
     tt_expr_add,
     tt_expr_mul,

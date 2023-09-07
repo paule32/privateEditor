@@ -32,12 +32,24 @@ mknode(
 
 extern void tree_execute(void);
 
-extern void add_node_new_class_ref( char*, char* );
-extern void add_node_new_class_obj( char*, char* );
+extern void  add_node_new_class_ref( char*, char* );
+extern void  add_node_new_class_obj( char*, char* );
 
-extern void add_node_string( int, char* );
-extern void add_node_print ( int, int );
+extern void  add_node_string( int, char* );
+extern void  add_node_print ( int, int );
 
+// ----------------------------------------------------------------------------
+// trigometrie math ...
+// ----------------------------------------------------------------------------
+extern float add_node_cos( int, float );
+extern float add_node_sin( int, float );
+extern float add_node_tan( int, float );
+
+# define TRI_COS 1
+# define TRI_SIN 2
+# define TRI_TAN 3
+
+// ----------------------------------------------------------------------------
 extern void display_list      ( );
 extern int  yylex();
 
@@ -82,6 +94,8 @@ yy_dbase_win32_run_code(void) {
 %token <node_and_value> TOK_CLASS TOK_OF TOK_ENDCLASS TOK_NEW
 %token <node_and_value> TOK_WITH TOK_ENDWITH TOK_CUSTOM
 %token <node_and_value> TOK_DEFINE
+
+%token <node_and_value> TOK_SIN TOK_COS TOK_TAN
 
 %token <node_and_value> TOK_PRINT_ONE
 %token <node_and_value> TOK_PRINT_TWO
@@ -552,6 +566,9 @@ number
 		node_prev = node_new;
 		$$.value  = $1.value;
 	}
+    |   TOK_COS '(' expr ')' { $$.value = add_node_cos( command_reference_counter++, $3.value ); }
+    |   TOK_SIN '(' expr ')' { $$.value = add_node_sin( command_reference_counter++, $3.value ); }
+    |   TOK_TAN '(' expr ')' { $$.value = add_node_tan( command_reference_counter++, $3.value ); }
 	;
 
 ident
@@ -642,6 +659,28 @@ add_node_new_class_ref(
     current->next = newnode;
     newnode->prev = current;
 }
+
+// ----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
+float add_node_tri( int cmdline, float val, int fun )
+{
+    node_new = (struct node *) malloc( sizeof( struct node ) );
+    node_new->token = (char *) malloc( 12 );
+    
+    if (fun == TRI_COS) { strcpy(node_new->token, "tri_cos"); node_new->token_id = tt_tri_cos_number; } else
+    if (fun == TRI_SIN) { strcpy(node_new->token, "tri_sin"); node_new->token_id = tt_tri_sin_number; } else
+    if (fun == TRI_TAN) { strcpy(node_new->token, "tri_tan"); node_new->token_id = tt_tri_tan_number; }
+    
+    node_new->value = val;
+    node_new->prev  = node_prev;
+    node_new->next  = NULL;
+    
+    node_prev = node_new;
+    return val:
+}
+float add_node_cos( int cmdline, float val ) { add_node_tri( cmdline, val, TRI_COS ); }
+float add_node_sin( int cmdline, float val ) { add_node_tri( cmdline, val, TRI_SIN ); }
+float add_node_tan( int cmdline, float val ) { add_node_tri( cmdline, val, TRI_TAN ); }
 
 // ----------------------------------------------------------------------------
 // add a new object class to the tree ...

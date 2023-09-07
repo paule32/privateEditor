@@ -8,28 +8,149 @@
   resources were bound to the produced executable.
 */
 
-#define EditorForm_rs_BDE_EMessage 64448
-#define EditorForm_rs_BDE_EFile 64449
-#define EditorForm_rs_BDE_EModule 64450
-#define EditorForm_rs_BDE_EProc 64451
-#define EditorForm_rs_BDE_ELine 64452
-#define EditorForm_rs_Win32_Registry_Error 64453
+#define EditorForm_rs_BDE_AppStart_Rej 64336
+#define EditorForm_rs_App_First_Run 64337
+#define EditorForm_rs_App_User_Mode 64338
+#define EditorForm_rs_ClassName 64339
+#define EditorForm_rs_Message 64340
+#define EditorForm_rs_Exception_Error 64341
+#define EditorForm_rs_File_Exists 64342
+#define EditorForm_rs_BDE_EClassName 64343
+#define EditorForm_rs_BDE_ECode 64344
+#define EditorForm_rs_BDE_EMessage 64345
+#define EditorForm_rs_BDE_EFile 64346
+#define EditorForm_rs_BDE_EModule 64347
+#define EditorForm_rs_BDE_EProc 64348
+#define EditorForm_rs_BDE_ELine 64349
+#define EditorForm_rs_Win32_Registry_Error 64350
+#define IBXConst_SOptionNeedsServer 64352
+#define IBXConst_SInvalidOption 64353
+#define IBXConst_SInvalidOnErrorResult 64354
+#define IBXConst_SInvalidOnStatusResult 64355
+#define IBXConst_SDPBConstantUnknownEx 64356
+#define IBXConst_STPBConstantUnknownEx 64357
+#define IBXConst_SUnknownPlan 64358
+#define IBXConst_SFieldSizeMismatch 64359
+#define IBXConst_SEventAlreadyRegistered 64360
+#define IBXConst_SStringTooLarge 64361
+#define TntSystem_SBufferOverflow 64362
+#define TntSystem_SInvalidUTF7 64363
+#define GDIPicture_GDIPERRMSG 64364
+#define EditorForm_rs_IB_notInstalled 64365
+#define EditorForm_rs_BDE_notInstalled 64366
+#define EditorForm_rs_BDE_Error 64367
+#define IBXConst_SStartParamsError 64368
+#define IBXConst_SOutputParsingError 64369
+#define IBXConst_SUseSpecificProcedures 64370
+#define IBXConst_SSQLMonitorAlreadyPresent 64371
+#define IBXConst_SCantPrintValue 64372
+#define IBXConst_SEOFReached 64373
+#define IBXConst_SEOFInComment 64374
+#define IBXConst_SEOFInString 64375
+#define IBXConst_SParamNameExpected 64376
+#define IBXConst_SSuccess 64377
+#define IBXConst_SDelphiException 64378
+#define IBXConst_SNoOptionsSet 64379
+#define IBXConst_SNoDestinationDirectory 64380
+#define IBXConst_SNosourceDirectory 64381
+#define IBXConst_SNoUninstallFile 64382
+#define IBXConst_SOptionNeedsClient 64383
+#define IBXConst_STableNameMismatch 64384
+#define IBXConst_SIndexFieldMissing 64385
+#define IBXConst_SInvalidCancellation 64386
+#define IBXConst_SInvalidEvent 64387
+#define IBXConst_SMaximumEvents 64388
+#define IBXConst_SNoEventsRegistered 64389
+#define IBXConst_SInvalidQueueing 64390
+#define IBXConst_SInvalidRegistration 64391
+#define IBXConst_SInvalidBatchMove 64392
+#define IBXConst_SSQLDialectInvalid 64393
+#define IBXConst_SSPBConstantNotSupported 64394
+#define IBXConst_SSPBConstantUnknown 64395
+#define IBXConst_SServiceActive 64396
+#define IBXConst_SServiceInActive 64397
+#define IBXConst_SServerNameMissing 64398
+#define IBXConst_SQueryParamsError 64399
+#define IBXConst_SCantEndSharedTransaction 64400
+#define IBXConst_SFieldUnsupportedType 64401
+#define IBXConst_SCircularDataLink 64402
+#define IBXConst_SEmptySQLStatement 64403
+#define IBXConst_SIsASelectStatement 64404
+#define IBXConst_SRequiredParamNotSet 64405
+#define IBXConst_SNoStoredProcName 64406
+#define IBXConst_SIsAExecuteProcedure 64407
+#define IBXConst_SUpdateFailed 64408
+#define IBXConst_SNotCachedUpdates 64409
+#define IBXConst_SNotLiveRequest 64410
+#define IBXConst_SNoProvider 64411
+#define IBXConst_SNoRecordsAffected 64412
+#define IBXConst_SNoTableName 64413
+#define IBXConst_SCannotCreatePrimaryIndex 64414
+#define IBXConst_SCannotDropSystemIndex 64415
+#define IBXConst_SFieldNotFound 64416
+#define IBXConst_SNotEditing 64417
+#define IBXConst_SCannotInsert 64418
+#define IBXConst_SCannotPost 64419
+#define IBXConst_SCannotUpdate 64420
+#define IBXConst_SCannotDelete 64421
+#define IBXConst_SCannotRefresh 64422
+#define IBXConst_SBufferNotSet 64423
+#define IBXConst_SCircularReference 64424
+#define IBXConst_SSQLParseError 64425
+#define IBXConst_SUserAbort 64426
+#define IBXConst_SDataSetUniDirectional 64427
+#define IBXConst_SCannotCreateSharedResource 64428
+#define IBXConst_SWindowsAPIError 64429
+#define IBXConst_SColumnListsDontMatch 64430
+#define IBXConst_SColumnTypesDontMatch 64431
+#define IBXConst_SInvalidStatementHandle 64432
+#define IBXConst_SSQLOpen 64433
+#define IBXConst_SSQLClosed 64434
+#define IBXConst_SDatasetOpen 64435
+#define IBXConst_SDatasetClosed 64436
+#define IBXConst_SUnknownSQLDataType 64437
+#define IBXConst_SInvalidColumnIndex 64438
+#define IBXConst_SInvalidParamColumnIndex 64439
+#define IBXConst_SInvalidDataConversion 64440
+#define IBXConst_SColumnIsNotNullable 64441
+#define IBXConst_SBlobCannotBeRead 64442
+#define IBXConst_SBlobCannotBeWritten 64443
+#define IBXConst_SEmptyQuery 64444
+#define IBXConst_SCannotOpenNonSQLSelect 64445
+#define IBXConst_SNoFieldAccess 64446
+#define IBXConst_SFieldReadOnly 64447
+#define IBXConst_STPBConstantUnknown 64448
+#define IBXConst_SDatabaseClosed 64449
+#define IBXConst_SDatabaseOpen 64450
+#define IBXConst_SDatabaseNameMissing 64451
+#define IBXConst_SNotInTransaction 64452
+#define IBXConst_SInTransaction 64453
+#define IBXConst_STimeoutNegative 64454
+#define IBXConst_SNoDatabasesInTransaction 64455
+#define IBXConst_SUpdateWrongDB 64456
+#define IBXConst_SUpdateWrongTR 64457
+#define IBXConst_SDatabaseNotAssigned 64458
+#define IBXConst_STransactionNotAssigned 64459
+#define IBXConst_SXSQLDAIndexOutOfRange 64460
+#define IBXConst_SXSQLDANameDoesNotExist 64461
+#define IBXConst_SEOF 64462
+#define IBXConst_SBOF 64463
 #define bdeconst_SUntitled 64464
 #define bdeconst_SLocalTransDirty 64465
-#define TntSystem_SBufferOverflow 64466
-#define TntSystem_SInvalidUTF7 64467
-#define GDIPicture_GDIPERRMSG 64468
-#define EditorForm_rs_BDE_notInstalled 64469
-#define EditorForm_rs_BDE_Error 64470
-#define EditorForm_rs_BDE_AppStart_Rej 64471
-#define EditorForm_rs_App_First_Run 64472
-#define EditorForm_rs_App_User_Mode 64473
-#define EditorForm_rs_ClassName 64474
-#define EditorForm_rs_Message 64475
-#define EditorForm_rs_Exception_Error 64476
-#define EditorForm_rs_File_Exists 64477
-#define EditorForm_rs_BDE_EClassName 64478
-#define EditorForm_rs_BDE_ECode 64479
+#define IBXConst_SUnknownError 64466
+#define IBXConst_SInterBaseMissing 64467
+#define IBXConst_SInterBaseInstallMissing 64468
+#define IBXConst_SIB60feature 64469
+#define IBXConst_SNotSupported 64470
+#define IBXConst_SNotPermitted 64471
+#define IBXConst_SFileAccessError 64472
+#define IBXConst_SConnectionTimeout 64473
+#define IBXConst_SCannotSetDatabase 64474
+#define IBXConst_SCannotSetTransaction 64475
+#define IBXConst_SOperationCancelled 64476
+#define IBXConst_SDPBConstantNotSupported 64477
+#define IBXConst_SDPBConstantUnknown 64478
+#define IBXConst_STPBConstantNotSupported 64479
 #define bdeconst_SDatabaseHandleSet 64480
 #define bdeconst_SSessionActive 64481
 #define bdeconst_SHandleError 64482
@@ -1088,19 +1209,6 @@
 #define SysConst_SDiskFull 65535
 STRINGTABLE
 BEGIN
-	EditorForm_rs_BDE_EMessage,	"Error-Message: "
-	EditorForm_rs_BDE_EFile,	"Error-File: "
-	EditorForm_rs_BDE_EModule,	"Error-Module: "
-	EditorForm_rs_BDE_EProc,	"Error-Proc: "
-	EditorForm_rs_BDE_ELine,	"Error-Line: "
-	EditorForm_rs_Win32_Registry_Error,	"Win32-Registry Error:"
-	bdeconst_SUntitled,	"Untitled Application"
-	bdeconst_SLocalTransDirty,	"The transaction isolation level must be dirty read for local databases"
-	TntSystem_SBufferOverflow,	"Buffer overflow"
-	TntSystem_SInvalidUTF7,	"Invalid UTF7"
-	GDIPicture_GDIPERRMSG,	"Could not allocate memory for image"
-	EditorForm_rs_BDE_notInstalled,	"No BDE Installation found !"
-	EditorForm_rs_BDE_Error,	"BDE Error:"
 	EditorForm_rs_BDE_AppStart_Rej,	"Aborted start."
 	EditorForm_rs_App_First_Run,	"You run this Application at first race !\r\nWould You do a Setup of needed Stuff ?"
 	EditorForm_rs_App_User_Mode,	"You run this Application with User rights !\r\nIf You confirm this Dialog with \"Yes\", it can be\r\nthat the Application does not work.\r\n\r\nWould You start the Application without Admin rights ?"
@@ -1110,6 +1218,140 @@ BEGIN
 	EditorForm_rs_File_Exists,	"The file already exists !\r\nWould you override the old Version ?"
 	EditorForm_rs_BDE_EClassName,	"Error-Class: "
 	EditorForm_rs_BDE_ECode,	"Error-Code: "
+	EditorForm_rs_BDE_EMessage,	"Error-Message: "
+	EditorForm_rs_BDE_EFile,	"Error-File: "
+	EditorForm_rs_BDE_EModule,	"Error-Module: "
+	EditorForm_rs_BDE_EProc,	"Error-Proc: "
+	EditorForm_rs_BDE_ELine,	"Error-Line: "
+	EditorForm_rs_Win32_Registry_Error,	"Win32-Registry Error:"
+	IBXConst_SOptionNeedsServer,	"%s component requires Server to function properly"
+	IBXConst_SInvalidOption,	"Invalid option specified"
+	IBXConst_SInvalidOnErrorResult,	"Unexpected onError return value"
+	IBXConst_SInvalidOnStatusResult,	"Unexpected onStatus return value"
+	IBXConst_SDPBConstantUnknownEx,	"DPB Constant (%s) is unknown"
+	IBXConst_STPBConstantUnknownEx,	"TPB Constant (%s) is unknown"
+	IBXConst_SUnknownPlan,	"Unknown Error - Can't retrieve plan"
+	IBXConst_SFieldSizeMismatch,	"Size Mismatch - Field %s size is too small for data"
+	IBXConst_SEventAlreadyRegistered,	"Events already registered"
+	IBXConst_SStringTooLarge,	"Trying to store a string of length %d into a field that can only contain %d"
+	TntSystem_SBufferOverflow,	"Buffer overflow"
+	TntSystem_SInvalidUTF7,	"Invalid UTF7"
+	GDIPicture_GDIPERRMSG,	"Could not allocate memory for image"
+	EditorForm_rs_IB_notInstalled,	"No InterBase installation found !"
+	EditorForm_rs_BDE_notInstalled,	"No BDE Installation found !"
+	EditorForm_rs_BDE_Error,	"BDE Error:"
+	IBXConst_SStartParamsError,	"start Parameters missing or incorrect"
+	IBXConst_SOutputParsingError,	"Unexpected Output buffer value"
+	IBXConst_SUseSpecificProcedures,	"Generic ServiceStart not applicable: Use Specific Procedures to set configuration params"
+	IBXConst_SSQLMonitorAlreadyPresent,	"SQL Monitor Instance is already present"
+	IBXConst_SCantPrintValue,	"Cannot print value"
+	IBXConst_SEOFReached,	"SEOFReached"
+	IBXConst_SEOFInComment,	"EOF in comment detected"
+	IBXConst_SEOFInString,	"EOF in string detected"
+	IBXConst_SParamNameExpected,	"Parameter name expected"
+	IBXConst_SSuccess,	"Successful execution"
+	IBXConst_SDelphiException,	"DelphiException %s"
+	IBXConst_SNoOptionsSet,	"No Install Options selected"
+	IBXConst_SNoDestinationDirectory,	"DestinationDirectory is not set"
+	IBXConst_SNosourceDirectory,	"SourceDirectory is not set"
+	IBXConst_SNoUninstallFile,	"Uninstall File Name is not set"
+	IBXConst_SOptionNeedsClient,	"%s component requires Client to function properly"
+	IBXConst_STableNameMismatch,	"Table Name Mismatch"
+	IBXConst_SIndexFieldMissing,	"Index Field Missing"
+	IBXConst_SInvalidCancellation,	"Cannot Cancel events while processing"
+	IBXConst_SInvalidEvent,	"Invalid Event"
+	IBXConst_SMaximumEvents,	"Exceded Maximum Event limits"
+	IBXConst_SNoEventsRegistered,	"No Events Registered"
+	IBXConst_SInvalidQueueing,	"Invalid Queueing"
+	IBXConst_SInvalidRegistration,	"Invalid Registration"
+	IBXConst_SInvalidBatchMove,	"Invalid Batch Move"
+	IBXConst_SSQLDialectInvalid,	"SQL Dialect Invalid"
+	IBXConst_SSPBConstantNotSupported,	"SPB Constant Not supported"
+	IBXConst_SSPBConstantUnknown,	"SPB Constant Unknown"
+	IBXConst_SServiceActive,	"Cannot perform operation -- service is not attached"
+	IBXConst_SServiceInActive,	"Cannot perform operation -- service is attached"
+	IBXConst_SServerNameMissing,	"Server Name Missing"
+	IBXConst_SQueryParamsError,	"Query Parameters missing or incorrect"
+	IBXConst_SCantEndSharedTransaction,	"Can't end a shared transaction unless it is forced and equal to the transaction's TimeoutAction"
+	IBXConst_SFieldUnsupportedType,	"Unsupported Field Type"
+	IBXConst_SCircularDataLink,	"Circular DataLink Reference"
+	IBXConst_SEmptySQLStatement,	"Empty SQL Statement"
+	IBXConst_SIsASelectStatement,	"use Open for a Select Statement"
+	IBXConst_SRequiredParamNotSet,	"Required Param value not set"
+	IBXConst_SNoStoredProcName,	"No Stored Procedure Name assigned"
+	IBXConst_SIsAExecuteProcedure,	"use ExecProc for Procedure; use TQuery for Select procedures"
+	IBXConst_SUpdateFailed,	"Update Failed"
+	IBXConst_SNotCachedUpdates,	"CachedUpdates not enabled"
+	IBXConst_SNotLiveRequest,	"Request is not live - cannot modify"
+	IBXConst_SNoProvider,	"No Provider"
+	IBXConst_SNoRecordsAffected,	"No Records Affected"
+	IBXConst_SNoTableName,	"No Table Name assigned"
+	IBXConst_SCannotCreatePrimaryIndex,	"Cannot Create Primary Index; are created automatically"
+	IBXConst_SCannotDropSystemIndex,	"Cannot Drop System Index"
+	IBXConst_SFieldNotFound,	"Field \"%s\" not found"
+	IBXConst_SNotEditing,	"Not in edit mode"
+	IBXConst_SCannotInsert,	"Cannot insert into dataset. (No insert query)"
+	IBXConst_SCannotPost,	"Cannot post. (No update/insert query)"
+	IBXConst_SCannotUpdate,	"Cannot update. (No update query)"
+	IBXConst_SCannotDelete,	"Cannot delete from dataset. (No delete query)"
+	IBXConst_SCannotRefresh,	"Cannot refresh row. (No refresh query)"
+	IBXConst_SBufferNotSet,	"Buffer not set"
+	IBXConst_SCircularReference,	"Circular references not permitted"
+	IBXConst_SSQLParseError,	"SQL Parse Error:\r\n\r\n%s"
+	IBXConst_SUserAbort,	"User abort"
+	IBXConst_SDataSetUniDirectional,	"Data set is uni-directional"
+	IBXConst_SCannotCreateSharedResource,	"Cannot create shared resource. (Windows error %d)"
+	IBXConst_SWindowsAPIError,	"Windows API error. (Windows error %d [$%.8x])"
+	IBXConst_SColumnListsDontMatch,	"Column lists do not match"
+	IBXConst_SColumnTypesDontMatch,	"Column types don't match. (From index: %d; To index: %d)"
+	IBXConst_SInvalidStatementHandle,	"Invalid statement handle"
+	IBXConst_SSQLOpen,	"IBSQL Open"
+	IBXConst_SSQLClosed,	"IBSQL Closed"
+	IBXConst_SDatasetOpen,	"Dataset open"
+	IBXConst_SDatasetClosed,	"Dataset closed"
+	IBXConst_SUnknownSQLDataType,	"Unknown SQL Data type (%d)"
+	IBXConst_SInvalidColumnIndex,	"Invalid column index (index exceeds permitted range)"
+	IBXConst_SInvalidParamColumnIndex,	"Invalid parameter index (index exceeds permitted range)"
+	IBXConst_SInvalidDataConversion,	"Invalid data conversion"
+	IBXConst_SColumnIsNotNullable,	"Column cannot be set to null (%s)"
+	IBXConst_SBlobCannotBeRead,	"Blob stream cannot be read"
+	IBXConst_SBlobCannotBeWritten,	"Blob stream cannot be written"
+	IBXConst_SEmptyQuery,	"Empty query"
+	IBXConst_SCannotOpenNonSQLSelect,	"Cannot \"open\" a non-select statement. Use ExecQuery"
+	IBXConst_SNoFieldAccess,	"No access to field \"%s\""
+	IBXConst_SFieldReadOnly,	"Field \"%s\" is read-only"
+	IBXConst_STPBConstantUnknown,	"TPB Constant (%d) is unknown"
+	IBXConst_SDatabaseClosed,	"Cannot perform operation -- DB is not open"
+	IBXConst_SDatabaseOpen,	"Cannot perform operation -- DB is currently open"
+	IBXConst_SDatabaseNameMissing,	"Database name is missing"
+	IBXConst_SNotInTransaction,	"Transaction is not active"
+	IBXConst_SInTransaction,	"Transaction is active"
+	IBXConst_STimeoutNegative,	"Timeout values cannot be negative"
+	IBXConst_SNoDatabasesInTransaction,	"No databases are listed in transaction component"
+	IBXConst_SUpdateWrongDB,	"Updating wrong database"
+	IBXConst_SUpdateWrongTR,	"Updating wrong transaction. Unique transaction expected in set"
+	IBXConst_SDatabaseNotAssigned,	"Database not assigned"
+	IBXConst_STransactionNotAssigned,	"Transaction not assigned"
+	IBXConst_SXSQLDAIndexOutOfRange,	"XSQLDA index out of range"
+	IBXConst_SXSQLDANameDoesNotExist,	"XSQLDA name does not exist (%s)"
+	IBXConst_SEOF,	"End of file"
+	IBXConst_SBOF,	"Beginning of file"
+	bdeconst_SUntitled,	"Untitled Application"
+	bdeconst_SLocalTransDirty,	"The transaction isolation level must be dirty read for local databases"
+	IBXConst_SUnknownError,	"Unknown error"
+	IBXConst_SInterBaseMissing,	"InterBase library gds32.dll not found in the path. Please install InterBase to use this functionality"
+	IBXConst_SInterBaseInstallMissing,	"InterBase Install DLL ibinstall.dll not found in the path. Please install InterBase 6 to use this functionality"
+	IBXConst_SIB60feature,	"%s is an InterBase 6 function. Please upgrade to InterBase 6 to use this functonality"
+	IBXConst_SNotSupported,	"Unsupported feature"
+	IBXConst_SNotPermitted,	"Not permitted"
+	IBXConst_SFileAccessError,	"Temporary file access error"
+	IBXConst_SConnectionTimeout,	"Database connection timed out"
+	IBXConst_SCannotSetDatabase,	"Cannot set database"
+	IBXConst_SCannotSetTransaction,	"Cannot set transaction"
+	IBXConst_SOperationCancelled,	"Operation cancelled at user's request"
+	IBXConst_SDPBConstantNotSupported,	"DPB Constant (isc_dpb_%s) is unsupported"
+	IBXConst_SDPBConstantUnknown,	"DPB Constant (%d) is unknown"
+	IBXConst_STPBConstantNotSupported,	"TPB Constant (isc_tpb_%s) is unsupported"
 	bdeconst_SDatabaseHandleSet,	"Database handle owned by a different session"
 	bdeconst_SSessionActive,	"Cannot perform this operation on an active session"
 	bdeconst_SHandleError,	"Error creating cursor handle"

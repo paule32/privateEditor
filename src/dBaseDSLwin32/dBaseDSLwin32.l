@@ -96,6 +96,7 @@ Z           [z|Z]
     return TOK_CLASS;
 }
 {C}{L}{E}{A}{R} 				{ return TOK_CLEAR;     }
+{C}{O}{S}               		{ return TOK_COS;       }
 {C}{U}{S}{T}{O}{M}				{ return TOK_CUSTOM;    }
 {D}{E}{F}{I}{N}{E}				{ return TOK_DEFINE;    }
 {E}{L}{S}{E}					{ return TOK_ELSE;      }
@@ -115,6 +116,8 @@ Z           [z|Z]
 {P}{R}{O}{C}{E}{D}{U}{R}{E}		{ return TOK_PROCEDURE; }
 {R}{E}{T}{U}{R}{N}		 		{ return TOK_RETURN;    }
 {S}{E}{T}               		{ return TOK_SET;       }
+{S}{I}{N}               		{ return TOK_SIN;       }
+{T}{A}{N}               		{ return TOK_TAN;       }
 {T}{O}							{ return TOK_TO;        }
 {T}{R}{U}{E}			 		{ return TOK_TRUE;      }
 {W}{I}{T}{H}			 		{ return TOK_WITH;      }
