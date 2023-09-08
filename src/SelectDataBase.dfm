@@ -1,9 +1,11 @@
 object Form2: TForm2
   Left = 470
   Top = 707
-  Width = 383
-  Height = 281
+  BorderIcons = []
+  BorderStyle = bsDialog
   Caption = 'Select Database ...'
+  ClientHeight = 236
+  ClientWidth = 365
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -11,6 +13,7 @@ object Form2: TForm2
   Font.Name = 'Consolas'
   Font.Style = []
   OldCreateOrder = False
+  Position = poDesktopCenter
   PixelsPerInch = 115
   TextHeight = 19
   object GroupBox1: TGroupBox

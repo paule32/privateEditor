@@ -1134,7 +1134,7 @@ begin
   // if true then check data + password, else
   // continue as normal user.
   // -----------------------------------------
-  if not(DirectoryExists(S)) then
+  if (DirectoryExists(S)) then
   begin
     I := MessageDlg(rs_App_First_Run,
     mtWarning,[mbYes, mbNo],0);
