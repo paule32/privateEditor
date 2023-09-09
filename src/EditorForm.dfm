@@ -6179,15 +6179,12 @@ object Form1: TForm1
     Left = 521
     Top = 319
   end
-  object JvBalloonHint1: TJvBalloonHint
-    DefaultHeader = 'Information'
-    Options = [boUseDefaultHeader, boUseDefaultIcon, boUseDefaultImageIndex, boShowCloseBtn]
-    UseBalloonAsApplicationHint = True
-    Left = 328
-    Top = 571
-  end
   object MadExceptionHandler1: TMadExceptionHandler
     Left = 341
     Top = 170
+  end
+  object JvHint1: TJvHint
+    Left = 461
+    Top = 198
   end
 end

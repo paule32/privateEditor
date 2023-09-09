@@ -42,6 +42,7 @@
 # include <signal.h>
 # include <ctype.h>
 # include <mbstring.h>
+# include <math.h>
 
 // ----------------------------------------------------------------------------
 // C++ classes, container, header, structures ...

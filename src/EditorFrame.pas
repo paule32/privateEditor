@@ -740,15 +740,16 @@ begin
                 PChar(Form1.IniFile_AsmOutput)
               );
 
-//              callExecute;
+              callExecute;
               InfoBox.Text('Compile OK' + #13#10 +
               'Lines: ' + IntToStr(callParserGetLines-1));
-
+(*
               if not(InterpreterInitialized) then
               begin
                 initInterpreter;
                 InterpreterInitialized := true;
               end;
+*)
 
               if not(Assigned(InterpreterProgram)) then
               InterpreterProgram := TJvInterpreterProgram.Create(nil);

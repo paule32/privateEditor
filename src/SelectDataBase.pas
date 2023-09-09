@@ -13,10 +13,11 @@ type
     Label1: TLabel;
     Button1: TButton;
     Button2: TButton;
+    procedure Button2Click(Sender: TObject);
   private
     { Private declarations }
   public
-    { Public declarations }
+    ExitFlag: Boolean;
   end;
 
 var
@@ -25,5 +26,11 @@ var
 implementation
 
 {$R *.dfm}
+
+procedure TForm2.Button2Click(Sender: TObject);
+begin
+  ExitFlag := true;
+  Close;
+end;
 
 end.

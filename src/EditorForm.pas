@@ -31,7 +31,7 @@ uses
   ProfileSettings, TeamServerSettings, JvDesignImp, JclSysInfo, JvColorCombo,
   EnvironmentFrame, LeftPanelFrame, SimulationFrame, CtrlMenuBarButton,
   madExceptVcl, DBIProcs, DBITypes, SetupHttpServer, WebServerUser,
-  SelectDataBase;
+  SelectDataBase, JvHint;
 
 type
   TMyTableListBox = class(TListBox)
@@ -237,10 +237,9 @@ type
     PanelResizer1: TPanel;
     PanelResizer2: TPanel;
     PanelResizer3: TPanel;
-    
-    JvBalloonHint1: TJvBalloonHint;
     UpperPanel: TPanel;
     MadExceptionHandler1: TMadExceptionHandler;
+    JvHint1: TJvHint;
 
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -1153,7 +1152,13 @@ begin
     end;
 
     Application.CreateForm(TForm2, Form2);
+    Form2.ExitFlag := false;
     Form2.ShowModal;
+    if Form2.ExitFlag then
+    begin
+      Form2.Free;
+      Form1.Close;
+    end;
     
     CreateDir(S);
   end;

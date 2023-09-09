@@ -661,6 +661,7 @@ add_node_new_class_ref(
 }
 
 // ----------------------------------------------------------------------------
+// basic trigometrie functions ...
 // ----------------------------------------------------------------------------
 float add_node_tri( int cmdline, float val, int fun )
 {
@@ -671,7 +672,10 @@ float add_node_tri( int cmdline, float val, int fun )
     if (fun == TRI_SIN) { strcpy(node_new->token, "tri_sin"); node_new->token_id = tt_tri_sin_number; } else
     if (fun == TRI_TAN) { strcpy(node_new->token, "tri_tan"); node_new->token_id = tt_tri_tan_number; }
     
-    node_new->value = val;
+    if (fun == TRI_COS) node_new->value = cos(val); else
+    if (fun == TRI_SIN) node_new->value = sin(val); else
+    if (fun == TRI_TAN) node_new->value = tan(val);
+    
     node_new->prev  = node_prev;
     node_new->next  = NULL;
     

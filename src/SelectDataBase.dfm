@@ -1,7 +1,7 @@
 object Form2: TForm2
   Left = 470
   Top = 707
-  BorderIcons = []
+  BorderIcons = [biHelp]
   BorderStyle = bsDialog
   Caption = 'Select Database ...'
   ClientHeight = 236
@@ -57,6 +57,7 @@ object Form2: TForm2
       Height = 25
       Caption = 'Close App.'
       TabOrder = 2
+      OnClick = Button2Click
     end
   end
 end
