@@ -33,7 +33,7 @@ object Frame6: TFrame6
       object Label1: TLabel
         Left = 0
         Top = 0
-        Width = 226
+        Width = 81
         Height = 19
         Align = alTop
         Caption = 'DataBase:'
@@ -46,6 +46,7 @@ object Frame6: TFrame6
         Align = alTop
         Style = csDropDownList
         TabOrder = 0
+        Text = ''
         OnChange = DatabaseComboBoxChange
       end
       object Panel1: TPanel

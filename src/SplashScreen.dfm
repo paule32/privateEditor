@@ -4,26 +4,24 @@ object SplashForm: TSplashForm
   BorderIcons = []
   BorderStyle = bsSingle
   Caption = 'Loading ...'
-  ClientHeight = 224
-  ClientWidth = 321
+  ClientHeight = 187
+  ClientWidth = 268
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -13
+  Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   FormStyle = fsStayOnTop
-  OldCreateOrder = False
   Position = poDesktopCenter
   OnCreate = FormCreate
   OnShow = FormShow
-  PixelsPerInch = 115
-  TextHeight = 16
+  TextHeight = 13
   object Image1: TImage
     Left = 0
     Top = 0
-    Width = 321
-    Height = 204
+    Width = 268
+    Height = 170
     Align = alClient
     AutoSize = True
     Picture.Data = {
@@ -8034,9 +8032,9 @@ object SplashForm: TSplashForm
   end
   object ProgressBar1: TProgressBar
     Left = 0
-    Top = 204
-    Width = 321
-    Height = 20
+    Top = 170
+    Width = 268
+    Height = 17
     Align = alBottom
     TabOrder = 0
   end

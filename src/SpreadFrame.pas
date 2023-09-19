@@ -10,14 +10,13 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, 
-  Dialogs, AdvUtil, Grids, AdvObj, BaseGrid, AdvGrid, ComCtrls;
+  Dialogs,  Grids, ComCtrls;
 
 type
   TFrame18 = class(TFrame)
     PageControl1: TPageControl;
     TabSheet1: TTabSheet;
     ScrollBox1: TScrollBox;
-    AdvStringGrid1: TAdvStringGrid;
     procedure AdvStringGrid1SelectCell(Sender: TObject; ACol,
       ARow: Integer; var CanSelect: Boolean);
   private

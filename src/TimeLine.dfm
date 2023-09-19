@@ -79,8 +79,8 @@ object Frame31: TFrame31
           Width = 129
           Height = 24
           Hint = 'Sets the first displayed date'
-          Date = 36854.425169305600000000
-          Time = 36854.425169305600000000
+          Date = 36854.000000000000000000
+          Time = 0.425169305599411000
           TabOrder = 0
         end
         object dtpSelDate: TDateTimePicker
@@ -89,8 +89,8 @@ object Frame31: TFrame31
           Width = 129
           Height = 24
           Hint = 'Sets the selected day'
-          Date = 36854.425169305600000000
-          Time = 36854.425169305600000000
+          Date = 36854.000000000000000000
+          Time = 0.425169305599411000
           TabOrder = 1
         end
         object edImageNo: TEdit
@@ -120,8 +120,8 @@ object Frame31: TFrame31
           Width = 129
           Height = 24
           Hint = 'Sets the date to insert  / delete an image'
-          Date = 36854.587075949100000000
-          Time = 36854.587075949100000000
+          Date = 36854.000000000000000000
+          Time = 0.587075949100835700
           TabOrder = 4
         end
         object btnAdd: TButton
@@ -200,6 +200,7 @@ object Frame31: TFrame31
           TimeBlockProps.BlockHdrAttr.Font.Height = -13
           TimeBlockProps.BlockHdrAttr.Font.Name = 'MS Sans Serif'
           TimeBlockProps.BlockHdrAttr.Font.Style = []
+          TimeBlockProps.BlockHdrAttr.ParentFont = False
           TimeBlockProps.BlockHdrAttr.FrameColor = clBlack
           TimeBlockProps.BlockHdrWidth = 74
           TimeBlockProps.SelBlockHdrAttr.Font.Charset = DEFAULT_CHARSET
@@ -269,6 +270,7 @@ object Frame31: TFrame31
           GroupHdrAttr.Font.Height = -13
           GroupHdrAttr.Font.Name = 'MS Sans Serif'
           GroupHdrAttr.Font.Style = []
+          GroupHdrAttr.ParentFont = False
           GroupHdrAttr.FrameColor = clBlack
           SelGroupHdrAttr.Font.Charset = DEFAULT_CHARSET
           SelGroupHdrAttr.Font.Color = clBlack
@@ -4448,22 +4450,5 @@ object Frame31: TFrame31
       FFFFF801FFFFF003FFFFFFFFFF800001FFFFFC03FFFFFC07FFFFFFFFFF800001
       FFFFFF0FFFFFFFFFFFFFFFFFFF80000100000000000000000000000000000000
       000000000000}
-  end
-  object TeamScheduleDatabase: TDatabase
-    DriverName = 'Microsoft dBase Driver (*.dbf)'
-    LoginPrompt = False
-    SessionName = 'privateSESSION'
-    Left = 408
-    Top = 32
-  end
-  object Session1: TSession
-    Active = True
-    SessionName = 'privateSESSION'
-    Left = 440
-    Top = 32
-  end
-  object Table1: TTable
-    Left = 408
-    Top = 64
   end
 end

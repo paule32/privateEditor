@@ -11,7 +11,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, 
   Dialogs, StdCtrls, CheckLst, ExtCtrls, Grids, ValEdit, ImgList,
-  JvExStdCtrls, JvListBox, TntStdCtrls;
+  JvExStdCtrls, JvListBox, System.ImageList;
 
 type
   TFrame5 = class(TFrame)
@@ -73,12 +73,11 @@ procedure TFrame5.ListBox2DrawItem(
   State  : TOwnerDrawState);
   var
   I,J : Word;
-  lb: TtntListBox;
   b1,b2: Byte;
   wn: Word;
   ws: WideString;
 begin
-  lb := (Control as TtntListBox);
+(*lb := (Control as TtntListBox);
 
   lb.Canvas.Font.Name  := 'C64 Elite Mono';
   lb.Canvas.Font.Size  := 14;
@@ -101,6 +100,7 @@ begin
         rect.Left + 40,
         rect.Top  + 2,
         'key ' + IntToStr(Index));
+  *)
 end;
 
 end.

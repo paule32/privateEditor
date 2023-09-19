@@ -45,6 +45,14 @@ object Frame19: TFrame19
         PopupMenu = JvPopupMenu1
         TabOrder = 0
         OnKeyDown = SynEdit1KeyDown
+        CodeFolding.GutterShapeSize = 11
+        CodeFolding.CollapsedLineColor = clGrayText
+        CodeFolding.FolderBarLinesColor = clGrayText
+        CodeFolding.IndentGuidesColor = clGray
+        CodeFolding.IndentGuides = True
+        CodeFolding.ShowCollapsedLine = False
+        CodeFolding.ShowHintMark = True
+        UseCodeFolding = False
         BookMarkOptions.LeftMargin = 0
         BookMarkOptions.XOffset = 5
         Gutter.Font.Charset = DEFAULT_CHARSET
@@ -55,7 +63,6 @@ object Frame19: TFrame19
         Gutter.ShowLineNumbers = True
         Gutter.ShowModification = True
         Gutter.Width = 49
-        Lines.UnicodeStrings = 'SynEdit1'
         WantTabs = True
         FontSmoothing = fsmNone
       end

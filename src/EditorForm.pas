@@ -16,12 +16,12 @@ uses
   JvSpin, Buttons, CheckLst, ShellApi, ShlObj, ImgList, OleCtrls, SHDocVw,
   IdComponent, IdTCPConnection, IdTCPClient, IdBaseComponent, Registry,
   JvBalloonHint, JvComponentBase, JvCreateProcess, JvDataEmbedded, IdHTTP,
-  IdFTP, DBTables, DB, IdIRC, IdAntiFreeze, JvExStdCtrls, JclDebug,
+  IdFTP, DB, IdIRC, IdAntiFreeze, JvExStdCtrls, JclDebug,
   JvEdit, SynEdit, Console, JvButton, JvCtrls, JvExComCtrls, JvComCtrls,
   IdAntiFreezeBase, JvCheckTreeView, JvExCheckLst, JvCheckListBox, JvExButtons,
   JvBitBtn, Grids, ValEdit, IniFiles, JvCombobox, JvDesignSurface, IBIntf,
   JvDesignUtils, JvInspector, TimeLine, JvExExtCtrls, JvExtComponent, JvPanel,
-  TntExtCtrls, TntStdCtrls, ChatFrame, TntComCtrls, JvAppHotKey, JvListBox,
+  ChatFrame, JvAppHotKey, JvListBox,
   JvDriveCtrls, JvTipOfDay, JvArrowButton, ErrorBoxForm, InfoBoxForm, AboutBox,
   InputBox, DesignerFrame, EditorFrame, TeamServerFrame, EditFrame,
   C64KeyBoard, C64ConfigFrame, MembersFrame, C64DrivesFrame, NewProjectFrame,
@@ -30,8 +30,9 @@ uses
   FormatLayoutFrame, OptionsFrame, SimulationLeftPanel, ProfileIconsFrame,
   ProfileSettings, TeamServerSettings, JvDesignImp, JclSysInfo, JvColorCombo,
   EnvironmentFrame, LeftPanelFrame, SimulationFrame, CtrlMenuBarButton,
-  madExceptVcl, DBIProcs, DBITypes, SetupHttpServer, WebServerUser,
-  SelectDataBase, JvHint;
+  madExceptVcl, SetupHttpServer, WebServerUser,
+  SelectDataBase, JvHint, ResourceStrings, IdContext,
+  IdExplicitTLSClientServerBase, System.ImageList, IdCmdTCPClient;
 
 type
   TMyTableListBox = class(TListBox)
@@ -42,42 +43,6 @@ var
   C64KeyMapValue : Array[0..9] of String = (
   'code1','code2','code3','code4','code5','code6','code7','code8','code9','code10'
   );
-
-type
-  TdataBaseType = (dbBorland, dbInterBase, dbMySQL);
-
-// -------------------------------------------------------------
-// rs_xxx are the Locale's .ENU, .DEU files. default is: ENU ...
-// -------------------------------------------------------------
-resourcestring
-  rs_Internal_Error    = 'internal error.';
-  rs_IB_notInstalled   = 'No InterBase installation found !';
-  rs_BDE_notInstalled  = 'No BDE Installation found !';
-  rs_BDE_Error         = 'BDE Error:';
-  rs_BDE_AppStart_Rej  = 'Aborted start.';
-  rs_App_First_Run     = 'You run this Application at first race !' + #13#10 +
-                         'Would You do a Setup of needed Stuff ?';
-  rs_App_User_Mode     = 'You run this Application with User rights !'      + #13#10 +
-                         'If You confirm this Dialog with "Yes", it can be' + #13#10 +
-                         'that the Application does not work.'              + #13#10 +
-                         '' + #13#10 +
-                         'Would You start the Application without Admin rights ?';
-  rs_ClassName         = 'Class-Name: ';
-  rs_Message           = 'Message: ';
-  rs_Exception_Error   = 'Exception Error:';
-  rs_File_Exists       = 'The file already exists !' + #13#10  +
-                         'Would you override the old Version ?';
-
-  rs_BDE_EClassName    = 'Error-Class: ';
-  rs_BDE_ECode         = 'Error-Code: ';
-  rs_BDE_EMessage      = 'Error-Message: ';
-  rs_BDE_EFile         = 'Error-File: ';
-  rs_BDE_EModule       = 'Error-Module: ';
-  rs_BDE_EProc         = 'Error-Proc: ';
-  rs_BDE_ELine         = 'Error-Line: ';
-
-  rs_BDE_Error_TableDontExists = 'Table does not exists.';
-  rs_Win32_Registry_Error      = 'Win32-Registry Error:';
 
 type
   TForm1 = class(TForm)
@@ -110,7 +75,6 @@ type
     AddtoTemplateLibrary1: TMenuItem;
     AddNewProject1: TMenuItem;
     Splitter5: TSplitter;
-    IdAntiFreeze1: TIdAntiFreeze;
     IdIRC1: TIdIRC;
     MainPageControl: TPageControl;
     TabSheet2: TTabSheet;
@@ -127,7 +91,6 @@ type
     TabSheet22: TTabSheet;
     ConsoleTabSheet: TTabSheet;
     ScrollBox5: TScrollBox;
-    Console1: TConsole;
     ImageList2: TImageList;
     ColorDialog1: TColorDialog;
     C64TabSheet: TTabSheet;
@@ -136,8 +99,6 @@ type
     N13: TMenuItem;
     C64BASIC1: TMenuItem;
     TabSheet28: TTabSheet;
-    Database1: TDatabase;
-    Session1: TSession;
     PageControl12: TPageControl;
     TabSheet30: TTabSheet;
     SqlScrollBox: TScrollBox;
@@ -228,7 +189,6 @@ type
     ScrollBox4: TScrollBox;
     Timer1: TTimer;
     SpreadTabSheet: TTabSheet;
-    C64Screen: TSynEdit;
     Memo1: TMemo;
 
     Splitter2: TSplitter;
@@ -238,7 +198,6 @@ type
     PanelResizer2: TPanel;
     PanelResizer3: TPanel;
     UpperPanel: TPanel;
-    MadExceptionHandler1: TMadExceptionHandler;
     JvHint1: TJvHint;
 
     procedure FormCreate(Sender: TObject);
@@ -269,16 +228,16 @@ type
     procedure MainPageControlChange(Sender: TObject);
     procedure Options1Click(Sender: TObject);
     procedure ircConnectButtonClick(Sender: TObject);
-    procedure IdIRC1CTCPQuery(Sender: TObject; User: TIdIRCUser;
-      AChannel: TIdIRCChannel; Command, Args: String;
-      var ASuppress: Boolean);
-    procedure IdIRC1Message(Sender: TObject; AUser: TIdIRCUser;
-      AChannel: TIdIRCChannel; Content: String);
+//    procedure IdIRC1CTCPQuery(Sender: TObject; User: TIdIRCUser;
+//      AChannel: TIdIRCChannel; Command, Args: String;
+//      var ASuppress: Boolean);
+//    procedure IdIRC1Message(Sender: TObject; AUser: TIdIRCUser;
+//      AChannel: TIdIRCChannel; Content: String);
     procedure Button9Click(Sender: TObject);
     procedure IdIRC1List(Sender: TObject; AChans: TStringList;
       APosition: Integer; ALast: Boolean);
-    procedure IdIRC1Names(Sender: TObject; AUsers: TIdIRCUsers;
-      AChannel: TIdIRCChannel);
+//    procedure IdIRC1Names(Sender: TObject; AUsers: TIdIRCUsers;
+//      AChannel: TIdIRCChannel);
     procedure dark1Click(Sender: TObject);
     procedure light1Click(Sender: TObject);
     procedure Console1DblClick(Sender: TObject);
@@ -429,8 +388,6 @@ type
     msdosapp  : Boolean;
     dbaseapp  : Boolean;
 
-    usedDataBase : TdataBaseType;
-
     tipday: TJvTipOfDay;
 
     procedure TableListBox_MouseDown(
@@ -497,7 +454,7 @@ implementation
 
 {$R *.dfm}
 uses
-  SplashScreen, reinit;
+  SplashScreen, reinit, GlobalDeclaration;
 
 const
   ENGLISH = (SUBLANG_ENGLISH_US shl 10) or LANG_ENGLISH;
@@ -505,7 +462,7 @@ const
 
 Function CheckTokenMembership(TokenHandle: THandle; SIdToCheck: PSID; var IsMember: Boolean): Boolean; StdCall; External AdvApi32;
 
-Function IsAdmin: Boolean;
+function IsAdmin: Boolean;
 const
   DOMAIN_ALIAS_RID_ADMINS = $00000220;
   SECURITY_BUILTIN_DOMAIN_RID = $00000020;
@@ -513,13 +470,13 @@ const
 var
   Admin: Boolean;
   AdmGroup: PSID;
-Begin
+begin
   Admin := AllocateAndInitializeSid(SECURITY_NT_AUTHORITY,
-    2, SECURITY_BUILTIN_DOMAIN_RID, DOMAIN_ALIAS_RID_ADMINS,
-    0, 0, 0, 0, 0, 0, AdmGroup);
-  If (Admin) Then
-  Begin
-    If (not CheckTokenMembership(0, AdmGroup, Admin)) Then
+  2, SECURITY_BUILTIN_DOMAIN_RID, DOMAIN_ALIAS_RID_ADMINS,
+  0, 0, 0, 0, 0, 0, AdmGroup);
+  if (Admin) then
+  begin
+    If (not CheckTokenMembership(0, AdmGroup, Admin)) then
       Admin := False;
     FreeSid(AdmGroup);
   end;
@@ -616,7 +573,6 @@ begin
     end;
   end;
 end;
-
 // ----------------------------------------------------
 // check application system, and try to setup configure
 // task's, to work with this application.
@@ -632,29 +588,75 @@ const
   BDECoTbl = 'test.dbf';
   BDELevel = 0;
 var
-  I,J         : Integer;
-  text        : WideString;
-  xpos, ypos  : Integer;
-  row, col    : Integer;
-  S           : String;
-  B           : Boolean;
-  BDE_found   : Boolean;
-  Index       : Integer;
-  reg         : TRegistry;
-  H           : HDBISes;
-  letter1     : Char;
-  letter2     : Char;
-  buffer      : Array[0..MAX_PATH] of Char;
-  BDEList     : TStringList;
-  BDESession  : TSession;
-  BdeAdmin    : TDataBase;
-  BDETable    : TTable;
-  BDEQuery    : TQuery;
-  BDEDataSrc  : TDataSource;
-  SystemFolder: String;
-  SQLstmt     : String;
-  stmtParams  : TParams;
+  I,J          : Integer;
+  text         : WideString;
+  xpos, ypos   : Integer;
+  row, col     : Integer;
+  S            : String;
+  B            : Boolean;
+  BDE_found    : Boolean;
+  Index        : Integer;
+//  reg          : TRegistry;
+//  H            : HDBISes;
+  letter1      : Char;
+  letter2      : Char;
+  buffer       : Array[0..MAX_PATH] of Char;
+  BDEList      : TStringList;
+//  BDESession   : TSession;
+//  BdeAdmin     : TDataBase;
+//  BDETable     : TTable;
+//  BDEQuery     : TQuery;
+//  BDEDataSrc   : TDataSource;
+  SystemFolder : String;
+  SQLstmt      : String;
+  stmtParams   : TParams;
+//  ModelDatabase: TDataBase;
 
+//  procedure CreateNewSession(
+//    var newSession: TSession;
+//    var newDB     : TDatabase;
+//    newSessionName: String;
+//    OriginalDB    : TDatabase;
+//    LoginPrompt   : Boolean = false);
+//  var
+//    SessionNumber : Integer;
+//    SessionName   : String;
+//  begin
+//    SessionNumber := 0;
+//    SessionName   := newSessionName + IntToStr(SessionNumber);
+
+//    while Sessions.FindSession(SessionName) <> nil do
+//    begin
+//      inc(SessionNumber);
+//      SessionName := newSessionName+IntToStr(SessionNumber);
+//    end;
+
+//    newSession := Sessions.OpenSession(SessionName);
+//    newDB      := TDatabase.Create(nil);
+
+//    newDB.SessionName  := newSession.SessionName;
+//    newDB.Close;
+
+//    newDB.DatabaseName :='DB'+newSession.SessionName;
+//    newDB.AliasName    := OriginalDB.AliasName;
+
+//    newDB.Params.Clear;
+//    newDB.Params.Assign(OriginalDB.Params);
+
+//    newDB.LoginPrompt  := LoginPrompt;
+//  end;
+
+//  procedure CloseSession; //(
+//    var oldSession: TSession;
+//    var oldDB     : TDatabase);
+//  begin
+//    oldDB.Close;
+//    oldDB.Free;
+
+//    oldSession.DropConnections;
+//    oldSession.Close;
+//    oldSession.Free;
+//  end;
 
   procedure FreeBDESetup;
   begin
@@ -664,7 +666,7 @@ var
       BDEList.Free;
       BDEList := nil;
     end;
-
+(*
     if Assigned(BDEQuery) then
     begin
       BDEQuery.SQL.Clear;
@@ -688,6 +690,7 @@ var
 
     if Assigned(BDESession) then
     begin
+      BDESession.DropConnections;
       BDESession.Close;
       BDESession.DeleteAlias(BDEAlias);
       BDESession.Free;
@@ -705,7 +708,7 @@ var
       DBICloseSession(h);
       DBIExit;
       h := nil;
-    end;
+    end;*)
   end;
 begin
   // -------------------------------------------------
@@ -713,48 +716,58 @@ begin
   // one step is, to locate the BDE Win32 Registry key
   // second step, try to locate per path.
   // -------------------------------------------------
-  reg := Tregistry.Create;
-  try
+(*  if usedDataBase = dbBorland then
+  begin
+    reg := Tregistry.Create;
     try
-      usedDataBase := dbBorland;
-      BDE_found := true;
-      reg.RootKey  := HKEY_LOCAL_MACHINE;
-      B := reg.OpenKeyReadOnly('SOFTWARE\Borland\Database Engine');
-      if not(B) then
-      begin
-        GetSystemDirectory(buffer, SizeOf(buffer));
-        SystemFolder := StrPas(buffer);
-        for I := Low(BDE_DLLs) to High(BDE_DLLs) do
+      try
+        usedDataBase := dbBorland;
+        BDE_found := true;
+        reg.RootKey  := HKEY_LOCAL_MACHINE;
+        B := reg.OpenKeyReadOnly('SOFTWARE\Borland\Database Engine');
+        if not(B) then
         begin
-          if not FileExists(SystemFolder + '\' + BDE_DLLs[I]) then
+          GetSystemDirectory(buffer, SizeOf(buffer));
+          SystemFolder := StrPas(buffer);
+          for I := Low(BDE_DLLs) to High(BDE_DLLs) do
           begin
-            BDE_found := false;
-            break;
+            if not FileExists(SystemFolder + '\' + BDE_DLLs[I]) then
+            begin
+              BDE_found := false;
+              break;
+            end;
           end;
         end;
+      except
+        on E: Exception do
+        begin
+          BDE_found := false;
+          ShowMessage(rs_Win32_Registry_Error
+          + #13#10 + rs_ClassName + E.ClassName
+          + #13#10 + rs_Message   + E.Message);
+          FreeBDESetup;
+          Close;
+        end;
       end;
-    except
-      on E: Exception do
-      begin
-        BDE_found := false;
-        ShowMessage(rs_Win32_Registry_Error
-        + #13#10 + rs_ClassName + E.ClassName
-        + #13#10 + rs_Message   + E.Message);
-      end;
+    finally
+      reg.Free;
+      reg := nil;
     end;
-
-    // ----------------------------------
-    // if no BDE found, try next DataBase
-    // interbase, raise exception if fail
-    // ----------------------------------
+  end else
+*)
+  // ----------------------------------
+  // if no BDE found, try next DataBase
+  // interbase, raise exception if fail
+  // ----------------------------------
+(*  if usedDataBase = dbInterbase then
+  begin
+    BDE_found := false;
     if not(BDE_found) then
     begin
       try
-        usedDataBase := dbInterBase;
         BDE_found := true;
         IBIntf.CheckIBInstallLoaded;
-        IBIntf.CheckIBLoaded;
-        showmessage('111');
+//        IBIntf.CheckIBLoaded;
       except
         on E: Exception do
         begin
@@ -763,28 +776,29 @@ begin
           rs_IB_notInstalled + #13#10 +
           rs_BDE_EClassName  + E.ClassName + #13#10 +
           rs_BDE_EMessage    + E.Message);
+          FreeBDESetup;
+          Close;
         end;
       end;
     end;
-  finally
-    if not(BDE_found) then
-    begin
-      ShowMessage(
-      rs_BDE_notInstalled + #13#10 +
-      rs_BDE_AppStart_Rej);
-      FreeBDESetup;
-      Close;
-    end;
-
+  end else
+  if usedDataBase = dbMySQL then
+  begin
+    ShowMessage('MySQL not yet supported.');
     FreeBDESetup;
+    Close;
   end;
+*)
+
+showmessage('1111');
+  FreeBDESetup;
 
   SplashForm.ProgressBar1.Position := 10;
 
   PanelResizer1.Align := alClient;
   PanelResizer2.Align := alClient;
   PanelResizer3.Align := alClient;
-
+showmessage('222');
 
   Form1.DoubleBuffered := True;
   has_errors := false;
@@ -830,16 +844,16 @@ begin
   DFrameC64Config.ListBox2.Items.BeginUpdate;
     for I := 0 to  95 do DFrameC64Config.ListBox2.Items.Add(IntToStr($E020 + I));
     for I := 0 to 100 do DFrameC64Config.ListBox2.Items.Add(IntToStr($E0A0 + I));
-//    for I := $E0A0 to $E0E0 do DFrameC64Config.ListBox2.Items.Add(IntToStr(I));
+    for I := $E0A0 to $E0E0 do DFrameC64Config.ListBox2.Items.Add(IntToStr(I));
   DFrameC64Config.ListBox2.Items.EndUpdate;
 
   DFrameC64Config.Visible := false;
 
   // c64 drives
-  DFrameC64Drives         := TFrame7.Create(Panel8);
-  DFrameC64Drives.Parent  := Panel8;
-  DFrameC64Drives.Align   := alClient;
-  DFrameC64Drives.Visible := false;
+//  DFrameC64Drives         := TFrame7.Create(Panel8);
+//  DFrameC64Drives.Parent  := Panel8;
+//  DFrameC64Drives.Align   := alClient;
+//  DFrameC64Drives.Visible := false;
 
   SplashForm.ProgressBar1.Position := 20;
 
@@ -956,7 +970,7 @@ begin
       text := text + C64ScreenMap[row,col];
     end;
   end;
-  C64Screen.Lines.Text := text;
+//  C64Screen.Lines.Text := text;
 
 
   DFrame := TFrame1.Create(ScrollBox3);
@@ -968,7 +982,8 @@ begin
   DFrame.JvDesignPanel1.Caption   := '';
   DFrame.JvDesignPanel1.Active    := true;
   DFrame.JvDesignPanel1.Color     := clBtnFace;
-  DFrame.JvDesignPanel1.DrawRules := false;
+
+  DFrame.JvDesignPanel1.DrawRules := false;
   DFrame.JvDesignPanel1.OnPaint   := DFrame.JvDesignPanel1Paint;
 
   DFrameEditor.SynEdit1.Lines.Clear;
@@ -999,8 +1014,8 @@ begin
   // get alias/tables
   DFrameMembers.DataBaseComboBox.Items.Clear;
 
-  Session1.Open;
-  Session1.GetAliasNames(DFrameMembers.DataBaseComboBox.Items);
+//  Session1.Open;
+//  Session1.GetAliasNames(DFrameMembers.DataBaseComboBox.Items);
 
   TableListBox := TMyTableListBox.Create(DFrameMembers.TabSheet1);
   TableListBox.Parent := DFrameMembers.TabSheet1;
@@ -1024,10 +1039,10 @@ begin
   end;
 
   // backend
-  DFrameEdit := TFrame3.Create(Frame_panel);
-  DFrameEdit.Parent := Frame_Panel;
-  DFrameEdit.Align := alClient;
-  DFrameEdit.Visible := false;
+//  DFrameEdit := TFrame3.Create(Frame_panel);
+//  DFrameEdit.Parent := Frame_Panel;
+//  DFrameEdit.Align := alClient;
+//  DFrameEdit.Visible := false;
 
   // intro
   DFrameTeamServer := TFrame2.Create(Frame_Panel);
@@ -1050,31 +1065,31 @@ begin
   DFrameEditOptions.Visible := false;
 
   // spread sheet
-  DFrameSpread := TFrame18.Create(SpreadTabSheet);
-  DFrameSpread.Parent  := SpreadTabSheet;
-  DFrameSpread.Align   := alClient;
+//  DFrameSpread := TFrame18.Create(SpreadTabSheet);
+//  DFrameSpread.Parent  := SpreadTabSheet;
+//  DFrameSpread.Align   := alClient;
 
-  DFrameSpread.AdvStringGrid1.BeginUpdate;
-  DFrameSpread.AdvStringGrid1.ColumnHeaders.Add(''); // left-top corner
-  DFrameSpread.AdvStringGrid1.RowHeaders   .Add(''); // left-top corner
-  for I := 1 to 26 do
-  begin
-    letter1 := Chr(Ord('A') + i - 1);
-    DFrameSpread.AdvStringGrid1.ColumnHeaders.Add(letter1);
-  end;
-  for I := 1 to 26 do
-  begin
-    letter1 := Chr(Ord('A') + (I - 1) div 26);
-    letter2 := Chr(Ord('A') + (I - 1) mod 26);
-    DFrameSpread.AdvStringGrid1.ColumnHeaders.Add(letter1 + letter2);
-  end;
+//  DFrameSpread.AdvStringGrid1.BeginUpdate;
+//  DFrameSpread.AdvStringGrid1.ColumnHeaders.Add(''); // left-top corner
+//  DFrameSpread.AdvStringGrid1.RowHeaders   .Add(''); // left-top corner
+//  for I := 1 to 26 do
+//  begin
+//    letter1 := Chr(Ord('A') + i - 1);
+//    DFrameSpread.AdvStringGrid1.ColumnHeaders.Add(letter1);
+//  end;
+//  for I := 1 to 26 do
+//  begin
+//    letter1 := Chr(Ord('A') + (I - 1) div 26);
+//    letter2 := Chr(Ord('A') + (I - 1) mod 26);
+//    DFrameSpread.AdvStringGrid1.ColumnHeaders.Add(letter1 + letter2);
+//  end;
 
   SplashForm.ProgressBar1.Position := 80;
 
-  for I := 1 to 2048 do
-  DFrameSpread.AdvStringGrid1.RowHeaders.Add(IntToStr(I));
-  DFrameSpread.AdvStringGrid1.EndUpdate;
-  DFrameSpread.Visible := true;
+//  for I := 1 to 2048 do
+//  DFrameSpread.AdvStringGrid1.RowHeaders.Add(IntToStr(I));
+//  DFrameSpread.AdvStringGrid1.EndUpdate;
+//  DFrameSpread.Visible := true;
 
   SplashForm.ProgressBar1.Position := 85;
 
@@ -1139,17 +1154,35 @@ begin
     mtWarning,[mbYes, mbNo],0);
     if I = mrNo then
     begin
-      Close;
+        showmessage('2222');
+      FreeBDESetup;
+      Form1.Close;
+
+      SplashForm.ProgressBar1.Position := 70;
+      SplashForm.isExit := true;
+      SplashForm.isMemE := true;
+      SplashForm.Close;
     end;
+
     if not(isAdmin) then
     begin
+        showmessage('1111');
       I := MessageDlg(rs_App_User_Mode,
       mtWarning,[mbYes, mbNo],0);
       if I = mrNo then
       begin
-        Close;
+      showmessage('ooooo');
+        FreeBDESetup;
+        Form1.Close;
+
+        SplashForm.ProgressBar1.Position := 70;
+        SplashForm.isExit := true;
+        SplashForm.isMemE := true;
+        SplashForm.Close;
       end;
     end;
+showmessage('uuuu');
+
 
     Application.CreateForm(TForm2, Form2);
     Form2.ExitFlag := false;
@@ -1157,9 +1190,10 @@ begin
     if Form2.ExitFlag then
     begin
       Form2.Free;
-      Form1.Close;
+      FreeBDESetup;
+      Close;
     end;
-    
+
     CreateDir(S);
   end;
 
@@ -1172,110 +1206,163 @@ begin
   end else
   if usedDataBase = dbBorland then
   begin
-  showmessage('2222');
-    BDEAdmin  := TDataBase.Create(nil);
-    BDE_found := false;
-    // --------------------------------
-    // check, if 'databasename' exists
-    // --------------------------------
-    if not(Assigned(BDEList)) then
-    BDEList := TStringList.Create;
-    BDEList.Clear;
-
-    BDESession := TSession.Create(nil);
-    BDESession.SessionName := BDEAlias;
-
-    // no, then create it
-    if BDEList.IndexOf(BDEAlias) < 0 then
-    begin
-      DBIInit(nil);
-      DBIStartSession('dummy',h,'');
-      DBIAddAlias(nil,
-      PChar(BDEAlias),
-      PChar('DBASE'),
-      PChar('PATH=' + S),
-      true);
-      DBICloseSession(h);
-      DBIExit;
-      h := nil;
-    end;
-
-    // -------------------------------
-    // sanity check ...
-    // -------------------------------
-    BDESession.Open;
-    BDESession.GetDatabaseNames(BDEList);
-
-    if BDEList.IndexOf(BDEAlias) < 0 then
-    raise Exception.Create(
-    'BDE Error:'   + #13#10 +
-    'internal Error.');
-
-    if not(Assigned(BDEAdmin)) then
-    BDEAdmin := TDataBase.Create(nil);
-    BDEAdmin.DatabaseName := BDEAlias;
-    BDEAdmin.Directory    := S;
-    BDEAdmin.Open;
-
-    // -------------------------------
-    // check, if data table exists ...
-    // -------------------------------
     try
-      BDEQuery := TQuery.Create(nil);
-      BDEQuery.DatabaseName := BDEAlias;
-      BDEQuery.SQL.Text :=
+//      BDEAdmin  := TDataBase.Create(nil);
+      BDE_found := false;
+      // --------------------------------
+      // check, if 'databasename' exists
+      // --------------------------------
+      if not(Assigned(BDEList)) then
+      BDEList := TStringList.Create;
+      BDEList.Clear;
+(*
+      CreateNewSession(
+      BDESession,
+      BDEAdmin,
+      BDEAlias,
+      ModelDatabase, false);
+*)
+      //BDESession := TSession.Create(nil);
+      //BDESession.SessionName := BDEAlias;
 
-      'SELECT COUNT(*) AS TableCount ' +
-      'FROM SYSALIASES A ' +
-      'INNER JOIN TABLES T ON A.PATH = T.PATH  ' +
-      'WHERE A.ALIASNAME = ''' + BDEAlias + '''' + ' ' +
-      'AND   T.TBLNAME   = ''' + S + '\'  + BDECoTbl + '''' ;
-
-      BDEQuery.Open;
-    except
-      on E: EDBEngineError do
+      // no, then create it
+      if BDEList.IndexOf(BDEAlias) < 0 then
       begin
-        BDE_found := true;
-        for I := 0 to E.ErrorCount - 1 do
+//        DBIInit(nil);
+//        DBIStartSession('dummy',h,'');
+//        DBIAddAlias(nil,
+//        PChar(BDEAlias),
+//        PChar('DBASE'),
+//        PChar('PATH=' + S),
+//        true);
+//        DBICloseSession(h);
+//        DBIExit;
+//        h := nil;
+      end;
+
+      // -------------------------------
+      // sanity check ...
+      // -------------------------------
+//      BDESession.Open;
+//      BDESession.GetDatabaseNames(BDEList);
+
+      if BDEList.IndexOf(BDEAlias) < 0 then
+      raise Exception.Create(
+      'BDE Error:'   + #13#10 +
+      'internal Error.');
+(*
+      if not(Assigned(BDEAdmin)) then
+      BDEAdmin := TDataBase.Create(nil);
+      BDEAdmin.DatabaseName := BDEAlias;
+      BDEAdmin.Directory    := S;
+      BDEAdmin.Open;
+*)
+      // -------------------------------
+      // check, if data table exists ...
+      // -------------------------------
+      try
+//        BDEQuery := TQuery.Create(nil);
+//        BDEQuery.DatabaseName := BDEAlias;
+//        BDEQuery.SQL.Text :=
+
+//        'SELECT COUNT(*) AS TableCount ' +
+(*        'FROM SYSALIASES A ' +
+        'INNER JOIN TABLES T ON A.PATH = T.PATH  ' +
+        'WHERE A.ALIASNAME = ''' + BDEAlias + '''' + ' ' +
+        'AND   T.TBLNAME   = ''' + S + '\'  + BDECoTbl + '''' ;
+
+        BDEQuery.Open;
+*)
+      except
+(*        on E: EDBEngineError do
         begin
-          // table does not exists...
-          if E.Errors[I].ErrorCode = 10024 then
+          BDE_found := true;
+          for I := 0 to E.ErrorCount - 1 do
           begin
-            BDE_found := false;
-            break;
+            // table does not exists...
+            if E.Errors[I].ErrorCode = 10024 then
+            begin
+              BDE_found := false;
+              break;
+            end;
           end;
-        end;
 
-        if not(BDE_found) then
-        begin
+          if not(BDE_found) then
+          begin
+            try
+              BDEQuery.Close;
+
+              BDEQuery.SQL.Clear;
+              BDEQuery.SQL.Text :=
+              'CREATE TABLE ''' + S + '\' + BDECoTbl + ''' (' +
+              'COL1 int,' +
+              'COL2 int)';
+
+              BDEQuery.ExecSQL;
+            except
+              on E: EDBEngineError do
+              begin
+                for I := 0 to E.ErrorCount - 1 do
+                begin
+                  case E.Errors[I].ErrorCode of
+                    0:
+                    begin
+                      // no error
+                      break;
+                    end;
+                    10024,
+                    13057:
+                    begin
+                      // table exists
+                      break;
+                    end else
+                    begin
+                      ShowMessage(rs_BDE_Error
+                      + #13#10 + rs_BDE_EClassName + E.ClassName
+                      + #13#10 + rs_BDE_ECode      + IntToStr(E.Errors[i].ErrorCode)
+                      + #13#10 + rs_BDE_EMessage   + E.Errors[i].Message
+                      + #13#10 + rs_BDE_EFile      + FileByLevel  (BDELevel)
+                      + #13#10 + rs_BDE_EModule    + ModuleByLevel(BDELevel)
+                      + #13#10 + rs_BDE_EProc      + ProcByLevel  (BDELevel)
+                      + #13#10 + rs_BDE_ELine      + IntToStr(LineByLevel(BDELevel)));
+
+                      FreeBDESetup;
+                      Close;
+                    end;
+                  end;
+                end;
+              end;
+            end;
+          end;
+
+          // -------------------------------
+          // sanity check ...
+          // -------------------------------
           try
-            BDEQuery.Close;
+            BDEList.Clear;
+            BDEAdmin.DatabaseName := BDEAlias;
+            BDEAdmin.Connected := true;
 
-            BDEQuery.SQL.Clear;
-            BDEQuery.SQL.Text :=
-            'CREATE TABLE ''' + S + '\' + BDECoTbl + ''' (' +
-            'COL1 int,' +
-            'COL2 int)';
+            if not(Assigned(BDESession)) then
+            begin
+              BDESession := TSession.Create(nil);
+              BDESession.SessionName := BDEAlias;
+            end;
 
-            BDEQuery.ExecSQL;
+            if not(Assigned(BDETable)) then
+            BDETable := TTable.Create(nil);
+            BDETable.DatabaseName := BDEAdmin .DatabaseName;
+            BDETable.SessionName  := BDESession.SessionName;
+            BDETable.TableName    := S + '\test.dbf';
+
           except
             on E: EDBEngineError do
             begin
-              for I := 0 to E.ErrorCount - 1 do
+              for i := 0 to E.ErrorCount - 1 do
               begin
-                case E.Errors[I].ErrorCode of
-                  0:
-                  begin
-                    // no error
-                    break;
-                  end;
-                  10024,
-                  13057:
-                  begin
-                    // table exists
-                    break;
-                  end else
-                  begin
+                case E.Errors[i].ErrorCode of
+                  0: begin {no error} BDE_found := true; end;
+                  else begin
                     ShowMessage(rs_BDE_Error
                     + #13#10 + rs_BDE_EClassName + E.ClassName
                     + #13#10 + rs_BDE_ECode      + IntToStr(E.Errors[i].ErrorCode)
@@ -1291,73 +1378,31 @@ begin
                 end;
               end;
             end;
-          end;
-        end;
-
-        // -------------------------------
-        // sanity check ...
-        // -------------------------------
-        try
-          BDEList.Clear;
-          BDEAdmin.DatabaseName := BDEAlias;
-          BDEAdmin.Connected := true;
-
-          if not(Assigned(BDESession)) then
-          begin
-            BDESession := TSession.Create(nil);
-            BDESession.SessionName := BDEAlias;
-          end;
-
-          if not(Assigned(BDETable)) then
-          BDETable := TTable.Create(nil);
-          BDETable.DatabaseName := BDEAdmin .DatabaseName;
-          BDETable.SessionName  := BDESession.SessionName;
-          BDETable.TableName    := S + '\test.dbf';
-
-        except
-          on E: EDBEngineError do
-          begin
-            for i := 0 to E.ErrorCount - 1 do
+            on E: Exception do
             begin
-              case E.Errors[i].ErrorCode of
-                0: begin {no error} BDE_found := true; end;
-                else begin
-                  ShowMessage(rs_BDE_Error
-                  + #13#10 + rs_BDE_EClassName + E.ClassName
-                  + #13#10 + rs_BDE_ECode      + IntToStr(E.Errors[i].ErrorCode)
-                  + #13#10 + rs_BDE_EMessage   + E.Errors[i].Message
-                  + #13#10 + rs_BDE_EFile      + FileByLevel  (BDELevel)
-                  + #13#10 + rs_BDE_EModule    + ModuleByLevel(BDELevel)
-                  + #13#10 + rs_BDE_EProc      + ProcByLevel  (BDELevel)
-                  + #13#10 + rs_BDE_ELine      + IntToStr(LineByLevel(BDELevel)));
+              ShowMessage(rs_Exception_Error
+              + #13#10 + rs_BDE_EClassName + E.ClassName
+              + #13#10 + rs_BDE_EMessage   + E.Message
+              + #13#10 + rs_BDE_EFile      + FileByLevel  (BDELevel)
+              + #13#10 + rs_BDE_EModule    + ModuleByLevel(BDELevel)
+              + #13#10 + rs_BDE_EProc      + ProcByLevel  (BDELevel)
+              + #13#10 + rs_BDE_ELine      + IntToStr(LineByLevel(BDELevel)));
 
-                  FreeBDESetup;
-                  Close;
-                end;
-              end;
+              FreeBDESetup;
+              Close;
             end;
           end;
-          on E: Exception do
-          begin
-            ShowMessage(rs_Exception_Error
-            + #13#10 + rs_BDE_EClassName + E.ClassName
-            + #13#10 + rs_BDE_EMessage   + E.Message
-            + #13#10 + rs_BDE_EFile      + FileByLevel  (BDELevel)
-            + #13#10 + rs_BDE_EModule    + ModuleByLevel(BDELevel)
-            + #13#10 + rs_BDE_EProc      + ProcByLevel  (BDELevel)
-            + #13#10 + rs_BDE_ELine      + IntToStr(LineByLevel(BDELevel)));
-
-            FreeBDESetup;
-            Close;
-          end;
         end;
+        *)
       end;
+    finally
+//      CloseSession(BDESession,BDEAdmin);
     end;
   end;
   FreeBDESetup;
 
   setResizerTrue;
-  tipday := nil;
+//  tipday := nil;
 
   SplashForm.ProgressBar1.Position := 96;
 
@@ -1386,6 +1431,8 @@ begin
   tipday.Tips.Add('Pascal is not dead.');
   tipday.Tips.Add('Pascal is a very good beginner Language (beside BASIc).');
   tipday.Execute;
+  tipday.Free;
+  tipday := nil;
 
   JvGradientCaption1.Active := true;
 
@@ -1397,12 +1444,12 @@ begin
 //  DFrameEditor.TabSheet1.Caption := 'Unamed';
 //  DFrameLeftPanel.TabSheet4 .Caption := 'Project';
 
-  WriteToC64Screen(5,2,'**** COMMODORE 64 BASIC V2 ****');
-  WriteToC64Screen(2,4,'64K RAM SYSTEM  38911 BASIC BYTES FREE');
-  WriteToC64Screen(1,6,'READY.');
+//  WriteToC64Screen(5,2,'**** COMMODORE 64 BASIC V2 ****');
+//  WriteToC64Screen(2,4,'64K RAM SYSTEM  38911 BASIC BYTES FREE');
+//  WriteToC64Screen(1,6,'READY.');
 
-  C64ScreenCursor.X := 1;
-  C64ScreenCursor.Y := 7;
+//  C64ScreenCursor.X := 1;
+//  C64ScreenCursor.Y := 7;
 
   NewProjectPageControl.ActivePageIndex := 1;
   NewProjectPageControl.ActivePageIndex := 0;
@@ -1545,12 +1592,12 @@ try
 
   Form1.Visible := false;
   SplashForm.ProgressBar1.Position := 1;
-  if Assigned(Session1) then
+(*  if Assigned(Session1) then
   begin
     Session1.Close;
     Session1.Free;
     Session1 := nil;
-  end;
+  end;*)
   Sleep(20);
 
   SplashForm.ProgressBar1.Position := 2;
@@ -1756,12 +1803,12 @@ try
   Sleep(20);
 
   SplashForm.ProgressBar1.Position := 62;
-  if Assigned(Database1) then
+(*  if Assigned(Database1) then
   begin
     DataBase1.Close;
     DataBase1.Free;
     DataBase1 := nil;
-  end;
+  end;*)
   Sleep(20);
 
   SplashForm.ProgressBar1.Position := 66;
@@ -1779,6 +1826,11 @@ try
     InfoBox := nil;
   end;
   Sleep(20);
+
+  // select database window (hidden)
+  Form2.Close;
+  Form2.Free;
+  Form2 := nil;
 
   SplashForm.ProgressBar1.Position := 70;
   SplashForm.isExit := true;
@@ -2287,8 +2339,8 @@ begin
 
     DFrameComputerOS.Visible := false;
 
-    Console1DblClick(Console1);
-    Console1.SetFocus;
+//    Console1DblClick(Console1);
+//    Console1.SetFocus;
   end else
   if MainPageControl.ActivePage.Caption = 'Help Authoring' then
   begin
@@ -2336,10 +2388,10 @@ begin
     idirc1.Port := 6667;
 
     idirc1.Username := DFrameChat.ircUserName.Text;
-    idirc1.Nick     := DFrameChat.ircUserName.Text;
+//    idirc1.Nick     := DFrameChat.ircUserName.Text;
     idirc1.Password := DFrameChat.ircUserPass.Text;
 
-    idirc1.Connect(10000);
+//    idirc1.Connect(10000);
     idirc1.Join(DFrameChat.ircChannel.Text);
 
     // channels
@@ -2356,6 +2408,7 @@ begin
   end;
 end;
 
+(*
 procedure TForm1.IdIRC1CTCPQuery(Sender: TObject; User: TIdIRCUser;
   AChannel: TIdIRCChannel; Command, Args: String; var ASuppress: Boolean);
 begin
@@ -2374,7 +2427,7 @@ begin
   S1 := S1 + ': ' + Content;
   DFrameChat.ircRichEdit.Lines.Add(S1);
 end;
-
+*)
 procedure TForm1.Button9Click(Sender: TObject);
 begin
   idIRC1.Say(
@@ -2397,7 +2450,7 @@ begin
   ListBox1.Items.AddStrings(AChans);
 *)
 end;
-
+(*
 procedure TForm1.IdIRC1Names(
   Sender  : TObject;
   AUsers  : TIdIRCUsers;
@@ -2410,7 +2463,7 @@ begin
     DFrameChat.ListBox1.Items.Add(Ausers.Items[I].Nick);
   end;
 end;
-
+*)
 procedure TForm1.dark1Click(Sender: TObject);
 begin
   Form1.Color := clGray;
@@ -2595,9 +2648,9 @@ end;
 
 procedure TForm1.Console1DblClick(Sender: TObject);
 begin
-  Console1.Active := true;
-  Console1.Boot;
-  Console1.Prompt := true;
+//  Console1.Active := true;
+//  Console1.Boot;
+//  Console1.Prompt := true;
 end;
 
 procedure TForm1.SynEdit1DragOver(Sender, Source: TObject; X, Y: Integer;
@@ -2723,7 +2776,7 @@ begin
     end;
   end;
 
-  C64Screen.Lines.Text := text;
+//  C64Screen.Lines.Text := text;
 
 //  C64ScreenCursor.X := xpos;
 //  C64ScreenCursor.Y := ypos;
@@ -2801,7 +2854,7 @@ begin
   CheckListBox.Show;
 
 //  DataBase1.Directory := 'E:\Program Files (x86)\Common Files\Borland Shared\Data';
-  DataBase1.GetFieldNames(Form.Caption,CheckListBox.Items);
+//  DataBase1.GetFieldNames(Form.Caption,CheckListBox.Items);
   Form.Show;
 end;
 
@@ -2903,20 +2956,20 @@ end;
 // todo: setup !
 procedure TForm1.SQLExplorer1Click(Sender: TObject);
 begin
-  ShellExecute(Handle,'open',PAnsiChar(IniFile_SQL_Explorer),
-  nil,nil,SW_SHOWNORMAL);
+//  ShellExecute(Handle,'open',PAnsiChar(IniFile_SQL_Explorer),
+//  nil,nil,SW_SHOWNORMAL);
 end;
 
 procedure TForm1.SQLMonitor1Click(Sender: TObject);
 begin
-  ShellExecute(Handle,'open',PAnsiChar(IniFile_SQL_Monitor),
-  nil,nil,SW_SHOWNORMAL);
+//  ShellExecute(Handle,'open',PAnsiChar(IniFile_SQL_Monitor),
+//  nil,nil,SW_SHOWNORMAL);
 end;
 
 procedure TForm1.ImageEditor1Click(Sender: TObject);
 begin
-  ShellExecute(Handle,'open',PAnsiChar(IniFile_Image_Edit),
-  nil,nil,SW_SHOWNORMAL);
+//  ShellExecute(Handle,'open',PAnsiChar(IniFile_Image_Edit),
+//  nil,nil,SW_SHOWNORMAL);
 end;
 
 procedure TForm1.LoadIniFile;
@@ -2950,11 +3003,11 @@ Begin
       IniFile_AsmInclude := ini.ReadString('asm','dBaseAsmInclude',IniFile_AsmInclude);
       IniFile_AsmYasm    := ini.ReadString('asm','dBaseAsmYasm'   ,IniFile_AsmYasm);
 
-      for I := 0 to 60 do
-      begin
-        S := ini.ReadString('keyboard','key' + IntToStr(I),'default');
-        C64AddKeyMap('key' + IntToStr(I), dropList,S);
-      end;
+//      for I := 0 to 60 do
+//      begin
+//        S := ini.ReadString('keyboard','key' + IntToStr(I),'default');
+//        C64AddKeyMap('key' + IntToStr(I), dropList,S);
+//      end;
     finally
       ini.Free;
     end;
@@ -2975,6 +3028,7 @@ var
   ini: TIniFile;
   I: Integer;
 begin
+{$IFDEF dsfdsfdsfdsfsdf}
   try
     ini := TIniFile.Create(ChangeFileExt(Application.ExeName,'.ini'));
     try
@@ -3005,6 +3059,7 @@ begin
       ErrorBox.Show;
     end;
   end;
+{$ENDIF}
 end;
 
 procedure TForm1.DesignerIconListView_BoxMouseDown(Sender: TObject;
@@ -3784,11 +3839,11 @@ begin
   S := UpperCase(Trim(ACommand));
   if S = 'CLS' then
   begin
-    Console1.Clear;
+//    Console1.Clear;
   end else
   if S = 'DIR' then
   begin
-    Console1.Writeln('listing of directory:');
+//    Console1.Writeln('listing of directory:');
   end;
 
   ACommandFinished := true;

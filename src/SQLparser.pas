@@ -120,7 +120,7 @@ end;
 destructor TSQLparser.Destroy;
 begin
   inherited Destroy;
-  FreeAndNil( FTokens );
+//  FreeAndNil( FTokens );
 end;
 
 end.

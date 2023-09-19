@@ -40,7 +40,7 @@ implementation
 
 {$R *.dfm}
 uses
-  EditorForm;
+  EditorForm, SelectDataBase;
 
 procedure TSplashForm.FormShow(Sender: TObject);
 begin
@@ -57,10 +57,23 @@ procedure TSplashForm.Timer1Timer(Sender: TObject);
 begin
   try
     Timer1.Enabled := false;
+    if not(Assigned(Form1)) then
     Application.CreateForm(TForm1, Form1);
-    Form1.Show;
-    Hide;
+    Form2.Hide;
+    ShowMessage('xxxxx');
+    Form1.ShowModal;
   except
+    on E: Exception do
+    begin
+      ShowMessage('Exception:'
+      + #13#10 + 'ClassName: ' + E.ClassName
+      + #13#10 + 'Message: '   + E.Message);
+
+      SplashForm.ProgressBar1.Position := 70;
+      SplashForm.isExit := true;
+      SplashForm.isMemE := true;
+      SplashForm.Close;
+    end;
   end;
 end;
 

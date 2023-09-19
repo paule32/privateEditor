@@ -65,7 +65,7 @@ begin
     if Length(LocaleName) > 0 then
     begin
       // Then look for a potential language/country translation
-      FileLocale := ChangeFileExt(FileName, '.' + LocaleName);
+//      FileLocale := ChangeFileExt(FileName, '.' + LocaleName);
       NewInst    := LoadLibraryEx(PChar(FileLocale), 0, LOAD_LIBRARY_AS_DATAFILE);
 
       if NewInst  = 0 then

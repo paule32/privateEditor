@@ -83,3 +83,5 @@ src/data/temp/ResPackage.dcp
 
 src/plugins/*
 src/plugins/
+
+*.~*~

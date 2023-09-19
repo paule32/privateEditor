@@ -54,11 +54,11 @@ var
   SL: TStrings;
 begin
   ListBox1.Items.Clear;
-  Form1.DataBase1.Close;
+//  Form1.DataBase1.Close;
 
-  Form1.Session1.Close;
-  Form1.Session1.Open;
-
+//  Form1.Session1.Close;
+//  Form1.Session1.Open;
+(*
   with Form1.DataBase1 do
   begin
     DataBaseName := DataBaseComboBox.Text;
@@ -78,7 +78,7 @@ begin
       end;
     end else
     Showmessage('error');
-  end;
+  end;*)
 end;
 
 procedure TFrame6.ListBox1MouseDown(Sender: TObject; Button: TMouseButton;

@@ -13,7 +13,7 @@ uses
   Dialogs, StdCtrls, JvExStdCtrls, JvButton, JvCtrls, ExtCtrls, SynEdit,
   ComCtrls, Menus, JvMenus, JvExComCtrls, SynEditHighlighter,
   SynHighlighterGeneral, SynHighlighterPas, JvComponentBase, JvInterpreter,
-  JvInterpreterFm, InterpreterClasses;
+  JvInterpreterFm, InterpreterClasses, SynEditCodeFolding;
 
 type
   TFrame19 = class(TFrame)
@@ -218,7 +218,7 @@ var
 
   procedure WriteTextToConsole( m: Pchar );
   begin
-    Form1.Console1.WriteLn(m);
+//    Form1.Console1.WriteLn(m);
   end;
 
 begin
@@ -254,7 +254,7 @@ begin
 
   Form1.MainPageControl.ActivePage := Form1.ConsoleTabSheet;
   Form1.DblClickConsole;
-  Form1.Console1.SetFocus;
+//  Form1.Console1.SetFocus;
 
   if atMSDOS in aType then
   begin
